@@ -2,7 +2,7 @@
   "scripts": {
     "pretest": "eslint ./",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --mode development"
+    "start": "webpack-dev-server --hot --history-api-fallback --mode development"
   },
   "dependencies": {
     "@material-ui/core": "^1.2.1",
@@ -13,8 +13,11 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-emotion": "^9.2.3",
+    "react-helmet": "^5.2.0",
     "react-hot-loader": "^4.3.1",
-    "react-jss": "^8.5.0"
+    "react-jss": "^8.5.0",
+    "react-router-dom": "^4.3.1",
+    "recompose": "^0.27.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.49",

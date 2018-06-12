@@ -2,6 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './components/app';
 import React, {Fragment} from 'react';
 import theme from './theme';
+import {BrowserRouter} from 'react-router-dom';
 import {JssProvider} from 'react-jss';
 import {
   MuiThemeProvider,
@@ -18,10 +19,12 @@ jss.options.insertionPoint = 'jss-insertion-point';
 const Root = () => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider theme={theme}>
-      <Fragment>
-        <CssBaseline />
-        <App />
-      </Fragment>
+      <BrowserRouter basename={process.env.PUBLIC_PATH}>
+        <Fragment>
+          <CssBaseline />
+          <App />
+        </Fragment>
+      </BrowserRouter>
     </MuiThemeProvider>
   </JssProvider>
 );

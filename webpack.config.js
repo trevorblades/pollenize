@@ -1,11 +1,16 @@
 const HtmlPlugin = require('html-webpack-plugin');
 const WebappWebpackPlugin = require('webapp-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
+
+const title = 'Knoword';
+const publicPath = '/';
 
 module.exports = {
   context: path.join(__dirname, 'src'),
   entry: ['babel-polyfill', './index.js'],
   output: {
+    publicPath,
     path: path.resolve(__dirname, 'build'),
     filename: '[name].[hash].js'
   },
@@ -28,6 +33,10 @@ module.exports = {
       title: 'Pollenize',
       template: 'index.html'
     }),
-    new WebappWebpackPlugin('./assets/favicon.svg')
+    new WebappWebpackPlugin('./assets/favicon.svg'),
+    new webpack.DefinePlugin({
+      'process.env.APP_TITLE': JSON.stringify(title),
+      'process.env.PUBLIC_PATH': JSON.stringify(publicPath)
+    })
   ]
 };
