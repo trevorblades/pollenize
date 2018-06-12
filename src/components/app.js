@@ -3,7 +3,7 @@ import {hot} from 'react-hot-loader';
 
 const App = () => (
   <div>
-    <strong>Hello</strong>
+    <strong>Hellso</strong>
   </div>
 );
 
