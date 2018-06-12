@@ -1,10 +1,11 @@
-import React from 'react';
+import Header from './header';
+import React, {Fragment} from 'react';
 import {hot} from 'react-hot-loader';
 
 const App = () => (
-  <div>
-    <strong>Hellso</strong>
-  </div>
+  <Fragment>
+    <Header />
+  </Fragment>
 );
 
 export default hot(module)(App);

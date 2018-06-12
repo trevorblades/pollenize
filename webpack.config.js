@@ -1,5 +1,5 @@
 const HtmlPlugin = require('html-webpack-plugin');
-// const WebappWebpackPlugin = require('webapp-webpack-plugin');
+const WebappWebpackPlugin = require('webapp-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -16,6 +16,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: 'babel-loader'
+      },
+      {
+        test: /\.svg$/,
+        use: 'svgr/webpack'
       }
     ]
   },
@@ -23,7 +27,7 @@ module.exports = {
     new HtmlPlugin({
       title: 'Pollenize',
       template: 'index.html'
-    })
-    // new WebappWebpackPlugin('./assets/logos/logo-small.svg'),
+    }),
+    new WebappWebpackPlugin('./assets/favicon.svg')
   ]
 };
