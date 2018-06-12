@@ -25,7 +25,8 @@ const StyledLogo = styled(Logo)({
 });
 
 const StyledNav = styled.nav(flexAlignCenter, {
-  margin: `0 ${theme.spacing.unit * 1.5}px`
+  margin: `0 ${theme.spacing.unit * 1.5}px`,
+  color: theme.palette.grey[400]
 });
 
 const NavItem = withProps({
@@ -34,8 +35,15 @@ const NavItem = withProps({
   color: 'inherit'
 })(
   styled(Typography)({
+    textDecoration: 'none',
     ':not(:last-child)': {
       marginRight: theme.spacing.unit * 3
+    },
+    ':hover': {
+      color: theme.palette.grey[700]
+    },
+    '&.active': {
+      color: theme.palette.common.black
     }
   })
 );
@@ -44,7 +52,9 @@ const Header = () => (
   <Container>
     <StyledLogo />
     <StyledNav>
-      <NavItem to="/">Home</NavItem>
+      <NavItem exact to="/">
+        Home
+      </NavItem>
       <NavItem to="/elections">Elections</NavItem>
       <NavItem to="/about">About us</NavItem>
       <NavItem to="/blog">Blog</NavItem>
