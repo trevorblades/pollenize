@@ -4,5 +4,9 @@ import {createMuiTheme} from '@material-ui/core/styles';
 export default createMuiTheme({
   palette: {
     grey: blueGrey
+  },
+  typography: {
+    fontFamily: ['Lato', 'Helvetica', 'sans-serif'].toString(),
+    fontWeightMedium: 700
   }
 });
