@@ -7,8 +7,10 @@
   "dependencies": {
     "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.1.0",
+    "@planet/layers": "^1.10.4",
     "emotion": "^9.2.3",
     "jss": "^9.8.3",
+    "ol": "^4.6.5",
     "polished": "^1.9.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
@@ -16,8 +18,12 @@
     "react-helmet": "^5.2.0",
     "react-hot-loader": "^4.3.1",
     "react-jss": "^8.5.0",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
-    "recompose": "^0.27.1"
+    "recompose": "^0.27.1",
+    "redux": "^4.0.0",
+    "redux-actions": "^2.4.0",
+    "redux-devtools-extension": "^2.13.2"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.49",

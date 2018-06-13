@@ -12,16 +12,22 @@ const flexAlignCenter = css({
   alignItems: 'center'
 });
 
-const Container = styled(Paper)(flexAlignCenter, {
-  justifyContent: 'space-between',
-  padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px`,
-  position: 'sticky',
-  top: 0
-});
+const Container = withProps({
+  elevation: 1,
+  square: true
+})(
+  styled(Paper)(flexAlignCenter, {
+    justifyContent: 'space-between',
+    padding: `${theme.spacing.unit * 2.5}px ${theme.spacing.unit * 3}px`,
+    position: 'sticky',
+    top: 0,
+    zIndex: 1
+  })
+);
 
 const StyledLogo = styled(Logo)({
   display: 'block',
-  height: theme.spacing.unit * 4.5
+  height: theme.spacing.unit * 4
 });
 
 const StyledNav = styled.nav(flexAlignCenter, {
