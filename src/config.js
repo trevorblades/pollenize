@@ -1,4 +1,4 @@
 export const BASEMAP_URL =
-  'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}';
+  'https://cartodb-basemaps-{a-d}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}{r}.png';
 export const BASEMAP_ATTRIBUTION =
-  'Tiles & copy; Esri & mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP - WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC';
+  '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';

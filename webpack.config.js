@@ -3,7 +3,7 @@ const WebappWebpackPlugin = require('webapp-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
-const title = 'Knoword';
+const title = 'Pollenize';
 const publicPath = '/';
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
   },
   plugins: [
     new HtmlPlugin({
-      title: 'Pollenize',
+      title,
       template: 'index.html'
     }),
     new WebappWebpackPlugin('./assets/favicon.svg'),
