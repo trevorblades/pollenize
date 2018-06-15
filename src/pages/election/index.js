@@ -4,6 +4,7 @@ import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme from '../../theme';
+import {HEADER_HEIGHT} from '../../components/header';
 
 const Hero = styled.div({
   padding: theme.spacing.unit * 5,
@@ -26,15 +27,15 @@ const Sidebar = styled.aside({
   marginRight: theme.spacing.unit * 5,
   paddingTop: theme.spacing.unit * 2,
   position: 'sticky',
-  top: 72
+  top: HEADER_HEIGHT
 });
 
 const Content = styled.div({
-  maxWidth: 720
+  maxWidth: 720,
+  margin: `${theme.spacing.unit * 2}px 0`
 });
 
 const Position = styled.div({
-  marginTop: theme.spacing.unit * 2,
   ':not(:last-child)': {
     marginBottom: 200
   }

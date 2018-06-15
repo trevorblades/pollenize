@@ -8,6 +8,10 @@ import theme from '../../theme';
 import withProps from 'recompose/withProps';
 import {Link, Switch, Route} from 'react-router-dom';
 
+const logoHeight = theme.spacing.unit * 4;
+const verticalPadding = theme.spacing.unit * 2.5;
+export const HEADER_HEIGHT = logoHeight + verticalPadding * 2;
+
 const Container = withProps({
   elevation: 1,
   square: true
@@ -16,7 +20,7 @@ const Container = withProps({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: `${theme.spacing.unit * 2.5}px ${theme.spacing.unit * 3}px`,
+    padding: `${verticalPadding}px ${theme.spacing.unit * 3}px`,
     position: 'sticky',
     top: 0,
     zIndex: 1
@@ -26,7 +30,7 @@ const Container = withProps({
 const StyledLogo = styled(Logo)({
   display: 'block',
   flexShrink: 0,
-  height: theme.spacing.unit * 4
+  height: logoHeight
 });
 
 const Header = () => (
