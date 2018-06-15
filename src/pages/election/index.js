@@ -1,10 +1,14 @@
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import NotFound from '../not-found';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme from '../../theme';
 import {HEADER_HEIGHT} from '../../components/header';
+import {connect} from 'react-redux';
+import {load as loadElection} from '../../actions/election';
 
 const Hero = styled.div({
   padding: theme.spacing.unit * 5,
@@ -41,32 +45,33 @@ const Position = styled.div({
   }
 });
 
-const topics = [
-  'Economy',
-  'Environment',
-  'Aboriginal Affairs',
-  'Pipelines',
-  'Justice',
-  'Healthcare',
-  'Foreign Policy',
-  'Immigration',
-  'Education',
-  'Housing',
-  'Privacy',
-  'Government & Transparency'
-];
-
+const lang = 'en';
 class Election extends Component {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    election: PropTypes.object,
+    loading: PropTypes.bool.isRequired,
     match: PropTypes.object.isRequired
   };
 
+  componentDidMount() {
+    this.props.dispatch(loadElection(this.props.match.params.id));
+  }
+
   render() {
+    if (!this.props.election) {
+      if (this.props.loading) {
+        return <CircularProgress />;
+      }
+      return <NotFound />;
+    }
+
+    const candidate = this.props.election.candidates[0];
     return (
       <Fragment>
         <Hero>
           <Typography color="inherit" variant="headline">
-            Election {this.props.match.params.id}
+            Election {}
           </Typography>
         </Hero>
         <Container>
@@ -74,30 +79,37 @@ class Election extends Component {
             <Typography gutterBottom variant="caption">
               Topics
             </Typography>
-            {topics.map(topic => (
-              <Typography gutterBottom key={topic} variant="subheading">
-                {topic}
+            {this.props.election.topics.map(topic => (
+              <Typography gutterBottom key={topic.id} variant="subheading">
+                {topic.title}
               </Typography>
             ))}
           </Sidebar>
           <Content>
-            {topics.map(topic => (
-              <Position key={topic}>
-                <Typography gutterBottom variant="title">
-                  {topic}
-                </Typography>
-                <Typography paragraph variant="subheading">
-                  A Liberal government would work to offer more benefits for
-                  Canadian families, readjust tax brackets in favour of the
-                  middle class, and overhaul the Canadian Revenue Agency (CRA).
-                  They would also make investments into clean energy technology
-                  and green innovation in sectors across the economy.
-                </Typography>
-                <Button variant="raised" color="secondary">
-                  Share
-                </Button>
-              </Position>
-            ))}
+            {this.props.election.topics.map(topic => {
+              let position = candidate.positions[topic.id];
+              if (!position) {
+                return <div key={topic.id}>No position for this topic</div>;
+              }
+
+              position = position[lang];
+              return (
+                <Position key={topic.id}>
+                  <Typography gutterBottom variant="title">
+                    {topic.title}
+                  </Typography>
+                  <Typography paragraph variant="subheading">
+                    {position.text}
+                  </Typography>
+                  {position.sources.map((source, index) => (
+                    <div key={index}>{source}</div>
+                  ))}
+                  <Button variant="raised" color="secondary">
+                    Share
+                  </Button>
+                </Position>
+              );
+            })}
           </Content>
         </Container>
       </Fragment>
@@ -105,4 +117,9 @@ class Election extends Component {
   }
 }
 
-export default Election;
+const mapStateToProps = state => ({
+  election: state.election.data,
+  loading: state.election.loading
+});
+
+export default connect(mapStateToProps)(Election);

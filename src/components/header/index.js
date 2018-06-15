@@ -3,10 +3,12 @@ import Logo from '../../assets/logo.svg';
 import Nav from './nav';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
+import Wordmark from '../../assets/wordmark.svg';
 import styled from 'react-emotion';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
 import {Link, Switch, Route} from 'react-router-dom';
+import {size} from 'polished';
 
 const logoHeight = theme.spacing.unit * 4;
 const verticalPadding = theme.spacing.unit * 2.5;
@@ -27,17 +29,31 @@ const Container = withProps({
   })
 );
 
-const StyledLogo = styled(Logo)({
-  display: 'block',
+const LogoLink = styled(Link)({
+  display: 'flex',
+  alignItems: 'center',
+  flexShrink: 0
+});
+
+const StyledLogo = styled(Logo)(size(logoHeight), {
+  flexShrink: 0
+});
+
+const StyledWordmark = styled(Wordmark)({
   flexShrink: 0,
-  height: logoHeight
+  height: logoHeight / 2,
+  marginLeft: logoHeight * 0.375
 });
 
 const Header = () => (
   <Container>
-    <Link to="/">
+    <LogoLink to="/">
       <StyledLogo />
-    </Link>
+      <Switch>
+        <Route path="/elections/:id" />
+        <Route render={() => <StyledWordmark />} />
+      </Switch>
+    </LogoLink>
     <Switch>
       <Route path="/elections/:id" component={ElectionNav} />
       <Route component={Nav} />
