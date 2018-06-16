@@ -186,7 +186,7 @@ class Election extends Component {
               return (
                 <Fragment key={topic.id}>
                   <Section>
-                    <Typography gutterBottom variant="title">
+                    <Typography gutterBottom variant="headline">
                       {topic.title}
                     </Typography>
                     <SectionContent>
