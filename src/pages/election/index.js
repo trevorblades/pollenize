@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import montreal from '../../assets/images/montreal.jpg';
 import styled from 'react-emotion';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
@@ -35,9 +36,16 @@ const Container = styled.div({
   position: 'relative'
 });
 
+const sectionVerticalPadding = theme.spacing.unit * 5;
+const sectionHorizontalPadding = theme.spacing.unit * 6;
+const Section = styled.div({
+  padding: `${sectionVerticalPadding}px ${sectionHorizontalPadding}px`
+});
+
+const sidebarVerticalPadding = theme.spacing.unit * 3;
 const Sidebar = styled.aside({
   width: 200,
-  padding: theme.spacing.unit * 3
+  padding: `${sidebarVerticalPadding}px ${theme.spacing.unit * 4}px`
 });
 
 const SidebarContainer = styled.div({
@@ -45,7 +53,7 @@ const SidebarContainer = styled.div({
   alignSelf: 'flex-start',
   justifyContent: 'flex-end',
   flexGrow: 1,
-  marginTop: theme.spacing.unit * 2,
+  marginTop: sectionVerticalPadding - sidebarVerticalPadding,
   position: 'sticky',
   top: theme.mixins.toolbar.height
 });
@@ -55,8 +63,6 @@ const Content = withProps({
   square: true
 })(
   styled(Paper)({
-    maxWidth: 720,
-    marginRight: 'auto',
     borderLeft: `1px solid ${theme.palette.grey[100]}`
   })
 );
@@ -66,8 +72,62 @@ const Filler = styled.div({
   backgroundColor: theme.palette.background.paper
 });
 
-const Section = styled.div({
-  padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 6}px`
+const SectionContent = styled.div({
+  display: 'flex'
+});
+
+const sectionMainContentPadding = theme.spacing.unit * 4;
+const SectionMainContent = styled.div({
+  maxWidth: 720,
+  marginRight: sectionMainContentPadding,
+  paddingRight: sectionMainContentPadding,
+  borderRight: `1px dashed ${theme.palette.grey[200]}`
+});
+
+const Sources = styled.div({
+  display: 'none'
+});
+
+const Actions = styled.div({
+  display: 'flex'
+});
+
+const Action = withProps({size: 'small'})(
+  styled(Button)({
+    ':not(:last-child)': {
+      marginRight: theme.spacing.unit
+    }
+  })
+);
+
+const alternateContentWidth = 200;
+const SectionAlternateContent = styled.div({
+  flexShrink: 0,
+  width: alternateContentWidth
+});
+
+const ImageContainer = styled.div({
+  display: 'flex',
+  alignItems: 'flex-end',
+  justifyContent: 'flex-end',
+  padding: `0 ${sectionHorizontalPadding}px`,
+  '::after': {
+    content: "''",
+    flexGrow: 1,
+    maxWidth: alternateContentWidth / 2
+  }
+});
+
+const ImageCaption = withProps({variant: 'caption'})(
+  styled(Typography)({
+    maxWidth: 150,
+    marginRight: theme.spacing.unit * 1.5,
+    textAlign: 'right'
+  })
+);
+
+const StyledImage = styled.img({
+  maxWidth: 480
 });
 
 const lang = 'en';
@@ -122,19 +182,40 @@ class Election extends Component {
                 return <div key={topic.id}>No position for this topic</div>;
               }
 
+              const {text, sources} = position[lang];
               return (
-                <Section key={topic.id}>
-                  <Typography gutterBottom variant="title">
-                    {topic.title}
-                  </Typography>
-                  <Typography paragraph variant="subheading">
-                    {position[lang].text}
-                  </Typography>
-                  {position[lang].sources.map((source, index) => (
-                    <div key={index}>{source}</div>
-                  ))}
-                  <Button size="small">View sources</Button>
-                </Section>
+                <Fragment key={topic.id}>
+                  <Section>
+                    <Typography gutterBottom variant="title">
+                      {topic.title}
+                    </Typography>
+                    <SectionContent>
+                      <SectionMainContent>
+                        <Typography paragraph variant="subheading">
+                          {text}
+                        </Typography>
+                        <Sources>
+                          {sources.map((source, index) => (
+                            <div key={index}>{source}</div>
+                          ))}
+                        </Sources>
+                        <Actions>
+                          <Action>Compare</Action>
+                          <Action>View sources</Action>
+                        </Actions>
+                      </SectionMainContent>
+                      <SectionAlternateContent>
+                        <Typography>{text}</Typography>
+                      </SectionAlternateContent>
+                    </SectionContent>
+                  </Section>
+                  <ImageContainer>
+                    <ImageCaption>
+                      Photo by Marc-Olivier Jodoin on Unsplash
+                    </ImageCaption>
+                    <StyledImage src={montreal} />
+                  </ImageContainer>
+                </Fragment>
               );
             })}
           </Content>
