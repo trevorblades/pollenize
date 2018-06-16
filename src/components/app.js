@@ -1,7 +1,8 @@
+import Election from '../pages/election';
 import Helmet from 'react-helmet';
-import Header from './header';
 import Pages from '../pages';
 import React, {Fragment} from 'react';
+import {Switch, Route} from 'react-router-dom';
 import {hot} from 'react-hot-loader';
 
 const App = () => (
@@ -10,8 +11,10 @@ const App = () => (
       defaultTitle={process.env.APP_TITLE}
       titleTemplate={`%s · ${process.env.APP_TITLE}`}
     />
-    <Header />
-    <Pages />
+    <Switch>
+      <Route path="/elections/:id" component={Election} />
+      <Route component={Pages} />
+    </Switch>
   </Fragment>
 );
 

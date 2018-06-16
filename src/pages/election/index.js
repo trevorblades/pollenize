@@ -1,5 +1,7 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Header, {logoSize} from '../../components/header';
 import NotFound from '../not-found';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
@@ -10,18 +12,40 @@ import theme from '../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {load as loadElection} from '../../actions/election';
+import {size} from 'polished';
+
+const Title = withProps({
+  color: 'inherit',
+  variant: 'subheading'
+})(
+  styled(Typography)({
+    display: 'flex',
+    margin: '0 auto',
+    fontWeight: theme.typography.fontWeightMedium
+  })
+);
+
+const MenuButton = styled.div(size(logoSize), {
+  backgroundColor: theme.palette.common.black
+});
 
 const Container = styled.div({
   display: 'flex',
-  alignItems: 'flex-start',
+  flexGrow: 1,
   position: 'relative'
 });
 
 const Sidebar = styled.aside({
-  flexShrink: 0,
   width: 200,
-  marginLeft: 'auto',
-  padding: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+  padding: theme.spacing.unit * 3
+});
+
+const SidebarContainer = styled.div({
+  display: 'flex',
+  alignSelf: 'flex-start',
+  justifyContent: 'flex-end',
+  flexGrow: 1,
+  marginTop: theme.spacing.unit * 2,
   position: 'sticky',
   top: theme.mixins.toolbar.height
 });
@@ -37,8 +61,13 @@ const Content = withProps({
   })
 );
 
+const Filler = styled.div({
+  flexGrow: 1,
+  backgroundColor: theme.palette.background.paper
+});
+
 const Section = styled.div({
-  padding: `${theme.spacing.unit * 4}px ${theme.spacing.unit * 6}px`
+  padding: `${theme.spacing.unit * 5}px ${theme.spacing.unit * 6}px`
 });
 
 const lang = 'en';
@@ -65,9 +94,17 @@ class Election extends Component {
     const candidate = this.props.election.candidates[0];
     return (
       <Fragment>
+        <Header dark simple>
+          <Title>
+            {this.props.election.title}
+            <ChevronRightIcon />
+            {candidate.name}
+          </Title>
+          <MenuButton />
+        </Header>
         <Container>
-          <Sidebar>
-            <div>
+          <SidebarContainer>
+            <Sidebar>
               <Typography gutterBottom variant="caption">
                 Topics
               </Typography>
@@ -76,8 +113,8 @@ class Election extends Component {
                   {topic.title}
                 </Typography>
               ))}
-            </div>
-          </Sidebar>
+            </Sidebar>
+          </SidebarContainer>
           <Content>
             {this.props.election.topics.map(topic => {
               const position = candidate.positions[topic.id];
@@ -101,6 +138,7 @@ class Election extends Component {
               );
             })}
           </Content>
+          <Filler />
         </Container>
       </Fragment>
     );
