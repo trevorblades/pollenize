@@ -10,8 +10,8 @@ const Pages = () => (
     <Header />
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route exact path="/elections" component={Elections} />
-      <Route component={NotFound} />
+      <Route exact path="/elections" render={Elections} />
+      <Route render={NotFound} />
     </Switch>
   </Fragment>
 );

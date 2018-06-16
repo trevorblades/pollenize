@@ -34,6 +34,7 @@ const elections = [
     ],
     candidates: [
       {
+        id: 'justin-trudeau',
         name: 'Justin Trudeau',
         positions: {
           economy: {
