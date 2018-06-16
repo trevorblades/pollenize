@@ -1,48 +1,44 @@
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NotFound from '../not-found';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme from '../../theme';
-import {HEADER_HEIGHT} from '../../components/header';
+import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {load as loadElection} from '../../actions/election';
-
-const Hero = styled.div({
-  padding: theme.spacing.unit * 5,
-  textAlign: 'center',
-  color: theme.palette.common.white,
-  backgroundColor: theme.palette.primary[500]
-});
 
 const Container = styled.div({
   display: 'flex',
   alignItems: 'flex-start',
-  margin: '0 auto',
-  padding: theme.spacing.unit * 5,
   position: 'relative'
 });
 
 const Sidebar = styled.aside({
   flexShrink: 0,
-  width: 150,
-  marginRight: theme.spacing.unit * 5,
-  paddingTop: theme.spacing.unit * 2,
+  width: 200,
+  marginLeft: 'auto',
+  padding: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
   position: 'sticky',
-  top: HEADER_HEIGHT
+  top: theme.mixins.toolbar.height
 });
 
-const Content = styled.div({
-  maxWidth: 720,
-  margin: `${theme.spacing.unit * 2}px 0`
-});
+const Content = withProps({
+  elevation: 0,
+  square: true
+})(
+  styled(Paper)({
+    maxWidth: 720,
+    marginRight: 'auto',
+    borderLeft: `1px solid ${theme.palette.grey[100]}`
+  })
+);
 
-const Position = styled.div({
-  ':not(:last-child)': {
-    marginBottom: 200
-  }
+const Section = styled.div({
+  padding: `${theme.spacing.unit * 4}px ${theme.spacing.unit * 6}px`
 });
 
 const lang = 'en';
@@ -69,45 +65,39 @@ class Election extends Component {
     const candidate = this.props.election.candidates[0];
     return (
       <Fragment>
-        <Hero>
-          <Typography color="inherit" variant="headline">
-            Election {}
-          </Typography>
-        </Hero>
         <Container>
           <Sidebar>
-            <Typography gutterBottom variant="caption">
-              Topics
-            </Typography>
-            {this.props.election.topics.map(topic => (
-              <Typography gutterBottom key={topic.id} variant="subheading">
-                {topic.title}
+            <div>
+              <Typography gutterBottom variant="caption">
+                Topics
               </Typography>
-            ))}
+              {this.props.election.topics.map(topic => (
+                <Typography gutterBottom key={topic.id} variant="subheading">
+                  {topic.title}
+                </Typography>
+              ))}
+            </div>
           </Sidebar>
           <Content>
             {this.props.election.topics.map(topic => {
-              let position = candidate.positions[topic.id];
+              const position = candidate.positions[topic.id];
               if (!position) {
                 return <div key={topic.id}>No position for this topic</div>;
               }
 
-              position = position[lang];
               return (
-                <Position key={topic.id}>
+                <Section key={topic.id}>
                   <Typography gutterBottom variant="title">
                     {topic.title}
                   </Typography>
                   <Typography paragraph variant="subheading">
-                    {position.text}
+                    {position[lang].text}
                   </Typography>
-                  {position.sources.map((source, index) => (
+                  {position[lang].sources.map((source, index) => (
                     <div key={index}>{source}</div>
                   ))}
-                  <Button variant="raised" color="secondary">
-                    Share
-                  </Button>
-                </Position>
+                  <Button size="small">View sources</Button>
+                </Section>
               );
             })}
           </Content>
