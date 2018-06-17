@@ -1,10 +1,13 @@
 import Button from '@material-ui/core/Button';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Chip from '@material-ui/core/Chip';
 import ElectionHeader from './election-header';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import cropUrl from 'crop-url';
+import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import montreal from '../../assets/images/montreal.jpg';
 import styled from 'react-emotion';
@@ -72,9 +75,37 @@ const SectionMainContent = styled.div({
   borderRight: `1px dashed ${theme.palette.grey[200]}`
 });
 
+const sourceSpacing = theme.spacing.unit;
+const Source = withProps({
+  clickable: true,
+  component: 'a'
+})(
+  styled(Chip)({
+    marginBottom: sourceSpacing,
+    backgroundColor: theme.palette.grey[100],
+    ':hover': {
+      backgroundColor: theme.palette.grey[200]
+    },
+    ':not(:last-child)': {
+      marginRight: sourceSpacing
+    }
+  })
+);
+
 const Sources = styled.div({
-  display: 'none'
+  marginBottom: -sourceSpacing
 });
+
+const Headline = withProps({
+  gutterBottom: true,
+  variant: 'headline'
+})(
+  styled(Typography)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  })
+);
 
 const Actions = styled.div({
   display: 'flex'
@@ -158,9 +189,13 @@ class Election extends Component {
               return (
                 <Fragment key={topic.id}>
                   <Section>
-                    <Typography gutterBottom variant="headline">
+                    <Headline>
                       {topic.title}
-                    </Typography>
+                      <Actions>
+                        <Action>Compare</Action>
+                        <Action>View sources</Action>
+                      </Actions>
+                    </Headline>
                     <SectionContent>
                       <SectionMainContent>
                         {positions.map(position => (
@@ -170,17 +205,25 @@ class Election extends Component {
                             variant="subheading"
                           >
                             {position.text}
+                            {position.sources.map(source => (
+                              <sup key={source.id}>
+                                [{findIndex(sources, ['id', source.id]) + 1}]
+                              </sup>
+                            ))}{' '}
+                            <a href="#">Read more...</a>
                           </Typography>
                         ))}
                         <Sources>
-                          {sources.map(source => (
-                            <div key={source.id}>{source.url}</div>
+                          {sources.map((source, index) => (
+                            <Source
+                              key={source.id}
+                              title={source.url}
+                              href={source.url}
+                              target="_blank"
+                              label={`${index + 1}. ${cropUrl(source.url, 12)}`}
+                            />
                           ))}
                         </Sources>
-                        <Actions>
-                          <Action>Compare</Action>
-                          <Action>View sources</Action>
-                        </Actions>
                       </SectionMainContent>
                       <SectionAlternateContent>
                         <Typography>{topic.description}</Typography>

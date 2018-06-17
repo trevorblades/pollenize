@@ -8,6 +8,7 @@
     "@material-ui/core": "^1.2.1",
     "@material-ui/icons": "^1.1.0",
     "@planet/layers": "^1.10.4",
+    "crop-url": "^1.1.0",
     "emotion": "^9.2.3",
     "frisbee": "^2.0.5",
     "jss": "^9.8.3",
