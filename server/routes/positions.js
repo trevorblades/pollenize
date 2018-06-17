@@ -7,4 +7,15 @@ router.post('/', async (req, res) => {
   res.send(position);
 });
 
+router.put('/:id', async (req, res) => {
+  const position = await Position.findById(req.params.id);
+  await position.update({text: req.body.text});
+
+  const sources = await Source.bulkCreate(req.body.sources, {returning: true});
+  await position.setSources(sources);
+  position.setDataValue('sources', sources);
+
+  res.send(position);
+});
+
 export default router;

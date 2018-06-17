@@ -1,5 +1,5 @@
 import api from '../api';
-import {create, update, success, failure} from '../actions/position';
+import {save, success, failure} from '../actions/position';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 
@@ -27,25 +27,13 @@ const defaultState = {
 
 export default handleActions(
   {
-    [create]: (state, {payload}) =>
+    [save]: (state, {payload}) =>
       loop(
         {
           ...state,
           loading: true
         },
-        Cmd.run(createPosition, {
-          successActionCreator: success,
-          failActionCreator: failure,
-          args: [payload]
-        })
-      ),
-    [update]: (state, {payload}) =>
-      loop(
-        {
-          ...state,
-          loading: true
-        },
-        Cmd.run(updatePosition, {
+        Cmd.run(payload.id ? updatePosition : createPosition, {
           successActionCreator: success,
           failActionCreator: failure,
           args: [payload]

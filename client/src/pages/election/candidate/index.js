@@ -125,7 +125,13 @@ class Candidate extends Component {
                     gutterBottom={index < array.length - 1}
                     key={source.id}
                   >
-                    <a href={prependHttp(source.url)}>{source.url}</a>
+                    <a
+                      href={prependHttp(source.url)}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {source.url}
+                    </a>
                   </Footnote>
                 ))}
               </Footnotes>

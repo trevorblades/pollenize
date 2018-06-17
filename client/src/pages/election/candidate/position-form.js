@@ -10,10 +10,7 @@ import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
-import {
-  create as createPosition,
-  update as updatePosition
-} from '../../../actions/position';
+import {save as savePosition} from '../../../actions/position';
 
 const FullWidthTextField = withProps({
   fullWidth: true,
@@ -56,12 +53,8 @@ class PositionForm extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-
-    const actionCreator = this.props.position.id
-      ? updatePosition
-      : createPosition;
     this.props.dispatch(
-      actionCreator({
+      savePosition({
         ...this.props.position,
         text: this.state.text,
         sources: this.state.sources.map(url => ({url}))
