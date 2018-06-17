@@ -10,15 +10,6 @@ import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 
-const sectionMainContentPadding = theme.spacing.unit * 4;
-const Container = styled.div({
-  flexGrow: 1,
-  maxWidth: 720,
-  marginRight: sectionMainContentPadding,
-  paddingRight: sectionMainContentPadding,
-  borderRight: `1px dashed ${theme.palette.grey[200]}`
-});
-
 const sourceSpacing = theme.spacing.unit;
 const Source = withProps({
   clickable: true,
@@ -26,9 +17,9 @@ const Source = withProps({
 })(
   styled(Chip)({
     marginBottom: sourceSpacing,
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.grey[50],
     ':hover': {
-      backgroundColor: theme.palette.grey[200]
+      backgroundColor: theme.palette.grey[100]
     },
     ':not(:last-child)': {
       marginRight: sourceSpacing
@@ -42,7 +33,7 @@ const Sources = styled.div({
 
 class MainContent extends Component {
   static propTypes = {
-    positions: PropTypes.array,
+    positions: PropTypes.array.isRequired,
     sources: PropTypes.array.isRequired
   };
 
@@ -52,11 +43,7 @@ class MainContent extends Component {
     return findIndex(this.props.sources, ['id', source.id]);
   }
 
-  renderContent() {
-    if (!this.props.positions) {
-      return null;
-    }
-
+  render() {
     const sources = flatMap(this.props.positions, 'sources');
     return (
       <Fragment>
@@ -88,10 +75,6 @@ class MainContent extends Component {
         </Sources>
       </Fragment>
     );
-  }
-
-  render() {
-    return <Container>{this.renderContent()}</Container>;
   }
 }
 
