@@ -1,7 +1,8 @@
 export default (sequelize, DataTypes) => {
   const Candidate = sequelize.define('candidate', {
     slug: DataTypes.STRING,
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    party: DataTypes.STRING
   });
 
   Candidate.associate = models => {
