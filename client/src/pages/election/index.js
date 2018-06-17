@@ -4,10 +4,13 @@ import Grid from './grid';
 import NotFound from '../not-found';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import find from 'lodash/find';
+import map from 'lodash/map';
 import {Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {load as loadElection} from '../../actions/election';
+import {
+  load as loadElection,
+  reset as resetElection
+} from '../../actions/election';
 
 class Election extends Component {
   static propTypes = {
@@ -19,6 +22,10 @@ class Election extends Component {
 
   componentDidMount() {
     this.props.dispatch(loadElection(this.props.match.params.id));
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(resetElection());
   }
 
   render() {
@@ -35,22 +42,9 @@ class Election extends Component {
           <Route
             path="/elections/:election/:id"
             render={props => {
-              const candidate = find(this.props.election.candidates, [
-                'slug',
-                props.match.params.id
-              ]);
-
-              if (!candidate) {
-                return <NotFound />;
-              }
-
-              return (
-                <Candidate
-                  {...props}
-                  candidate={candidate}
-                  election={this.props.election}
-                />
-              );
+              const candidates = map(this.props.election.candidates, 'slug');
+              const found = candidates.includes(props.match.params.id);
+              return found ? <Candidate {...props} /> : <NotFound />;
             }}
           />
           <Route

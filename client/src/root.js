@@ -20,16 +20,16 @@ jss.options.insertionPoint = 'jss-insertion-point';
 
 const Root = () => (
   <Provider store={store}>
-    <JssProvider jss={jss} generateClassName={generateClassName}>
-      <MuiThemeProvider theme={theme}>
-        <BrowserRouter basename={process.env.PUBLIC_PATH}>
+    <BrowserRouter basename={process.env.PUBLIC_PATH}>
+      <JssProvider jss={jss} generateClassName={generateClassName}>
+        <MuiThemeProvider theme={theme}>
           <Fragment>
             <CssBaseline />
             <App />
           </Fragment>
-        </BrowserRouter>
-      </MuiThemeProvider>
-    </JssProvider>
+        </MuiThemeProvider>
+      </JssProvider>
+    </BrowserRouter>
   </Provider>
 );
 

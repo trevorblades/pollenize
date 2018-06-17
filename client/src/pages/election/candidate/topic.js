@@ -1,41 +1,13 @@
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogActions from '@material-ui/core/DialogActions';
-import EditIcon from '@material-ui/icons/Edit';
-import IconButton from '@material-ui/core/IconButton';
-import MainContent from './main-content';
+import Position from './position';
+import PositionForm from './position-form';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 // import montreal from '../../../assets/images/montreal.jpg';
 import styled from 'react-emotion';
 import theme from '../../../theme';
-import withProps from 'recompose/withProps';
-import {size} from 'polished';
-
-export const sectionVerticalPadding = theme.spacing.unit * 5;
-const sectionHorizontalPadding = theme.spacing.unit * 6;
-const Section = styled.div({
-  padding: `${sectionVerticalPadding}px ${sectionHorizontalPadding}px`
-});
-
-const Headline = withProps({
-  gutterBottom: true,
-  variant: 'headline'
-})(
-  styled(Typography)({
-    display: 'flex',
-    alignItems: 'center'
-  })
-);
-
-const EditButton = styled(IconButton)(size(theme.spacing.unit * 5), {
-  marginLeft: theme.spacing.unit / 2
-});
 
 const SectionContent = styled.div({
   display: 'flex'
@@ -53,7 +25,7 @@ const SectionAlternateContent = styled.div({
   width: alternateContentWidth,
   marginLeft: alternateContentPadding,
   paddingLeft: alternateContentPadding,
-  borderLeft: `1px dashed ${theme.palette.grey[200]}`
+  borderLeft: `1px solid ${theme.palette.grey[100]}`
 });
 
 // const ImageContainer = styled.div({
@@ -80,16 +52,10 @@ const SectionAlternateContent = styled.div({
 //   maxWidth: 480
 // });
 
-const FullWidthTextField = withProps({
-  fullWidth: true,
-  margin: 'dense'
-})(TextField);
-
 class Topic extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
     positions: PropTypes.array,
-    sources: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired
   };
 
@@ -101,34 +67,28 @@ class Topic extends Component {
     dialogOpen: false
   };
 
-  onEditClick = () => this.setState({dialogOpen: true});
+  onAddClick = () => this.setState({dialogOpen: true});
 
   closeDialog = () => this.setState({dialogOpen: false});
 
   render() {
     return (
       <Fragment>
-        <Section>
-          <Headline>
-            <span>{this.props.title}</span>
-            <EditButton onClick={this.onEditClick}>
-              <EditIcon />
-            </EditButton>
-          </Headline>
-          <SectionContent>
-            <SectionMainContent>
-              {this.props.positions && (
-                <MainContent
-                  positions={this.props.positions}
-                  sources={this.props.sources}
-                />
-              )}
-            </SectionMainContent>
-            <SectionAlternateContent>
-              <Typography>{this.props.description}</Typography>
-            </SectionAlternateContent>
-          </SectionContent>
-        </Section>
+        <Typography gutterBottom variant="headline">
+          {this.props.title}
+        </Typography>
+        <SectionContent>
+          <SectionMainContent>
+            {this.props.positions &&
+              this.props.positions.map(position => (
+                <Position key={position.id} position={position} />
+              ))}
+            <Button onClick={this.onAddClick}>Add a position</Button>
+          </SectionMainContent>
+          <SectionAlternateContent>
+            <Typography>{this.props.description}</Typography>
+          </SectionAlternateContent>
+        </SectionContent>
         {/* <ImageContainer>
           <ImageCaption>Photo by Marc-Olivier Jodoin on Unsplash</ImageCaption>
           <StyledImage src={montreal} />
@@ -138,22 +98,7 @@ class Topic extends Component {
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          <DialogTitle>Edit positions for topic</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Test</DialogContentText>
-            {this.props.positions.map(position => (
-              <Fragment key={position.id}>
-                <FullWidthTextField multiline value={position.text} />
-                {position.sources.map(source => (
-                  <FullWidthTextField key={source.id} value={source.url} />
-                ))}
-              </Fragment>
-            ))}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.closeDialog}>Cancel</Button>
-            <Button color="primary">Save changes</Button>
-          </DialogActions>
+          <PositionForm onClose={this.closeDialog} />
         </Dialog>
       </Fragment>
     );

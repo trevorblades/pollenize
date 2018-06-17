@@ -3,13 +3,16 @@ import ElectionHeader from '../election-header';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import Topic, {sectionVerticalPadding} from './topic';
+import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
-import flatMap from 'lodash/flatMap';
+import find from 'lodash/find';
+import prependHttp from 'prepend-http';
 import styled from 'react-emotion';
-import theme from '../../../theme';
 import withProps from 'recompose/withProps';
+import theme from '../../../theme';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {getCandidates} from '../../../selectors';
 
 const StyledLink = styled(Link)({
   textDecoration: 'none'
@@ -19,6 +22,12 @@ const Container = styled.div({
   display: 'flex',
   flexGrow: 1,
   position: 'relative'
+});
+
+const sectionVerticalPadding = theme.spacing.unit * 5;
+const sectionHorizontalPadding = theme.spacing.unit * 6;
+const Section = styled.div({
+  padding: `${sectionVerticalPadding}px ${sectionHorizontalPadding}px`
 });
 
 const sidebarVerticalPadding = theme.spacing.unit * 3;
@@ -46,7 +55,23 @@ const Content = withProps({
   })
 );
 
-const Filler = styled.div({
+const FootnotesSection = styled(Section)({
+  backgroundColor: theme.palette.grey[100]
+});
+
+const Footnotes = styled.ol({
+  margin: 0,
+  padding: 0,
+  paddingLeft: theme.spacing.unit * 2
+});
+
+const Footnote = withProps({component: 'li'})(
+  styled(Typography)({
+    display: 'list-item'
+  })
+);
+
+const Spacer = styled.div({
   flexGrow: 1,
   backgroundColor: theme.palette.background.paper
 });
@@ -58,10 +83,6 @@ class Candidate extends Component {
   };
 
   render() {
-    const sources = flatMap(this.props.election.topics, topic => {
-      const positions = this.props.candidate.positions[topic.slug];
-      return positions ? flatMap(positions, 'sources') : [];
-    });
     return (
       <Fragment>
         <ElectionHeader>
@@ -86,20 +107,43 @@ class Candidate extends Component {
           </SidebarContainer>
           <Content>
             {this.props.election.topics.map(topic => (
-              <Topic
-                key={topic.id}
-                title={topic.title}
-                description={topic.description}
-                positions={this.props.candidate.positions[topic.slug]}
-                sources={sources}
-              />
+              <Section key={topic.id}>
+                <Topic
+                  title={topic.title}
+                  description={topic.description}
+                  positions={this.props.candidate.positions[topic.slug]}
+                />
+              </Section>
             ))}
+            <FootnotesSection>
+              <Typography gutterBottom variant="title">
+                Sources
+              </Typography>
+              <Footnotes>
+                {this.props.candidate.sources.map((source, index, array) => (
+                  <Footnote
+                    gutterBottom={index < array.length - 1}
+                    key={source.id}
+                  >
+                    <a href={prependHttp(source.url)}>{source.url}</a>
+                  </Footnote>
+                ))}
+              </Footnotes>
+            </FootnotesSection>
           </Content>
-          <Filler />
+          <Spacer />
         </Container>
       </Fragment>
     );
   }
 }
 
-export default Candidate;
+const mapStateToProps = (state, ownProps) => {
+  const candidates = getCandidates(state);
+  return {
+    candidate: find(candidates, ['slug', ownProps.match.params.id]),
+    election: state.election.data
+  };
+};
+
+export default connect(mapStateToProps)(Candidate);

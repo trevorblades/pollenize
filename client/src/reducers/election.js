@@ -1,7 +1,7 @@
 import api from '../api';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
-import {load, success, failure} from '../actions/election';
+import {load, success, failure, reset} from '../actions/election';
 
 async function fetchElection(id) {
   const response = await api.get(`/elections/${id}`);
@@ -42,7 +42,8 @@ export default handleActions(
       ...state,
       loading: false,
       error: payload
-    })
+    }),
+    [reset]: () => defaultState
   },
   defaultState
 );

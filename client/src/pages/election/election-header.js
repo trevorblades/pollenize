@@ -1,11 +1,13 @@
-import Header, {logoSize} from '../../components/header';
+import Header from '../../components/header';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Component} from 'react';
 import styled from 'react-emotion';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
+import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
-import {size} from 'polished';
+import {connect} from 'react-redux';
+import {setEditMode} from '../../actions/settings';
 
 const Title = withProps({
   color: 'inherit',
@@ -18,19 +20,31 @@ const Title = withProps({
   })
 );
 
-const MenuButton = styled.div(size(logoSize), {
-  backgroundColor: theme.palette.common.black
+class ElectionHeader extends Component {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    editMode: PropTypes.bool.isRequired
+  };
+
+  onEditModeChange = event =>
+    this.props.dispatch(setEditMode(event.target.checked));
+
+  render() {
+    return (
+      <Header dark simple>
+        <Title>{this.props.children}</Title>
+        <Switch
+          onChange={this.onEditModeChange}
+          checked={this.props.editMode}
+        />
+      </Header>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  editMode: state.settings.editMode
 });
 
-const ElectionHeader = props => (
-  <Header dark simple>
-    <Title>{props.children}</Title>
-    <MenuButton />
-  </Header>
-);
-
-ElectionHeader.propTypes = {
-  children: PropTypes.node.isRequired
-};
-
-export default ElectionHeader;
+export default connect(mapStateToProps)(ElectionHeader);
