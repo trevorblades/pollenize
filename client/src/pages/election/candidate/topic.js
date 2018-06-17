@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 // import montreal from '../../../assets/images/montreal.jpg';
 import styled from 'react-emotion';
 import theme from '../../../theme';
+import {connect} from 'react-redux';
 
 const SectionContent = styled.div({
   display: 'flex'
@@ -54,9 +55,10 @@ const SectionAlternateContent = styled.div({
 
 class Topic extends Component {
   static propTypes = {
-    description: PropTypes.string.isRequired,
+    candidate: PropTypes.object.isRequired,
+    editMode: PropTypes.bool.isRequired,
     positions: PropTypes.array,
-    title: PropTypes.string.isRequired
+    topic: PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -75,7 +77,7 @@ class Topic extends Component {
     return (
       <Fragment>
         <Typography gutterBottom variant="headline">
-          {this.props.title}
+          {this.props.topic.title}
         </Typography>
         <SectionContent>
           <SectionMainContent>
@@ -83,10 +85,12 @@ class Topic extends Component {
               this.props.positions.map(position => (
                 <Position key={position.id} position={position} />
               ))}
-            <Button onClick={this.onAddClick}>Add a position</Button>
+            {this.props.editMode && (
+              <Button onClick={this.onAddClick}>Add a position</Button>
+            )}
           </SectionMainContent>
           <SectionAlternateContent>
-            <Typography>{this.props.description}</Typography>
+            <Typography>{this.props.topic.description}</Typography>
           </SectionAlternateContent>
         </SectionContent>
         {/* <ImageContainer>
@@ -98,11 +102,23 @@ class Topic extends Component {
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          <PositionForm onClose={this.closeDialog} />
+          <PositionForm
+            position={{
+              text: '',
+              sources: [{url: ''}],
+              candidate_id: this.props.candidate.id,
+              topic_id: this.props.topic.id
+            }}
+            onClose={this.closeDialog}
+          />
         </Dialog>
       </Fragment>
     );
   }
 }
 
-export default Topic;
+const mapStateToProps = state => ({
+  editMode: state.settings.editMode
+});
+
+export default connect(mapStateToProps)(Topic);

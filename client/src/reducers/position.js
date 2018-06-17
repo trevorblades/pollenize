@@ -50,7 +50,17 @@ export default handleActions(
           failActionCreator: failure,
           args: [payload]
         })
-      )
+      ),
+    [success]: (state, {payload}) => ({
+      ...state,
+      loading: false,
+      data: payload
+    }),
+    [failure]: (state, {payload}) => ({
+      ...state,
+      loading: false,
+      error: payload
+    })
   },
   defaultState
 );

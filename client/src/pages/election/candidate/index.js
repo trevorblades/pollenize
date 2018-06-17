@@ -109,8 +109,8 @@ class Candidate extends Component {
             {this.props.election.topics.map(topic => (
               <Section key={topic.id}>
                 <Topic
-                  title={topic.title}
-                  description={topic.description}
+                  topic={topic}
+                  candidate={this.props.candidate}
                   positions={this.props.candidate.positions[topic.slug]}
                 />
               </Section>

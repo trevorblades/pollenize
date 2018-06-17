@@ -5,6 +5,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
+import map from 'lodash/map';
+import styled from 'react-emotion';
+import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {
@@ -17,63 +20,86 @@ const FullWidthTextField = withProps({
   margin: 'dense'
 })(TextField);
 
+const DeleteButton = styled(Button)({
+  marginRight: 'auto',
+  color: theme.palette.error.main
+});
+
 class PositionForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    position: PropTypes.object
+    position: PropTypes.object.isRequired
   };
 
-  static getDerivedStateFromProps(props) {
-    if (props.position) {
-      return {
-        text: props.position.text,
-        sources: props.position.sources
-      };
-    }
-    return null;
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: props.position.text,
+      sources: map(props.position.sources, 'url')
+    };
   }
 
-  state = {
-    text: '',
-    sources: []
+  onTextChange = event => this.setState({text: event.target.value});
+
+  onSourceChange = (index, event) => {
+    const {value} = event.target;
+    this.setState(prevState => ({
+      sources: [
+        ...prevState.sources.slice(0, index),
+        value,
+        ...prevState.sources.slice(index + 1)
+      ]
+    }));
   };
 
   onSubmit = event => {
     event.preventDefault();
-    const position = {
-      text: this.state.text,
-      sources: this.state.sources
-    };
 
+    const actionCreator = this.props.position.id
+      ? updatePosition
+      : createPosition;
     this.props.dispatch(
-      this.props.position
-        ? updatePosition({
-            ...position,
-            id: this.props.position.id
-          })
-        : createPosition(position)
+      actionCreator({
+        ...this.props.position,
+        text: this.state.text,
+        sources: this.state.sources.map(url => ({url}))
+      })
     );
   };
 
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        <DialogTitle>Edit position</DialogTitle>
+        <DialogTitle>
+          {this.props.position.id ? 'Edit' : 'Add a'} position
+        </DialogTitle>
         <DialogContent>
           <FullWidthTextField
             multiline
             label="Summary"
             value={this.state.text}
+            onChange={this.onTextChange}
           />
-          {this.state.sources.map(source => (
-            <FullWidthTextField key={source.id} value={source.url} />
+          {this.state.sources.map((source, index) => (
+            <FullWidthTextField
+              key={index.toString()}
+              value={source}
+              placeholder="Enter the source website URL"
+              onChange={event => this.onSourceChange(index, event)}
+            />
           ))}
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose}>Cancel</Button>
-          <Button type="submit" color="primary">
-            Save changes
+          {this.props.position.id && (
+            <DeleteButton disabled={this.props.loading}>Delete</DeleteButton>
+          )}
+          <Button disabled={this.props.loading} onClick={this.props.onClose}>
+            Cancel
+          </Button>
+          <Button disabled={this.props.loading} type="submit" color="primary">
+            {this.props.loading ? 'Saving changes...' : 'Save changes'}
           </Button>
         </DialogActions>
       </form>
@@ -81,4 +107,8 @@ class PositionForm extends Component {
   }
 }
 
-export default connect()(PositionForm);
+const mapStateToProps = state => ({
+  loading: state.position.loading
+});
+
+export default connect(mapStateToProps)(PositionForm);
