@@ -16,7 +16,6 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 const StyledLink = styled(Link)({
-  color: 'inherit',
   textDecoration: 'none'
 });
 
@@ -131,6 +130,8 @@ class Election extends Component {
     election: PropTypes.object.isRequired
   };
 
+  onReadMoreClick = event => event.preventDefault();
+
   render() {
     const allSources = flatMap(this.props.election.topics, topic => {
       const positions = this.props.candidate.positions[topic.slug];
@@ -188,7 +189,9 @@ class Election extends Component {
                               ]);
                               return <sup key={source.id}>[{index + 1}]</sup>;
                             })}{' '}
-                            <a href="#">Read more...</a>
+                            <a href="#" onClick={this.onReadMoreClick}>
+                              Read more...
+                            </a>
                           </Typography>
                         ))}
                         <Sources>

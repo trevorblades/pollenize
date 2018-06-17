@@ -9,5 +9,8 @@ export default () =>
       display: 'flex',
       flexDirection: 'column',
       minHeight: '100%'
+    },
+    a: {
+      color: 'inherit'
     }
   });

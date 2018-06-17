@@ -19,8 +19,7 @@ const darkClassName = css({
 const LogoLink = styled(Link)({
   display: 'flex',
   alignItems: 'center',
-  flexShrink: 0,
-  color: 'inherit'
+  flexShrink: 0
 });
 
 const logoClassName = css({
@@ -45,7 +44,6 @@ const Nav = styled.nav({
 const NavItem = withProps({
   component: NavLink,
   variant: 'subheading',
-  color: 'inherit',
   noWrap: true
 })(
   styled(Typography)({
