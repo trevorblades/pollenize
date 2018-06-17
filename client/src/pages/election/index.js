@@ -35,8 +35,11 @@ class Election extends Component {
           <Route
             path="/elections/:election/:id"
             render={props => {
-              const {candidates} = this.props.election;
-              const candidate = find(candidates, ['id', props.match.params.id]);
+              const candidate = find(this.props.election.candidates, [
+                'slug',
+                props.match.params.id
+              ]);
+
               if (!candidate) {
                 return <NotFound />;
               }

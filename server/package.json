@@ -8,7 +8,7 @@
     "start": "nodemon -r dotenv/config -r esm index.js"
   },
   "devDependencies": {
-    "@knoword/eslint-config": "^6.5.0",
+    "@knoword/eslint-config": "^6.7.0",
     "dotenv": "^6.0.0",
     "eslint": "^4.19.1",
     "esm": "^3.0.51",
@@ -17,6 +17,7 @@
   "dependencies": {
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "lodash": "^4.17.10",
     "pascalcase": "^0.1.1",
     "pg": "^7.4.3",
     "sequelize": "^4.37.10"

@@ -20,7 +20,7 @@ class Grid extends Component {
           {this.props.election.candidates.map(candidate => (
             <LinkButton
               key={candidate.id}
-              to={`/elections/${this.props.election.id}/${candidate.id}`}
+              to={`/elections/${this.props.election.slug}/${candidate.slug}`}
             >
               {candidate.name}
             </LinkButton>

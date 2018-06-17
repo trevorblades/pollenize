@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import flatMap from 'lodash/flatMap';
 import montreal from '../../assets/images/montreal.jpg';
 import styled from 'react-emotion';
 import theme from '../../theme';
@@ -117,7 +118,6 @@ const StyledImage = styled.img({
   maxWidth: 480
 });
 
-const lang = 'en';
 class Election extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
@@ -128,7 +128,7 @@ class Election extends Component {
     return (
       <Fragment>
         <ElectionHeader>
-          <StyledLink to={`/elections/${this.props.election.id}`}>
+          <StyledLink to={`/elections/${this.props.election.slug}`}>
             {this.props.election.title}
           </StyledLink>
           <ChevronRightIcon />
@@ -149,12 +149,12 @@ class Election extends Component {
           </SidebarContainer>
           <Content>
             {this.props.election.topics.map(topic => {
-              const position = this.props.candidate.positions[topic.id];
-              if (!position) {
-                return <div key={topic.id}>No position for this topic</div>;
+              const positions = this.props.candidate.positions[topic.slug];
+              if (!positions) {
+                return <div key={topic.id}>No positions for this topic</div>;
               }
 
-              const {text, sources} = position[lang];
+              const sources = flatMap(positions, 'sources');
               return (
                 <Fragment key={topic.id}>
                   <Section>
@@ -163,12 +163,18 @@ class Election extends Component {
                     </Typography>
                     <SectionContent>
                       <SectionMainContent>
-                        <Typography paragraph variant="subheading">
-                          {text}
-                        </Typography>
+                        {positions.map(position => (
+                          <Typography
+                            key={position.id}
+                            paragraph
+                            variant="subheading"
+                          >
+                            {position.text}
+                          </Typography>
+                        ))}
                         <Sources>
-                          {sources.map((source, index) => (
-                            <div key={index}>{source}</div>
+                          {sources.map(source => (
+                            <div key={source.id}>{source.url}</div>
                           ))}
                         </Sources>
                         <Actions>
@@ -177,7 +183,7 @@ class Election extends Component {
                         </Actions>
                       </SectionMainContent>
                       <SectionAlternateContent>
-                        <Typography>{text}</Typography>
+                        <Typography>{topic.description}</Typography>
                       </SectionAlternateContent>
                     </SectionContent>
                   </Section>
