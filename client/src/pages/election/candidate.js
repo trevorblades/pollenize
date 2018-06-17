@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Chip from '@material-ui/core/Chip';
 import ElectionHeader from './election-header';
@@ -96,29 +95,6 @@ const Sources = styled.div({
   marginBottom: -sourceSpacing
 });
 
-const Headline = withProps({
-  gutterBottom: true,
-  variant: 'headline'
-})(
-  styled(Typography)({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  })
-);
-
-const Actions = styled.div({
-  display: 'flex'
-});
-
-const Action = withProps({size: 'small'})(
-  styled(Button)({
-    ':not(:last-child)': {
-      marginRight: theme.spacing.unit
-    }
-  })
-);
-
 const alternateContentWidth = 200;
 const SectionAlternateContent = styled.div({
   flexShrink: 0,
@@ -156,6 +132,10 @@ class Election extends Component {
   };
 
   render() {
+    const allSources = flatMap(this.props.election.topics, topic => {
+      const positions = this.props.candidate.positions[topic.slug];
+      return positions ? flatMap(positions, 'sources') : [];
+    });
     return (
       <Fragment>
         <ElectionHeader>
@@ -189,13 +169,9 @@ class Election extends Component {
               return (
                 <Fragment key={topic.id}>
                   <Section>
-                    <Headline>
+                    <Typography gutterBottom variant="headline">
                       {topic.title}
-                      <Actions>
-                        <Action>Compare</Action>
-                        <Action>View sources</Action>
-                      </Actions>
-                    </Headline>
+                    </Typography>
                     <SectionContent>
                       <SectionMainContent>
                         {positions.map(position => (
@@ -205,24 +181,35 @@ class Election extends Component {
                             variant="subheading"
                           >
                             {position.text}
-                            {position.sources.map(source => (
-                              <sup key={source.id}>
-                                [{findIndex(sources, ['id', source.id]) + 1}]
-                              </sup>
-                            ))}{' '}
+                            {position.sources.map(source => {
+                              const index = findIndex(allSources, [
+                                'id',
+                                source.id
+                              ]);
+                              return <sup key={source.id}>[{index + 1}]</sup>;
+                            })}{' '}
                             <a href="#">Read more...</a>
                           </Typography>
                         ))}
                         <Sources>
-                          {sources.map((source, index) => (
-                            <Source
-                              key={source.id}
-                              title={source.url}
-                              href={source.url}
-                              target="_blank"
-                              label={`${index + 1}. ${cropUrl(source.url, 12)}`}
-                            />
-                          ))}
+                          {sources.map(source => {
+                            const index = findIndex(allSources, [
+                              'id',
+                              source.id
+                            ]);
+                            return (
+                              <Source
+                                key={source.id}
+                                title={source.url}
+                                href={source.url}
+                                target="_blank"
+                                label={`${index + 1}. ${cropUrl(
+                                  source.url,
+                                  12
+                                )}`}
+                              />
+                            );
+                          })}
                         </Sources>
                       </SectionMainContent>
                       <SectionAlternateContent>
