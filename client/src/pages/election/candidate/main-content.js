@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import cropUrl from 'crop-url';
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
+import prependHttp from 'prepend-http';
 import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
@@ -78,7 +79,7 @@ class MainContent extends Component {
               <Source
                 key={source.id}
                 title={source.url}
-                href={source.url}
+                href={prependHttp(source.url)}
                 target="_blank"
                 label={`${index + 1}. ${cropUrl(source.url, 12)}`}
               />
