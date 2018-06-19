@@ -1,6 +1,7 @@
 import Candidate from './candidate';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from './grid';
+import Helmet from 'react-helmet';
 import NotFound from '../not-found';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
@@ -38,6 +39,9 @@ class Election extends Component {
 
     return (
       <Fragment>
+        <Helmet>
+          <title>{this.props.election.title}</title>
+        </Helmet>
         <Switch>
           <Route
             path="/elections/:election/:id"
