@@ -1,5 +1,6 @@
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ElectionHeader from '../election-header';
+import Helmet from 'react-helmet';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
@@ -85,6 +86,9 @@ class Candidate extends Component {
   render() {
     return (
       <Fragment>
+        <Helmet>
+          <title>{this.props.candidate.name}</title>
+        </Helmet>
         <ElectionHeader>
           <StyledLink to={`/elections/${this.props.election.slug}`}>
             {this.props.election.title}
