@@ -18,13 +18,16 @@ router
     next();
   })
   .put(async (req, res, next) => {
-    await res.locals.position.update({text: req.body.text});
+    res.locals.position.changed('updated_at', true);
+    res.locals.position.setDataValue('text', req.body.text);
+    await res.locals.position.save();
+
     const sources = await Source.bulkCreate(req.body.sources, {
       returning: true
     });
-
     await res.locals.position.setSources(sources);
     res.locals.position.setDataValue('sources', sources);
+
     next();
   })
   .delete(async (req, res, next) => {

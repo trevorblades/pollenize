@@ -1,7 +1,5 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
+import NewPositionButton from './new-position-button';
 import Position from './position';
-import PositionForm from './position-form';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -65,14 +63,6 @@ class Topic extends Component {
     positions: []
   };
 
-  state = {
-    dialogOpen: false
-  };
-
-  onAddClick = () => this.setState({dialogOpen: true});
-
-  closeDialog = () => this.setState({dialogOpen: false});
-
   render() {
     return (
       <Fragment>
@@ -86,7 +76,10 @@ class Topic extends Component {
                 <Position key={position.id} position={position} />
               ))}
             {this.props.editMode && (
-              <Button onClick={this.onAddClick}>Add a position</Button>
+              <NewPositionButton
+                candidate={this.props.candidate}
+                topic={this.props.topic}
+              />
             )}
           </SectionMainContent>
           <SectionAlternateContent>
@@ -97,21 +90,6 @@ class Topic extends Component {
           <ImageCaption>Photo by Marc-Olivier Jodoin on Unsplash</ImageCaption>
           <StyledImage src={montreal} />
         </ImageContainer> */}
-        <Dialog
-          fullWidth
-          open={this.state.dialogOpen}
-          onClose={this.closeDialog}
-        >
-          <PositionForm
-            position={{
-              text: '',
-              sources: [{url: ''}],
-              candidate_id: this.props.candidate.id,
-              topic_id: this.props.topic.id
-            }}
-            onClose={this.closeDialog}
-          />
-        </Dialog>
       </Fragment>
     );
   }

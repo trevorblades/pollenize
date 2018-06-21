@@ -11,6 +11,10 @@ export default () =>
       minHeight: '100%'
     },
     a: {
-      color: 'inherit'
+      color: 'inherit',
+      outline: 'none',
+      ':hover': {
+        textDecoration: 'none'
+      }
     }
   });

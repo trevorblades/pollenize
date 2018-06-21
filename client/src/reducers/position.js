@@ -1,5 +1,12 @@
 import api from '../api';
-import {save, success, remove, removed, failure} from '../actions/position';
+import {
+  save,
+  success,
+  remove,
+  removed,
+  failure,
+  reset
+} from '../actions/position';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 
@@ -72,7 +79,8 @@ export default handleActions(
       ...state,
       loading: false,
       error: payload
-    })
+    }),
+    [reset]: () => defaultState
   },
   defaultState
 );

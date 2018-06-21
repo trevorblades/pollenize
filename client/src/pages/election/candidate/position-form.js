@@ -5,7 +5,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
-import filter from 'lodash/filter';
 import map from 'lodash/map';
 import styled from 'react-emotion';
 import theme from '../../../theme';
@@ -13,7 +12,8 @@ import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {
   save as savePosition,
-  remove as removePosition
+  remove as removePosition,
+  reset as resetPosition
 } from '../../../actions/position';
 
 const FullWidthTextField = withProps({
@@ -41,6 +41,10 @@ class PositionForm extends Component {
       text: props.position.text,
       sources: map(props.position.sources, 'url')
     };
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(resetPosition());
   }
 
   onTextChange = event => this.setState({text: event.target.value});
@@ -71,13 +75,25 @@ class PositionForm extends Component {
       savePosition({
         ...this.props.position,
         text: this.state.text,
-        sources: filter(this.state.sources).map(url => ({url}))
+        sources: this.state.sources
+          .filter(source => source.trim())
+          .map(url => ({url}))
       })
     );
   };
 
   onDeleteClick = () =>
     this.props.dispatch(removePosition(this.props.position.id));
+
+  renderButtonText() {
+    const verbs = [['Create', 'Creating'], ['Save', 'Saving']];
+    const verb =
+      verbs[Number(Boolean(this.props.position.id))][
+        Number(this.props.loading)
+      ];
+
+    return `${verb} position${this.props.loading ? '...' : ''}`;
+  }
 
   render() {
     return (
@@ -121,8 +137,8 @@ class PositionForm extends Component {
           <Button disabled={this.props.loading} onClick={this.props.onClose}>
             Cancel
           </Button>
-          <Button disabled={this.props.loading} type="submit" color="primary">
-            {this.props.loading ? 'Saving changes...' : 'Save changes'}
+          <Button disabled={this.props.loading} type="submit">
+            {this.renderButtonText()}
           </Button>
         </DialogActions>
       </form>
