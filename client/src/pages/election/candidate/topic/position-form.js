@@ -7,14 +7,14 @@ import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
 import map from 'lodash/map';
 import styled from 'react-emotion';
-import theme from '../../../theme';
+import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {
   save as savePosition,
   remove as removePosition,
   reset as resetPosition
-} from '../../../actions/position';
+} from '../../../../actions/position';
 
 const FullWidthTextField = withProps({
   fullWidth: true,

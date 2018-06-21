@@ -5,7 +5,7 @@ import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 // import montreal from '../../../assets/images/montreal.jpg';
 import styled from 'react-emotion';
-import theme from '../../../theme';
+import theme from '../../../../theme';
 import {connect} from 'react-redux';
 
 const SectionContent = styled.div({
