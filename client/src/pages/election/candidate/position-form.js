@@ -37,6 +37,7 @@ class PositionForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      autoFocusIndex: -1,
       text: props.position.text,
       sources: map(props.position.sources, 'url')
     };
@@ -54,6 +55,15 @@ class PositionForm extends Component {
       ]
     }));
   };
+
+  onAddSourceClick = () =>
+    this.setState(prevState => {
+      const sources = [...prevState.sources, ''];
+      return {
+        sources,
+        autoFocusIndex: sources.length - 1
+      };
+    });
 
   onSubmit = event => {
     event.preventDefault();
@@ -84,12 +94,20 @@ class PositionForm extends Component {
           />
           {this.state.sources.map((source, index) => (
             <FullWidthTextField
+              autoFocus={index === this.state.autoFocusIndex}
               key={index.toString()}
               value={source}
               placeholder="Enter the source website URL"
               onChange={event => this.onSourceChange(index, event)}
             />
           ))}
+          {!this.state.sources.includes('') && (
+            <FullWidthTextField
+              disabled
+              placeholder="Add another source"
+              onClick={this.onAddSourceClick}
+            />
+          )}
         </DialogContent>
         <DialogActions>
           {this.props.position.id && (
