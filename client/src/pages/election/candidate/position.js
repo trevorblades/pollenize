@@ -44,16 +44,18 @@ class Position extends Component {
             </sup>
           ))}
         </Typography>
-        <Dialog
-          fullWidth
-          open={this.state.dialogOpen}
-          onClose={this.closeDialog}
-        >
-          <PositionForm
+        {this.props.editMode && (
+          <Dialog
+            fullWidth
+            open={this.state.dialogOpen}
             onClose={this.closeDialog}
-            position={this.props.position}
-          />
-        </Dialog>
+          >
+            <PositionForm
+              onClose={this.closeDialog}
+              position={this.props.position}
+            />
+          </Dialog>
+        )}
       </Fragment>
     );
   }

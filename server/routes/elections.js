@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
   res.send(skaters);
 });
 
-router.get('/:id', async (req, res) => {
+router.route('/:id').get(async (req, res) => {
   const election = await Election.findOne({
     where: {
       slug: req.params.id

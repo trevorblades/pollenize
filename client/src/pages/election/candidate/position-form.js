@@ -5,12 +5,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
+import filter from 'lodash/filter';
 import map from 'lodash/map';
 import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
-import {save as savePosition} from '../../../actions/position';
+import {
+  save as savePosition,
+  remove as removePosition
+} from '../../../actions/position';
 
 const FullWidthTextField = withProps({
   fullWidth: true,
@@ -57,10 +61,13 @@ class PositionForm extends Component {
       savePosition({
         ...this.props.position,
         text: this.state.text,
-        sources: this.state.sources.map(url => ({url}))
+        sources: filter(this.state.sources).map(url => ({url}))
       })
     );
   };
+
+  onDeleteClick = () =>
+    this.props.dispatch(removePosition(this.props.position.id));
 
   render() {
     return (
@@ -86,7 +93,12 @@ class PositionForm extends Component {
         </DialogContent>
         <DialogActions>
           {this.props.position.id && (
-            <DeleteButton disabled={this.props.loading}>Delete</DeleteButton>
+            <DeleteButton
+              disabled={this.props.loading}
+              onClick={this.onDeleteClick}
+            >
+              Delete
+            </DeleteButton>
           )}
           <Button disabled={this.props.loading} onClick={this.props.onClose}>
             Cancel

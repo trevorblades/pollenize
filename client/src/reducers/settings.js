@@ -3,5 +3,5 @@ import {handleAction} from 'redux-actions';
 import {setEditMode} from '../actions/settings';
 
 export default combineReducers({
-  editMode: handleAction(setEditMode, state => !state, false)
+  editMode: handleAction(setEditMode, state => !state, true)
 });
