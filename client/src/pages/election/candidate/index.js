@@ -1,7 +1,6 @@
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ElectionHeader from '../election-header';
 import Helmet from 'react-helmet';
-import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Topic from './topic';
@@ -52,16 +51,12 @@ const SidebarContainer = styled.div({
   top: theme.mixins.toolbar.height
 });
 
-const Content = withProps({
-  elevation: 0,
-  square: true
-})(
-  styled(Paper)({
-    width: '100%',
-    maxWidth: 960,
-    borderLeft: `1px solid ${theme.palette.grey[100]}`
-  })
-);
+const Content = styled.div({
+  width: '100%',
+  maxWidth: 960,
+  borderLeft: `1px solid ${theme.palette.grey[100]}`,
+  backgroundColor: theme.palette.background.paper
+});
 
 const FootnotesSection = styled(Section)({
   backgroundColor: theme.palette.grey[100]
@@ -88,6 +83,18 @@ class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     election: PropTypes.object.isRequired
+  };
+
+  scrollToTopic = slug => {
+    const element = this.content.querySelector(`#${slug}`);
+    const rect = element.getBoundingClientRect();
+    window.scrollTo(
+      0,
+      rect.top +
+        window.scrollY -
+        theme.mixins.toolbar.height -
+        sectionVerticalPadding
+    );
   };
 
   render() {
@@ -123,13 +130,18 @@ class Candidate extends Component {
                 Topics
               </Typography>
               {this.props.election.topics.map(topic => (
-                <Typography gutterBottom key={topic.id} variant="subheading">
+                <Typography
+                  gutterBottom
+                  key={topic.id}
+                  variant="subheading"
+                  onClick={() => this.scrollToTopic(topic.slug)}
+                >
                   {topic.title}
                 </Typography>
               ))}
             </Sidebar>
           </SidebarContainer>
-          <Content>
+          <Content innerRef={node => (this.content = node)}>
             {this.props.election.topics.map(topic => (
               <Section key={topic.id}>
                 <Topic
