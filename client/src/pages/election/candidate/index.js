@@ -1,5 +1,4 @@
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import ElectionHeader from '../election-header';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
@@ -7,7 +6,7 @@ import React, {Component, Fragment} from 'react';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
-import justin from '../../../assets/images/justin.jpg';
+// import justin from '../../../assets/images/justin.jpg';
 import prependHttp from 'prepend-http';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
@@ -41,6 +40,12 @@ const Section = styled.div({
   padding: `${sectionVerticalPadding}px ${sectionHorizontalPadding}px`
 });
 
+const StyledAnchor = styled.a({
+  display: 'block',
+  position: 'relative',
+  top: -theme.mixins.toolbar.height
+});
+
 const sidebarVerticalPadding = theme.spacing.unit * 3;
 const Sidebar = styled.aside({
   width: 200,
@@ -56,6 +61,19 @@ const SidebarContainer = styled.div({
   position: 'sticky',
   top: theme.mixins.toolbar.height
 });
+
+const SidebarItem = withProps({
+  gutterBottom: true,
+  component: 'a',
+  variant: 'subheading'
+})(
+  styled(Typography)({
+    textDecoration: 'none',
+    ':hover': {
+      color: theme.palette.grey[700]
+    }
+  })
+);
 
 const Content = styled.div({
   width: '100%',
@@ -91,17 +109,16 @@ class Candidate extends Component {
     election: PropTypes.object.isRequired
   };
 
-  scrollToTopic = slug => {
-    const element = this.content.querySelector(`#${slug}`);
-    const rect = element.getBoundingClientRect();
-    window.scrollTo(
-      0,
-      rect.top +
-        window.scrollY -
-        theme.mixins.toolbar.height -
-        sectionVerticalPadding
-    );
-  };
+  componentDidMount() {
+    const {hash} = window.location;
+    if (hash) {
+      const element = this.content.querySelector(`a[name="${hash.slice(1)}"]`);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        window.scrollTo(0, rect.top + window.scrollY);
+      }
+    }
+  }
 
   render() {
     return (
@@ -119,7 +136,7 @@ class Candidate extends Component {
         <Hero
           style={{
             color: theme.palette.getContrastText(this.props.candidate.color),
-            backgroundImage: `url(${justin})`,
+            // backgroundImage: `url(${justin})`,
             backgroundColor: this.props.candidate.color
           }}
         >
@@ -133,31 +150,36 @@ class Candidate extends Component {
         <Container>
           <SidebarContainer>
             <Sidebar>
-              <Typography gutterBottom variant="caption">
+              <SidebarItem href="#">
+                About{' '}
+                {this.props.candidate.name.replace(/\s+/, ' ').split(' ')[0]}
+              </SidebarItem>
+              <Typography
+                gutterBottom
+                variant="caption"
+                style={{marginTop: 12}}
+              >
                 Topics
               </Typography>
               {this.props.election.topics.map(topic => (
-                <Typography
-                  gutterBottom
-                  key={topic.id}
-                  component={ButtonBase}
-                  onClick={() => this.scrollToTopic(topic.slug)}
-                  variant="subheading"
-                >
+                <SidebarItem key={topic.id} href={`#${topic.slug}`}>
                   {topic.title}
-                </Typography>
+                </SidebarItem>
               ))}
             </Sidebar>
           </SidebarContainer>
           <Content innerRef={node => (this.content = node)}>
             {this.props.election.topics.map(topic => (
-              <Section key={topic.id}>
-                <Topic
-                  topic={topic}
-                  candidate={this.props.candidate}
-                  positions={this.props.candidate.positions[topic.slug]}
-                />
-              </Section>
+              <Fragment key={topic.id}>
+                <StyledAnchor name={topic.slug} />
+                <Section>
+                  <Topic
+                    topic={topic}
+                    candidate={this.props.candidate}
+                    positions={this.props.candidate.positions[topic.slug]}
+                  />
+                </Section>
+              </Fragment>
             ))}
             <FootnotesSection>
               <Typography gutterBottom variant="title" id="sources">

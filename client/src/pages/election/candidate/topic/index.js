@@ -65,7 +65,7 @@ class Topic extends Component {
   render() {
     return (
       <Fragment>
-        <Typography gutterBottom variant="headline" id={this.props.topic.slug}>
+        <Typography gutterBottom variant="headline">
           {this.props.topic.title}
         </Typography>
         <SectionContent>

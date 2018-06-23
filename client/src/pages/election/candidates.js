@@ -96,15 +96,15 @@ class Candidates extends Component {
                 </Typography>
               </GridItem>
             ))}
-            {this.props.editMode && (
-              <Tooltip title="Add a candidate">
-                <CreateButton>
-                  <AddIcon />
-                </CreateButton>
-              </Tooltip>
-            )}
           </Grid>
         </RootRef>
+        {this.props.editMode && (
+          <Tooltip title="Add a candidate">
+            <CreateButton>
+              <AddIcon />
+            </CreateButton>
+          </Tooltip>
+        )}
       </Fragment>
     );
   }
