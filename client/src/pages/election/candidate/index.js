@@ -132,7 +132,7 @@ class Candidate extends Component {
                   <Topic
                     topic={topic}
                     candidate={this.props.candidate}
-                    positions={this.props.candidate.positions[topic.slug]}
+                    positions={this.props.candidate.positions[topic.id]}
                   />
                 </Section>
               </Fragment>

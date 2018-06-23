@@ -1,4 +1,5 @@
 import api from '../api';
+import findIndex from 'lodash/findIndex';
 import reject from 'lodash/reject';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
@@ -19,6 +20,19 @@ async function fetchElection(id) {
   }
 
   return response.body;
+}
+
+function getPositions(positions, payload) {
+  if (!positions) {
+    return [payload];
+  }
+
+  const index = findIndex(positions, ['id', payload.id]);
+  if (index === -1) {
+    return [...positions, payload];
+  }
+
+  return [...positions.slice(0, index), payload, ...positions.slice(index + 1)];
 }
 
 const defaultState = {
@@ -61,32 +75,12 @@ export default handleActions(
             return candidate;
           }
 
-          let nextPositions;
-          const positions = candidate.positions[payload.topic.slug];
-          if (!positions) {
-            nextPositions = [payload];
-          } else {
-            nextPositions = positions.slice();
-
-            let replaced = false;
-            for (let i = 0; i < nextPositions.length; i++) {
-              if (nextPositions[i].id === payload.id) {
-                nextPositions[i] = payload;
-                replaced = true;
-                break;
-              }
-            }
-
-            if (!replaced) {
-              nextPositions.push(payload);
-            }
-          }
-
+          const {id} = payload.topic;
           return {
             ...candidate,
             positions: {
               ...candidate.positions,
-              [payload.topic.slug]: nextPositions
+              [id]: getPositions(candidate.positions[id], payload)
             }
           };
         })
@@ -101,26 +95,31 @@ export default handleActions(
             return candidate;
           }
 
+          const {id} = payload.topic;
           return {
             ...candidate,
             positions: {
               ...candidate.positions,
-              [payload.topic.slug]: reject(
-                candidate.positions[payload.topic.slug],
-                ['id', payload.id]
-              )
+              [id]: reject(candidate.positions[id], ['id', payload.id])
             }
           };
         })
       }
     }),
-    [topicSuccess]: (state, {payload}) => ({
-      ...state,
-      data: {
-        ...state.data,
-        topics: [...state.data.topics, payload]
-      }
-    }),
+    [topicSuccess]: (state, {payload}) => {
+      const {topics} = state.data;
+      const index = findIndex(topics, ['id', payload.id]);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          topics:
+            index === -1
+              ? [...topics, payload]
+              : [...topics.slice(0, index), payload, ...topics.slice(index + 1)]
+        }
+      };
+    },
     [topicRemoved]: (state, {payload}) => ({
       ...state,
       data: {
