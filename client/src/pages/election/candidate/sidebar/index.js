@@ -1,9 +1,9 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
 import EditTopicButton from './edit-topic-button';
-import SidebarItem from './sidebar-item';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import defaultProps from 'recompose/defaultProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
@@ -43,6 +43,24 @@ const SidebarTopic = styled.div({
   marginBottom: theme.spacing.unit
 });
 
+const SidebarItem = defaultProps({
+  component: 'a',
+  variant: 'subheading'
+})(
+  styled(Typography)({
+    textDecoration: 'none',
+    ':hover': {
+      opacity: 0.75
+    }
+  })
+);
+
+const AddTopicButton = withProps({component: ButtonBase})(
+  styled(SidebarItem)({
+    color: theme.palette.text.secondary
+  })
+);
+
 const Sidebar = props => (
   <Container>
     <InnerContainer>
@@ -69,9 +87,7 @@ const Sidebar = props => (
             election_id: props.election.id
           }}
         >
-          <SidebarItem color="textSecondary" component={ButtonBase}>
-            Add topic...
-          </SidebarItem>
+          <AddTopicButton>Add topic...</AddTopicButton>
         </EditTopicButton>
       )}
     </InnerContainer>
