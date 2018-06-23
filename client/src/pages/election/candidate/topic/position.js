@@ -40,7 +40,7 @@ class Position extends Component {
           {this.renderText()}
           {this.props.position.sources.map(source => (
             <sup key={source.id}>
-              [<a href="#">{source.index + 1}</a>]
+              [<a href="#sources">{source.index + 1}</a>]
             </sup>
           ))}
         </Typography>

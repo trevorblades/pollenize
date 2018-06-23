@@ -1,4 +1,5 @@
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import ElectionHeader from '../election-header';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
@@ -6,6 +7,7 @@ import React, {Component, Fragment} from 'react';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
+import justin from '../../../assets/images/justin.jpg';
 import prependHttp from 'prepend-http';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
@@ -16,7 +18,11 @@ import {getCandidates} from '../../../selectors';
 
 const Hero = styled.div({
   padding: theme.spacing.unit * 5,
-  textAlign: 'center'
+  textAlign: 'center',
+  backgroundSize: 'contain',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundBlendMode: 'multiply'
 });
 
 const StyledLink = styled(Link)({
@@ -113,6 +119,7 @@ class Candidate extends Component {
         <Hero
           style={{
             color: theme.palette.getContrastText(this.props.candidate.color),
+            backgroundImage: `url(${justin})`,
             backgroundColor: this.props.candidate.color
           }}
         >
@@ -133,8 +140,9 @@ class Candidate extends Component {
                 <Typography
                   gutterBottom
                   key={topic.id}
-                  variant="subheading"
+                  component={ButtonBase}
                   onClick={() => this.scrollToTopic(topic.slug)}
+                  variant="subheading"
                 >
                   {topic.title}
                 </Typography>
@@ -152,7 +160,7 @@ class Candidate extends Component {
               </Section>
             ))}
             <FootnotesSection>
-              <Typography gutterBottom variant="title">
+              <Typography gutterBottom variant="title" id="sources">
                 Sources
               </Typography>
               <Footnotes>
