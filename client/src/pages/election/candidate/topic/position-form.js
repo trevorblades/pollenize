@@ -2,23 +2,17 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import FullWidthTextField from '../../../../components/full-width-text-field';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import map from 'lodash/map';
-import styled from 'react-emotion';
-import theme from '../../../../theme';
+import {DeleteButton, FormField} from '../../../../components/form';
 import {connect} from 'react-redux';
+import {getSubmitButtonText} from '../../../../util/form';
 import {
   save as savePosition,
   remove as removePosition,
   reset as resetPosition
 } from '../../../../actions/position';
-
-const DeleteButton = styled(Button)({
-  marginRight: 'auto',
-  color: theme.palette.error.main
-});
 
 class PositionForm extends Component {
   static propTypes = {
@@ -64,11 +58,13 @@ class PositionForm extends Component {
     event.preventDefault();
     this.props.dispatch(
       savePosition({
-        ...this.props.position,
+        id: this.props.position.id,
         text: event.target.text.value,
         sources: this.state.sources
           .filter(source => source.trim())
-          .map(url => ({url}))
+          .map(url => ({url})),
+        candiate_id: this.props.position.candiate_id,
+        topic_id: this.props.position.topic_id
       })
     );
   };
@@ -93,14 +89,14 @@ class PositionForm extends Component {
           {this.props.position.id ? 'Edit' : 'Add a'} position
         </DialogTitle>
         <DialogContent>
-          <FullWidthTextField
+          <FormField
             multiline
             label="Summary"
             name="text"
             defaultValue={this.props.position.text}
           />
           {this.state.sources.map((source, index) => (
-            <FullWidthTextField
+            <FormField
               autoFocus={index === this.state.autoFocusIndex}
               key={index.toString()}
               value={source}
@@ -109,7 +105,7 @@ class PositionForm extends Component {
             />
           ))}
           {!this.state.sources.includes('') && (
-            <FullWidthTextField
+            <FormField
               disabled
               placeholder="Add another source"
               onClick={this.onAddSourceClick}
@@ -121,15 +117,17 @@ class PositionForm extends Component {
             <DeleteButton
               disabled={this.props.loading}
               onClick={this.onDeleteClick}
-            >
-              Delete
-            </DeleteButton>
+            />
           )}
           <Button disabled={this.props.loading} onClick={this.props.onClose}>
             Cancel
           </Button>
           <Button disabled={this.props.loading} type="submit">
-            {this.renderButtonText()}
+            {getSubmitButtonText(
+              'position',
+              this.props.position.id,
+              this.props.loading
+            )}
           </Button>
         </DialogActions>
       </form>
