@@ -15,6 +15,11 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getCandidates} from '../../../selectors';
 
+const Hero = styled.div({
+  padding: theme.spacing.unit * 5,
+  textAlign: 'center'
+});
+
 const StyledLink = styled(Link)({
   textDecoration: 'none'
 });
@@ -52,6 +57,8 @@ const Content = withProps({
   square: true
 })(
   styled(Paper)({
+    width: '100%',
+    maxWidth: 960,
     borderLeft: `1px solid ${theme.palette.grey[100]}`
   })
 );
@@ -96,6 +103,19 @@ class Candidate extends Component {
           <ChevronRightIcon />
           {this.props.candidate.name}
         </ElectionHeader>
+        <Hero
+          style={{
+            color: theme.palette.getContrastText(this.props.candidate.color),
+            backgroundColor: this.props.candidate.color
+          }}
+        >
+          <Typography variant="display1" color="inherit">
+            {this.props.candidate.name}
+          </Typography>
+          <Typography variant="subheading" color="inherit">
+            {this.props.candidate.party}
+          </Typography>
+        </Hero>
         <Container>
           <SidebarContainer>
             <Sidebar>

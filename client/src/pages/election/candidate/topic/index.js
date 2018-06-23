@@ -13,8 +13,7 @@ const SectionContent = styled.div({
 });
 
 const SectionMainContent = styled.div({
-  flexGrow: 1,
-  maxWidth: 720
+  flexGrow: 1
 });
 
 const alternateContentWidth = 250;

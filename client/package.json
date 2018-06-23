@@ -12,6 +12,7 @@
     "emotion": "^9.2.3",
     "frisbee": "^2.0.5",
     "jss": "^9.8.3",
+    "number-theory": "^1.1.0",
     "ol": "^4.6.5",
     "polished": "^1.9.2",
     "prepend-http": "^2.0.0",

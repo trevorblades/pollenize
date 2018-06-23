@@ -17,6 +17,11 @@ export default createMuiTheme({
   typography: {
     fontFamily: ['Lato', 'Helvetica', 'sans-serif'].toString(),
     fontWeightMedium: 700,
+    display1: {
+      fontSize: '2.5rem',
+      fontFamily: ['"Playfair Display"', 'Georgia', 'serif'].toString(),
+      fontWeight: 700
+    },
     headline: {
       fontSize: '2rem',
       fontFamily: ['"Playfair Display"', 'Georgia', 'serif'].toString(),

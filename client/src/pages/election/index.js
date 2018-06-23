@@ -1,6 +1,6 @@
 import Candidate from './candidate';
+import Candidates from './candidates';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from './grid';
 import Helmet from 'react-helmet';
 import NotFound from '../not-found';
 import PropTypes from 'prop-types';
@@ -51,9 +51,7 @@ class Election extends Component {
               return found ? <Candidate {...props} /> : <NotFound />;
             }}
           />
-          <Route
-            render={props => <Grid {...props} election={this.props.election} />}
-          />
+          <Route component={Candidates} />
         </Switch>
       </Fragment>
     );
