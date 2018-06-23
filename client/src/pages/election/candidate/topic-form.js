@@ -16,7 +16,12 @@ class TopicForm extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    this.props.dispatch(saveTopic());
+    this.props.dispatch(
+      saveTopic({
+        title: event.target.title.value,
+        description: event.target.description.value
+      })
+    );
   };
 
   render() {
@@ -24,8 +29,12 @@ class TopicForm extends Component {
       <form onSubmit={this.onSubmit}>
         <DialogTitle>Add a topic</DialogTitle>
         <DialogContent>
-          <FullWidthTextField label="Title" />
-          <FullWidthTextField multiline label="Description" />
+          <FullWidthTextField label="Title" name="title" />
+          <FullWidthTextField
+            multiline
+            label="Description"
+            name="description"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.onClose}>Cancel</Button>
