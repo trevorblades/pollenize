@@ -1,8 +1,10 @@
+import AddTopicButton from './add-topic-button';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ElectionHeader from '../election-header';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import SidebarItem from './sidebar-item';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
@@ -62,19 +64,6 @@ const SidebarContainer = styled.div({
   top: theme.mixins.toolbar.height
 });
 
-const SidebarItem = withProps({
-  gutterBottom: true,
-  component: 'a',
-  variant: 'subheading'
-})(
-  styled(Typography)({
-    textDecoration: 'none',
-    ':hover': {
-      color: theme.palette.grey[700]
-    }
-  })
-);
-
 const Content = styled.div({
   width: '100%',
   maxWidth: 960,
@@ -106,6 +95,7 @@ const Spacer = styled.div({
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired
   };
 
@@ -166,6 +156,7 @@ class Candidate extends Component {
                   {topic.title}
                 </SidebarItem>
               ))}
+              {this.props.editMode && <AddTopicButton />}
             </Sidebar>
           </SidebarContainer>
           <Content innerRef={node => (this.content = node)}>
@@ -214,6 +205,7 @@ const mapStateToProps = (state, ownProps) => {
   const candidates = getCandidates(state);
   return {
     candidate: find(candidates, ['slug', ownProps.match.params.id]),
+    editMode: state.settings.editMode,
     election: state.election.data
   };
 };

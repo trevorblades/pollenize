@@ -2,24 +2,18 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import FullWidthTextField from '../../../../components/full-width-text-field';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import TextField from '@material-ui/core/TextField';
 import map from 'lodash/map';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
-import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {
   save as savePosition,
   remove as removePosition,
   reset as resetPosition
 } from '../../../../actions/position';
-
-const FullWidthTextField = withProps({
-  fullWidth: true,
-  margin: 'dense'
-})(TextField);
 
 const DeleteButton = styled(Button)({
   marginRight: 'auto',
