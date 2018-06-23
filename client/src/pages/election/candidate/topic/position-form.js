@@ -32,7 +32,6 @@ class PositionForm extends Component {
     super(props);
     this.state = {
       autoFocusIndex: -1,
-      text: props.position.text,
       sources: map(props.position.sources, 'url')
     };
   }
@@ -40,8 +39,6 @@ class PositionForm extends Component {
   componentWillUnmount() {
     this.props.dispatch(resetPosition());
   }
-
-  onTextChange = event => this.setState({text: event.target.value});
 
   onSourceChange = (index, event) => {
     const {value} = event.target;
@@ -68,7 +65,7 @@ class PositionForm extends Component {
     this.props.dispatch(
       savePosition({
         ...this.props.position,
-        text: this.state.text,
+        text: event.target.text.value,
         sources: this.state.sources
           .filter(source => source.trim())
           .map(url => ({url}))
@@ -99,8 +96,8 @@ class PositionForm extends Component {
           <FullWidthTextField
             multiline
             label="Summary"
-            value={this.state.text}
-            onChange={this.onTextChange}
+            name="text"
+            defaultValue={this.props.position.text}
           />
           {this.state.sources.map((source, index) => (
             <FullWidthTextField

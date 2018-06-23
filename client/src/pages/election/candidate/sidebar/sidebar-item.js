@@ -3,7 +3,6 @@ import defaultProps from 'recompose/defaultProps';
 import styled from 'react-emotion';
 
 const SidebarItem = defaultProps({
-  gutterBottom: true,
   component: 'a',
   variant: 'subheading'
 })(

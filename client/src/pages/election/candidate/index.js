@@ -1,10 +1,9 @@
-import AddTopicButton from './add-topic-button';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ElectionHeader from '../election-header';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import SidebarItem from './sidebar-item';
+import Sidebar from './sidebar';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
@@ -13,6 +12,7 @@ import prependHttp from 'prepend-http';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import theme from '../../../theme';
+import {SECTION_VERTICAL_PADDING} from './common';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getCandidates} from '../../../selectors';
@@ -36,32 +36,15 @@ const Container = styled.div({
   position: 'relative'
 });
 
-const sectionVerticalPadding = theme.spacing.unit * 5;
 const sectionHorizontalPadding = theme.spacing.unit * 6;
 const Section = styled.div({
-  padding: `${sectionVerticalPadding}px ${sectionHorizontalPadding}px`
+  padding: `${SECTION_VERTICAL_PADDING}px ${sectionHorizontalPadding}px`
 });
 
 const StyledAnchor = styled.a({
   display: 'block',
   position: 'relative',
   top: -theme.mixins.toolbar.height
-});
-
-const sidebarVerticalPadding = theme.spacing.unit * 3;
-const Sidebar = styled.aside({
-  width: 200,
-  padding: `${sidebarVerticalPadding}px ${theme.spacing.unit * 4}px`
-});
-
-const SidebarContainer = styled.div({
-  display: 'flex',
-  alignSelf: 'flex-start',
-  justifyContent: 'flex-end',
-  flexGrow: 1,
-  marginTop: sectionVerticalPadding - sidebarVerticalPadding,
-  position: 'sticky',
-  top: theme.mixins.toolbar.height
 });
 
 const Content = styled.div({
@@ -95,7 +78,6 @@ const Spacer = styled.div({
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired
   };
 
@@ -138,27 +120,10 @@ class Candidate extends Component {
           </Typography>
         </Hero>
         <Container>
-          <SidebarContainer>
-            <Sidebar>
-              <SidebarItem href="#">
-                About{' '}
-                {this.props.candidate.name.replace(/\s+/, ' ').split(' ')[0]}
-              </SidebarItem>
-              <Typography
-                gutterBottom
-                variant="caption"
-                style={{marginTop: 12}}
-              >
-                Topics
-              </Typography>
-              {this.props.election.topics.map(topic => (
-                <SidebarItem key={topic.id} href={`#${topic.slug}`}>
-                  {topic.title}
-                </SidebarItem>
-              ))}
-              {this.props.editMode && <AddTopicButton />}
-            </Sidebar>
-          </SidebarContainer>
+          <Sidebar
+            candidate={this.props.candidate}
+            election={this.props.election}
+          />
           <Content innerRef={node => (this.content = node)}>
             {this.props.election.topics.map(topic => (
               <Fragment key={topic.id}>
@@ -205,7 +170,6 @@ const mapStateToProps = (state, ownProps) => {
   const candidates = getCandidates(state);
   return {
     candidate: find(candidates, ['slug', ownProps.match.params.id]),
-    editMode: state.settings.editMode,
     election: state.election.data
   };
 };

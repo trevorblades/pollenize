@@ -1,10 +1,14 @@
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Dialog from '@material-ui/core/Dialog';
+import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import SidebarItem from './sidebar-item';
 import TopicForm from './topic-form';
 
-class AddTopicButton extends Component {
+class EditTopicButton extends Component {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+    topic: PropTypes.object.isRequired
+  };
+
   state = {
     dialogOpen: false
   };
@@ -16,23 +20,19 @@ class AddTopicButton extends Component {
   render() {
     return (
       <Fragment>
-        <SidebarItem
-          color="textSecondary"
-          component={ButtonBase}
-          onClick={this.onClick}
-        >
-          Add topic...
-        </SidebarItem>
+        {React.cloneElement(this.props.children, {
+          onClick: this.onClick
+        })}
         <Dialog
           fullWidth
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          <TopicForm onClose={this.closeDialog} />
+          <TopicForm onClose={this.closeDialog} topic={this.props.topic} />
         </Dialog>
       </Fragment>
     );
   }
 }
 
-export default AddTopicButton;
+export default EditTopicButton;
