@@ -10,7 +10,10 @@ import theme from '../../../../theme';
 import {DeleteButton, FormField} from '../../../../components/form';
 import {connect} from 'react-redux';
 import {getSubmitButtonText} from '../../../../util/form';
-import {save as saveTopic} from '../../../../actions/topic';
+import {
+  save as saveTopic,
+  remove as removeTopic
+} from '../../../../actions/topic';
 
 class TopicForm extends Component {
   static propTypes = {
@@ -48,6 +51,8 @@ class TopicForm extends Component {
       })
     );
   };
+
+  onDeleteClick = () => this.props.dispatch(removeTopic(this.props.topic.id));
 
   render() {
     return (

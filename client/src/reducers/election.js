@@ -7,6 +7,10 @@ import {
   success as positionSuccess,
   removed as positionRemoved
 } from '../actions/position';
+import {
+  success as topicSuccess,
+  removed as topicRemoved
+} from '../actions/topic';
 
 async function fetchElection(id) {
   const response = await api.get(`/elections/${id}`);
@@ -108,6 +112,20 @@ export default handleActions(
             }
           };
         })
+      }
+    }),
+    [topicSuccess]: (state, {payload}) => ({
+      ...state,
+      data: {
+        ...state.data,
+        topics: [...state.data.topics, payload]
+      }
+    }),
+    [topicRemoved]: (state, {payload}) => ({
+      ...state,
+      data: {
+        ...state.data,
+        topics: reject(state.data.topics, ['id', payload.id])
       }
     }),
     [reset]: () => defaultState
