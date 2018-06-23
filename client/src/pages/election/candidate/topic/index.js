@@ -1,4 +1,4 @@
-import NewPositionButton from './new-position-button';
+import AddPositionButton from './add-position-button';
 import Position from './position';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
@@ -75,7 +75,7 @@ class Topic extends Component {
                 <Position key={position.id} position={position} />
               ))}
             {this.props.editMode && (
-              <NewPositionButton
+              <AddPositionButton
                 candidate={this.props.candidate}
                 topic={this.props.topic}
               />

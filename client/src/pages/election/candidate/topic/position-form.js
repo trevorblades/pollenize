@@ -63,7 +63,7 @@ class PositionForm extends Component {
         sources: this.state.sources
           .filter(source => source.trim())
           .map(url => ({url})),
-        candiate_id: this.props.position.candiate_id,
+        candidate_id: this.props.position.candidate_id,
         topic_id: this.props.position.topic_id
       })
     );

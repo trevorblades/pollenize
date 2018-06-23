@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 
-class NewPositionButton extends Component {
+class AddPositionButton extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     position: PropTypes.object,
@@ -57,4 +57,4 @@ const mapStateToProps = state => ({
   position: state.position.data
 });
 
-export default connect(mapStateToProps)(NewPositionButton);
+export default connect(mapStateToProps)(AddPositionButton);
