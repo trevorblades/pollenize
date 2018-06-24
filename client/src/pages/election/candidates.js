@@ -1,12 +1,13 @@
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import CandidateForm from '../../components/candidate-form';
+import FormDialogTrigger from '../../components/form-dialog-trigger';
 import Grid from '@material-ui/core/Grid';
 import ElectionHeader from './election-header';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import RootRef from '@material-ui/core/RootRef';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import minBy from 'lodash/minBy';
 import styled, {css} from 'react-emotion';
@@ -99,11 +100,22 @@ class Candidates extends Component {
           </Grid>
         </RootRef>
         {this.props.editMode && (
-          <Tooltip title="Add a candidate">
+          <FormDialogTrigger
+            form={
+              <CandidateForm
+                candidate={{
+                  name: '',
+                  election_id: this.props.election.id
+                }}
+              />
+            }
+            tooltip="Create a candidate"
+            tooltipProps={{placement: 'left'}}
+          >
             <CreateButton>
               <AddIcon />
             </CreateButton>
-          </Tooltip>
+          </FormDialogTrigger>
         )}
       </Fragment>
     );

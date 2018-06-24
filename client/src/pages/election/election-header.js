@@ -22,7 +22,10 @@ const Title = withProps({
   })
 );
 
-const MenuButton = styled(IconButton)(size(HEADER_LOGO_SIZE));
+const menuButtonSize = theme.spacing.unit * 6;
+const MenuButton = styled(IconButton)(size(menuButtonSize), {
+  margin: (HEADER_LOGO_SIZE - menuButtonSize) / 2
+});
 
 class ElectionHeader extends Component {
   static propTypes = {
