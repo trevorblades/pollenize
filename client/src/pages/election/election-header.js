@@ -1,13 +1,15 @@
-import Header from '../../components/header';
+import Header, {HEADER_LOGO_SIZE} from '../../components/header';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
-import Switch from '@material-ui/core/Switch';
-import Typography from '@material-ui/core/Typography';
 import {connect} from 'react-redux';
 import {setEditMode} from '../../actions/settings';
+import {size} from 'polished';
 
 const Title = withProps({
   color: 'inherit',
@@ -20,6 +22,8 @@ const Title = withProps({
   })
 );
 
+const MenuButton = styled(IconButton)(size(HEADER_LOGO_SIZE));
+
 class ElectionHeader extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
@@ -27,17 +31,18 @@ class ElectionHeader extends Component {
     editMode: PropTypes.bool.isRequired
   };
 
-  onEditModeChange = event =>
-    this.props.dispatch(setEditMode(event.target.checked));
+  toggleEditMode = () => this.props.dispatch(setEditMode(!this.props.editMode));
 
   render() {
     return (
       <Header dark simple>
         <Title>{this.props.children}</Title>
-        <Switch
-          onChange={this.onEditModeChange}
-          checked={this.props.editMode}
-        />
+        <MenuButton
+          color={this.props.editMode ? 'primary' : 'inherit'}
+          onClick={this.toggleEditMode}
+        >
+          <MenuIcon />
+        </MenuButton>
       </Header>
     );
   }

@@ -27,8 +27,8 @@ const logoClassName = css({
   fill: 'currentColor'
 });
 
-export const logoSize = 30;
-const StyledLogo = styled(Logo)(logoClassName, size(logoSize));
+export const HEADER_LOGO_SIZE = 30;
+const StyledLogo = styled(Logo)(logoClassName, size(HEADER_LOGO_SIZE));
 const StyledWordmark = styled(Wordmark)(logoClassName, {
   height: 16,
   marginLeft: 12
