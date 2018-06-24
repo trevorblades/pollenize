@@ -19,7 +19,7 @@ const SectionMainContent = styled.div({
   flexGrow: 1
 });
 
-const StyledSup = styled.sup({lineHeight: 1});
+const Superscript = styled.sup({lineHeight: 1});
 const StyledEditButton = styled(EditButton)({
   marginLeft: theme.spacing.unit / 2,
   verticalAlign: 'top'
@@ -90,9 +90,9 @@ class Topic extends Component {
                 <Typography paragraph key={position.id} variant="subheading">
                   {position.text}
                   {position.sources.map(source => (
-                    <StyledSup key={source.id}>
+                    <Superscript key={source.id}>
                       [<a href="#sources">{source.index + 1}</a>]
-                    </StyledSup>
+                    </Superscript>
                   ))}
                   {this.props.editMode && (
                     <PositionFormDialogTrigger position={position}>
