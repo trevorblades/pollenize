@@ -78,7 +78,8 @@ const Spacer = styled.div({
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    election: PropTypes.object.isRequired
+    election: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   };
 
   state = {
@@ -103,6 +104,7 @@ class Candidate extends Component {
   }
 
   onScroll = () => {
+    let hash = '#';
     let activeTopicIndex = -1;
 
     const {scrollY} = window;
@@ -112,12 +114,17 @@ class Candidate extends Component {
       const {top} = anchor.getBoundingClientRect();
       const offset = Math.floor(top) + scrollY - SECTION_VERTICAL_PADDING;
       if (scrollY >= offset) {
+        hash = `#${anchor.name}`;
         activeTopicIndex = i;
         break;
       }
     }
 
     this.setState({activeTopicIndex});
+    if (window.location.hash || '#' !== hash) {
+      console.log('replace state', hash);
+      this.props.history.replace(hash);
+    }
   };
 
   render() {
