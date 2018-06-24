@@ -1,13 +1,9 @@
-import Button from '@material-ui/core/Button';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
+import Form from '../../../../components/form';
+import FormField from '../../../../components/form-field';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import map from 'lodash/map';
-import {DeleteButton, FormField} from '../../../../components/form';
 import {connect} from 'react-redux';
-import {getSubmitButtonText} from '../../../../util/form';
 import {
   save as savePosition,
   remove as removePosition,
@@ -18,7 +14,7 @@ class PositionForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
     position: PropTypes.object.isRequired
   };
 
@@ -31,6 +27,7 @@ class PositionForm extends Component {
   }
 
   componentWillUnmount() {
+    // TODO: revisit this
     this.props.dispatch(resetPosition());
   }
 
@@ -54,8 +51,7 @@ class PositionForm extends Component {
       };
     });
 
-  onSubmit = event => {
-    event.preventDefault();
+  onSubmit = event =>
     this.props.dispatch(
       savePosition({
         id: this.props.position.id,
@@ -67,10 +63,8 @@ class PositionForm extends Component {
         topic_id: this.props.position.topic_id
       })
     );
-  };
 
-  onDeleteClick = () =>
-    this.props.dispatch(removePosition(this.props.position.id));
+  onDelete = () => this.props.dispatch(removePosition(this.props.position.id));
 
   renderButtonText() {
     const verbs = [['Create', 'Creating'], ['Save', 'Saving']];
@@ -84,53 +78,37 @@ class PositionForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
-        <DialogTitle>
-          {this.props.position.id ? 'Edit' : 'Add a'} position
-        </DialogTitle>
-        <DialogContent>
+      <Form
+        noun="position"
+        editing={Boolean(this.props.position.id)}
+        loading={this.props.loading}
+        onCancel={this.props.onCancel}
+        onDelete={this.onDelete}
+        onSubmit={this.onSubmit}
+      >
+        <FormField
+          multiline
+          label="Summary"
+          name="text"
+          defaultValue={this.props.position.text}
+        />
+        {this.state.sources.map((source, index) => (
           <FormField
-            multiline
-            label="Summary"
-            name="text"
-            defaultValue={this.props.position.text}
+            autoFocus={index === this.state.autoFocusIndex}
+            key={index.toString()}
+            value={source}
+            placeholder="Enter the source website URL"
+            onChange={event => this.onSourceChange(index, event)}
           />
-          {this.state.sources.map((source, index) => (
-            <FormField
-              autoFocus={index === this.state.autoFocusIndex}
-              key={index.toString()}
-              value={source}
-              placeholder="Enter the source website URL"
-              onChange={event => this.onSourceChange(index, event)}
-            />
-          ))}
-          {!this.state.sources.includes('') && (
-            <FormField
-              disabled
-              placeholder="Add another source"
-              onClick={this.onAddSourceClick}
-            />
-          )}
-        </DialogContent>
-        <DialogActions>
-          {this.props.position.id && (
-            <DeleteButton
-              disabled={this.props.loading}
-              onClick={this.onDeleteClick}
-            />
-          )}
-          <Button disabled={this.props.loading} onClick={this.props.onClose}>
-            Cancel
-          </Button>
-          <Button disabled={this.props.loading} type="submit">
-            {getSubmitButtonText(
-              'position',
-              this.props.position.id,
-              this.props.loading
-            )}
-          </Button>
-        </DialogActions>
-      </form>
+        ))}
+        {!this.state.sources.includes('') && (
+          <FormField
+            disabled
+            placeholder="Add another source"
+            onClick={this.onAddSourceClick}
+          />
+        )}
+      </Form>
     );
   }
 }

@@ -52,7 +52,7 @@ class Position extends Component {
           >
             <PositionForm
               key={this.props.position.updated_at}
-              onClose={this.closeDialog}
+              onCancel={this.closeDialog}
               position={this.props.position}
             />
           </Dialog>

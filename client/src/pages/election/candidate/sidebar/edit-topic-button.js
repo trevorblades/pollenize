@@ -28,7 +28,7 @@ class EditTopicButton extends Component {
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          <TopicForm onClose={this.closeDialog} topic={this.props.topic} />
+          <TopicForm onCancel={this.closeDialog} topic={this.props.topic} />
         </Dialog>
       </Fragment>
     );

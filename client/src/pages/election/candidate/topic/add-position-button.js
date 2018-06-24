@@ -45,7 +45,7 @@ class AddPositionButton extends Component {
               candidate_id: this.props.candidate.id,
               topic_id: this.props.topic.id
             }}
-            onClose={this.closeDialog}
+            onCancel={this.closeDialog}
           />
         </Dialog>
       </Fragment>
