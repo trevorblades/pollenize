@@ -122,7 +122,6 @@ class Candidate extends Component {
 
     this.setState({activeTopicIndex});
     if (window.location.hash || '#' !== hash) {
-      console.log('replace state', hash);
       this.props.history.replace(hash);
     }
   };
