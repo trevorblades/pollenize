@@ -1,12 +1,11 @@
 import Dialog from '@material-ui/core/Dialog';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import TopicForm from './topic-form';
 
-class EditTopicButton extends Component {
+class DialogButton extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    topic: PropTypes.object.isRequired
+    form: PropTypes.element.isRequired
   };
 
   state = {
@@ -23,19 +22,17 @@ class EditTopicButton extends Component {
   render() {
     return (
       <Fragment>
-        {React.cloneElement(this.props.children, {
-          onClick: this.onClick
-        })}
+        {React.cloneElement(this.props.children, {onClick: this.onClick})}
         <Dialog
           fullWidth
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          <TopicForm onCancel={this.closeDialog} topic={this.props.topic} />
+          {React.cloneElement(this.props.form, {onCancel: this.closeDialog})}
         </Dialog>
       </Fragment>
     );
   }
 }
 
-export default EditTopicButton;
+export default DialogButton;

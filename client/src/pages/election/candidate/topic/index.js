@@ -1,8 +1,11 @@
-import AddPositionButton from './add-position-button';
-import Position from './position';
+import Button from '@material-ui/core/Button';
+import DialogButton from '../../../../components/dialog-button';
+import EditButton from '../../../../components/edit-button';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import PositionForm from './position-form';
 import Typography from '@material-ui/core/Typography';
+import mapProps from 'recompose/mapProps';
 // import montreal from '../../../assets/images/montreal.jpg';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
@@ -14,6 +17,12 @@ const SectionContent = styled.div({
 
 const SectionMainContent = styled.div({
   flexGrow: 1
+});
+
+const StyledSup = styled.sup({lineHeight: 1});
+const StyledEditButton = styled(EditButton)({
+  marginLeft: theme.spacing.unit / 2,
+  verticalAlign: 'top'
 });
 
 const alternateContentWidth = 250;
@@ -50,6 +59,11 @@ const SectionAlternateContent = styled.div({
 //   maxWidth: 480
 // });
 
+const PositionDialogButton = mapProps(props => ({
+  children: props.children,
+  form: React.createElement(PositionForm, {position: props.position})
+}))(DialogButton);
+
 class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
@@ -72,13 +86,31 @@ class Topic extends Component {
           <SectionMainContent>
             {this.props.positions &&
               this.props.positions.map(position => (
-                <Position key={position.id} position={position} />
+                <Typography paragraph key={position.id} variant="subheading">
+                  {position.text}
+                  {position.sources.map(source => (
+                    <StyledSup key={source.id}>
+                      [<a href="#sources">{source.index + 1}</a>]
+                    </StyledSup>
+                  ))}
+                  {this.props.editMode && (
+                    <PositionDialogButton position={position}>
+                      <StyledEditButton />
+                    </PositionDialogButton>
+                  )}
+                </Typography>
               ))}
             {this.props.editMode && (
-              <AddPositionButton
-                candidate={this.props.candidate}
-                topic={this.props.topic}
-              />
+              <PositionDialogButton
+                position={{
+                  text: '',
+                  sources: [{url: ''}],
+                  candidate_id: this.props.candidate.id,
+                  topic_id: this.props.topic.id
+                }}
+              >
+                <Button>Add a position</Button>
+              </PositionDialogButton>
             )}
           </SectionMainContent>
           <SectionAlternateContent>

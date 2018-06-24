@@ -1,12 +1,14 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
+import DialogButton from '../../../../components/dialog-button';
 import EditButton from '../../../../components/edit-button';
-import EditTopicButton from './edit-topic-button';
 import PropTypes from 'prop-types';
 import React from 'react';
+import TopicForm from './topic-form';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
+import mapProps from 'recompose/mapProps';
 import withProps from 'recompose/withProps';
 import {SECTION_VERTICAL_PADDING} from '../common';
 import {connect} from 'react-redux';
@@ -71,6 +73,11 @@ const AddTopicButton = withProps({component: ButtonBase})(
   })
 );
 
+const TopicDialogButton = mapProps(props => ({
+  children: props.children,
+  form: React.createElement(TopicForm, {topic: props.topic})
+}))(DialogButton);
+
 const Sidebar = props => (
   <Container>
     <InnerContainer>
@@ -82,14 +89,14 @@ const Sidebar = props => (
         <SidebarTopic key={topic.id}>
           <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
           {props.editMode && (
-            <EditTopicButton topic={topic}>
+            <TopicDialogButton topic={topic}>
               <StyledEditButton />
-            </EditTopicButton>
+            </TopicDialogButton>
           )}
         </SidebarTopic>
       ))}
       {props.editMode && (
-        <EditTopicButton
+        <TopicDialogButton
           topic={{
             title: '',
             slug: '',
@@ -98,7 +105,7 @@ const Sidebar = props => (
           }}
         >
           <AddTopicButton>Add topic...</AddTopicButton>
-        </EditTopicButton>
+        </TopicDialogButton>
       )}
     </InnerContainer>
   </Container>
