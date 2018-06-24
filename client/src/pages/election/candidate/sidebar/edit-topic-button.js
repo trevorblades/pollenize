@@ -13,7 +13,10 @@ class EditTopicButton extends Component {
     dialogOpen: false
   };
 
-  onClick = () => this.setState({dialogOpen: true});
+  onClick = event => {
+    event.target.blur();
+    this.setState({dialogOpen: true});
+  };
 
   closeDialog = () => this.setState({dialogOpen: false});
 
