@@ -147,10 +147,10 @@ class Candidate extends Component {
             backgroundColor: this.props.candidate.color
           }}
         >
-          <Typography variant="display1" color="inherit">
+          <Typography gutterBottom variant="display1" color="inherit">
             {this.props.candidate.name}
           </Typography>
-          <Typography variant="subheading" color="inherit">
+          <Typography variant="title" color="inherit">
             {this.props.candidate.party}
           </Typography>
         </Hero>
