@@ -41,7 +41,7 @@ const Section = styled.div({
   padding: `${SECTION_VERTICAL_PADDING}px ${sectionHorizontalPadding}px`
 });
 
-const StyledAnchor = styled.a({
+const OffsetAnchor = styled.a({
   display: 'block',
   position: 'relative',
   top: -theme.mixins.toolbar.height
@@ -127,7 +127,7 @@ class Candidate extends Component {
           <Content innerRef={node => (this.content = node)}>
             {this.props.election.topics.map(topic => (
               <Fragment key={topic.id}>
-                <StyledAnchor name={topic.slug} />
+                <OffsetAnchor name={topic.slug} />
                 <Section>
                   <Topic
                     topic={topic}
@@ -137,8 +137,9 @@ class Candidate extends Component {
                 </Section>
               </Fragment>
             ))}
+            <OffsetAnchor name="sources" />
             <FootnotesSection>
-              <Typography gutterBottom variant="title" id="sources">
+              <Typography gutterBottom variant="title">
                 Sources
               </Typography>
               <Footnotes>
