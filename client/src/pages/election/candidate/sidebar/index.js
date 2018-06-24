@@ -94,8 +94,11 @@ const Sidebar = props => (
       </SidebarItem>
       <TopicsHeading>Topics</TopicsHeading>
       <SidebarTopics style={{borderColor: props.candidate.color}}>
-        {props.election.topics.map(topic => (
-          <SidebarTopic key={topic.id} active={topic.slug === 'pipelines'}>
+        {props.election.topics.map((topic, index) => (
+          <SidebarTopic
+            key={topic.id}
+            active={index === props.activeTopicIndex}
+          >
             <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
             {props.editMode && (
               <TopicFormDialogTrigger topic={topic}>
@@ -123,6 +126,7 @@ const Sidebar = props => (
 );
 
 Sidebar.propTypes = {
+  activeTopicIndex: PropTypes.number.isRequired,
   candidate: PropTypes.object.isRequired,
   editMode: PropTypes.bool.isRequired,
   election: PropTypes.object.isRequired

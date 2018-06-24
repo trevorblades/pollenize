@@ -81,16 +81,44 @@ class Candidate extends Component {
     election: PropTypes.object.isRequired
   };
 
+  state = {
+    activeTopicIndex: -1
+  };
+
   componentDidMount() {
     const {hash} = window.location;
     if (hash) {
       const element = this.content.querySelector(`a[name="${hash.slice(1)}"]`);
       if (element) {
-        const rect = element.getBoundingClientRect();
-        window.scrollTo(0, rect.top + window.scrollY);
+        const {top} = element.getBoundingClientRect();
+        window.scrollTo(0, Math.floor(top) + window.scrollY);
       }
     }
+
+    window.addEventListener('scroll', this.onScroll);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+  onScroll = () => {
+    let activeTopicIndex = -1;
+
+    const {scrollY} = window;
+    const anchors = this.content.querySelectorAll('a[name]');
+    for (let i = anchors.length - 1; i >= 0; i--) {
+      const anchor = anchors[i];
+      const {top} = anchor.getBoundingClientRect();
+      const offset = Math.floor(top) + scrollY - SECTION_VERTICAL_PADDING;
+      if (scrollY >= offset) {
+        activeTopicIndex = i;
+        break;
+      }
+    }
+
+    this.setState({activeTopicIndex});
+  };
 
   render() {
     return (
@@ -121,6 +149,7 @@ class Candidate extends Component {
         </Hero>
         <Container>
           <Sidebar
+            activeTopicIndex={this.state.activeTopicIndex}
             candidate={this.props.candidate}
             election={this.props.election}
           />
