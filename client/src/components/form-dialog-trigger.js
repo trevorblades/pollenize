@@ -2,9 +2,10 @@ import Dialog from '@material-ui/core/Dialog';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 
-class DialogButton extends Component {
+class FormDialogTrigger extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
+    closeOnSuccess: PropTypes.bool,
     form: PropTypes.element.isRequired
   };
 
@@ -28,11 +29,14 @@ class DialogButton extends Component {
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          {React.cloneElement(this.props.form, {onCancel: this.closeDialog})}
+          {React.cloneElement(this.props.form, {
+            onCancel: this.closeDialog,
+            onSuccess: this.props.closeOnSuccess ? this.closeDialog : null
+          })}
         </Dialog>
       </Fragment>
     );
   }
 }
 
-export default DialogButton;
+export default FormDialogTrigger;

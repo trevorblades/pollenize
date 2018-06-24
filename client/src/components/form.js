@@ -21,8 +21,16 @@ class Form extends Component {
     noun: PropTypes.string.isRequired,
     onCancel: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func,
+    success: PropTypes.bool.isRequired
   };
+
+  componentDidUpdate(prevProps) {
+    if (this.props.onSuccess && this.props.success && !prevProps.success) {
+      this.props.onSuccess();
+    }
+  }
 
   onSubmit = event => {
     event.preventDefault();

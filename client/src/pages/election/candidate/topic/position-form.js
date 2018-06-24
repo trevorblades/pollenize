@@ -15,7 +15,9 @@ class PositionForm extends Component {
     dispatch: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
-    position: PropTypes.object.isRequired
+    onSuccess: PropTypes.func,
+    position: PropTypes.object.isRequired,
+    success: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -27,7 +29,6 @@ class PositionForm extends Component {
   }
 
   componentWillUnmount() {
-    // TODO: revisit this
     this.props.dispatch(resetPosition());
   }
 
@@ -85,6 +86,8 @@ class PositionForm extends Component {
         onCancel={this.props.onCancel}
         onDelete={this.onDelete}
         onSubmit={this.onSubmit}
+        onSuccess={this.props.onSuccess}
+        success={this.props.success}
       >
         <FormField
           multiline
@@ -114,7 +117,8 @@ class PositionForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.position.loading
+  loading: state.position.loading,
+  success: state.position.success
 });
 
 export default connect(mapStateToProps)(PositionForm);

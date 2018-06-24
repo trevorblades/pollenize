@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
-import DialogButton from '../../../../components/dialog-button';
 import EditButton from '../../../../components/edit-button';
+import FormDialogTrigger from '../../../../components/form-dialog-trigger';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import PositionForm from './position-form';
@@ -59,10 +59,11 @@ const SectionAlternateContent = styled.div({
 //   maxWidth: 480
 // });
 
-const PositionDialogButton = mapProps(props => ({
+const PositionFormDialogTrigger = mapProps(props => ({
   children: props.children,
-  form: React.createElement(PositionForm, {position: props.position})
-}))(DialogButton);
+  closeOnSuccess: props.closeOnSuccess,
+  form: <PositionForm position={props.position} />
+}))(FormDialogTrigger);
 
 class Topic extends Component {
   static propTypes = {
@@ -94,14 +95,15 @@ class Topic extends Component {
                     </StyledSup>
                   ))}
                   {this.props.editMode && (
-                    <PositionDialogButton position={position}>
+                    <PositionFormDialogTrigger position={position}>
                       <StyledEditButton />
-                    </PositionDialogButton>
+                    </PositionFormDialogTrigger>
                   )}
                 </Typography>
               ))}
             {this.props.editMode && (
-              <PositionDialogButton
+              <PositionFormDialogTrigger
+                closeOnSuccess
                 position={{
                   text: '',
                   sources: [{url: ''}],
@@ -110,7 +112,7 @@ class Topic extends Component {
                 }}
               >
                 <Button>Add a position</Button>
-              </PositionDialogButton>
+              </PositionFormDialogTrigger>
             )}
           </SectionMainContent>
           <SectionAlternateContent>

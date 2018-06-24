@@ -30,6 +30,7 @@ async function deleteTopic(id) {
 const defaultState = {
   loading: false,
   error: null,
+  success: false,
   data: null
 };
 
@@ -39,7 +40,8 @@ export default handleActions(
       loop(
         {
           ...state,
-          loading: true
+          loading: true,
+          success: false
         },
         Cmd.run(payload.id ? updateTopic : createTopic, {
           successActionCreator: success,
@@ -51,7 +53,8 @@ export default handleActions(
       loop(
         {
           ...state,
-          loading: true
+          loading: true,
+          success: false
         },
         Cmd.run(deleteTopic, {
           successActionCreator: removed,
@@ -62,11 +65,13 @@ export default handleActions(
     [success]: (state, {payload}) => ({
       ...state,
       loading: false,
+      success: true,
       data: payload
     }),
     [removed]: state => ({
       ...state,
-      loading: false
+      loading: false,
+      success: true
     }),
     [failure]: (state, {payload}) => ({
       ...state,

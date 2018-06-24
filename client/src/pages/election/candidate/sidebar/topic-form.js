@@ -8,7 +8,8 @@ import theme from '../../../../theme';
 import {connect} from 'react-redux';
 import {
   save as saveTopic,
-  remove as removeTopic
+  remove as removeTopic,
+  reset as resetTopic
 } from '../../../../actions/topic';
 
 class TopicForm extends Component {
@@ -16,6 +17,8 @@ class TopicForm extends Component {
     dispatch: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func,
+    success: PropTypes.bool.isRequired,
     topic: PropTypes.object.isRequired
   };
 
@@ -25,6 +28,10 @@ class TopicForm extends Component {
       title: props.topic.title,
       slug: props.topic.slug
     };
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(resetTopic());
   }
 
   onTitleChange = event => {
@@ -59,6 +66,8 @@ class TopicForm extends Component {
         onCancel={this.props.onCancel}
         onDelete={this.onDelete}
         onSubmit={this.onSubmit}
+        onSuccess={this.props.onSuccess}
+        success={this.props.success}
       >
         <Grid container spacing={theme.spacing.unit * 2}>
           <Grid item xs>
@@ -84,7 +93,8 @@ class TopicForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.topic.loading
+  loading: state.topic.loading,
+  success: state.topic.success
 });
 
 export default connect(mapStateToProps)(TopicForm);
