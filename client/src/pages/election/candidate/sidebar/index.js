@@ -30,7 +30,7 @@ const InnerContainer = styled.aside({
   alignItems: 'flex-start',
   width: 200,
   padding: `${sidebarVerticalPadding}px ${theme.spacing.unit * 4}px`,
-  paddingRight: theme.spacing.unit * 2
+  paddingRight: 0
 });
 
 const TopicsHeading = withProps({
@@ -46,10 +46,17 @@ const StyledEditButton = styled(EditButton)({
   marginLeft: 'auto'
 });
 
+const SidebarTopics = styled.div({
+  width: '100%'
+});
+
 const SidebarTopic = styled.div`
   display: flex;
-  width: 100%;
   margin-bottom: ${theme.spacing.unit}px;
+  padding-right: ${theme.spacing.unit / 2}px;
+  border-right-width: 3px;
+  border-right-style: solid;
+  border-color: ${props => (props.active ? 'inherit' : 'transparent')};
   :not(:hover) ${StyledEditButton} {
     display: none;
   }
@@ -86,16 +93,18 @@ const Sidebar = props => (
         About {props.candidate.name.replace(/\s+/, ' ').split(' ')[0]}
       </SidebarItem>
       <TopicsHeading>Topics</TopicsHeading>
-      {props.election.topics.map(topic => (
-        <SidebarTopic key={topic.id}>
-          <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
-          {props.editMode && (
-            <TopicFormDialogTrigger topic={topic}>
-              <StyledEditButton />
-            </TopicFormDialogTrigger>
-          )}
-        </SidebarTopic>
-      ))}
+      <SidebarTopics style={{borderColor: props.candidate.color}}>
+        {props.election.topics.map(topic => (
+          <SidebarTopic key={topic.id} active={topic.slug === 'pipelines'}>
+            <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
+            {props.editMode && (
+              <TopicFormDialogTrigger topic={topic}>
+                <StyledEditButton />
+              </TopicFormDialogTrigger>
+            )}
+          </SidebarTopic>
+        ))}
+      </SidebarTopics>
       {props.editMode && (
         <TopicFormDialogTrigger
           closeOnSuccess
