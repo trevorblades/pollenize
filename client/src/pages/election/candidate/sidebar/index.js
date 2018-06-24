@@ -1,7 +1,6 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
-import EditIcon from '@material-ui/icons/Edit';
+import EditButton from '../../../../components/edit-button';
 import EditTopicButton from './edit-topic-button';
-import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +10,6 @@ import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
 import {SECTION_VERTICAL_PADDING} from '../common';
 import {connect} from 'react-redux';
-import {size} from 'polished';
 
 const sidebarVerticalPadding = theme.spacing.unit * 3;
 const Container = styled.div({
@@ -42,14 +40,15 @@ const TopicsHeading = withProps({
   })
 );
 
-const EditButton = styled(IconButton)(size(theme.spacing.unit * 3));
-const StyledEditIcon = styled(EditIcon)(size(theme.spacing.unit * 2));
+const StyledEditButton = styled(EditButton)({
+  marginLeft: 'auto'
+});
+
 const SidebarTopic = styled.div`
   display: flex;
-  justify-content: space-between;
   width: 100%;
   margin-bottom: ${theme.spacing.unit}px;
-  :not(:hover) ${EditButton} {
+  :not(:hover) ${StyledEditButton} {
     display: none;
   }
 `;
@@ -84,9 +83,7 @@ const Sidebar = props => (
           <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
           {props.editMode && (
             <EditTopicButton topic={topic}>
-              <EditButton>
-                <StyledEditIcon />
-              </EditButton>
+              <StyledEditButton />
             </EditTopicButton>
           )}
         </SidebarTopic>

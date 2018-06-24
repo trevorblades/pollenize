@@ -14,7 +14,7 @@ class EditTopicButton extends Component {
   };
 
   onClick = event => {
-    event.target.blur();
+    event.currentTarget.blur();
     this.setState({dialogOpen: true});
   };
 

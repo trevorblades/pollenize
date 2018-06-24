@@ -1,9 +1,18 @@
 import Dialog from '@material-ui/core/Dialog';
+import EditButton from '../../../../components/edit-button';
 import PositionForm from './position-form';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import styled from 'react-emotion';
+import theme from '../../../../theme';
 import {connect} from 'react-redux';
+
+const StyledSup = styled.sup({lineHeight: 1});
+const StyledEditButton = styled(EditButton)({
+  marginLeft: theme.spacing.unit / 2,
+  verticalAlign: 'top'
+});
 
 class Position extends Component {
   static propTypes = {
@@ -22,27 +31,17 @@ class Position extends Component {
 
   closeDialog = () => this.setState({dialogOpen: false});
 
-  renderText() {
-    if (this.props.editMode) {
-      return (
-        <a href="#" onClick={this.onEditClick}>
-          {this.props.position.text}
-        </a>
-      );
-    }
-    return this.props.position.text;
-  }
-
   render() {
     return (
       <Fragment>
         <Typography paragraph variant="subheading">
-          {this.renderText()}
+          {this.props.position.text}
           {this.props.position.sources.map(source => (
-            <sup key={source.id}>
+            <StyledSup key={source.id}>
               [<a href="#sources">{source.index + 1}</a>]
-            </sup>
+            </StyledSup>
           ))}
+          {this.props.editMode && <StyledEditButton />}
         </Typography>
         {this.props.editMode && (
           <Dialog
