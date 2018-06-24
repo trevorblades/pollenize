@@ -104,7 +104,7 @@ class Candidate extends Component {
   }
 
   onScroll = () => {
-    let hash = '#';
+    let hash = '';
     let activeTopicIndex = -1;
 
     const {scrollY} = window;
@@ -114,14 +114,14 @@ class Candidate extends Component {
       const {top} = anchor.getBoundingClientRect();
       const offset = Math.floor(top) + scrollY - SECTION_VERTICAL_PADDING;
       if (scrollY >= offset) {
-        hash = `#${anchor.name}`;
+        hash = anchor.name;
         activeTopicIndex = i;
         break;
       }
     }
 
-    if (window.location.hash || '#' !== hash) {
-      this.props.history.replace(hash);
+    if (window.location.hash.slice(1) !== hash) {
+      this.props.history.replace(`#${hash}`);
     }
 
     this.setState({activeTopicIndex});
