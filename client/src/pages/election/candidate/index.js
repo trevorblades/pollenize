@@ -120,10 +120,11 @@ class Candidate extends Component {
       }
     }
 
-    this.setState({activeTopicIndex});
     if (window.location.hash || '#' !== hash) {
       this.props.history.replace(hash);
     }
+
+    this.setState({activeTopicIndex});
   };
 
   render() {
