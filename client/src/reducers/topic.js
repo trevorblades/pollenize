@@ -30,8 +30,7 @@ async function deleteTopic(id) {
 const defaultState = {
   loading: false,
   error: null,
-  success: false,
-  data: null
+  success: false
 };
 
 export default handleActions(
@@ -62,11 +61,10 @@ export default handleActions(
           args: [payload]
         })
       ),
-    [success]: (state, {payload}) => ({
+    [success]: state => ({
       ...state,
       loading: false,
-      success: true,
-      data: payload
+      success: true
     }),
     [removed]: state => ({
       ...state,
