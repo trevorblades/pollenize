@@ -1,7 +1,7 @@
 import express from 'express';
 import groupBy from 'lodash/groupBy';
 import invokeMap from 'lodash/invokeMap';
-import {Election, Topic, Position, Source} from '../models';
+import {Election, Topic, Position, Source, sequelize} from '../models';
 
 const router = express.Router();
 router.get('/', async (req, res) => {
@@ -24,6 +24,7 @@ router.route('/:id').get(async (req, res) => {
   }
 
   const candidates = await election.getCandidates({
+    order: [[sequelize.fn('RANDOM')]],
     include: {
       model: Position,
       include: [Topic, Source]
