@@ -117,7 +117,6 @@ class Candidates extends Component {
         </RootRef>
         {this.props.editMode && (
           <FormDialogTrigger
-            closeOnSuccess
             form={
               <CandidateForm
                 candidate={{

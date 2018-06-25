@@ -82,7 +82,6 @@ const AddTopicButton = withProps({component: ButtonBase})(
 
 const TopicFormDialogTrigger = mapProps(props => ({
   children: props.children,
-  closeOnSuccess: props.closeOnSuccess,
   form: <TopicForm topic={props.topic} />
 }))(FormDialogTrigger);
 
@@ -110,7 +109,6 @@ const Sidebar = props => (
       </SidebarTopics>
       {props.editMode && (
         <TopicFormDialogTrigger
-          closeOnSuccess
           topic={{
             title: '',
             slug: '',

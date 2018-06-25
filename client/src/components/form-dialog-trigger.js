@@ -6,7 +6,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 class FormDialogTrigger extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    closeOnSuccess: PropTypes.bool,
     form: PropTypes.element.isRequired,
     tooltip: PropTypes.string,
     tooltipProps: PropTypes.object
@@ -48,7 +47,7 @@ class FormDialogTrigger extends Component {
         >
           {React.cloneElement(this.props.form, {
             onCancel: this.closeDialog,
-            onSuccess: this.props.closeOnSuccess ? this.closeDialog : null
+            onSuccess: this.closeDialog
           })}
         </Dialog>
       </Fragment>

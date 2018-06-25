@@ -61,7 +61,6 @@ const SectionAlternateContent = styled.div({
 
 const PositionFormDialogTrigger = mapProps(props => ({
   children: props.children,
-  closeOnSuccess: props.closeOnSuccess,
   form: <PositionForm position={props.position} />
 }))(FormDialogTrigger);
 
@@ -103,7 +102,6 @@ class Topic extends Component {
               ))}
             {this.props.editMode && (
               <PositionFormDialogTrigger
-                closeOnSuccess
                 position={{
                   text: '',
                   sources: [{url: ''}],
