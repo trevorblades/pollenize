@@ -4,6 +4,7 @@ import reject from 'lodash/reject';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 import {load, success, failure, reset} from '../actions/election';
+import {push} from 'react-router-redux';
 import {
   success as candidateSuccess,
   removed as candidateRemoved
@@ -70,20 +71,33 @@ export default handleActions(
       loading: false,
       error: payload
     }),
-    [candidateSuccess]: (state, {payload}) => ({
-      ...state,
-      data: {
-        ...state.data,
-        candidates: replaceOrUpdate(state.data.candidates, payload)
+    [candidateSuccess]: (state, {payload}) => {
+      const nextState = {
+        ...state,
+        data: {
+          ...state.data,
+          candidates: replaceOrUpdate(state.data.candidates, payload)
+        }
+      };
+
+      const pathname = `/elections/${state.data.slug}/${payload.slug}`;
+      if (pathname === window.location.pathname) {
+        return nextState;
       }
-    }),
-    [candidateRemoved]: (state, {payload}) => ({
-      ...state,
-      data: {
-        ...state.data,
-        candidates: reject(state.data.candidates, ['id', payload.id])
-      }
-    }),
+
+      return loop(nextState, Cmd.action(push(pathname)));
+    },
+    [candidateRemoved]: (state, {payload}) =>
+      loop(
+        {
+          ...state,
+          data: {
+            ...state.data,
+            candidates: reject(state.data.candidates, ['id', payload.id])
+          }
+        },
+        Cmd.action(push(`/elections/${state.data.slug}`))
+      ),
     [positionSuccess]: (state, {payload}) => ({
       ...state,
       data: {

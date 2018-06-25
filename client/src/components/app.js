@@ -1,3 +1,4 @@
+import CssBaseline from '@material-ui/core/CssBaseline';
 import Election from '../pages/election';
 import Helmet from 'react-helmet';
 import Pages from '../pages';
@@ -7,6 +8,7 @@ import {hot} from 'react-hot-loader';
 
 const App = () => (
   <Fragment>
+    <CssBaseline />
     <Helmet
       defaultTitle={process.env.APP_TITLE}
       titleTemplate={`%s · ${process.env.APP_TITLE}`}
