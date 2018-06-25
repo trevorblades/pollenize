@@ -105,6 +105,8 @@ class Candidates extends Component {
               <CandidateForm
                 candidate={{
                   name: '',
+                  party: '',
+                  color: theme.palette.grey[500],
                   election_id: this.props.election.id
                 }}
               />
