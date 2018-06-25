@@ -3,6 +3,7 @@ import Form from '../form';
 import FormField from '../form-field';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import slugify from 'slugify';
 import {connect} from 'react-redux';
 import {
   save as saveCandidate,
@@ -35,10 +36,13 @@ class CandidateForm extends Component {
 
   onSubmit = event => {
     event.preventDefault();
+
+    const name = event.target.name.value;
     this.props.dispatch(
       saveCandidate({
         id: this.props.candidate.id,
-        name: event.target.name.value,
+        name,
+        slug: slugify(name, {lower: true}),
         party: event.target.party.value,
         color: this.state.color,
         election_id: this.props.candidate.election_id

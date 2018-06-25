@@ -1,10 +1,8 @@
 import Form from '../../../../components/form';
 import FormField from '../../../../components/form-field';
-import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import slugify from 'slugify';
-import theme from '../../../../theme';
 import {connect} from 'react-redux';
 import {
   save as saveTopic,
@@ -22,33 +20,19 @@ class TopicForm extends Component {
     topic: PropTypes.object.isRequired
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: props.topic.title,
-      slug: props.topic.slug
-    };
-  }
-
   componentWillUnmount() {
     this.props.dispatch(resetTopic());
   }
 
-  onTitleChange = event => {
-    const {value} = event.target;
-    this.setState({
-      title: value,
-      slug: slugify(value, {lower: true})
-    });
-  };
-
   onSubmit = event => {
     event.preventDefault();
+
+    const title = event.target.title.value;
     this.props.dispatch(
       saveTopic({
         id: this.props.topic.id,
-        title: this.state.title,
-        slug: this.state.slug,
+        title,
+        slug: slugify(title, {lower: true}),
         description: event.target.description.value,
         election_id: this.props.topic.election_id
       })
@@ -69,18 +53,11 @@ class TopicForm extends Component {
         onSuccess={this.props.onSuccess}
         success={this.props.success}
       >
-        <Grid container spacing={theme.spacing.unit * 2}>
-          <Grid item xs>
-            <FormField
-              label="Title"
-              onChange={this.onTitleChange}
-              value={this.state.title}
-            />
-          </Grid>
-          <Grid item xs>
-            <FormField disabled label="URL slug" value={this.state.slug} />
-          </Grid>
-        </Grid>
+        <FormField
+          label="Title"
+          name="title"
+          defaultValue={this.props.topic.title}
+        />
         <FormField
           multiline
           label="Description"

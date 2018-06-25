@@ -1,9 +1,11 @@
 import express from 'express';
+import candidates from './candidates';
 import elections from './elections';
 import positions from './positions';
 import topics from './topics';
 
 const router = express.Router();
+router.use('/candidates', candidates);
 router.use('/elections', elections);
 router.use('/positions', positions);
 router.use('/topics', topics);

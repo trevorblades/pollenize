@@ -5,6 +5,10 @@ import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 import {load, success, failure, reset} from '../actions/election';
 import {
+  success as candidateSuccess,
+  removed as candidateRemoved
+} from '../actions/candidate';
+import {
   success as positionSuccess,
   removed as positionRemoved
 } from '../actions/position';
@@ -22,17 +26,17 @@ async function fetchElection(id) {
   return response.body;
 }
 
-function getPositions(positions, payload) {
-  if (!positions) {
-    return [payload];
+function replaceOrUpdate(collection, item) {
+  if (!collection) {
+    return [item];
   }
 
-  const index = findIndex(positions, ['id', payload.id]);
+  const index = findIndex(collection, ['id', item.id]);
   if (index === -1) {
-    return [...positions, payload];
+    return [...collection, item];
   }
 
-  return [...positions.slice(0, index), payload, ...positions.slice(index + 1)];
+  return [...collection.slice(0, index), item, ...collection.slice(index + 1)];
 }
 
 const defaultState = {
@@ -66,6 +70,20 @@ export default handleActions(
       loading: false,
       error: payload
     }),
+    [candidateSuccess]: (state, {payload}) => ({
+      ...state,
+      data: {
+        ...state.data,
+        candidates: replaceOrUpdate(state.data.candidates, payload)
+      }
+    }),
+    [candidateRemoved]: (state, {payload}) => ({
+      ...state,
+      data: {
+        ...state.data,
+        candidates: reject(state.data.candidates, ['id', payload.id])
+      }
+    }),
     [positionSuccess]: (state, {payload}) => ({
       ...state,
       data: {
@@ -80,7 +98,7 @@ export default handleActions(
             ...candidate,
             positions: {
               ...candidate.positions,
-              [id]: getPositions(candidate.positions[id], payload)
+              [id]: replaceOrUpdate(candidate.positions[id], payload)
             }
           };
         })
@@ -106,20 +124,13 @@ export default handleActions(
         })
       }
     }),
-    [topicSuccess]: (state, {payload}) => {
-      const {topics} = state.data;
-      const index = findIndex(topics, ['id', payload.id]);
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          topics:
-            index === -1
-              ? [...topics, payload]
-              : [...topics.slice(0, index), payload, ...topics.slice(index + 1)]
-        }
-      };
-    },
+    [topicSuccess]: (state, {payload}) => ({
+      ...state,
+      data: {
+        ...state.data,
+        topics: replaceOrUpdate(state.data.topics, payload)
+      }
+    }),
     [topicRemoved]: (state, {payload}) => ({
       ...state,
       data: {
