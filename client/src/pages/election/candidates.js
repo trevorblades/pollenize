@@ -30,6 +30,15 @@ const GridItem = defaultProps({
   })
 );
 
+const Name = withProps({
+  variant: 'headline',
+  color: 'inherit'
+})(
+  styled(Typography)({
+    marginBottom: theme.spacing.unit / 2
+  })
+);
+
 const CreateButton = withProps({variant: 'fab'})(
   styled(Button)({
     position: 'absolute',
@@ -45,19 +54,28 @@ class Candidates extends Component {
   };
 
   state = {
-    gridItemSize: false
+    size: false
   };
 
   componentDidMount() {
-    window.addEventListener('resize', this.onResize);
-    this.onResize();
+    window.addEventListener('resize', this.calculateSize);
+    this.calculateSize();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.election.candidates.length !==
+      prevProps.election.candidates.length
+    ) {
+      this.calculateSize();
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('resize', this.calculateSize);
   }
 
-  onResize = () => {
+  calculateSize = () => {
     const {offsetWidth, offsetHeight} = this.container;
     const cellCount = Math.round(this.props.election.candidates.length / 2) * 2;
     const deltas = divisors(cellCount).map(divisor => {
@@ -70,7 +88,7 @@ class Candidates extends Component {
     });
 
     const {divisor} = minBy(deltas, 'delta');
-    this.setState({gridItemSize: 12 / divisor});
+    this.setState({size: 12 / divisor});
   };
 
   render() {
@@ -81,7 +99,7 @@ class Candidates extends Component {
           <Grid container className={containerClassName}>
             {this.props.election.candidates.map(candidate => (
               <GridItem
-                xs={this.state.gridItemSize}
+                xs={this.state.size}
                 key={candidate.id}
                 to={`/elections/${this.props.election.slug}/${candidate.slug}`}
                 style={{
@@ -89,9 +107,7 @@ class Candidates extends Component {
                   backgroundColor: candidate.color
                 }}
               >
-                <Typography variant="headline" color="inherit">
-                  {candidate.name}
-                </Typography>
+                <Name>{candidate.name}</Name>
                 <Typography variant="subheading" color="inherit">
                   {candidate.party}
                 </Typography>
@@ -101,6 +117,7 @@ class Candidates extends Component {
         </RootRef>
         {this.props.editMode && (
           <FormDialogTrigger
+            closeOnSuccess
             form={
               <CandidateForm
                 candidate={{

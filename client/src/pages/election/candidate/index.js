@@ -1,5 +1,7 @@
+import CandidateForm from '../../../components/candidate-form';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ElectionHeader from '../election-header';
+import FormDialogTrigger from '../../../components/form-dialog-trigger';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
@@ -25,6 +27,15 @@ const Hero = styled.div({
   backgroundRepeat: 'no-repeat',
   backgroundBlendMode: 'multiply'
 });
+
+const Name = withProps({
+  variant: 'display1',
+  color: 'inherit'
+})(
+  styled(Typography)({
+    marginBottom: theme.spacing.unit
+  })
+);
 
 const StyledLink = styled(Link)({
   textDecoration: 'none'
@@ -78,6 +89,7 @@ const Spacer = styled.div({
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired
   };
@@ -147,12 +159,17 @@ class Candidate extends Component {
             backgroundColor: this.props.candidate.color
           }}
         >
-          <Typography gutterBottom variant="display1" color="inherit">
-            {this.props.candidate.name}
-          </Typography>
-          <Typography variant="title" color="inherit">
+          <Name>{this.props.candidate.name}</Name>
+          <Typography gutterBottom variant="title" color="inherit">
             {this.props.candidate.party}
           </Typography>
+          {this.props.editMode && (
+            <FormDialogTrigger
+              form={<CandidateForm candidate={this.props.candidate} />}
+            >
+              <div>Edit</div>
+            </FormDialogTrigger>
+          )}
         </Hero>
         <Container>
           <Sidebar
@@ -207,6 +224,7 @@ const mapStateToProps = (state, ownProps) => {
   const candidates = getCandidates(state);
   return {
     candidate: find(candidates, ['slug', ownProps.match.params.id]),
+    editMode: state.settings.editMode,
     election: state.election.data
   };
 };
