@@ -1,8 +1,10 @@
 import CandidateForm from '../../../components/candidate-form';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import EditIcon from '@material-ui/icons/Edit';
 import ElectionHeader from '../election-header';
 import FormDialogTrigger from '../../../components/form-dialog-trigger';
 import Helmet from 'react-helmet';
+import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Sidebar from './sidebar';
@@ -25,7 +27,8 @@ const Hero = styled.div({
   backgroundSize: 'contain',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
-  backgroundBlendMode: 'multiply'
+  backgroundBlendMode: 'multiply',
+  position: 'relative'
 });
 
 const Name = withProps({
@@ -34,6 +37,14 @@ const Name = withProps({
 })(
   styled(Typography)({
     marginBottom: theme.spacing.unit
+  })
+);
+
+const EditButton = withProps({color: 'inherit'})(
+  styled(IconButton)({
+    position: 'absolute',
+    bottom: theme.spacing.unit,
+    right: theme.spacing.unit
   })
 );
 
@@ -167,7 +178,9 @@ class Candidate extends Component {
             <FormDialogTrigger
               form={<CandidateForm candidate={this.props.candidate} />}
             >
-              <div>Edit</div>
+              <EditButton>
+                <EditIcon />
+              </EditButton>
             </FormDialogTrigger>
           )}
         </Hero>
