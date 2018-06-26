@@ -1,5 +1,4 @@
-import Form from '../../../../components/form';
-import FormField from '../../../../components/form-field';
+import Form, {FormField} from '../../../../components/form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import filter from 'lodash/filter';

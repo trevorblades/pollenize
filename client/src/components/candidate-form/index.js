@@ -1,6 +1,5 @@
 import ColorPicker from './color-picker';
-import Form from '../form';
-import FormField from '../form-field';
+import Form, {FormField} from '../form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import slugify from 'slugify';
