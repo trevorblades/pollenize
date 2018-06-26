@@ -13,6 +13,7 @@ import {
 class PositionForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    error: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
@@ -78,45 +79,56 @@ class PositionForm extends Component {
   }
 
   render() {
+    const sources = this.state.sources.map((source, index) => (
+      <FormField
+        autoFocus={index === this.state.autoFocusIndex}
+        key={index.toString()}
+        value={source}
+        placeholder="Enter the source website URL"
+        onChange={event => this.onSourceChange(index, event)}
+      />
+    ));
+
+    const fields = [
+      [
+        'text',
+        {
+          multiline: true,
+          label: 'Summary'
+        }
+      ],
+      ...sources
+    ];
+    if (!this.state.sources.includes('')) {
+      fields.push(
+        <FormField
+          disabled
+          key="source"
+          placeholder="Add another source"
+          onClick={this.onAddSourceClick}
+        />
+      );
+    }
+
     return (
       <Form
         noun="position"
-        editing={Boolean(this.props.position.id)}
+        initialData={this.props.position}
+        fields={fields}
         loading={this.props.loading}
+        error={this.props.error}
+        success={this.props.success}
         onCancel={this.props.onCancel}
         onDelete={this.onDelete}
         onSubmit={this.onSubmit}
         onSuccess={this.props.onSuccess}
-        success={this.props.success}
-      >
-        <FormField
-          multiline
-          label="Summary"
-          name="text"
-          defaultValue={this.props.position.text}
-        />
-        {this.state.sources.map((source, index) => (
-          <FormField
-            autoFocus={index === this.state.autoFocusIndex}
-            key={index.toString()}
-            value={source}
-            placeholder="Enter the source website URL"
-            onChange={event => this.onSourceChange(index, event)}
-          />
-        ))}
-        {!this.state.sources.includes('') && (
-          <FormField
-            disabled
-            placeholder="Add another source"
-            onClick={this.onAddSourceClick}
-          />
-        )}
-      </Form>
+      />
     );
   }
 }
 
 const mapStateToProps = state => ({
+  error: state.position.error,
   loading: state.position.loading,
   success: state.position.success
 });

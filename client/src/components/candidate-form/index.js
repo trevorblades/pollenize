@@ -73,18 +73,24 @@ class CandidateForm extends Component {
     return (
       <Form
         noun="candidate"
-        editing={Boolean(this.props.candidate.id)}
+        initialData={this.props.candidate}
+        fields={[
+          'name',
+          'party',
+          <ColorPicker
+            key="color"
+            color={this.state.color}
+            onChange={this.onColorChange}
+          />
+        ]}
         loading={this.props.loading}
+        error={this.props.error}
+        success={this.props.success}
         onCancel={this.props.onCancel}
         onDelete={this.onDelete}
         onSubmit={this.onSubmit}
         onSuccess={this.props.onSuccess}
-        success={this.props.success}
-      >
-        {this.renderFormField('Name', 'name')}
-        {this.renderFormField('Party', 'party')}
-        <ColorPicker color={this.state.color} onChange={this.onColorChange} />
-      </Form>
+      />
     );
   }
 }

@@ -2,8 +2,10 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import FormField from './form-field';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import sentenceCase from 'sentence-case';
 import styled from 'react-emotion';
 import theme from '../theme';
 
@@ -13,17 +15,24 @@ const DeleteButton = styled(Button)({
 });
 
 const verbs = [['Create', 'Creating'], ['Save', 'Saving']];
+const field = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.array,
+  PropTypes.node
+]);
+
 class Form extends Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
-    editing: PropTypes.bool.isRequired,
-    loading: PropTypes.bool.isRequired,
     noun: PropTypes.string.isRequired,
+    initialData: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.object,
+    fields: PropTypes.arrayOf(field).isRequired,
+    success: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    onSuccess: PropTypes.func,
-    success: PropTypes.bool.isRequired
+    onSuccess: PropTypes.func
   };
 
   componentDidUpdate(prevProps) {
@@ -37,34 +46,57 @@ class Form extends Component {
     this.props.onSubmit(event);
   };
 
-  renderSubmitButtonText() {
-    const verb = verbs[Number(this.props.editing)][Number(this.props.loading)];
-    return `${verb} ${this.props.noun}${this.props.loading ? '...' : ''}`;
+  renderFormField(key, props) {
+    // TODO: refactor this to reuse more easily between topic and candidate forms
+    const {errors} = this.props.error || {};
+    const error = errors && errors[key];
+    return (
+      <FormField
+        key={key}
+        name={key}
+        label={sentenceCase(key)}
+        defaultValue={this.props.initialData[key]}
+        error={Boolean(error)}
+        helperText={error && error.msg}
+        {...props}
+      />
+    );
   }
 
   render() {
-    const verb = verbs[Number(this.props.editing)][Number(this.props.loading)];
+    const {loading} = this.props;
+    const editing = Boolean(this.props.initialData.id);
+    const verb = verbs[Number(editing)][Number(loading)];
     return (
       <form onSubmit={this.onSubmit}>
         <DialogTitle>
-          {this.props.editing ? 'Edit' : 'Add'} a {this.props.noun}
+          {editing ? 'Edit' : 'Add'} a {this.props.noun}
         </DialogTitle>
-        <DialogContent>{this.props.children}</DialogContent>
+        <DialogContent>
+          {this.props.fields.map(field => {
+            switch (typeof field) {
+              case 'string': {
+                return this.renderFormField(field);
+              }
+              default:
+                return React.isValidElement(field)
+                  ? field
+                  : this.renderFormField(...field);
+            }
+          })}
+        </DialogContent>
         <DialogActions>
-          {this.props.editing && (
-            <DeleteButton
-              disabled={this.props.loading}
-              onClick={this.props.onDelete}
-            >
+          {editing && (
+            <DeleteButton disabled={loading} onClick={this.props.onDelete}>
               Delete
             </DeleteButton>
           )}
-          <Button disabled={this.props.loading} onClick={this.props.onCancel}>
+          <Button disabled={loading} onClick={this.props.onCancel}>
             Cancel
           </Button>
-          <Button disabled={this.props.loading} type="submit">
+          <Button disabled={loading} type="submit">
             {verb} {this.props.noun}
-            {this.props.loading ? '...' : ''}
+            {loading ? '...' : ''}
           </Button>
         </DialogActions>
       </form>

@@ -1,5 +1,4 @@
 import Form from '../../../../components/form';
-import FormField from '../../../../components/form-field';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import slugify from 'slugify';
@@ -42,36 +41,20 @@ class TopicForm extends Component {
 
   onDelete = () => this.props.dispatch(removeTopic(this.props.topic.id));
 
-  renderFormField(label, key, props) {
-    const {errors} = this.props.error || {};
-    const error = errors && errors[key];
-    return (
-      <FormField
-        {...props}
-        name={key}
-        label={label}
-        defaultValue={this.props.topic[key]}
-        error={Boolean(error)}
-        helperText={error && error.msg}
-      />
-    );
-  }
-
   render() {
     return (
       <Form
         noun="topic"
-        editing={Boolean(this.props.topic.id)}
+        initialData={this.props.topic}
+        fields={['title', ['description', {multiline: true}]]}
         loading={this.props.loading}
+        error={this.props.error}
+        success={this.props.success}
         onCancel={this.props.onCancel}
         onDelete={this.onDelete}
         onSubmit={this.onSubmit}
         onSuccess={this.props.onSuccess}
-        success={this.props.success}
-      >
-        {this.renderFormField('Title', 'title')}
-        {this.renderFormField('Description', 'description', {multiline: true})}
-      </Form>
+      />
     );
   }
 }
