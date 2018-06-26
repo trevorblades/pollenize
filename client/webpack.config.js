@@ -37,7 +37,22 @@ module.exports = {
       title,
       template: 'index.html'
     }),
-    new WebappWebpackPlugin('./assets/logo.svg'),
+    new WebappWebpackPlugin({
+      logo: './assets/logo.svg',
+      cache: true,
+      favicons: {
+        icons: {
+          android: false,
+          appleIcon: false,
+          appleStartup: false,
+          coast: false,
+          favicons: true,
+          firefox: false,
+          yandex: false,
+          windows: false
+        }
+      }
+    }),
     new webpack.DefinePlugin({
       'process.env.APP_TITLE': JSON.stringify(title),
       'process.env.PUBLIC_PATH': JSON.stringify(publicPath)
