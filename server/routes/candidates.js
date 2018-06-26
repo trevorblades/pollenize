@@ -23,8 +23,10 @@ const schema = {
   }
 };
 
+const validate = [checkSchema(schema), handleValidation];
+
 const router = express.Router();
-router.post('/', checkSchema(schema), handleValidation, async (req, res) => {
+router.post('/', validate, async (req, res) => {
   const data = matchedData(req);
   const candidate = await Candidate.create(data);
   res.send(candidate);
@@ -36,7 +38,7 @@ router
     res.locals.candidate = await Candidate.findById(req.params.id);
     next();
   })
-  .put(async (req, res, next) => {
+  .put(validate, async (req, res, next) => {
     await res.locals.candidate.update(req.body);
     next();
   })
