@@ -27,17 +27,23 @@ async function fetchElection(id) {
   return response.body;
 }
 
-function replaceOrUpdate(collection, item) {
-  if (!collection) {
-    return [item];
-  }
-
+function replaceOrUpdate(collection = [], item) {
   const index = findIndex(collection, ['id', item.id]);
   if (index === -1) {
-    return [...collection, item];
+    return {
+      result: [...collection, item],
+      updated: false
+    };
   }
 
-  return [...collection.slice(0, index), item, ...collection.slice(index + 1)];
+  return {
+    result: [
+      ...collection.slice(0, index),
+      item,
+      ...collection.slice(index + 1)
+    ],
+    updated: true
+  };
 }
 
 const defaultState = {
@@ -72,20 +78,23 @@ export default handleActions(
       error: payload
     }),
     [candidateSuccess]: (state, {payload}) => {
+      const {result, updated} = replaceOrUpdate(state.data.candidates, payload);
       const nextState = {
         ...state,
         data: {
           ...state.data,
-          candidates: replaceOrUpdate(state.data.candidates, payload)
+          candidates: result
         }
       };
 
-      const pathname = `/elections/${state.data.slug}/${payload.slug}`;
-      if (pathname === window.location.pathname) {
-        return nextState;
+      if (updated) {
+        const pathname = `/elections/${state.data.slug}/${payload.slug}`;
+        if (pathname !== window.location.pathname) {
+          return loop(nextState, Cmd.action(push(pathname)));
+        }
       }
 
-      return loop(nextState, Cmd.action(push(pathname)));
+      return nextState;
     },
     [candidateRemoved]: (state, {payload}) =>
       loop(
@@ -108,11 +117,12 @@ export default handleActions(
           }
 
           const {id} = payload.topic;
+          const {result} = replaceOrUpdate(candidate.positions[id], payload);
           return {
             ...candidate,
             positions: {
               ...candidate.positions,
-              [id]: replaceOrUpdate(candidate.positions[id], payload)
+              [id]: result
             }
           };
         })
@@ -138,13 +148,16 @@ export default handleActions(
         })
       }
     }),
-    [topicSuccess]: (state, {payload}) => ({
-      ...state,
-      data: {
-        ...state.data,
-        topics: replaceOrUpdate(state.data.topics, payload)
-      }
-    }),
+    [topicSuccess]: (state, {payload}) => {
+      const {result} = replaceOrUpdate(state.data.topics, payload);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          topics: result
+        }
+      };
+    },
     [topicRemoved]: (state, {payload}) => ({
       ...state,
       data: {
