@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
     order: [[sequelize.fn('RANDOM')]],
     include: {
       model: Position,
-      include: [Topic, Source]
+      include: Source
     }
   });
 

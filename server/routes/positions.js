@@ -1,8 +1,27 @@
 import express from 'express';
+import createValidationMiddleware from '../middleware/validation';
 import {Position, Source} from '../models';
+import {checkSchema} from 'express-validator/check';
+
+const isInt = {isInt: true};
+const validationMiddleware = createValidationMiddleware(
+  checkSchema({
+    text: {
+      trim: true,
+      isEmpty: {
+        negated: true
+      }
+    },
+    'sources.*.url': {
+      isURL: true
+    },
+    candidate_id: isInt,
+    topic_id: isInt
+  })
+);
 
 const router = express.Router();
-router.post('/', async (req, res) => {
+router.post('/', validationMiddleware, async (req, res) => {
   const position = await Position.create(req.body, {include: Source});
   res.send(position);
 });
