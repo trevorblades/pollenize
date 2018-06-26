@@ -13,6 +13,7 @@ import {
 class TopicForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    error: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
@@ -41,6 +42,21 @@ class TopicForm extends Component {
 
   onDelete = () => this.props.dispatch(removeTopic(this.props.topic.id));
 
+  renderFormField(label, key, props) {
+    const {errors} = this.props.error || {};
+    const error = errors && errors[key];
+    return (
+      <FormField
+        {...props}
+        name={key}
+        label={label}
+        defaultValue={this.props.topic[key]}
+        error={Boolean(error)}
+        helperText={error && error.msg}
+      />
+    );
+  }
+
   render() {
     return (
       <Form
@@ -53,23 +69,15 @@ class TopicForm extends Component {
         onSuccess={this.props.onSuccess}
         success={this.props.success}
       >
-        <FormField
-          label="Title"
-          name="title"
-          defaultValue={this.props.topic.title}
-        />
-        <FormField
-          multiline
-          label="Description"
-          name="description"
-          defaultValue={this.props.topic.description}
-        />
+        {this.renderFormField('Title', 'title')}
+        {this.renderFormField('Description', 'description', {multiline: true})}
       </Form>
     );
   }
 }
 
 const mapStateToProps = state => ({
+  error: state.topic.error,
   loading: state.topic.loading,
   success: state.topic.success
 });

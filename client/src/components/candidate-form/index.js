@@ -54,8 +54,22 @@ class CandidateForm extends Component {
   onDelete = () =>
     this.props.dispatch(removeCandidate(this.props.candidate.id));
 
-  render() {
+  renderFormField(label, key) {
+    // TODO: refactor this to reuse more easily between topic and candidate forms
     const {errors} = this.props.error || {};
+    const error = errors && errors[key];
+    return (
+      <FormField
+        name={key}
+        label={label}
+        defaultValue={this.props.candidate[key]}
+        error={Boolean(error)}
+        helperText={error && error.msg}
+      />
+    );
+  }
+
+  render() {
     return (
       <Form
         noun="candidate"
@@ -67,20 +81,8 @@ class CandidateForm extends Component {
         onSuccess={this.props.onSuccess}
         success={this.props.success}
       >
-        <FormField
-          label="Name"
-          name="name"
-          defaultValue={this.props.candidate.name}
-          error={errors && 'name' in errors}
-          helperText={errors && errors.name && errors.name.msg}
-        />
-        <FormField
-          label="Party"
-          name="party"
-          defaultValue={this.props.candidate.party}
-          error={errors && 'party' in errors}
-          helperText={errors && errors.party && errors.party.msg}
-        />
+        {this.renderFormField('Name', 'name')}
+        {this.renderFormField('Party', 'party')}
         <ColorPicker color={this.state.color} onChange={this.onColorChange} />
       </Form>
     );
