@@ -13,10 +13,8 @@ const validationMiddleware = createValidationMiddleware(
         negated: true
       }
     },
-    sources: {
-      isArray: true
-    },
-    'sources.*.url': {
+    'sources.*': {
+      trim: true,
       isURL: true
     },
     candidate_id: isInt,
@@ -26,8 +24,15 @@ const validationMiddleware = createValidationMiddleware(
 
 const router = express.Router();
 router.post('/', validationMiddleware, async (req, res) => {
-  const data = matchedData(req);
-  const position = await Position.create(data, {include: Source});
+  const {sources, ...data} = matchedData(req);
+  const position = await Position.create(
+    {
+      ...data,
+      sources: sources.map(source => ({url: source}))
+    },
+    {include: Source}
+  );
+
   res.send(position);
 });
 

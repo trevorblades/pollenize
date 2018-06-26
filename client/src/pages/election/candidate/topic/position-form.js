@@ -2,6 +2,7 @@ import Form from '../../../../components/form';
 import FormField from '../../../../components/form-field';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import filter from 'lodash/filter';
 import map from 'lodash/map';
 import {connect} from 'react-redux';
 import {
@@ -58,9 +59,7 @@ class PositionForm extends Component {
       savePosition({
         id: this.props.position.id,
         text: event.target.text.value,
-        sources: this.state.sources
-          .filter(source => source.trim())
-          .map(url => ({url})),
+        sources: filter(this.state.sources),
         candidate_id: this.props.position.candidate_id,
         topic_id: this.props.position.topic_id
       })
@@ -79,15 +78,21 @@ class PositionForm extends Component {
   }
 
   render() {
-    const sources = this.state.sources.map((source, index) => (
-      <FormField
-        autoFocus={index === this.state.autoFocusIndex}
-        key={index.toString()}
-        value={source}
-        placeholder="Enter the source website URL"
-        onChange={event => this.onSourceChange(index, event)}
-      />
-    ));
+    const {errors} = this.props.error || {};
+    const sources = this.state.sources.map((source, index) => {
+      const error = errors && errors[`sources[${index}]`];
+      return (
+        <FormField
+          error={Boolean(error)}
+          helperText={error && error.msg}
+          autoFocus={index === this.state.autoFocusIndex}
+          key={index.toString()}
+          value={source}
+          placeholder="Enter the source website URL"
+          onChange={event => this.onSourceChange(index, event)}
+        />
+      );
+    });
 
     const fields = [
       [
@@ -99,6 +104,7 @@ class PositionForm extends Component {
       ],
       ...sources
     ];
+
     if (!this.state.sources.includes('')) {
       fields.push(
         <FormField
