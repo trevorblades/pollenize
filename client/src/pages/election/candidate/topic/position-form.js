@@ -79,13 +79,14 @@ class PositionForm extends Component {
   render() {
     const {errors} = this.props.error || {};
     const sources = this.state.sources.map((source, index) => {
-      const error = errors && errors[`sources[${index}]`];
+      const key = `sources[${index}]`;
+      const error = errors && errors[key];
       return (
         <FormField
           error={Boolean(error)}
           helperText={error && error.msg}
           autoFocus={index === this.state.autoFocusIndex}
-          key={index.toString()}
+          key={key}
           value={source}
           placeholder="Enter the source website URL"
           onChange={event => this.onSourceChange(index, event)}
