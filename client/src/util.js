@@ -1,6 +1,7 @@
 import filter from 'lodash/filter';
 import slugify from 'limax';
 
+// TODO: publish this as an npm package
 export function getNextSlug(title, slugs) {
   const nextSlug = slugify(title);
   const pattern = new RegExp(`^${nextSlug}(\\d*)$`);
