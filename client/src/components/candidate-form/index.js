@@ -15,6 +15,7 @@ class CandidateForm extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    error: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
@@ -54,6 +55,7 @@ class CandidateForm extends Component {
     this.props.dispatch(removeCandidate(this.props.candidate.id));
 
   render() {
+    const {errors} = this.props.error || {};
     return (
       <Form
         noun="candidate"
@@ -69,11 +71,15 @@ class CandidateForm extends Component {
           label="Name"
           name="name"
           defaultValue={this.props.candidate.name}
+          error={errors && 'name' in errors}
+          helperText={errors && errors.name && errors.name.msg}
         />
         <FormField
           label="Party"
           name="party"
           defaultValue={this.props.candidate.party}
+          error={errors && 'party' in errors}
+          helperText={errors && errors.party && errors.party.msg}
         />
         <ColorPicker color={this.state.color} onChange={this.onColorChange} />
       </Form>
@@ -82,6 +88,7 @@ class CandidateForm extends Component {
 }
 
 const mapStateToProps = state => ({
+  error: state.candidate.error,
   loading: state.candidate.loading,
   success: state.candidate.success
 });

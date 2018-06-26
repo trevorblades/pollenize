@@ -21,8 +21,6 @@ router
     await res.locals.topic.destroy();
     next();
   })
-  .all((req, res) => {
-    res.send(res.locals.topic);
-  });
+  .all((req, res) => res.send(res.locals.topic));
 
 export default router;

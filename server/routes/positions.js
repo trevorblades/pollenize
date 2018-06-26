@@ -34,8 +34,6 @@ router
     await res.locals.position.destroy();
     next();
   })
-  .all((req, res) => {
-    res.send(res.locals.position);
-  });
+  .all((req, res) => res.send(res.locals.position));
 
 export default router;

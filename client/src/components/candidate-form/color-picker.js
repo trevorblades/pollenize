@@ -1,16 +1,11 @@
 import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
 import Popover from '@material-ui/core/Popover';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
-import styled from 'react-emotion';
 import theme from '../../theme';
 import {ChromePicker} from 'react-color';
-
-const Container = styled.div({
-  marginTop: theme.spacing.unit,
-  marginBottom: theme.spacing.unit / 2
-});
 
 class ColorPicker extends Component {
   static propTypes = {
@@ -34,7 +29,7 @@ class ColorPicker extends Component {
   render() {
     return (
       <Fragment>
-        <Container>
+        <FormControl margin="dense">
           <Typography gutterBottom variant="caption">
             Primary color
           </Typography>
@@ -49,7 +44,7 @@ class ColorPicker extends Component {
           >
             {this.props.color}
           </Button>
-        </Container>
+        </FormControl>
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
