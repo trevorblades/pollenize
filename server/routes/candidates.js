@@ -1,6 +1,6 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
-import {Candidate} from '../models';
+import {Candidate, Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
 
@@ -28,14 +28,19 @@ const validationMiddleware = createValidationMiddleware(
 const router = express.Router();
 router.post('/', validationMiddleware, async (req, res) => {
   const data = matchedData(req);
-  const candidate = await Candidate.create(data);
+  const candidate = await Candidate.create(data, {include: Position});
   res.send(candidate);
 });
 
 router
   .route('/:id')
   .all(async (req, res, next) => {
-    res.locals.candidate = await Candidate.findById(req.params.id);
+    res.locals.candidate = await Candidate.findById(req.params.id, {
+      include: {
+        model: Position,
+        include: Source
+      }
+    });
     next();
   })
   .put(validationMiddleware, async (req, res, next) => {

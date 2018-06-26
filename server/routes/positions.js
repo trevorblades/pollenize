@@ -13,6 +13,9 @@ const validationMiddleware = createValidationMiddleware(
         negated: true
       }
     },
+    sources: {
+      isArray: true
+    },
     'sources.*': {
       trim: true,
       isURL: true

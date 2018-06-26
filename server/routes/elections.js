@@ -1,6 +1,4 @@
 import express from 'express';
-import groupBy from 'lodash/groupBy';
-import invokeMap from 'lodash/invokeMap';
 import {Election, Topic, Position, Source, sequelize} from '../models';
 
 const router = express.Router();
@@ -31,17 +29,7 @@ router.get('/:id', async (req, res) => {
     }
   });
 
-  election.setDataValue(
-    'candidates',
-    candidates.map(candidate => {
-      const positions = invokeMap(candidate.positions, 'toJSON');
-      return {
-        ...candidate.toJSON(),
-        positions: groupBy(positions, 'topic_id')
-      };
-    })
-  );
-
+  election.setDataValue('candidates', candidates);
   res.send(election);
 });
 
