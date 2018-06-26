@@ -1,9 +1,10 @@
 import ColorPicker from './color-picker';
-import Form, {FormField} from '../form';
+import Form from '../form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import slugify from 'slugify';
+import map from 'lodash/map';
 import {connect} from 'react-redux';
+import {getNextSlug} from '../../util';
 import {
   save as saveCandidate,
   remove as removeCandidate,
@@ -14,6 +15,7 @@ class CandidateForm extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    election: PropTypes.object.isRequired,
     error: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
@@ -38,11 +40,12 @@ class CandidateForm extends Component {
     event.preventDefault();
 
     const name = event.target.name.value;
+    const slugs = map(this.props.election.candidates, 'slug');
     this.props.dispatch(
       saveCandidate({
         id: this.props.candidate.id,
         name,
-        slug: slugify(name, {lower: true}),
+        slug: getNextSlug(name, slugs),
         party: event.target.party.value,
         color: this.state.color,
         election_id: this.props.candidate.election_id
@@ -52,21 +55,6 @@ class CandidateForm extends Component {
 
   onDelete = () =>
     this.props.dispatch(removeCandidate(this.props.candidate.id));
-
-  renderFormField(label, key) {
-    // TODO: refactor this to reuse more easily between topic and candidate forms
-    const {errors} = this.props.error || {};
-    const error = errors && errors[key];
-    return (
-      <FormField
-        name={key}
-        label={label}
-        defaultValue={this.props.candidate[key]}
-        error={Boolean(error)}
-        helperText={error && error.msg}
-      />
-    );
-  }
 
   render() {
     return (
@@ -95,6 +83,7 @@ class CandidateForm extends Component {
 }
 
 const mapStateToProps = state => ({
+  election: state.election.data,
   error: state.candidate.error,
   loading: state.candidate.loading,
   success: state.candidate.success
