@@ -34,8 +34,9 @@ router.post('/', validationMiddleware, async (req, res) => {
 router
   .route('/:id')
   .all(async (req, res, next) => {
-    const {id} = req.params;
-    res.locals.position = await Position.findById(id, {include: Source});
+    res.locals.position = await Position.findById(req.params.id, {
+      include: Source
+    });
     next();
   })
   .put(validationMiddleware, async (req, res, next) => {
