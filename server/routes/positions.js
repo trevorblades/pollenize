@@ -1,5 +1,5 @@
 import express from 'express';
-import {Position, Source, Topic} from '../models';
+import {Position, Source} from '../models';
 
 const router = express.Router();
 router.post('/', async (req, res) => {
@@ -11,7 +11,7 @@ router
   .route('/:id')
   .all(async (req, res, next) => {
     res.locals.position = await Position.findById(req.params.id, {
-      include: [Source, Topic]
+      include: Source
     });
     next();
   })
@@ -23,6 +23,7 @@ router
     const sources = await Source.bulkCreate(req.body.sources, {
       returning: true
     });
+
     await res.locals.position.setSources(sources);
     res.locals.position.setDataValue('sources', sources);
 
