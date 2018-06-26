@@ -39,7 +39,8 @@ router
     next();
   })
   .put(validationMiddleware, async (req, res, next) => {
-    await res.locals.candidate.update(req.body);
+    const data = matchedData(req);
+    await res.locals.candidate.update(data);
     next();
   })
   .delete(async (req, res, next) => {

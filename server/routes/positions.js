@@ -2,6 +2,7 @@ import express from 'express';
 import createValidationMiddleware from '../middleware/validation';
 import {Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
+import {matchedData} from 'express-validator/filter';
 
 const isInt = {isInt: true};
 const validationMiddleware = createValidationMiddleware(
@@ -11,6 +12,9 @@ const validationMiddleware = createValidationMiddleware(
       isEmpty: {
         negated: true
       }
+    },
+    sources: {
+      isArray: true
     },
     'sources.*.url': {
       isURL: true
@@ -22,27 +26,25 @@ const validationMiddleware = createValidationMiddleware(
 
 const router = express.Router();
 router.post('/', validationMiddleware, async (req, res) => {
-  const position = await Position.create(req.body, {include: Source});
+  const data = matchedData(req);
+  const position = await Position.create(data, {include: Source});
   res.send(position);
 });
 
 router
   .route('/:id')
   .all(async (req, res, next) => {
-    res.locals.position = await Position.findById(req.params.id, {
-      include: Source
-    });
+    const {id} = req.params;
+    res.locals.position = await Position.findById(id, {include: Source});
     next();
   })
-  .put(async (req, res, next) => {
+  .put(validationMiddleware, async (req, res, next) => {
+    const data = matchedData(req);
+    res.locals.position.setDataValue('text', data.text);
     res.locals.position.changed('updated_at', true);
-    res.locals.position.setDataValue('text', req.body.text);
     await res.locals.position.save();
 
-    const sources = await Source.bulkCreate(req.body.sources, {
-      returning: true
-    });
-
+    const sources = await Source.bulkCreate(data.sources, {returning: true});
     await res.locals.position.setSources(sources);
     res.locals.position.setDataValue('sources', sources);
 

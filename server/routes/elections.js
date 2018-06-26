@@ -37,7 +37,7 @@ router.get('/:id', async (req, res) => {
       const positions = invokeMap(candidate.positions, 'toJSON');
       return {
         ...candidate.toJSON(),
-        positions: groupBy(positions, 'topic.id')
+        positions: groupBy(positions, 'topic_id')
       };
     })
   );

@@ -39,7 +39,6 @@ module.exports = {
     }),
     new WebappWebpackPlugin({
       logo: './assets/logo.svg',
-      cache: true,
       favicons: {
         icons: {
           android: false,
