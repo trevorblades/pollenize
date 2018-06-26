@@ -116,13 +116,14 @@ export default handleActions(
             return candidate;
           }
 
-          const {id} = payload.topic;
-          const {result} = replaceOrUpdate(candidate.positions[id], payload);
+          const topic = payload.topic_id;
+          const {positions} = candidate;
+          const {result} = replaceOrUpdate(positions[topic], payload);
           return {
             ...candidate,
             positions: {
-              ...candidate.positions,
-              [id]: result
+              ...positions,
+              [topic]: result
             }
           };
         })
@@ -137,12 +138,13 @@ export default handleActions(
             return candidate;
           }
 
-          const {id} = payload.topic;
+          const topic = payload.topic_id;
+          const {positions} = candidate;
           return {
             ...candidate,
             positions: {
-              ...candidate.positions,
-              [id]: reject(candidate.positions[id], ['id', payload.id])
+              ...positions,
+              [topic]: reject(positions[topic], ['id', payload.id])
             }
           };
         })

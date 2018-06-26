@@ -4,8 +4,6 @@ import {Position, Source, Topic} from '../models';
 const router = express.Router();
 router.post('/', async (req, res) => {
   const position = await Position.create(req.body, {include: Source});
-  const topic = await position.getTopic();
-  position.setDataValue('topic', topic);
   res.send(position);
 });
 
