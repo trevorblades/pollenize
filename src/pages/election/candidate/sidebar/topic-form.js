@@ -1,8 +1,12 @@
 import Form from '../../../../components/form';
+import FormControl from '@material-ui/core/FormControl';
+import ImageButton from '../../../../components/image-button';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import reject from 'lodash/reject';
+import styled from 'react-emotion';
 import {connect} from 'react-redux';
 import {getNextSlug} from '../../../../util';
 import {
@@ -10,6 +14,10 @@ import {
   remove as removeTopic,
   reset as resetTopic
 } from '../../../../actions/topic';
+
+const StyledImageButton = styled(ImageButton)({
+  paddingTop: '50%'
+});
 
 class TopicForm extends Component {
   static propTypes = {
@@ -23,9 +31,15 @@ class TopicForm extends Component {
     topic: PropTypes.object.isRequired
   };
 
+  state = {
+    image: null
+  };
+
   componentWillUnmount() {
     this.props.dispatch(resetTopic());
   }
+
+  onImageChange = image => this.setState({image});
 
   onSubmit = event => {
     event.preventDefault();
@@ -36,6 +50,10 @@ class TopicForm extends Component {
     const formData = new FormData(event.target);
     formData.append('slug', getNextSlug(event.target.title.value, slugs));
     formData.append('election_id', this.props.topic.election_id);
+    if (this.state.image) {
+      formData.append('file', this.state.image.file);
+    }
+
     this.props.dispatch(saveTopic({id, formData}));
   };
 
@@ -46,7 +64,24 @@ class TopicForm extends Component {
       <Form
         noun="topic"
         initialData={this.props.topic}
-        fields={['title', ['description', {multiline: true}]]}
+        fields={[
+          'title',
+          ['description', {multiline: true}],
+          <FormControl fullWidth key="image" margin="dense">
+            <Typography gutterBottom variant="caption">
+              Banner image
+            </Typography>
+            <StyledImageButton
+              iconSize={48}
+              image={
+                this.state.image
+                  ? this.state.image.dataUrl
+                  : this.props.topic.image
+              }
+              onChange={this.onImageChange}
+            />
+          </FormControl>
+        ]}
         loading={this.props.loading}
         error={this.props.error}
         success={this.props.success}

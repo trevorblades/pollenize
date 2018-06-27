@@ -1,9 +1,8 @@
-import ButtonBase from '@material-ui/core/ButtonBase';
 import ColorPicker from './color-picker';
 import Form from '../form';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import ImageIcon from '@material-ui/icons/Image';
+import ImageButton from '../image-button';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -26,17 +25,9 @@ const GridItem = withProps({
   xs: true
 })(Grid);
 
-const AvatarButton = withProps({component: 'label'})(
-  styled(ButtonBase)(size(96), {
-    borderRadius: '50%',
-    color: theme.palette.grey[500],
-    backgroundColor: theme.palette.grey[100],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'
-  })
-);
-
-const FileInput = withProps({type: 'file'})(styled.input({display: 'none'}));
+const AvatarButton = styled(ImageButton)(size(96), {
+  borderRadius: '50%'
+});
 
 class CandidateForm extends Component {
   static propTypes = {
@@ -62,24 +53,7 @@ class CandidateForm extends Component {
     this.props.dispatch(resetCandidate());
   }
 
-  onFileChange = event => {
-    const file = event.target.files[0];
-    this.setState({avatar: {file}});
-
-    const reader = new FileReader();
-    reader.addEventListener('load', this.onReaderLoad);
-    reader.readAsDataURL(file);
-
-    event.target.value = null;
-  };
-
-  onReaderLoad = event =>
-    this.setState(prevState => ({
-      avatar: {
-        ...prevState.avatar,
-        dataUrl: event.target.result
-      }
-    }));
+  onAvatarChange = avatar => this.setState({avatar});
 
   onColorChange = color => this.setState({color: color.hex});
 
@@ -104,9 +78,6 @@ class CandidateForm extends Component {
     this.props.dispatch(removeCandidate(this.props.candidate.id));
 
   render() {
-    const avatar = this.state.avatar
-      ? this.state.avatar.dataUrl
-      : this.props.candidate.avatar;
     return (
       <Form
         noun="candidate"
@@ -121,11 +92,13 @@ class CandidateForm extends Component {
                   Avatar image
                 </Typography>
                 <AvatarButton
-                  style={{backgroundImage: avatar && `url(${avatar})`}}
-                >
-                  {!avatar && <ImageIcon />}
-                  <FileInput onChange={this.onFileChange} />
-                </AvatarButton>
+                  image={
+                    this.state.avatar
+                      ? this.state.avatar.dataUrl
+                      : this.props.candidate.avatar
+                  }
+                  onChange={this.onAvatarChange}
+                />
               </FormControl>
             </GridItem>
             <GridItem>
