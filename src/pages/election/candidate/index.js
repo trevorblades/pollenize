@@ -1,3 +1,4 @@
+import Avatar from '@material-ui/core/Avatar';
 import CandidateForm from '../../../components/candidate-form';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
@@ -20,15 +21,22 @@ import {SECTION_VERTICAL_PADDING} from './common';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getCandidates} from '../../../selectors';
+import {size} from 'polished';
 
 const Hero = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   padding: theme.spacing.unit * 5,
-  textAlign: 'center',
   backgroundSize: 'contain',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundBlendMode: 'multiply',
   position: 'relative'
+});
+
+const StyledAvatar = styled(Avatar)(size(96), {
+  marginBottom: theme.spacing.unit * 2
 });
 
 const Name = withProps({
@@ -170,6 +178,9 @@ class Candidate extends Component {
             backgroundColor: this.props.candidate.color
           }}
         >
+          {this.props.candidate.avatar && (
+            <StyledAvatar src={this.props.candidate.avatar} />
+          )}
           <Name>{this.props.candidate.name}</Name>
           <Typography gutterBottom variant="title" color="inherit">
             {this.props.candidate.party}

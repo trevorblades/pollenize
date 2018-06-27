@@ -1,4 +1,5 @@
 import AddIcon from '@material-ui/icons/Add';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CandidateForm from '../../components/candidate-form';
@@ -17,6 +18,7 @@ import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {divisors} from 'number-theory';
+import {size} from 'polished';
 
 const containerClassName = css({flexGrow: 1});
 const LinkButton = withProps({component: Link})(ButtonBase);
@@ -29,6 +31,10 @@ const GridItem = defaultProps({
     flexDirection: 'column'
   })
 );
+
+const StyledAvatar = styled(Avatar)(size(72), {
+  marginBottom: theme.spacing.unit
+});
 
 const Name = withProps({
   variant: 'headline',
@@ -107,6 +113,7 @@ class Candidates extends Component {
                   backgroundColor: candidate.color
                 }}
               >
+                {candidate.avatar && <StyledAvatar src={candidate.avatar} />}
                 <Name>{candidate.name}</Name>
                 <Typography variant="subheading" color="inherit">
                   {candidate.party}
