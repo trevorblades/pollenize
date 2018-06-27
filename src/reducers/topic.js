@@ -1,18 +1,18 @@
-import api, {headers} from '../api';
+import api from '../api';
 import {save, success, remove, removed, failure, reset} from '../actions/topic';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 
 async function createTopic(body) {
-  const response = await api.post('/topics', {body, headers});
+  const response = await api.post('/topics', {body});
   if (response.err) {
     throw response.body;
   }
   return response.body;
 }
 
-async function updateTopic(body) {
-  const response = await api.put(`/topics/${body.id}`, {body, headers});
+async function updateTopic(body, id) {
+  const response = await api.put(`/topics/${id}`, {body});
   if (response.err) {
     throw response.body;
   }
@@ -35,19 +35,21 @@ const defaultState = {
 
 export default handleActions(
   {
-    [save]: (state, {payload}) =>
-      loop(
+    [save]: (state, {payload}) => {
+      const {id, formData} = payload;
+      return loop(
         {
           ...state,
           loading: true,
           success: false
         },
-        Cmd.run(payload.id ? updateTopic : createTopic, {
+        Cmd.run(id ? updateTopic : createTopic, {
           successActionCreator: success,
           failActionCreator: failure,
-          args: [payload]
+          args: [formData, id]
         })
-      ),
+      );
+    },
     [remove]: (state, {payload}) =>
       loop(
         {

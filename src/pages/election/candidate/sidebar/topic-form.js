@@ -2,6 +2,7 @@ import Form from '../../../../components/form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import map from 'lodash/map';
+import reject from 'lodash/reject';
 import {connect} from 'react-redux';
 import {getNextSlug} from '../../../../util';
 import {
@@ -29,17 +30,13 @@ class TopicForm extends Component {
   onSubmit = event => {
     event.preventDefault();
 
-    const title = event.target.title.value;
-    const slugs = map(this.props.election.topics, 'slug');
-    this.props.dispatch(
-      saveTopic({
-        id: this.props.topic.id,
-        title,
-        slug: getNextSlug(title, slugs),
-        description: event.target.description.value,
-        election_id: this.props.topic.election_id
-      })
-    );
+    const {id} = this.props.topic;
+    const topics = reject(this.props.election.topics, ['id', id]);
+    const slugs = map(topics, 'slug');
+    const formData = new FormData(event.target);
+    formData.append('slug', getNextSlug(event.target.title.value, slugs));
+    formData.append('election_id', this.props.topic.election_id);
+    this.props.dispatch(saveTopic({id, formData}));
   };
 
   onDelete = () => this.props.dispatch(removeTopic(this.props.topic.id));
