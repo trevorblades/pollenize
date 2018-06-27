@@ -21,7 +21,8 @@ const validationMiddleware = createValidationMiddleware(
       isHexColor: true
     },
     election_id: {
-      isInt: true
+      isInt: true,
+      toInt: true
     }
   })
 );
