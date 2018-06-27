@@ -1,5 +1,7 @@
+import ImgurStorage from 'multer-storage-imgur';
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
+import multer from 'multer';
 import {Candidate, Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
@@ -25,9 +27,17 @@ const validationMiddleware = createValidationMiddleware(
   })
 );
 
+const storage = ImgurStorage({clientId: process.env.IMGUR_CLIENT_ID});
+const upload = multer({storage});
+const uploadMiddleware = upload.single('file');
+
 const router = express.Router();
-router.post('/', validationMiddleware, async (req, res) => {
+router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
   const data = matchedData(req);
+  if (req.file) {
+    data.avatar = req.file.data.link;
+  }
+
   const candidate = await Candidate.create(data, {include: Position});
   res.send(candidate);
 });
@@ -43,8 +53,12 @@ router
     });
     next();
   })
-  .put(validationMiddleware, async (req, res, next) => {
+  .put(uploadMiddleware, validationMiddleware, async (req, res, next) => {
     const data = matchedData(req);
+    if (req.file) {
+      data.avatar = req.file.data.link;
+    }
+
     await res.locals.candidate.update(data);
     next();
   })

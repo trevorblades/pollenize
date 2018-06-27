@@ -5,7 +5,8 @@ export default (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
     name: DataTypes.STRING,
     party: DataTypes.STRING,
-    color: DataTypes.STRING
+    color: DataTypes.STRING,
+    avatar: DataTypes.STRING
   });
 
   Candidate.associate = models => {
