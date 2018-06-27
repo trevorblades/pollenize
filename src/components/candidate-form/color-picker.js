@@ -7,6 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import theme from '../../theme';
 import {ChromePicker} from 'react-color';
 
+const centerOrigin = {
+  horizontal: 'center',
+  vertical: 'center'
+};
+
 class ColorPicker extends Component {
   static propTypes = {
     color: PropTypes.string.isRequired,
@@ -48,6 +53,8 @@ class ColorPicker extends Component {
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
+          anchorOrigin={centerOrigin}
+          transformOrigin={centerOrigin}
           onClose={this.onClose}
         >
           <ChromePicker
