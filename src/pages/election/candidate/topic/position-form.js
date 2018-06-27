@@ -79,7 +79,7 @@ class PositionForm extends Component {
   render() {
     const {errors} = this.props.error || {};
     const sources = this.state.sources.map((source, index) => {
-      const key = `sources[${index}]`;
+      const key = `sources[${index}].url`;
       const error = errors && errors[key];
       return (
         <FormField

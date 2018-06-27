@@ -18,7 +18,6 @@
     "number-theory": "^1.1.0",
     "ol": "^4.6.5",
     "polished": "^1.9.2",
-    "prepend-http": "^2.0.0",
     "react": "^16.4.0",
     "react-color": "^2.14.1",
     "react-dom": "^16.4.0",

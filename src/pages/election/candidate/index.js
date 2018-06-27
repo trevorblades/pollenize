@@ -12,7 +12,6 @@ import Sidebar from './sidebar';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
-import prependHttp from 'prepend-http';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import theme from '../../../theme';
@@ -225,7 +224,7 @@ class Candidate extends Component {
                     key={source.id}
                   >
                     <a
-                      href={prependHttp(source.url)}
+                      href={source.url}
                       rel="noopener noreferrer"
                       target="_blank"
                     >
