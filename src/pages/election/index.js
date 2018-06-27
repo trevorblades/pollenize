@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import NotFound from '../not-found';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import SuccessMessage from './success-message';
 import map from 'lodash/map';
 import {Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -18,7 +19,8 @@ class Election extends Component {
     dispatch: PropTypes.func.isRequired,
     election: PropTypes.object,
     loading: PropTypes.bool.isRequired,
-    match: PropTypes.object.isRequired
+    match: PropTypes.object.isRequired,
+    lastSuccess: PropTypes.string
   };
 
   componentDidMount() {
@@ -53,6 +55,9 @@ class Election extends Component {
           />
           <Route component={Candidates} />
         </Switch>
+        {this.props.lastSuccess && (
+          <SuccessMessage key={this.props.lastSuccess} />
+        )}
       </Fragment>
     );
   }
@@ -60,7 +65,8 @@ class Election extends Component {
 
 const mapStateToProps = state => ({
   election: state.election.data,
-  loading: state.election.loading
+  loading: state.election.loading,
+  lastSuccess: state.lastSuccess
 });
 
 export default connect(mapStateToProps)(Election);
