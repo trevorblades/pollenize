@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "pretest": "eslint ./",
+    "pretest": "eslint src webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --history-api-fallback --mode development"
+    "start": "webpack-dev-server --hot --history-api-fallback --mode development",
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "@material-ui/core": "^1.2.1",
