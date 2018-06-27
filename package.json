@@ -24,6 +24,7 @@
     "multer-storage-imgur": "^1.0.2",
     "pascalcase": "^0.1.1",
     "pg": "^7.4.3",
+    "prepend-http": "^2.0.0",
     "sequelize": "^4.37.10"
   }
 }

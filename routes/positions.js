@@ -1,5 +1,6 @@
 import express from 'express';
 import createValidationMiddleware from '../middleware/validation';
+import prependHttp from 'prepend-http';
 import {Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
@@ -17,7 +18,12 @@ const validationMiddleware = createValidationMiddleware(
       isArray: true
     },
     'sources.*': {
-      trim: true,
+      customSanitizer: {
+        options: value => ({url: prependHttp(value)})
+      }
+    },
+    'sources.*.url': {
+      // prependHttp trims so we don't need to set trim: true here
       isURL: true
     },
     candidate_id: isInt,
@@ -27,15 +33,8 @@ const validationMiddleware = createValidationMiddleware(
 
 const router = express.Router();
 router.post('/', validationMiddleware, async (req, res) => {
-  const {sources, ...data} = matchedData(req);
-  const position = await Position.create(
-    {
-      ...data,
-      sources: sources.map(source => ({url: source}))
-    },
-    {include: Source}
-  );
-
+  const data = matchedData(req);
+  const position = await Position.create(data, {include: Source});
   res.send(position);
 });
 
