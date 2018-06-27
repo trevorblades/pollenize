@@ -1,9 +1,8 @@
 import Frisbee from 'frisbee';
 
-export default new Frisbee({
-  baseURI: 'http://localhost:3000',
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json'
-  }
-});
+export const headers = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json'
+};
+
+export default new Frisbee({baseURI: 'http://localhost:3000'});

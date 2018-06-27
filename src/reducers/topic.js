@@ -1,10 +1,10 @@
-import api from '../api';
+import api, {headers} from '../api';
 import {save, success, remove, removed, failure, reset} from '../actions/topic';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 
 async function createTopic(body) {
-  const response = await api.post('/topics', {body});
+  const response = await api.post('/topics', {body, headers});
   if (response.err) {
     throw response.body;
   }
@@ -12,7 +12,7 @@ async function createTopic(body) {
 }
 
 async function updateTopic(body) {
-  const response = await api.put(`/topics/${body.id}`, {body});
+  const response = await api.put(`/topics/${body.id}`, {body, headers});
   if (response.err) {
     throw response.body;
   }

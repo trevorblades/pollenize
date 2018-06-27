@@ -1,4 +1,4 @@
-import api from '../api';
+import api, {headers} from '../api';
 import {
   save,
   success,
@@ -11,7 +11,7 @@ import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 
 async function createPosition(body) {
-  const response = await api.post('/positions', {body});
+  const response = await api.post('/positions', {body, headers});
   if (response.err) {
     throw response.body;
   }
@@ -19,7 +19,7 @@ async function createPosition(body) {
 }
 
 async function updatePosition(body) {
-  const response = await api.put(`/positions/${body.id}`, {body});
+  const response = await api.put(`/positions/${body.id}`, {body, headers});
   if (response.err) {
     throw response.body;
   }

@@ -18,8 +18,8 @@ async function createCandidate(body) {
   return response.body;
 }
 
-async function updateCandidate(body) {
-  const response = await api.put(`/candidates/${body.id}`, {body});
+async function updateCandidate(body, id) {
+  const response = await api.put(`/candidates/${id}`, {body});
   if (response.err) {
     throw response.body;
   }
@@ -42,19 +42,21 @@ const defaultState = {
 
 export default handleActions(
   {
-    [save]: (state, {payload}) =>
-      loop(
+    [save]: (state, {payload}) => {
+      const {id, formData} = payload;
+      return loop(
         {
           ...state,
           loading: true,
           success: false
         },
-        Cmd.run(payload.id ? updateCandidate : createCandidate, {
+        Cmd.run(id ? updateCandidate : createCandidate, {
           successActionCreator: success,
           failActionCreator: failure,
-          args: [payload]
+          args: [formData, id]
         })
-      ),
+      );
+    },
     [remove]: (state, {payload}) =>
       loop(
         {
