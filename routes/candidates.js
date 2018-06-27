@@ -1,7 +1,6 @@
-import ImgurStorage from 'multer-storage-imgur';
 import createValidationMiddleware from '../middleware/validation';
+import uploadMiddleware from '../middleware/upload';
 import express from 'express';
-import multer from 'multer';
 import {Candidate, Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
@@ -26,10 +25,6 @@ const validationMiddleware = createValidationMiddleware(
     }
   })
 );
-
-const storage = ImgurStorage({clientId: process.env.IMGUR_CLIENT_ID});
-const upload = multer({storage});
-const uploadMiddleware = upload.single('file');
 
 const router = express.Router();
 router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {

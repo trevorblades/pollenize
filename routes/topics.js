@@ -1,5 +1,6 @@
 import express from 'express';
 import createValidationMiddleware from '../middleware/validation';
+import uploadMiddleware from '../middleware/upload';
 import {Topic} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
@@ -26,8 +27,12 @@ const validationMiddleware = createValidationMiddleware(
 );
 
 const router = express.Router();
-router.post('/', validationMiddleware, async (req, res) => {
+router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
   const data = matchedData(req);
+  if (req.file) {
+    data.image = req.file.data.link;
+  }
+
   const topic = await Topic.create(data);
   res.send(topic);
 });
@@ -38,8 +43,12 @@ router
     res.locals.topic = await Topic.findById(req.params.id);
     next();
   })
-  .put(validationMiddleware, async (req, res, next) => {
+  .put(uploadMiddleware, validationMiddleware, async (req, res, next) => {
     const data = matchedData(req);
+    if (req.file) {
+      data.image = req.file.data.link;
+    }
+
     await res.locals.topic.update(data);
     next();
   })
