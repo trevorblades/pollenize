@@ -6,7 +6,6 @@ import React, {Component, Fragment} from 'react';
 import PositionForm from './position-form';
 import Typography from '@material-ui/core/Typography';
 import mapProps from 'recompose/mapProps';
-// import montreal from '../../../assets/images/montreal.jpg';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
 import {connect} from 'react-redux';

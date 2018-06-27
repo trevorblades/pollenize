@@ -12,7 +12,6 @@ import Sidebar from './sidebar';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
-// import justin from '../../../assets/images/justin.jpg';
 import prependHttp from 'prepend-http';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
