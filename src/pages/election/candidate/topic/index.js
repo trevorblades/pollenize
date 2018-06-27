@@ -9,12 +9,11 @@ import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
 import {connect} from 'react-redux';
+import {sectionClassName, topicImageClassName} from '../common';
 
-const SectionContent = styled.div({
-  display: 'flex'
-});
-
-const SectionMainContent = styled.div({
+const Container = styled.section(sectionClassName);
+const InnerContainer = styled.div({display: 'flex'});
+const MainContent = styled.div({
   flexGrow: 1
 });
 
@@ -26,7 +25,7 @@ const StyledEditButton = styled(EditButton)({
 
 const alternateContentWidth = 250;
 const alternateContentPadding = theme.spacing.unit * 4;
-const SectionAlternateContent = styled.div({
+const AlternateContent = styled.div({
   flexShrink: 0,
   width: alternateContentWidth,
   marginLeft: alternateContentPadding,
@@ -34,29 +33,10 @@ const SectionAlternateContent = styled.div({
   borderLeft: `1px solid ${theme.palette.grey[100]}`
 });
 
-// const ImageContainer = styled.div({
-//   display: 'flex',
-//   alignItems: 'flex-end',
-//   justifyContent: 'flex-end',
-//   padding: `0 ${sectionHorizontalPadding}px`,
-//   '::after': {
-//     content: "''",
-//     flexGrow: 1,
-//     maxWidth: alternateContentWidth / 2
-//   }
-// });
-
-// const ImageCaption = withProps({variant: 'caption'})(
-//   styled(Typography)({
-//     maxWidth: 150,
-//     marginRight: theme.spacing.unit * 1.5,
-//     textAlign: 'right'
-//   })
-// );
-
-// const StyledImage = styled.img({
-//   maxWidth: 480
-// });
+const BannerImage = styled.div(topicImageClassName, {
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
+});
 
 const PositionFormDialogTrigger = mapProps(props => ({
   children: props.children,
@@ -78,48 +58,51 @@ class Topic extends Component {
   render() {
     return (
       <Fragment>
-        <Typography gutterBottom variant="headline">
-          {this.props.topic.title}
-        </Typography>
-        <SectionContent>
-          <SectionMainContent>
-            {this.props.positions &&
-              this.props.positions.map(position => (
-                <Typography paragraph key={position.id} variant="subheading">
-                  {position.text}
-                  {position.sources.map(source => (
-                    <Superscript key={source.id}>
-                      [<a href="#sources">{source.index + 1}</a>]
-                    </Superscript>
-                  ))}
-                  {this.props.editMode && (
-                    <PositionFormDialogTrigger position={position}>
-                      <StyledEditButton />
-                    </PositionFormDialogTrigger>
-                  )}
-                </Typography>
-              ))}
-            {this.props.editMode && (
-              <PositionFormDialogTrigger
-                position={{
-                  text: '',
-                  sources: [{url: ''}],
-                  candidate_id: this.props.candidate.id,
-                  topic_id: this.props.topic.id
-                }}
-              >
-                <Button>Add a position</Button>
-              </PositionFormDialogTrigger>
-            )}
-          </SectionMainContent>
-          <SectionAlternateContent>
-            <Typography>{this.props.topic.description}</Typography>
-          </SectionAlternateContent>
-        </SectionContent>
-        {/* <ImageContainer>
-          <ImageCaption>Photo by Marc-Olivier Jodoin on Unsplash</ImageCaption>
-          <StyledImage src={montreal} />
-        </ImageContainer> */}
+        <Container>
+          <Typography gutterBottom variant="headline">
+            {this.props.topic.title}
+          </Typography>
+          <InnerContainer>
+            <MainContent>
+              {this.props.positions &&
+                this.props.positions.map(position => (
+                  <Typography paragraph key={position.id} variant="subheading">
+                    {position.text}
+                    {position.sources.map(source => (
+                      <Superscript key={source.id}>
+                        [<a href="#sources">{source.index + 1}</a>]
+                      </Superscript>
+                    ))}
+                    {this.props.editMode && (
+                      <PositionFormDialogTrigger position={position}>
+                        <StyledEditButton />
+                      </PositionFormDialogTrigger>
+                    )}
+                  </Typography>
+                ))}
+              {this.props.editMode && (
+                <PositionFormDialogTrigger
+                  position={{
+                    text: '',
+                    sources: [{url: ''}],
+                    candidate_id: this.props.candidate.id,
+                    topic_id: this.props.topic.id
+                  }}
+                >
+                  <Button>Add a position</Button>
+                </PositionFormDialogTrigger>
+              )}
+            </MainContent>
+            <AlternateContent>
+              <Typography>{this.props.topic.description}</Typography>
+            </AlternateContent>
+          </InnerContainer>
+        </Container>
+        {this.props.topic.image && (
+          <BannerImage
+            style={{backgroundImage: `url(${this.props.topic.image})`}}
+          />
+        )}
       </Fragment>
     );
   }

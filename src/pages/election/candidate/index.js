@@ -15,7 +15,7 @@ import find from 'lodash/find';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import theme from '../../../theme';
-import {SECTION_VERTICAL_PADDING} from './common';
+import {SECTION_VERTICAL_PADDING, sectionClassName} from './common';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getCandidates} from '../../../selectors';
@@ -64,11 +64,6 @@ const Container = styled.div({
   position: 'relative'
 });
 
-const sectionHorizontalPadding = theme.spacing.unit * 6;
-const Section = styled.div({
-  padding: `${SECTION_VERTICAL_PADDING}px ${sectionHorizontalPadding}px`
-});
-
 const OffsetAnchor = styled.a({
   display: 'block',
   position: 'relative',
@@ -82,7 +77,7 @@ const Content = styled.div({
   backgroundColor: theme.palette.background.paper
 });
 
-const FootnotesSection = styled(Section)({
+const FootnotesSection = styled.section(sectionClassName, {
   backgroundColor: theme.palette.grey[100]
 });
 
@@ -203,13 +198,11 @@ class Candidate extends Component {
             {this.props.election.topics.map(topic => (
               <Fragment key={topic.id}>
                 <OffsetAnchor name={topic.slug} />
-                <Section>
-                  <Topic
-                    topic={topic}
-                    candidate={this.props.candidate}
-                    positions={this.props.candidate.positions[topic.id]}
-                  />
-                </Section>
+                <Topic
+                  topic={topic}
+                  candidate={this.props.candidate}
+                  positions={this.props.candidate.positions[topic.id]}
+                />
               </Fragment>
             ))}
             <OffsetAnchor name="sources" />
