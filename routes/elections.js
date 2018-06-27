@@ -1,5 +1,6 @@
 import express from 'express';
-import {Election, Topic, Position, Source, sequelize} from '../models';
+import shuffle from 'lodash/shuffle';
+import {Election, Topic, Position, Source} from '../models';
 
 const router = express.Router();
 router.get('/', async (req, res) => {
@@ -22,14 +23,13 @@ router.get('/:id', async (req, res) => {
   }
 
   const candidates = await election.getCandidates({
-    order: [[sequelize.fn('RANDOM')]],
     include: {
       model: Position,
       include: Source
     }
   });
 
-  election.setDataValue('candidates', candidates);
+  election.setDataValue('candidates', shuffle(candidates));
   res.send(election);
 });
 
