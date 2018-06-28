@@ -95,6 +95,10 @@ class Topic extends Component {
   }
 
   renderPositions() {
+    if (!this.props.positions.length) {
+      return null;
+    }
+
     const positions = this.state.more
       ? this.props.positions
       : [this.props.positions[0]];

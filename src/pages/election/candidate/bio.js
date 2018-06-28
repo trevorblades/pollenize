@@ -20,9 +20,8 @@ const Bio = props => (
     <Text>
       Age:{' '}
       {props.candidate.birth_date
-        ? differenceInYears(now, props.candidate.birth_date)
-        : unknown}{' '}
-      years
+        ? `${differenceInYears(now, props.candidate.birth_date)} years`
+        : unknown}
     </Text>
     <Text>Hometown: {props.candidate.hometown || unknown}</Text>
     {props.candidate.bio && (
