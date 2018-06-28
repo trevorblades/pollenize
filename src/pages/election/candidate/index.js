@@ -72,7 +72,9 @@ const Container = styled.div({
 const OffsetAnchor = styled.a({
   display: 'block',
   position: 'relative',
-  top: -theme.mixins.toolbar.height
+  // We add a magic number 1 that helps avoid an extra pixel between
+  // the header and a topic banner image
+  top: -theme.mixins.toolbar.height + 1
 });
 
 const Content = styled.div({
@@ -129,7 +131,7 @@ class Candidate extends Component {
       const element = this.content.querySelector(`a[name="${hash.slice(1)}"]`);
       if (element) {
         const {top} = element.getBoundingClientRect();
-        window.scrollTo(0, Math.floor(top) + window.scrollY);
+        window.scrollTo(0, Math.round(top) + window.scrollY);
       }
     }
 
@@ -149,7 +151,7 @@ class Candidate extends Component {
     for (let i = anchors.length - 1; i >= 0; i--) {
       const anchor = anchors[i];
       const {top} = anchor.getBoundingClientRect();
-      const offset = Math.floor(top) + scrollY - SECTION_VERTICAL_PADDING;
+      const offset = Math.round(top) + scrollY - SECTION_VERTICAL_PADDING;
       if (scrollY >= offset) {
         hash = anchor.name;
         activeTopicIndex = i;
