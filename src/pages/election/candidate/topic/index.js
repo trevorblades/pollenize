@@ -99,9 +99,10 @@ class Topic extends Component {
       return null;
     }
 
-    const positions = this.state.more
-      ? this.props.positions
-      : [this.props.positions[0]];
+    const positions =
+      this.state.more || this.props.editMode
+        ? this.props.positions
+        : [this.props.positions[0]];
     return positions.map((position, index, array) => (
       <Typography
         paragraph={index < array.length - 1}
@@ -125,14 +126,6 @@ class Topic extends Component {
 
   renderActions() {
     const actions = [];
-    if (this.props.positions.length > 1) {
-      actions.push(
-        <Action key="more" onClick={this.onMoreClick}>
-          {this.state.more ? 'Show less' : 'Read more'}
-        </Action>
-      );
-    }
-
     if (this.props.editMode) {
       actions.push(
         <PositionFormDialogTrigger
@@ -146,6 +139,12 @@ class Topic extends Component {
         >
           <Action>Add a position</Action>
         </PositionFormDialogTrigger>
+      );
+    } else if (this.props.positions.length > 1) {
+      actions.push(
+        <Action key="more" onClick={this.onMoreClick}>
+          {this.state.more ? 'Show less' : 'Read more'}
+        </Action>
       );
     }
 
