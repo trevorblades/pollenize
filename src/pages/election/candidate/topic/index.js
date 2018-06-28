@@ -9,7 +9,11 @@ import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
 import {connect} from 'react-redux';
-import {sectionClassName, topicImageClassName} from '../common';
+import {
+  SECTION_MAX_WIDTH,
+  TOPIC_IMAGE_ASPECT_RATIO,
+  sectionClassName
+} from '../common';
 
 const Container = styled.section(sectionClassName);
 const InnerContainer = styled.div({display: 'flex'});
@@ -33,9 +37,17 @@ const AlternateContent = styled.div({
   borderLeft: `1px solid ${theme.palette.grey[100]}`
 });
 
-const BannerImage = styled.div(topicImageClassName, {
+const Banner = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: SECTION_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO,
   backgroundSize: 'cover',
-  backgroundPosition: 'center'
+  backgroundPosition: 'center',
+  h1: {
+    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 2}px`,
+    backgroundColor: theme.palette.common.white
+  }
 });
 
 const PositionFormDialogTrigger = mapProps(props => ({
@@ -55,13 +67,24 @@ class Topic extends Component {
     positions: []
   };
 
+  renderTitle(gutterBottom) {
+    return (
+      <Typography gutterBottom={gutterBottom} variant="headline">
+        {this.props.topic.title}
+      </Typography>
+    );
+  }
+
   render() {
     return (
       <Fragment>
+        {this.props.topic.image && (
+          <Banner style={{backgroundImage: `url(${this.props.topic.image})`}}>
+            {this.renderTitle()}
+          </Banner>
+        )}
         <Container>
-          <Typography gutterBottom variant="headline">
-            {this.props.topic.title}
-          </Typography>
+          {!this.props.topic.image && this.renderTitle(true)}
           <InnerContainer>
             <MainContent>
               {this.props.positions &&
@@ -98,11 +121,6 @@ class Topic extends Component {
             </AlternateContent>
           </InnerContainer>
         </Container>
-        {this.props.topic.image && (
-          <BannerImage
-            style={{backgroundImage: `url(${this.props.topic.image})`}}
-          />
-        )}
       </Fragment>
     );
   }

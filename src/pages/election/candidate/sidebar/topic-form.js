@@ -6,7 +6,9 @@ import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import reject from 'lodash/reject';
-import {topicImageClassName} from '../common';
+import round from 'lodash/round';
+import styled from 'react-emotion';
+import {SECTION_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {connect} from 'react-redux';
 import {getNextSlug} from '../../../../util';
 import {
@@ -14,6 +16,10 @@ import {
   remove as removeTopic,
   reset as resetTopic
 } from '../../../../actions/topic';
+
+const StyledImageButton = styled(ImageButton)({
+  paddingTop: `${round((1 / TOPIC_IMAGE_ASPECT_RATIO) * 100, 3)}%`
+});
 
 class TopicForm extends Component {
   static propTypes = {
@@ -65,10 +71,10 @@ class TopicForm extends Component {
           ['description', {multiline: true}],
           <FormControl fullWidth key="image" margin="dense">
             <Typography gutterBottom variant="caption">
-              Banner image
+              Banner image ({SECTION_MAX_WIDTH * 2} x{' '}
+              {(SECTION_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO) * 2} px)
             </Typography>
-            <ImageButton
-              className={topicImageClassName}
+            <StyledImageButton
               iconSize={48}
               image={
                 this.state.image

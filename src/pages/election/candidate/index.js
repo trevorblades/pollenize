@@ -15,7 +15,11 @@ import find from 'lodash/find';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import theme from '../../../theme';
-import {SECTION_VERTICAL_PADDING, sectionClassName} from './common';
+import {
+  SECTION_MAX_WIDTH,
+  SECTION_VERTICAL_PADDING,
+  sectionClassName
+} from './common';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getCandidates} from '../../../selectors';
@@ -72,7 +76,7 @@ const OffsetAnchor = styled.a({
 
 const Content = styled.div({
   width: '100%',
-  maxWidth: 960,
+  maxWidth: SECTION_MAX_WIDTH,
   borderLeft: `1px solid ${theme.palette.grey[100]}`,
   backgroundColor: theme.palette.background.paper
 });
@@ -167,7 +171,6 @@ class Candidate extends Component {
         <Hero
           style={{
             color: theme.palette.getContrastText(this.props.candidate.color),
-            // backgroundImage: `url(${justin})`,
             backgroundColor: this.props.candidate.color
           }}
         >
@@ -196,14 +199,14 @@ class Candidate extends Component {
           />
           <Content innerRef={node => (this.content = node)}>
             {this.props.election.topics.map(topic => (
-              <Fragment key={topic.id}>
+              <div key={topic.id}>
                 <OffsetAnchor name={topic.slug} />
                 <Topic
                   topic={topic}
                   candidate={this.props.candidate}
                   positions={this.props.candidate.positions[topic.id]}
                 />
-              </Fragment>
+              </div>
             ))}
             <OffsetAnchor name="sources" />
             <FootnotesSection>
