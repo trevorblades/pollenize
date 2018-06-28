@@ -4,6 +4,9 @@ export default (sequelize, DataTypes) => {
   const Candidate = sequelize.define('candidate', {
     slug: DataTypes.STRING,
     name: DataTypes.STRING,
+    birth_date: DataTypes.DATEONLY,
+    hometown: DataTypes.STRING,
+    bio: DataTypes.TEXT,
     party: DataTypes.STRING,
     color: DataTypes.STRING,
     avatar: DataTypes.STRING

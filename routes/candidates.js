@@ -5,6 +5,7 @@ import {Candidate, Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
 
+const exists = {exists: true};
 const required = {
   trim: true,
   isEmpty: {
@@ -14,8 +15,13 @@ const required = {
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
-    name: required,
     slug: required,
+    name: required,
+    birth_date: {
+      isISO8601: true
+    },
+    hometown: exists,
+    bio: exists,
     party: required,
     color: {
       isHexColor: true
