@@ -66,7 +66,7 @@ class ImageButton extends Component {
         {!this.props.image && (
           <StyledImageIcon style={size(this.props.iconSize)} />
         )}
-        <FileInput onChange={this.onChange} />
+        <FileInput onChange={this.onChange} accept="image/*" />
       </Button>
     );
   }
