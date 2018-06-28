@@ -50,8 +50,10 @@ const AlternateContent = styled.div({
   borderLeft: `1px solid ${theme.palette.grey[100]}`
 });
 
+const actionsMargin = theme.spacing.unit * 2;
 const Actions = styled.div({
-  marginTop: theme.spacing.unit * 2
+  marginTop: actionsMargin,
+  marginLeft: -actionsMargin
 });
 
 const Action = styled(Button)({
@@ -161,9 +163,11 @@ class Topic extends Component {
               {this.renderPositions()}
               {this.renderActions()}
             </MainContent>
-            <AlternateContent>
-              <Typography>{this.props.topic.description}</Typography>
-            </AlternateContent>
+            {this.props.topic.description && (
+              <AlternateContent>
+                <Typography>{this.props.topic.description}</Typography>
+              </AlternateContent>
+            )}
           </InnerContainer>
         </Container>
       </Fragment>
