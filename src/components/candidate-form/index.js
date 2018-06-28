@@ -9,8 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import map from 'lodash/map';
 import reject from 'lodash/reject';
 import styled from 'react-emotion';
-import theme from '../../theme';
 import withProps from 'recompose/withProps';
+import {DatePicker} from 'material-ui-pickers';
 import {connect} from 'react-redux';
 import {getNextSlug} from '../../util';
 import {size} from 'polished';
@@ -20,9 +20,10 @@ import {
   reset as resetCandidate
 } from '../../actions/candidate';
 
+const gridItemProps = {xs: 6};
 const GridItem = withProps({
-  item: true,
-  xs: true
+  ...gridItemProps,
+  item: true
 })(Grid);
 
 const AvatarButton = styled(ImageButton)(size(96), {
@@ -44,14 +45,17 @@ class CandidateForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      color: props.candidate.color,
-      avatar: null
+      avatar: null,
+      birthDate: new Date(props.candidate.birth_date),
+      color: props.candidate.color
     };
   }
 
   componentWillUnmount() {
     this.props.dispatch(resetCandidate());
   }
+
+  onBirthDateChange = birthDate => this.setState({birthDate});
 
   onAvatarChange = avatar => this.setState({avatar});
 
@@ -65,6 +69,7 @@ class CandidateForm extends Component {
     const slugs = map(candidates, 'slug');
     const formData = new FormData(event.target);
     formData.append('slug', getNextSlug(event.target.name.value, slugs));
+    formData.append('birth_date', this.state.birthDate.toISOString());
     formData.append('color', this.state.color);
     formData.append('election_id', this.props.candidate.election_id);
     if (this.state.avatar) {
@@ -83,31 +88,41 @@ class CandidateForm extends Component {
         noun="candidate"
         initialData={this.props.candidate}
         fields={[
-          'name',
-          'party',
-          <Grid container spacing={theme.spacing.unit * 2} key="grid">
-            <GridItem>
-              <FormControl margin="dense">
-                <Typography gutterBottom variant="caption">
-                  Avatar image
-                </Typography>
-                <AvatarButton
-                  image={
-                    this.state.avatar
-                      ? this.state.avatar.dataUrl
-                      : this.props.candidate.avatar
-                  }
-                  onChange={this.onAvatarChange}
-                />
-              </FormControl>
-            </GridItem>
-            <GridItem>
-              <ColorPicker
-                color={this.state.color}
-                onChange={this.onColorChange}
+          ['name', gridItemProps],
+          ['party', gridItemProps],
+          <GridItem key="date">
+            <DatePicker
+              fullWidth
+              disableFuture
+              margin="dense"
+              label="Date of birth"
+              onChange={this.onBirthDateChange}
+              value={this.state.birthDate}
+            />
+          </GridItem>,
+          ['hometown', gridItemProps],
+          ['bio', {multiline: true}],
+          <GridItem key="avatar">
+            <FormControl margin="dense">
+              <Typography gutterBottom variant="caption">
+                Avatar image
+              </Typography>
+              <AvatarButton
+                image={
+                  this.state.avatar
+                    ? this.state.avatar.dataUrl
+                    : this.props.candidate.avatar
+                }
+                onChange={this.onAvatarChange}
               />
-            </GridItem>
-          </Grid>
+            </FormControl>
+          </GridItem>,
+          <GridItem key="color">
+            <ColorPicker
+              color={this.state.color}
+              onChange={this.onColorChange}
+            />
+          </GridItem>
         ]}
         loading={this.props.loading}
         error={this.props.error}

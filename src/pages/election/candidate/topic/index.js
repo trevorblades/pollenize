@@ -88,8 +88,12 @@ class Topic extends Component {
           <InnerContainer>
             <MainContent>
               {this.props.positions &&
-                this.props.positions.map(position => (
-                  <Typography paragraph key={position.id} variant="subheading">
+                this.props.positions.map((position, index, array) => (
+                  <Typography
+                    paragraph={index < array.length - 1}
+                    key={position.id}
+                    variant="subheading"
+                  >
                     {position.text}
                     {position.sources.map(source => (
                       <Superscript key={source.id}>

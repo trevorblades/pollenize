@@ -88,9 +88,7 @@ const TopicFormDialogTrigger = mapProps(props => ({
 const Sidebar = props => (
   <Container>
     <InnerContainer>
-      <SidebarItem href="#">
-        About {props.candidate.name.replace(/\s+/, ' ').split(' ')[0]}
-      </SidebarItem>
+      <SidebarItem href="#">About {props.candidate.firstName}</SidebarItem>
       <TopicsHeading>Topics</TopicsHeading>
       <SidebarTopics style={{borderColor: props.candidate.color}}>
         {props.election.topics.map((topic, index) => (

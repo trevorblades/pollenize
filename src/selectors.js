@@ -12,6 +12,7 @@ export const getCandidates = createSelector(getElection, election =>
     return {
       ...candidate,
       sources,
+      firstName: candidate.name.replace(/\s+/, ' ').split(' ')[0],
       positions: mapValues(candidate.positions, positions =>
         positions.map(position => ({
           ...position,

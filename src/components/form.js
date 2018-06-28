@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -52,20 +53,20 @@ class Form extends Component {
     this.props.onSubmit(event);
   };
 
-  renderFormField(key, props) {
-    // TODO: refactor this to reuse more easily between topic and candidate forms
+  renderFormField(key, {xs = 12, ...props} = {}) {
     const {errors} = this.props.error || {};
     const error = errors && errors[key];
     return (
-      <FormField
-        key={key}
-        name={key}
-        label={sentenceCase(key)}
-        defaultValue={this.props.initialData[key]}
-        error={Boolean(error)}
-        helperText={error && error.msg}
-        {...props}
-      />
+      <Grid item key={key} xs={xs}>
+        <FormField
+          name={key}
+          label={sentenceCase(key)}
+          defaultValue={this.props.initialData[key]}
+          error={Boolean(error)}
+          helperText={error && error.msg}
+          {...props}
+        />
+      </Grid>
     );
   }
 
@@ -79,17 +80,21 @@ class Form extends Component {
           {editing ? 'Edit' : 'Add'} a {this.props.noun}
         </DialogTitle>
         <DialogContent>
-          {this.props.fields.map(field => {
-            switch (typeof field) {
-              case 'string': {
-                return this.renderFormField(field);
+          <Grid container>
+            {this.props.fields.map(field => {
+              switch (typeof field) {
+                case 'string': {
+                  return this.renderFormField(field);
+                }
+                default:
+                  if (React.isValidElement(field)) {
+                    return field;
+                  }
+
+                  return this.renderFormField(...field);
               }
-              default:
-                return React.isValidElement(field)
-                  ? field
-                  : this.renderFormField(...field);
-            }
-          })}
+            })}
+          </Grid>
         </DialogContent>
         <DialogActions>
           {editing && (

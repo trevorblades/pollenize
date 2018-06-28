@@ -1,4 +1,5 @@
 import Avatar from '@material-ui/core/Avatar';
+import Bio from './bio';
 import CandidateForm from '../../../components/candidate-form';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
@@ -206,6 +207,7 @@ class Candidate extends Component {
             election={this.props.election}
           />
           <Content innerRef={node => (this.content = node)}>
+            <Bio candidate={this.props.candidate} />
             {this.props.election.topics.map(topic => (
               <div key={topic.id}>
                 <OffsetAnchor name={topic.slug} />

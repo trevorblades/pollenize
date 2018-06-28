@@ -1,4 +1,6 @@
 import App from './components/app';
+import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import createHistory from 'history/createBrowserHistory';
@@ -33,9 +35,11 @@ ReactDOM.render(
   <Provider store={store}>
     <JssProvider jss={jss} generateClassName={generateClassName}>
       <MuiThemeProvider theme={theme}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <ConnectedRouter history={history}>
+            <App />
+          </ConnectedRouter>
+        </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     </JssProvider>
   </Provider>,
