@@ -15,6 +15,19 @@ import {
   sectionClassName
 } from '../common';
 
+const Banner = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: SECTION_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  h1: {
+    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 2}px`,
+    backgroundColor: theme.palette.common.white
+  }
+});
+
 const Container = styled.section(sectionClassName);
 const InnerContainer = styled.div({display: 'flex'});
 const MainContent = styled.div({
@@ -37,17 +50,12 @@ const AlternateContent = styled.div({
   borderLeft: `1px solid ${theme.palette.grey[100]}`
 });
 
-const Banner = styled.div({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: SECTION_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  h1: {
-    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 2}px`,
-    backgroundColor: theme.palette.common.white
-  }
+const Actions = styled.div({
+  marginTop: theme.spacing.unit * 2
+});
+
+const Action = styled(Button)({
+  marginRight: theme.spacing.unit
 });
 
 const PositionFormDialogTrigger = mapProps(props => ({
@@ -67,12 +75,75 @@ class Topic extends Component {
     positions: []
   };
 
+  state = {
+    more: false
+  };
+
+  onMoreClick = () =>
+    this.setState(prevState => ({
+      more: !prevState.more
+    }));
+
   renderTitle(gutterBottom) {
     return (
       <Typography gutterBottom={gutterBottom} variant="headline">
         {this.props.topic.title}
       </Typography>
     );
+  }
+
+  renderPositions() {
+    const positions = this.state.more
+      ? this.props.positions
+      : [this.props.positions[0]];
+    return positions.map((position, index, array) => (
+      <Typography
+        paragraph={index < array.length - 1}
+        key={position.id}
+        variant="subheading"
+      >
+        {position.text}
+        {position.sources.map(source => (
+          <Superscript key={source.id}>
+            [<a href="#sources">{source.index + 1}</a>]
+          </Superscript>
+        ))}
+        {this.props.editMode && (
+          <PositionFormDialogTrigger position={position}>
+            <StyledEditButton />
+          </PositionFormDialogTrigger>
+        )}
+      </Typography>
+    ));
+  }
+
+  renderActions() {
+    const actions = [];
+    if (this.props.positions.length > 1) {
+      actions.push(
+        <Action key="more" onClick={this.onMoreClick}>
+          {this.state.more ? 'Show less' : 'Read more'}
+        </Action>
+      );
+    }
+
+    if (this.props.editMode) {
+      actions.push(
+        <PositionFormDialogTrigger
+          key="add"
+          position={{
+            text: '',
+            sources: [{url: ''}],
+            candidate_id: this.props.candidate.id,
+            topic_id: this.props.topic.id
+          }}
+        >
+          <Action>Add a position</Action>
+        </PositionFormDialogTrigger>
+      );
+    }
+
+    return actions.length ? <Actions>{actions}</Actions> : null;
   }
 
   render() {
@@ -87,38 +158,8 @@ class Topic extends Component {
           {!this.props.topic.image && this.renderTitle(true)}
           <InnerContainer>
             <MainContent>
-              {this.props.positions &&
-                this.props.positions.map((position, index, array) => (
-                  <Typography
-                    paragraph={index < array.length - 1}
-                    key={position.id}
-                    variant="subheading"
-                  >
-                    {position.text}
-                    {position.sources.map(source => (
-                      <Superscript key={source.id}>
-                        [<a href="#sources">{source.index + 1}</a>]
-                      </Superscript>
-                    ))}
-                    {this.props.editMode && (
-                      <PositionFormDialogTrigger position={position}>
-                        <StyledEditButton />
-                      </PositionFormDialogTrigger>
-                    )}
-                  </Typography>
-                ))}
-              {this.props.editMode && (
-                <PositionFormDialogTrigger
-                  position={{
-                    text: '',
-                    sources: [{url: ''}],
-                    candidate_id: this.props.candidate.id,
-                    topic_id: this.props.topic.id
-                  }}
-                >
-                  <Button>Add a position</Button>
-                </PositionFormDialogTrigger>
-              )}
+              {this.renderPositions()}
+              {this.renderActions()}
             </MainContent>
             <AlternateContent>
               <Typography>{this.props.topic.description}</Typography>
