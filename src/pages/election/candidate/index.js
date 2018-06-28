@@ -82,18 +82,26 @@ const Content = styled.div({
 });
 
 const FootnotesSection = styled.section(sectionClassName, {
+  color: theme.palette.text.secondary,
   backgroundColor: theme.palette.grey[100]
 });
 
 const Footnotes = styled.ol({
   margin: 0,
   padding: 0,
-  paddingLeft: theme.spacing.unit * 2
+  listStyle: 'inside decimal',
+  columnCount: 2,
+  columnGap: theme.spacing.unit * 2
 });
 
-const Footnote = withProps({component: 'li'})(
+const Footnote = withProps({
+  color: 'inherit',
+  gutterBottom: true,
+  component: 'li'
+})(
   styled(Typography)({
-    display: 'list-item'
+    display: 'list-item',
+    wordBreak: 'break-word'
   })
 );
 
@@ -210,15 +218,12 @@ class Candidate extends Component {
             ))}
             <OffsetAnchor name="sources" />
             <FootnotesSection>
-              <Typography gutterBottom variant="title">
+              <Typography gutterBottom variant="title" color="inherit">
                 Sources
               </Typography>
               <Footnotes>
-                {this.props.candidate.sources.map((source, index, array) => (
-                  <Footnote
-                    gutterBottom={index < array.length - 1}
-                    key={source.id}
-                  >
+                {this.props.candidate.sources.map(source => (
+                  <Footnote key={source.id}>
                     <a
                       href={source.url}
                       rel="noopener noreferrer"
