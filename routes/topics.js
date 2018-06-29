@@ -23,6 +23,12 @@ const validationMiddleware = createValidationMiddleware(
     election_id: {
       isInt: true,
       toInt: true
+    },
+    file: {
+      optional: true,
+      equals: {
+        options: 'null'
+      }
     }
   })
 );
@@ -46,8 +52,9 @@ router
   })
   .put(uploadMiddleware, validationMiddleware, async (req, res, next) => {
     const data = matchedData(req);
-    if (req.file) {
-      data.image = req.file.data.link;
+    const file = req.file ? req.file.data.link : req.body.file;
+    if (file) {
+      data.image = file === 'null' ? null : file;
     }
 
     await res.locals.topic.update(data);
