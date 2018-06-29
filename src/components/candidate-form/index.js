@@ -46,7 +46,7 @@ class CandidateForm extends Component {
     super(props);
     this.state = {
       avatar: null,
-      birthDate: new Date(props.candidate.birth_date),
+      birthDate: new Date(props.candidate.birth_date || Date.now()),
       color: props.candidate.color
     };
   }
