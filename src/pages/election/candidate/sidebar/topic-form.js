@@ -1,3 +1,4 @@
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Form from '../../../../components/form';
 import FormControl from '@material-ui/core/FormControl';
 import ImageButton from '../../../../components/image-button';
@@ -8,6 +9,7 @@ import map from 'lodash/map';
 import reject from 'lodash/reject';
 import round from 'lodash/round';
 import styled from 'react-emotion';
+import withProps from 'recompose/withProps';
 import {SECTION_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {connect} from 'react-redux';
 import {getNextSlug} from '../../../../util';
@@ -16,6 +18,16 @@ import {
   remove as removeTopic,
   reset as resetTopic
 } from '../../../../actions/topic';
+
+const ImageLabel = withProps({
+  gutterBottom: true,
+  variant: 'caption'
+})(
+  styled(Typography)({
+    display: 'flex',
+    justifyContent: 'space-between'
+  })
+);
 
 const StyledImageButton = styled(ImageButton)({
   paddingTop: `${round((1 / TOPIC_IMAGE_ASPECT_RATIO) * 100, 3)}%`
@@ -61,7 +73,18 @@ class TopicForm extends Component {
 
   onDelete = () => this.props.dispatch(removeTopic(this.props.topic.id));
 
+  removeImage = () =>
+    this.setState({
+      image: {
+        file: null,
+        dataUrl: null
+      }
+    });
+
   render() {
+    const image = this.state.image
+      ? this.state.image.dataUrl
+      : this.props.topic.image;
     return (
       <Form
         noun="topic"
@@ -70,17 +93,16 @@ class TopicForm extends Component {
           'title',
           ['description', {multiline: true}],
           <FormControl fullWidth key="image" margin="dense">
-            <Typography gutterBottom variant="caption">
+            <ImageLabel>
               Banner image ({SECTION_MAX_WIDTH * 2} x{' '}
               {(SECTION_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO) * 2} px)
-            </Typography>
+              {image && (
+                <ButtonBase onClick={this.removeImage}>Remove image</ButtonBase>
+              )}
+            </ImageLabel>
             <StyledImageButton
               iconSize={48}
-              image={
-                this.state.image
-                  ? this.state.image.dataUrl
-                  : this.props.topic.image
-              }
+              image={image}
               onChange={this.onImageChange}
             />
           </FormControl>
