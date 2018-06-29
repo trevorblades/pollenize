@@ -6,6 +6,7 @@ import differenceInYears from 'date-fns/differenceInYears';
 import {sectionClassName} from './common';
 
 const Text = defaultProps({
+  component: 'p',
   variant: 'subheading',
   gutterBottom: true
 })(Typography);

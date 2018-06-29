@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
+import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {
   SECTION_MAX_WIDTH,
@@ -33,6 +34,11 @@ const InnerContainer = styled.div({display: 'flex'});
 const MainContent = styled.div({
   flexGrow: 1
 });
+
+const Text = withProps({
+  component: 'p',
+  variant: 'subheading'
+})(Typography);
 
 const Superscript = styled.sup({lineHeight: 1});
 const StyledEditButton = styled(EditButton)({
@@ -96,7 +102,7 @@ class Topic extends Component {
 
   renderPositions() {
     if (!this.props.positions.length) {
-      return null;
+      return <Text>No official stance has been taken on this topic.</Text>;
     }
 
     const positions =
@@ -104,11 +110,7 @@ class Topic extends Component {
         ? this.props.positions
         : [this.props.positions[0]];
     return positions.map((position, index, array) => (
-      <Typography
-        paragraph={index < array.length - 1}
-        key={position.id}
-        variant="subheading"
-      >
+      <Text paragraph={index < array.length - 1} key={position.id}>
         {position.text}
         {position.sources.map(source => (
           <Superscript key={source.id}>
@@ -120,7 +122,7 @@ class Topic extends Component {
             <StyledEditButton />
           </PositionFormDialogTrigger>
         )}
-      </Typography>
+      </Text>
     ));
   }
 
@@ -143,7 +145,9 @@ class Topic extends Component {
     } else if (this.props.positions.length > 1) {
       actions.push(
         <Action key="more" onClick={this.onMoreClick}>
-          {this.state.more ? 'Show less' : 'Read more'}
+          {this.state.more
+            ? 'Show less'
+            : `Read more (${this.props.positions.length - 1})`}
         </Action>
       );
     }
