@@ -37,6 +37,7 @@ export default createMuiTheme({
     fontFamily,
     fontWeightMedium: 700,
     display1: displayFontStyles,
-    display2: displayFontStyles
+    display2: displayFontStyles,
+    display3: displayFontStyles
   }
 });
