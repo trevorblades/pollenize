@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Wordmark from '../assets/wordmark.svg';
 import styled, {css} from 'react-emotion';
 import theme from '../theme';
-import withProps from 'recompose/withProps';
+import defaultProps from 'recompose/defaultProps';
 import {Link, NavLink} from 'react-router-dom';
 import {size} from 'polished';
 
@@ -38,10 +38,11 @@ const Nav = styled.nav({
   display: 'flex',
   alignItems: 'center',
   marginLeft: 'auto',
+  marginRight: theme.spacing.unit,
   color: theme.palette.grey[400]
 });
 
-const NavItem = withProps({
+const NavItem = defaultProps({
   component: NavLink,
   variant: 'subheading',
   noWrap: true
@@ -79,7 +80,13 @@ const Header = props => (
           </NavItem>
           <NavItem to="/elections">Elections</NavItem>
           <NavItem to="/about">About us</NavItem>
-          <NavItem to="/blog">Blog</NavItem>
+          <NavItem
+            component="a"
+            href="https://medium.com/pollenize"
+            target="_blank"
+          >
+            Blog
+          </NavItem>
         </Nav>
       )}
     </Toolbar>
