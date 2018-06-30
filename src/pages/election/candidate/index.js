@@ -43,7 +43,7 @@ const StyledAvatar = styled(Avatar)(size(96), {
 });
 
 const Name = withProps({
-  variant: 'display1',
+  variant: 'display2',
   color: 'inherit'
 })(
   styled(Typography)({

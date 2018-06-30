@@ -4,12 +4,14 @@ import indigo from '@material-ui/core/colors/indigo';
 import {createMuiTheme} from '@material-ui/core/styles';
 
 const fontFamily = ['Lato', 'Helvetica', 'sans-serif'].toString();
-const fontStyleDisplay = {
+
+const defaultTheme = createMuiTheme();
+const displayFontStyles = {
   fontFamily: ['"Playfair Display"', 'Georgia', 'serif'].toString(),
-  fontWeight: 700
+  fontWeight: 700,
+  color: defaultTheme.palette.text.primary
 };
 
-const headlineFontSize = '2rem';
 export default createMuiTheme({
   overrides: {
     MuiPickersYear: {
@@ -34,13 +36,7 @@ export default createMuiTheme({
   typography: {
     fontFamily,
     fontWeightMedium: 700,
-    display1: {
-      ...fontStyleDisplay,
-      fontSize: '2.5rem'
-    },
-    headline: {
-      ...fontStyleDisplay,
-      fontSize: headlineFontSize
-    }
+    display1: displayFontStyles,
+    display2: displayFontStyles
   }
 });

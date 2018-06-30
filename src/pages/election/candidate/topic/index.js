@@ -94,7 +94,7 @@ class Topic extends Component {
 
   renderTitle(gutterBottom) {
     return (
-      <Typography gutterBottom={gutterBottom} variant="headline">
+      <Typography gutterBottom={gutterBottom} variant="display1">
         {this.props.topic.title}
       </Typography>
     );

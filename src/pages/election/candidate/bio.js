@@ -15,7 +15,7 @@ const now = Date.now();
 const unknown = 'Unknown';
 const Bio = props => (
   <div className={sectionClassName}>
-    <Typography gutterBottom variant="headline">
+    <Typography gutterBottom variant="display1">
       About {props.candidate.firstName}
     </Typography>
     <Text>
