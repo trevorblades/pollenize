@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import React, {Component} from 'react';
+import Section from './section';
 import Typography from '@material-ui/core/Typography';
 import noise from '../../assets/images/noise.png';
 import styled from 'react-emotion';
@@ -15,13 +16,10 @@ const Container = styled.div({
   overflow: 'hidden'
 });
 
-const InnerContainer = styled.div({
+const InnerContainer = styled(Section)({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  width: '100%',
-  maxWidth: theme.breakpoints.values.lg,
-  margin: '0 auto'
+  justifyContent: 'space-between'
 });
 
 const Text = defaultProps({color: 'inherit'})(Typography);
@@ -34,11 +32,8 @@ const Headline = withProps({
   })
 );
 
-const padding = theme.spacing.unit * 8;
 const Content = styled.div({
   maxWidth: theme.breakpoints.values.sm,
-  padding,
-  paddingRight: padding / 2,
   position: 'relative'
 });
 
@@ -50,7 +45,7 @@ const StyledImage = withProps({src: noise})(
     position: 'absolute',
     top: '50%',
     left: '100%',
-    transform: 'translateY(-50%)'
+    transform: `translate(${theme.spacing.unit * 3}px, -50%)`
   })
 );
 
@@ -62,8 +57,8 @@ class Home extends Component {
           <Content>
             <Headline>Informing voters</Headline>
             <Text paragraph variant="title">
-              We break down popular elections and provide voters with an
-              organized, unbiased overview of each candidate&apos;s platform.
+              We break down elections and provide voters with an organized,
+              unbiased overview of each candidate&apos;s platform.
             </Text>
             <Button color="primary" size="large" variant="raised">
               View elections
