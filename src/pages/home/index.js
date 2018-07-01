@@ -1,5 +1,5 @@
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import DonateButton from './donate-button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Footer from '../../components/footer';
 import Grid from '@material-ui/core/Grid';
@@ -72,10 +72,7 @@ class Home extends Component {
             ways. If you like what we&apos;re doing, we&apos;d be very grateful
             if you contributed any amount that you think is fair.
           </Typography>
-          <Button variant="extendedFab" color="primary">
-            <StyledFavoriteIcon />
-            Donate
-          </Button>
+          <DonateButton />
         </Donate>
         <Footer />
       </Fragment>
