@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
 import Hero from './hero';
 import React, {Component, Fragment} from 'react';
-import Section from './section';
+import Section from '../../components/section';
 import TestimonialCarousel from './testimonial-carousel';
 import Typography from '@material-ui/core/Typography';
 import theme from '../../theme';

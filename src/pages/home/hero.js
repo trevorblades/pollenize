@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import React, {Component} from 'react';
-import Section from './section';
+import Section from '../../components/section';
 import Typography from '@material-ui/core/Typography';
 import noise from '../../assets/images/noise.png';
 import styled from 'react-emotion';

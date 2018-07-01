@@ -83,6 +83,7 @@ const Header = props => (
           <NavItem
             component="a"
             href="https://medium.com/pollenize"
+            rel="noopener noreferrer"
             target="_blank"
           >
             Blog

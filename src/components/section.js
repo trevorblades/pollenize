@@ -1,5 +1,5 @@
 import styled from 'react-emotion';
-import theme from '../../theme';
+import theme from '../theme';
 
 const Section = styled.div({
   width: '100%',
