@@ -11,7 +11,6 @@ import withProps from 'recompose/withProps';
 const Container = styled.div({
   display: 'flex',
   height: 400,
-  color: theme.palette.grey[50],
   backgroundColor: theme.palette.grey[900],
   overflow: 'hidden'
 });
@@ -34,6 +33,7 @@ const Headline = withProps({
 
 const Content = styled.div({
   maxWidth: theme.breakpoints.values.sm,
+  color: theme.palette.grey[50],
   position: 'relative'
 });
 
@@ -60,8 +60,16 @@ class Home extends Component {
               We break down elections and provide voters with an organized,
               unbiased overview of each candidate&apos;s platform.
             </Text>
-            <Button color="primary" size="large" variant="raised">
+            <Button
+              color="primary"
+              size="large"
+              variant="raised"
+              style={{marginRight: theme.spacing.unit * 1.5}}
+            >
               View elections
+            </Button>
+            <Button color="inherit" size="large" variant="outlined">
+              Learn more
             </Button>
             <StyledImage />
           </Content>
