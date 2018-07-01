@@ -5,7 +5,7 @@ import Helmet from 'react-helmet';
 import Hero from './hero';
 import React, {Component, Fragment} from 'react';
 import Section from './section';
-import Testimonials from './testimonials';
+import TestimonialCarousel from './testimonial-carousel';
 import Typography from '@material-ui/core/Typography';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
@@ -22,7 +22,7 @@ class Home extends Component {
         <Hero />
         <Section>
           <Grid container spacing={theme.spacing.unit * 5}>
-            <GridItem md={8}>
+            <GridItem xs={12} md={7} lg={8}>
               <Typography paragraph variant="headline">
                 Pollenize is a nonpartisan, apolitical non-profit organization
                 seeking to provide voters with the most accurate election
@@ -38,8 +38,8 @@ class Home extends Component {
                 to-the-point information about topics that really matter.
               </Typography>
             </GridItem>
-            <GridItem md={4}>
-              <Testimonials />
+            <GridItem xs={12} md={5} lg={4}>
+              <TestimonialCarousel />
             </GridItem>
           </Grid>
         </Section>
