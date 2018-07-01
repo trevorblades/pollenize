@@ -36,7 +36,7 @@ const Testimonial = styled(Paper)({
   flexShrink: 0,
   width: '100%',
   padding,
-  borderRadius: 4,
+  borderRadius: theme.shape.borderRadius,
   position: 'relative',
   '*': {
     position: 'relative'

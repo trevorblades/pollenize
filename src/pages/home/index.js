@@ -1,4 +1,6 @@
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import Footer from '../../components/footer';
 import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
@@ -7,11 +9,15 @@ import React, {Component, Fragment} from 'react';
 import Section from '../../components/section';
 import TestimonialCarousel from './testimonial-carousel';
 import Typography from '@material-ui/core/Typography';
+import styled from 'react-emotion';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
 
 const CenteredSection = withProps({centered: true})(Section);
 const GridItem = withProps({item: true})(Grid);
+const StyledFavoriteIcon = styled(FavoriteIcon)({
+  marginRight: theme.spacing.unit
+});
 
 class Home extends Component {
   render() {
@@ -45,7 +51,12 @@ class Home extends Component {
           </Grid>
         </CenteredSection>
         <Divider />
-        <CenteredSection>hello plz donate</CenteredSection>
+        <CenteredSection>
+          <Button variant="extendedFab" color="primary">
+            <StyledFavoriteIcon />
+            Donate
+          </Button>
+        </CenteredSection>
         <Footer />
       </Fragment>
     );
