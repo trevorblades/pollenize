@@ -13,7 +13,6 @@ const Container = styled.nav({
 });
 
 const ItemBase = defaultProps({
-  component: Link,
   color: 'inherit',
   variant: 'subheading',
   noWrap: true
@@ -32,7 +31,7 @@ const hover = css({
   }
 });
 
-const NavlessItem = styled(ItemBase)(hover);
+const NavlessItem = defaultProps({component: Link})(styled(ItemBase)(hover));
 const NavItem = defaultProps({component: NavLink})(
   styled(ItemBase)({
     ':not(.active)': css({opacity: 0.5}, hover)
@@ -43,7 +42,7 @@ const Navigation = props => {
   const Item = props.withActive ? NavItem : NavlessItem;
   return (
     <Container className={props.className}>
-      <Item exact to="/">
+      <Item exact={props.withActive} to="/">
         Home
       </Item>
       <Item to="/elections">Elections</Item>
