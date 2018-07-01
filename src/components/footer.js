@@ -6,6 +6,7 @@ import Section from './section';
 import TwitterLogo from '../assets/logos/twitter.svg';
 import InstagramLogo from '../assets/logos/instagram.svg';
 import FacebookLogo from '../assets/logos/facebook.svg';
+import YouTubeLogo from '../assets/logos/youtube.svg';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
 import styled, {css} from 'react-emotion';
@@ -80,6 +81,9 @@ const Footer = () => (
           </BlankTargetAnchor>
           <BlankTargetAnchor href="https://facebook.com/pollenize">
             <FacebookLogo className={logoClassName} />
+          </BlankTargetAnchor>
+          <BlankTargetAnchor href="https://youtube.com/pollenizeorg">
+            <YouTubeLogo className={logoClassName} />
           </BlankTargetAnchor>
           <StyledAnchor href="mailto:info@pollenize.org">
             <StyledEmailIcon />
