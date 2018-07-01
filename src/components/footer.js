@@ -1,4 +1,5 @@
 import Logo from '../assets/logo.svg';
+import Navigation from './navigation';
 import React from 'react';
 import Section from './section';
 import TwitterLogo from '../assets/logos/twitter.svg';
@@ -14,6 +15,13 @@ const Container = styled.footer({
   color: theme.palette.grey[500],
   backgroundColor: theme.palette.grey[100]
 });
+
+const InnerContainer = withProps({centered: true})(
+  styled(Section)({
+    display: 'flex',
+    alignItems: 'flex-start'
+  })
+);
 
 const baseIconClassName = css({
   display: 'block',
@@ -46,23 +54,26 @@ const date = new Date();
 const year = date.getFullYear();
 const Footer = () => (
   <Container>
-    <Section centered>
-      <StyledLogo />
-      <Typography gutterBottom color="inherit">
-        &copy; {year} Really Awesome Doings
-      </Typography>
-      <Icons>
-        <StyledAnchor href="https://twitter.com/pollenizeorg">
-          <TwitterLogo />
-        </StyledAnchor>
-        <StyledAnchor href="https://instagram.com/pollenize">
-          <InstagramLogo />
-        </StyledAnchor>
-        <StyledAnchor href="https://facebook.com/pollenize">
-          <FacebookLogo />
-        </StyledAnchor>
-      </Icons>
-    </Section>
+    <InnerContainer>
+      <div>
+        <StyledLogo />
+        <Typography gutterBottom color="inherit">
+          &copy; {year} Really Awesome Doings
+        </Typography>
+        <Icons>
+          <StyledAnchor href="https://twitter.com/pollenizeorg">
+            <TwitterLogo />
+          </StyledAnchor>
+          <StyledAnchor href="https://instagram.com/pollenize">
+            <InstagramLogo />
+          </StyledAnchor>
+          <StyledAnchor href="https://facebook.com/pollenize">
+            <FacebookLogo />
+          </StyledAnchor>
+        </Icons>
+      </div>
+      <Navigation />
+    </InnerContainer>
   </Container>
 );
 

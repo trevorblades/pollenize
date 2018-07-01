@@ -1,14 +1,13 @@
 import AppBar from '@material-ui/core/AppBar';
 import Logo from '../assets/logo.svg';
+import Navigation from './navigation';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Wordmark from '../assets/wordmark.svg';
 import styled, {css} from 'react-emotion';
 import theme from '../theme';
-import defaultProps from 'recompose/defaultProps';
-import {Link, NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {centered} from '../styles';
 import {size} from 'polished';
 
@@ -35,32 +34,9 @@ const StyledWordmark = styled(Wordmark)(logoClassName, {
   marginLeft: 12
 });
 
-const Nav = styled.nav({
-  display: 'flex',
-  alignItems: 'center',
-  marginLeft: 'auto',
-  marginRight: theme.spacing.unit,
-  color: theme.palette.grey[400]
+const StyledNavigation = styled(Navigation)({
+  marginRight: theme.spacing.unit
 });
-
-const NavItem = defaultProps({
-  component: NavLink,
-  variant: 'subheading',
-  noWrap: true
-})(
-  styled(Typography)({
-    textDecoration: 'none',
-    ':not(:last-child)': {
-      marginRight: theme.spacing.unit * 3
-    },
-    ':hover': {
-      color: theme.palette.grey[700]
-    },
-    '&.active': {
-      color: theme.palette.common.black
-    }
-  })
-);
 
 const Header = props => (
   <AppBar
@@ -74,23 +50,7 @@ const Header = props => (
         <StyledLogo />
         {!props.simple && <StyledWordmark />}
       </LogoLink>
-      {props.children || (
-        <Nav>
-          <NavItem exact to="/">
-            Home
-          </NavItem>
-          <NavItem to="/elections">Elections</NavItem>
-          <NavItem to="/about">About us</NavItem>
-          <NavItem
-            component="a"
-            href="https://medium.com/pollenize"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Blog
-          </NavItem>
-        </Nav>
-      )}
+      {props.children || <StyledNavigation withActive />}
     </Toolbar>
   </AppBar>
 );
