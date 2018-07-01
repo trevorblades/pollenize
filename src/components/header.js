@@ -9,6 +9,7 @@ import styled, {css} from 'react-emotion';
 import theme from '../theme';
 import defaultProps from 'recompose/defaultProps';
 import {Link, NavLink} from 'react-router-dom';
+import {centered} from '../styles';
 import {size} from 'polished';
 
 const darkClassName = css({
@@ -68,7 +69,7 @@ const Header = props => (
     position="sticky"
     className={props.dark && darkClassName}
   >
-    <Toolbar>
+    <Toolbar className={props.centered && centered}>
       <LogoLink to="/">
         <StyledLogo />
         {!props.simple && <StyledWordmark />}
@@ -95,6 +96,7 @@ const Header = props => (
 );
 
 Header.propTypes = {
+  centered: PropTypes.bool,
   children: PropTypes.node,
   dark: PropTypes.bool,
   simple: PropTypes.bool

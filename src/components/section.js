@@ -1,11 +1,7 @@
 import styled from 'react-emotion';
 import theme from '../theme';
+import {centered} from '../styles';
 
-const Section = styled.div({
-  width: '100%',
-  maxWidth: theme.breakpoints.values.lg,
-  margin: '0 auto',
-  padding: theme.spacing.unit * 8
-});
+const Section = styled.div(centered, {padding: theme.spacing.unit * 8});
 
 export default Section;

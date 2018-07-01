@@ -22,7 +22,7 @@ const baseIconClassName = css({
 
 const StyledLogo = styled(Logo)(
   baseIconClassName,
-  size(theme.spacing.unit * 5),
+  size(theme.spacing.unit * 4),
   {marginBottom: theme.spacing.unit * 1.5}
 );
 

@@ -1,4 +1,11 @@
-import {injectGlobal} from 'react-emotion';
+import theme from './theme';
+import {css, injectGlobal} from 'react-emotion';
+
+export const centered = css({
+  width: '100%',
+  maxWidth: theme.breakpoints.values.lg,
+  margin: '0 auto'
+});
 
 export default () =>
   injectGlobal({

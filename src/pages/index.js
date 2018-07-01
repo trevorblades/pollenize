@@ -7,7 +7,7 @@ import {Switch, Route} from 'react-router-dom';
 
 const Pages = () => (
   <Fragment>
-    <Header />
+    <Header centered />
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/elections" render={Elections} />
