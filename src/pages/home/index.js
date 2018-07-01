@@ -11,9 +11,15 @@ import TestimonialCarousel from './testimonial-carousel';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme from '../../theme';
+import defaultProps from 'recompose/defaultProps';
 import withProps from 'recompose/withProps';
 
-const CenteredSection = withProps({centered: true})(Section);
+const CenteredSection = defaultProps({centered: true})(Section);
+const Donate = styled(CenteredSection)({
+  maxWidth: theme.breakpoints.values.md,
+  textAlign: 'center'
+});
+
 const GridItem = withProps({item: true})(Grid);
 const StyledFavoriteIcon = styled(FavoriteIcon)({
   marginRight: theme.spacing.unit
@@ -28,7 +34,7 @@ class Home extends Component {
         </Helmet>
         <Hero />
         <CenteredSection>
-          <Grid container spacing={theme.spacing.unit * 5}>
+          <Grid container spacing={theme.spacing.unit * 4}>
             <GridItem xs={12} md={7} lg={8}>
               <Typography paragraph variant="headline">
                 Pollenize is a nonpartisan, apolitical non-profit organization
@@ -51,12 +57,26 @@ class Home extends Component {
           </Grid>
         </CenteredSection>
         <Divider />
-        <CenteredSection>
+        <Donate>
+          <Typography gutterBottom variant="display1">
+            To a politically-engaged future
+          </Typography>
+          <Typography paragraph variant="subheading">
+            Pollenize is a registered non-profit. We&apos;re an all-volunteer
+            team on a mission to make elections easier to understand and
+            encourage people to participate in democracy.
+          </Typography>
+          <Typography paragraph variant="subheading">
+            Your donation will help us spread the word about the tools that we
+            build, produce other projects, and engage the voting public in other
+            ways. If you like what we&apos;re doing, we&apos;d be very grateful
+            if you contributed any amount that you think is fair.
+          </Typography>
           <Button variant="extendedFab" color="primary">
             <StyledFavoriteIcon />
             Donate
           </Button>
-        </CenteredSection>
+        </Donate>
         <Footer />
       </Fragment>
     );
