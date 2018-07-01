@@ -1,9 +1,10 @@
 import theme from './theme';
 import {css, injectGlobal} from 'react-emotion';
 
+export const maxWidth = theme.breakpoints.values.lg;
 export const centered = css({
+  maxWidth,
   width: '100%',
-  maxWidth: theme.breakpoints.values.lg,
   margin: '0 auto'
 });
 

@@ -1,10 +1,5 @@
-import theme from '../../../theme';
-import {css} from 'react-emotion';
+import {maxWidth} from '../../../styles';
 
-export const SECTION_MAX_WIDTH = 960;
-export const SECTION_VERTICAL_PADDING = theme.spacing.unit * 5;
-export const sectionClassName = css({
-  padding: `${SECTION_VERTICAL_PADDING}px ${theme.spacing.unit * 6}px`
-});
-
+export const SIDEBAR_WIDTH = 200;
+export const TOPIC_MAX_WIDTH = maxWidth - SIDEBAR_WIDTH;
 export const TOPIC_IMAGE_ASPECT_RATIO = 15 / 4;

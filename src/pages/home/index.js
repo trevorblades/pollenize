@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
 
+const CenteredSection = withProps({centered: true})(Section);
 const GridItem = withProps({item: true})(Grid);
 
 class Home extends Component {
@@ -20,7 +21,7 @@ class Home extends Component {
           <title>Informing voters</title>
         </Helmet>
         <Hero />
-        <Section>
+        <CenteredSection>
           <Grid container spacing={theme.spacing.unit * 5}>
             <GridItem xs={12} md={7} lg={8}>
               <Typography paragraph variant="headline">
@@ -42,9 +43,9 @@ class Home extends Component {
               <TestimonialCarousel />
             </GridItem>
           </Grid>
-        </Section>
+        </CenteredSection>
         <Divider />
-        <Section>hello plz donate</Section>
+        <CenteredSection>hello plz donate</CenteredSection>
         <Footer />
       </Fragment>
     );

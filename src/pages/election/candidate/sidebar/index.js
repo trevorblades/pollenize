@@ -6,31 +6,26 @@ import React from 'react';
 import TopicForm from './topic-form';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
-import styled from 'react-emotion';
+import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
 import mapProps from 'recompose/mapProps';
 import withProps from 'recompose/withProps';
-import {SECTION_VERTICAL_PADDING} from '../common';
+import {SECTION_PADDING_SMALL} from '../../../../components/section';
+import {SIDEBAR_WIDTH} from '../common';
 import {connect} from 'react-redux';
 
-const sidebarVerticalPadding = theme.spacing.unit * 3;
-const Container = styled.div({
-  display: 'flex',
-  alignSelf: 'flex-start',
-  justifyContent: 'flex-end',
-  flexGrow: 1,
-  marginTop: SECTION_VERTICAL_PADDING - sidebarVerticalPadding,
-  position: 'sticky',
-  top: theme.mixins.toolbar.height
-});
-
-const InnerContainer = styled.aside({
+const padding = theme.spacing.unit * 4;
+const Container = styled.aside({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  width: 200,
-  padding: `${sidebarVerticalPadding}px ${theme.spacing.unit * 4}px`,
-  paddingRight: 0
+  flexShrink: 0,
+  width: SIDEBAR_WIDTH,
+  marginTop: SECTION_PADDING_SMALL - padding,
+  padding,
+  paddingRight: 0,
+  position: 'sticky',
+  top: theme.mixins.toolbar.height
 });
 
 const TopicsHeading = withProps({
@@ -46,17 +41,20 @@ const StyledEditButton = styled(EditButton)({
   marginLeft: 'auto'
 });
 
-const SidebarTopics = styled.div({
-  width: '100%'
+const notLastBottomMargin = css({
+  ':not(:last-child)': {
+    marginBottom: theme.spacing.unit
+  }
 });
 
+const SidebarTopics = styled.div(notLastBottomMargin, {width: '100%'});
 const SidebarTopic = styled.div`
   display: flex;
-  margin-bottom: ${theme.spacing.unit}px;
   padding-right: ${theme.spacing.unit / 2}px;
   border-right-width: 3px;
   border-right-style: solid;
   border-color: ${props => (props.active ? 'inherit' : 'transparent')};
+  ${notLastBottomMargin}
   :not(:hover) ${StyledEditButton} {
     display: none;
   }
@@ -87,37 +85,32 @@ const TopicFormDialogTrigger = mapProps(props => ({
 
 const Sidebar = props => (
   <Container>
-    <InnerContainer>
-      <SidebarItem href="#">About {props.candidate.firstName}</SidebarItem>
-      <TopicsHeading>Topics</TopicsHeading>
-      <SidebarTopics style={{borderColor: props.candidate.color}}>
-        {props.election.topics.map((topic, index) => (
-          <SidebarTopic
-            key={topic.id}
-            active={index === props.activeTopicIndex}
-          >
-            <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
-            {props.editMode && (
-              <TopicFormDialogTrigger topic={topic}>
-                <StyledEditButton />
-              </TopicFormDialogTrigger>
-            )}
-          </SidebarTopic>
-        ))}
-      </SidebarTopics>
-      {props.editMode && (
-        <TopicFormDialogTrigger
-          topic={{
-            title: '',
-            slug: '',
-            description: '',
-            election_id: props.election.id
-          }}
-        >
-          <AddTopicButton>Add topic...</AddTopicButton>
-        </TopicFormDialogTrigger>
-      )}
-    </InnerContainer>
+    <SidebarItem href="#">About {props.candidate.firstName}</SidebarItem>
+    <TopicsHeading>Topics</TopicsHeading>
+    <SidebarTopics style={{borderColor: props.candidate.color}}>
+      {props.election.topics.map((topic, index) => (
+        <SidebarTopic key={topic.id} active={index === props.activeTopicIndex}>
+          <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
+          {props.editMode && (
+            <TopicFormDialogTrigger topic={topic}>
+              <StyledEditButton />
+            </TopicFormDialogTrigger>
+          )}
+        </SidebarTopic>
+      ))}
+    </SidebarTopics>
+    {props.editMode && (
+      <TopicFormDialogTrigger
+        topic={{
+          title: '',
+          slug: '',
+          description: '',
+          election_id: props.election.id
+        }}
+      >
+        <AddTopicButton>Add topic...</AddTopicButton>
+      </TopicFormDialogTrigger>
+    )}
   </Container>
 );
 

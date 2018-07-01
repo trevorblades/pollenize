@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Section from '../../../components/section';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/withProps';
 import differenceInYears from 'date-fns/differenceInYears';
-import {sectionClassName} from './common';
 
 const Text = defaultProps({
   component: 'p',
@@ -14,7 +14,7 @@ const Text = defaultProps({
 const now = Date.now();
 const unknown = 'Unknown';
 const Bio = props => (
-  <div className={sectionClassName}>
+  <Section small>
     <Typography gutterBottom variant="display1">
       About {props.candidate.firstName}
     </Typography>
@@ -28,7 +28,7 @@ const Bio = props => (
     {props.candidate.bio && (
       <Text gutterBottom={false}>{props.candidate.bio}</Text>
     )}
-  </div>
+  </Section>
 );
 
 Bio.propTypes = {

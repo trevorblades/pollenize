@@ -10,7 +10,7 @@ import reject from 'lodash/reject';
 import round from 'lodash/round';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
-import {SECTION_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
+import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {connect} from 'react-redux';
 import {getNextSlug} from '../../../../util';
 import {
@@ -94,8 +94,8 @@ class TopicForm extends Component {
           ['description', {multiline: true}],
           <FormControl fullWidth key="image" margin="dense">
             <ImageLabel>
-              Banner image ({SECTION_MAX_WIDTH * 2} x{' '}
-              {(SECTION_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO) * 2} px)
+              Banner image ({TOPIC_MAX_WIDTH * 2} x{' '}
+              {(TOPIC_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO) * 2} px)
               {image && (
                 <ButtonBase onClick={this.removeImage}>Remove image</ButtonBase>
               )}

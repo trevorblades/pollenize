@@ -15,11 +15,13 @@ const Container = styled.div({
   overflow: 'hidden'
 });
 
-const InnerContainer = styled(Section)({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between'
-});
+const InnerContainer = withProps({centered: true})(
+  styled(Section)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  })
+);
 
 const Text = defaultProps({color: 'inherit'})(Typography);
 const Headline = withProps({

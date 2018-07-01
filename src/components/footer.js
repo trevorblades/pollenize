@@ -46,7 +46,7 @@ const date = new Date();
 const year = date.getFullYear();
 const Footer = () => (
   <Container>
-    <Section>
+    <Section centered>
       <StyledLogo />
       <Typography gutterBottom color="inherit">
         &copy; {year} Really Awesome Doings

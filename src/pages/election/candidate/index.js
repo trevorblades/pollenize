@@ -5,6 +5,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
 import ElectionHeader from '../election-header';
 import FormDialogTrigger from '../../../components/form-dialog-trigger';
+import Footnotes from './footnotes';
 import Helmet from 'react-helmet';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
@@ -16,12 +17,9 @@ import find from 'lodash/find';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import theme from '../../../theme';
-import {
-  SECTION_MAX_WIDTH,
-  SECTION_VERTICAL_PADDING,
-  sectionClassName
-} from './common';
+import {SECTION_PADDING_SMALL} from '../../../components/section';
 import {Link} from 'react-router-dom';
+import {centered} from '../../../styles';
 import {connect} from 'react-redux';
 import {getCandidates} from '../../../selectors';
 import {size} from 'polished';
@@ -63,10 +61,15 @@ const StyledLink = styled(Link)({
   textDecoration: 'none'
 });
 
-const Container = styled.div({
+const Container = styled.div(centered, {
   display: 'flex',
-  flexGrow: 1,
-  position: 'relative'
+  alignItems: 'flex-start',
+  flexGrow: 1
+});
+
+const InnerContainer = styled.div({
+  width: '100%',
+  backgroundColor: theme.palette.background.paper
 });
 
 const OffsetAnchor = styled.a({
@@ -75,42 +78,6 @@ const OffsetAnchor = styled.a({
   // We add a magic number 1 that helps avoid an extra pixel between
   // the header and a topic banner image
   top: -theme.mixins.toolbar.height + 1
-});
-
-const Content = styled.div({
-  width: '100%',
-  maxWidth: SECTION_MAX_WIDTH,
-  borderLeft: `1px solid ${theme.palette.grey[100]}`,
-  backgroundColor: theme.palette.background.paper
-});
-
-const FootnotesSection = styled.section(sectionClassName, {
-  color: theme.palette.text.secondary,
-  backgroundColor: theme.palette.grey[100]
-});
-
-const Footnotes = styled.ol({
-  margin: 0,
-  padding: 0,
-  listStyle: 'inside decimal',
-  columnCount: 2,
-  columnGap: theme.spacing.unit * 2
-});
-
-const Footnote = withProps({
-  color: 'inherit',
-  gutterBottom: true,
-  component: 'li'
-})(
-  styled(Typography)({
-    display: 'list-item',
-    wordBreak: 'break-word'
-  })
-);
-
-const Spacer = styled.div({
-  flexGrow: 1,
-  backgroundColor: theme.palette.background.paper
 });
 
 class Candidate extends Component {
@@ -128,7 +95,9 @@ class Candidate extends Component {
   componentDidMount() {
     const {hash} = window.location;
     if (hash) {
-      const element = this.content.querySelector(`a[name="${hash.slice(1)}"]`);
+      const element = this.innerContainer.querySelector(
+        `a[name="${hash.slice(1)}"]`
+      );
       if (element) {
         const {top} = element.getBoundingClientRect();
         window.scrollTo(0, Math.round(top) + window.scrollY);
@@ -147,11 +116,11 @@ class Candidate extends Component {
     let activeTopicIndex = -1;
 
     const {scrollY} = window;
-    const anchors = this.content.querySelectorAll('a[name]');
+    const anchors = this.innerContainer.querySelectorAll('a[name]');
     for (let i = anchors.length - 1; i >= 0; i--) {
       const anchor = anchors[i];
       const {top} = anchor.getBoundingClientRect();
-      const offset = Math.round(top) + scrollY - SECTION_VERTICAL_PADDING;
+      const offset = Math.round(top) + scrollY - SECTION_PADDING_SMALL;
       if (scrollY >= offset) {
         hash = anchor.name;
         activeTopicIndex = i;
@@ -208,7 +177,7 @@ class Candidate extends Component {
             candidate={this.props.candidate}
             election={this.props.election}
           />
-          <Content innerRef={node => (this.content = node)}>
+          <InnerContainer innerRef={node => (this.innerContainer = node)}>
             <Bio candidate={this.props.candidate} />
             {this.props.election.topics.map(topic => (
               <div key={topic.id}>
@@ -221,27 +190,9 @@ class Candidate extends Component {
               </div>
             ))}
             <OffsetAnchor name="sources" />
-            <FootnotesSection>
-              <Typography gutterBottom variant="title" color="inherit">
-                Sources
-              </Typography>
-              <Footnotes>
-                {this.props.candidate.sources.map(source => (
-                  <Footnote key={source.id}>
-                    <a
-                      href={source.url}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      {source.url}
-                    </a>
-                  </Footnote>
-                ))}
-              </Footnotes>
-            </FootnotesSection>
-          </Content>
-          <Spacer />
+          </InnerContainer>
         </Container>
+        <Footnotes sources={this.props.candidate.sources} />
       </Fragment>
     );
   }

@@ -1,26 +1,23 @@
 import Button from '@material-ui/core/Button';
 import EditButton from '../../../../components/edit-button';
 import FormDialogTrigger from '../../../../components/form-dialog-trigger';
+import PositionForm from './position-form';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import PositionForm from './position-form';
+import Section from '../../../../components/section';
 import Typography from '@material-ui/core/Typography';
 import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
-import {
-  SECTION_MAX_WIDTH,
-  TOPIC_IMAGE_ASPECT_RATIO,
-  sectionClassName
-} from '../common';
+import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 
 const Banner = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: SECTION_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO,
+  height: TOPIC_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   h1: {
@@ -29,7 +26,7 @@ const Banner = styled.div({
   }
 });
 
-const Container = styled.section(sectionClassName);
+const Container = withProps({small: true})(Section);
 const InnerContainer = styled.div({display: 'flex'});
 const MainContent = styled.div({
   flexGrow: 1
