@@ -163,6 +163,9 @@ const Footer = () => (
         const items = navs[key];
         return (
           <NavigationContainer key={key}>
+            <Typography gutterBottom color="primary" variant="caption">
+              {key}
+            </Typography>
             {items ? <StyledNavigation items={items} /> : <StyledNavigation />}
           </NavigationContainer>
         );
