@@ -22,9 +22,18 @@ const Container = styled.footer({
 const InnerContainer = withProps({centered: true})(
   styled(Section)({
     display: 'flex',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    flexWrap: 'wrap'
   })
 );
+
+const breakpoint = theme.breakpoints.down('sm');
+const Colophon = styled.div({
+  [breakpoint]: {
+    width: '100%',
+    marginBottom: theme.spacing.unit * 2
+  }
+});
 
 const baseIconClassName = css({
   display: 'block',
@@ -47,13 +56,12 @@ const StyledAnchor = styled.a({
   }
 });
 
+const logoSize = theme.spacing.unit * 3;
+const logoClassName = css(baseIconClassName, size(logoSize));
 const BlankTargetAnchor = defaultProps({
   target: '_blank',
   rel: 'noopener noreferrer'
 })(StyledAnchor);
-
-const logoSize = theme.spacing.unit * 3;
-const logoClassName = css(baseIconClassName, size(logoSize));
 
 const emailIconSize = theme.spacing.unit * 2.5;
 const StyledEmailIcon = styled(EmailIcon)(
@@ -62,35 +70,103 @@ const StyledEmailIcon = styled(EmailIcon)(
   {margin: (logoSize - emailIconSize) / 2}
 );
 
+const NavigationContainer = styled.div({
+  marginLeft: 'auto',
+  marginRight: theme.spacing.unit * 2,
+  [breakpoint]: {
+    flexGrow: 1
+  }
+});
+
+const StyledNavigation = styled(Navigation)({
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  margin: 0,
+  'a:not(:last-child)': {
+    marginRight: 0
+  }
+});
+
 const date = new Date();
 const year = date.getFullYear();
+const mailto = 'mailto:info@pollenize.org';
+
+const navs = {
+  'Main menu': undefined,
+  'The organization': {
+    'Our team': '/team',
+    'Contact us': mailto,
+    Donate: '/donate',
+    Shop: '/shop'
+  },
+  Contribute: {
+    'Be an editor': '/editors',
+    'Log in': '/login',
+    GitHub: {
+      component: 'a',
+      href: 'https://github.com/pollenize',
+      target: '_blank',
+      rel: 'noopener noreferrer'
+    }
+  }
+};
+
+const socialMediaAccounts = {
+  Twitter: {
+    url: 'https://twitter.com/pollenizeorg',
+    logo: TwitterLogo
+  },
+  Instagram: {
+    url: 'https://instagram.com/pollenize',
+    logo: InstagramLogo
+  },
+  Facebook: {
+    url: 'https://facebook.com/pollenize',
+    logo: FacebookLogo
+  },
+  YouTube: {
+    url: 'https://youtube.com/pollenizeorg',
+    logo: YouTubeLogo
+  }
+};
+
+const navKeys = Object.keys(navs);
+const socialMediaAccountKeys = Object.keys(socialMediaAccounts);
+
 const Footer = () => (
   <Container>
     <InnerContainer>
-      <div>
+      <Colophon>
         <StyledLogo />
         <Typography gutterBottom color="inherit">
           &copy; {year} Really Awesome Doings
         </Typography>
         <Icons>
-          <BlankTargetAnchor href="https://twitter.com/pollenizeorg">
-            <TwitterLogo className={logoClassName} />
-          </BlankTargetAnchor>
-          <BlankTargetAnchor href="https://instagram.com/pollenize">
-            <InstagramLogo className={logoClassName} />
-          </BlankTargetAnchor>
-          <BlankTargetAnchor href="https://facebook.com/pollenize">
-            <FacebookLogo className={logoClassName} />
-          </BlankTargetAnchor>
-          <BlankTargetAnchor href="https://youtube.com/pollenizeorg">
-            <YouTubeLogo className={logoClassName} />
-          </BlankTargetAnchor>
-          <StyledAnchor href="mailto:info@pollenize.org">
+          {socialMediaAccountKeys.map(key => {
+            const {url, logo} = socialMediaAccounts[key];
+            return (
+              <BlankTargetAnchor
+                key={key}
+                href={url}
+                title={`Pollenize on ${key}`}
+              >
+                {React.createElement(logo, {className: logoClassName})}
+              </BlankTargetAnchor>
+            );
+          })}
+          <StyledAnchor href={mailto}>
             <StyledEmailIcon />
           </StyledAnchor>
         </Icons>
-      </div>
-      <Navigation />
+      </Colophon>
+      {navKeys.map(key => {
+        const items = navs[key];
+        return (
+          <NavigationContainer key={key}>
+            {items ? <StyledNavigation items={items} /> : <StyledNavigation />}
+          </NavigationContainer>
+        );
+      })}
     </InnerContainer>
   </Container>
 );
