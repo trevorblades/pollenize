@@ -3,15 +3,16 @@ import EditButton from '../../../../components/edit-button';
 import FormDialogTrigger from '../../../../components/form-dialog-trigger';
 import PositionForm from './position-form';
 import PropTypes from 'prop-types';
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
+import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../../../components/section';
 import Typography from '@material-ui/core/Typography';
 import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
-import {connect} from 'react-redux';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
+import {connect} from 'react-redux';
 
 const Banner = styled.div({
   display: 'flex',
@@ -153,28 +154,31 @@ class Topic extends Component {
   }
 
   render() {
+    const {slug, image, description} = this.props.topic;
     return (
-      <Fragment>
-        {this.props.topic.image && (
-          <Banner style={{backgroundImage: `url(${this.props.topic.image})`}}>
-            {this.renderTitle()}
-          </Banner>
-        )}
-        <Container>
-          {!this.props.topic.image && this.renderTitle(true)}
-          <InnerContainer>
-            <MainContent>
-              {this.renderPositions()}
-              {this.renderActions()}
-            </MainContent>
-            {this.props.topic.description && (
-              <AlternateContent>
-                <Typography>{this.props.topic.description}</Typography>
-              </AlternateContent>
-            )}
-          </InnerContainer>
-        </Container>
-      </Fragment>
+      <ScrollableAnchor id={slug}>
+        <div data-topic={slug}>
+          {image && (
+            <Banner style={{backgroundImage: `url(${image})`}}>
+              {this.renderTitle()}
+            </Banner>
+          )}
+          <Container>
+            {!image && this.renderTitle(true)}
+            <InnerContainer>
+              <MainContent>
+                {this.renderPositions()}
+                {this.renderActions()}
+              </MainContent>
+              {description && (
+                <AlternateContent>
+                  <Typography>{description}</Typography>
+                </AlternateContent>
+              )}
+            </InnerContainer>
+          </Container>
+        </div>
+      </ScrollableAnchor>
     );
   }
 }

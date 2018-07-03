@@ -5,6 +5,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
 import ElectionHeader from '../election-header';
 import FormDialogTrigger from '../../../components/form-dialog-trigger';
+import Footer from '../../../components/footer';
 import Footnotes from './footnotes';
 import Helmet from 'react-helmet';
 import IconButton from '@material-ui/core/IconButton';
@@ -72,20 +73,12 @@ const InnerContainer = styled.div({
   backgroundColor: theme.palette.background.paper
 });
 
-const OffsetAnchor = styled.a({
-  display: 'block',
-  position: 'relative',
-  // We add a magic number 1 that helps avoid an extra pixel between
-  // the header and a topic banner image
-  top: -theme.mixins.toolbar.height + 1
-});
-
+const topicOffset = SECTION_PADDING_SMALL + theme.mixins.toolbar.height;
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     editMode: PropTypes.bool.isRequired,
-    election: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    election: PropTypes.object.isRequired
   };
 
   state = {
@@ -93,17 +86,6 @@ class Candidate extends Component {
   };
 
   componentDidMount() {
-    const {hash} = window.location;
-    if (hash) {
-      const element = this.innerContainer.querySelector(
-        `a[name="${hash.slice(1)}"]`
-      );
-      if (element) {
-        const {top} = element.getBoundingClientRect();
-        window.scrollTo(0, Math.round(top) + window.scrollY);
-      }
-    }
-
     window.addEventListener('scroll', this.onScroll);
   }
 
@@ -112,24 +94,17 @@ class Candidate extends Component {
   }
 
   onScroll = () => {
-    let hash = '';
     let activeTopicIndex = -1;
-
     const {scrollY} = window;
-    const anchors = this.innerContainer.querySelectorAll('a[name]');
-    for (let i = anchors.length - 1; i >= 0; i--) {
-      const anchor = anchors[i];
-      const {top} = anchor.getBoundingClientRect();
-      const offset = Math.round(top) + scrollY - SECTION_PADDING_SMALL;
+    const topics = this.innerContainer.querySelectorAll('[data-topic]');
+    for (let i = topics.length - 1; i >= 0; i--) {
+      const topic = topics[i];
+      const {top} = topic.getBoundingClientRect();
+      const offset = Math.round(top) + scrollY - topicOffset;
       if (scrollY >= offset) {
-        hash = anchor.name;
         activeTopicIndex = i;
         break;
       }
-    }
-
-    if (window.location.hash.slice(1) !== hash) {
-      this.props.history.replace(`#${hash}`);
     }
 
     this.setState({activeTopicIndex});
@@ -180,19 +155,17 @@ class Candidate extends Component {
           <InnerContainer innerRef={node => (this.innerContainer = node)}>
             <Bio candidate={this.props.candidate} />
             {this.props.election.topics.map(topic => (
-              <div key={topic.id}>
-                <OffsetAnchor name={topic.slug} />
-                <Topic
-                  topic={topic}
-                  candidate={this.props.candidate}
-                  positions={this.props.candidate.positions[topic.id]}
-                />
-              </div>
+              <Topic
+                topic={topic}
+                key={topic.id}
+                candidate={this.props.candidate}
+                positions={this.props.candidate.positions[topic.id]}
+              />
             ))}
-            <OffsetAnchor name="sources" />
           </InnerContainer>
         </Container>
         <Footnotes sources={this.props.candidate.sources} />
+        <Footer />
       </Fragment>
     );
   }

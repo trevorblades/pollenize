@@ -7,6 +7,7 @@ import createHistory from 'history/createBrowserHistory';
 import reducers from './reducers';
 import styles from './styles';
 import theme from './theme';
+import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 import {JssProvider} from 'react-jss';
 import {Provider} from 'react-redux';
 import {
@@ -14,11 +15,11 @@ import {
   createGenerateClassName,
   jssPreset
 } from '@material-ui/core/styles';
+import {configureAnchors} from 'react-scrollable-anchor';
 import {create} from 'jss';
 import {createStore, applyMiddleware} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {install} from 'redux-loop';
-import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 
 const history = createHistory({basename: process.env.PUBLIC_PATH});
 const middleware = routerMiddleware(history);
@@ -31,6 +32,8 @@ const jss = create(jssPreset());
 jss.options.insertionPoint = 'jss-insertion-point';
 
 styles();
+configureAnchors({offset: -theme.mixins.toolbar.height});
+
 ReactDOM.render(
   <Provider store={store}>
     <JssProvider jss={jss} generateClassName={generateClassName}>

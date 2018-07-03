@@ -1,11 +1,11 @@
 import Divider from '@material-ui/core/Divider';
 import DonateButton from './donate-button';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import Footer from '../../components/footer';
 import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
 import Hero from './hero';
 import React, {Component, Fragment} from 'react';
+import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../components/section';
 import TestimonialCarousel from './testimonial-carousel';
 import Typography from '@material-ui/core/Typography';
@@ -15,15 +15,12 @@ import defaultProps from 'recompose/defaultProps';
 import withProps from 'recompose/withProps';
 
 const CenteredSection = defaultProps({centered: true})(Section);
-const Donate = styled(CenteredSection)({
+const DonateSection = styled(CenteredSection)({
   maxWidth: theme.breakpoints.values.md,
   textAlign: 'center'
 });
 
 const GridItem = withProps({item: true})(Grid);
-const StyledFavoriteIcon = styled(FavoriteIcon)({
-  marginRight: theme.spacing.unit
-});
 
 class Home extends Component {
   render() {
@@ -57,23 +54,25 @@ class Home extends Component {
           </Grid>
         </CenteredSection>
         <Divider />
-        <Donate>
-          <Typography gutterBottom variant="display1">
-            To a politically-engaged future
-          </Typography>
-          <Typography paragraph variant="subheading">
-            Pollenize is a registered non-profit. We&apos;re an all-volunteer
-            team on a mission to make elections easier to understand and
-            encourage people to participate in democracy.
-          </Typography>
-          <Typography paragraph variant="subheading">
-            Your donation will help us spread the word about the tools that we
-            build, produce other projects, and engage the voting public in other
-            ways. If you like what we&apos;re doing, we&apos;d be very grateful
-            if you contributed any amount that you think is fair.
-          </Typography>
-          <DonateButton />
-        </Donate>
+        <ScrollableAnchor id="donate">
+          <DonateSection>
+            <Typography gutterBottom variant="display1">
+              To a politically-engaged future
+            </Typography>
+            <Typography paragraph variant="subheading">
+              Pollenize is a registered non-profit. We&apos;re an all-volunteer
+              team on a mission to make elections easier to understand and
+              encourage people to participate in democracy.
+            </Typography>
+            <Typography paragraph variant="subheading">
+              Your donation will help us spread the word about the tools that we
+              build, produce other projects, and engage the voting public in
+              other ways. If you like what we&apos;re doing, we&apos;d be very
+              grateful if you contributed any amount that you think is fair.
+            </Typography>
+            <DonateButton />
+          </DonateSection>
+        </ScrollableAnchor>
         <Footer />
       </Fragment>
     );
