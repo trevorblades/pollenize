@@ -35,10 +35,10 @@ const members = {
     "Matheson is a graduate of Carleton University's faculty of Journalism and Communications and Sheridan College's New Media Journalism program. He worked as a Legislative Assistant on Parliament Hill in University and is now a freelance producer and filmmaker based in Toronto.",
   'Ben Miller':
     'Ben did his bachelors degree at the University of Victoria in Environmental Sciences and Business, and is now finishing his masters at Copenhagen Business School in the Organizational Innovation and Entrepreneurship Program, where he started the improvisation business training program. Ben has a lot of interests, one of those include riding vast distances on 4 person bikes.',
-  'Sean Tanner':
-    'Sean was born in Vancouver Canada and studied at Capilano University to become a Graphic Designer and Illustrator. Once out in the real world he spent the next 6 years working at Spring Advertising. He now lives in Melbourne Australia, freelancing, and spending as much time as possible relaxing, traveling and taking photos.',
   'Joseph Homsy':
     'Joe has received two college certificates in digital media, and has since built a career in the field working at advertising agencies and outdoor clothing company, Sitka. Now, Joe is focused on growing his own company, Voyager Three, and producing films and digital campaigns.',
+  'Sean Tanner':
+    'Sean was born in Vancouver Canada and studied at Capilano University to become a Graphic Designer and Illustrator. Once out in the real world he spent the next 6 years working at Spring Advertising. He now lives in Melbourne Australia, freelancing, and spending as much time as possible relaxing, traveling and taking photos.',
   'Lorena Perez':
     'Lorena is a University of Toronto Graduate, communications professional and an M.A. candidate in Strategic Public Relations at the University of Southern California. She is passionate about environmental issues and animal rights, and is currently writing her thesis about plastic pollution in the ocean.',
   'David Clement':
@@ -63,6 +63,10 @@ const Team = () => (
           beautiful, functional experiences. Read on to learn more about our
           crew.
         </HeroText>
+        <Typography variant="caption">
+          Pictured (from left to right): Miguel, Ben, Matheson, Trevor, Marvin,
+          and Joe
+        </Typography>
       </CenteredSection>
     </Hero>
     <CenteredSection>
