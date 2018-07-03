@@ -96,10 +96,7 @@ const navs = {
   'The organization': {
     'Our team': '/team',
     'Contact us': mailto,
-    Donate: {
-      component: 'a',
-      href: '/#donate'
-    },
+    Donate: '/#donate',
     Shop: '/shop'
   },
   Contribute: {

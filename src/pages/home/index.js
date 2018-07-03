@@ -23,6 +23,10 @@ const DonateSection = styled(CenteredSection)({
 const GridItem = withProps({item: true})(Grid);
 
 class Home extends Component {
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   render() {
     return (
       <Fragment>
