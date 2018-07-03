@@ -72,20 +72,25 @@ const SidebarItem = defaultProps({
   })
 );
 
-const AddTopicButton = withProps({component: ButtonBase})(
-  styled(SidebarItem)({
-    color: theme.palette.text.secondary
-  })
-);
+const SidebarButton = defaultProps({component: ButtonBase})(SidebarItem);
+const AddTopicButton = styled(SidebarButton)({
+  color: theme.palette.text.secondary
+});
 
 const TopicFormDialogTrigger = mapProps(props => ({
   children: props.children,
   form: <TopicForm topic={props.topic} />
 }))(FormDialogTrigger);
 
+function scrollToTop() {
+  window.scrollTo(0, 0);
+}
+
 const Sidebar = props => (
   <Container>
-    <SidebarItem href="#">About {props.candidate.firstName}</SidebarItem>
+    <SidebarButton onClick={scrollToTop}>
+      About {props.candidate.firstName}
+    </SidebarButton>
     <TopicsHeading>Topics</TopicsHeading>
     <SidebarTopics style={{borderColor: props.candidate.color}}>
       {props.election.topics.map((topic, index) => (
