@@ -99,27 +99,27 @@ const testimonials = [
   }
 ];
 
+const maxStep = testimonials.length - 1;
 class TestimonialCarousel extends Component {
   state = {
     activeStep: 0
   };
 
   step = direction =>
-    this.setState(prevState => ({
-      activeStep: prevState.activeStep + direction
-    }));
+    this.setState(prevState => {
+      let activeStep = prevState.activeStep + direction;
+      if (activeStep < 0) {
+        activeStep = maxStep;
+      } else if (activeStep > maxStep) {
+        activeStep = 0;
+      }
+
+      return {activeStep};
+    });
 
   renderButton(next) {
     return (
-      <Button
-        size="small"
-        disabled={
-          next
-            ? this.state.activeStep === testimonials.length - 1
-            : !this.state.activeStep
-        }
-        onClick={() => this.step(next ? 1 : -1)}
-      >
+      <Button size="small" onClick={() => this.step(next ? 1 : -1)}>
         {next ? <KeyboardArrowRightIcon /> : <KeyboardArrowLeftIcon />}
       </Button>
     );
