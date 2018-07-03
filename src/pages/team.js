@@ -45,16 +45,17 @@ const members = {
     "David is an entrepreneur, non profit activist and political junkie. He has a Bachelor's degree in Political Science and a masters degree in International Relations from Wilfrid Laurier University.David previously worked as the research assistant to the Canada Research Chair in International Human Rights and is an unapologetic Taylor Swift fan."
 };
 
+const title = 'Our team';
 const memberKeys = Object.keys(members);
 const Team = () => (
   <Fragment>
     <Helmet>
-      <title>Our team</title>
+      <title>{title}</title>
     </Helmet>
     <Hero>
       <CenteredSection>
         <Typography gutterBottom variant="display3">
-          Our team
+          {title}
         </Typography>
         <StyledImage src={team} />
         <HeroText>
