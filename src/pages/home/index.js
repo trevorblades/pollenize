@@ -1,6 +1,5 @@
 import Divider from '@material-ui/core/Divider';
 import DonateButton from './donate-button';
-import Footer from '../../components/footer';
 import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
 import Hero from './hero';
@@ -77,7 +76,6 @@ class Home extends Component {
             <DonateButton />
           </DonateSection>
         </ScrollableAnchor>
-        <Footer />
       </Fragment>
     );
   }
