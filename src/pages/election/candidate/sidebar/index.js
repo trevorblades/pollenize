@@ -13,6 +13,7 @@ import withProps from 'recompose/withProps';
 import {SECTION_PADDING_SMALL} from '../../../../components/section';
 import {SIDEBAR_WIDTH} from '../common';
 import {connect} from 'react-redux';
+import {scrollToTop} from '../../../../util';
 
 const padding = theme.spacing.unit * 4;
 const Container = styled.aside({
@@ -81,10 +82,6 @@ const TopicFormDialogTrigger = mapProps(props => ({
   children: props.children,
   form: <TopicForm topic={props.topic} />
 }))(FormDialogTrigger);
-
-function scrollToTop() {
-  window.scrollTo(0, 0);
-}
 
 const Sidebar = props => (
   <Container>

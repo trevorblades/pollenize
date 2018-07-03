@@ -18,3 +18,7 @@ export function getNextSlug(title, slugs) {
     }
   }
 }
+
+export function scrollToTop() {
+  window.scrollTo(0, 0);
+}

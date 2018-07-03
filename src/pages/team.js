@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import React, {Fragment} from 'react';
 import Section from '../components/section';
 import Typography from '@material-ui/core/Typography';
+import scrollToTop from '../hocs/scroll-to-top';
 import styled from 'react-emotion';
 import team, {color} from '../assets/images/team.jpg';
 import theme from '../theme';
@@ -85,4 +86,4 @@ const Team = () => (
   </Fragment>
 );
 
-export default Team;
+export default scrollToTop(Team);
