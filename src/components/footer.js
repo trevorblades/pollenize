@@ -95,7 +95,10 @@ const navs = {
   'Main menu': undefined,
   'The organization': {
     'Our team': '/team',
-    'Contact us': mailto,
+    'Contact us': {
+      component: 'a',
+      href: mailto
+    },
     Donate: '/#donate',
     Shop: '/shop'
   },
