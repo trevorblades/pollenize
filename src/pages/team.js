@@ -22,12 +22,12 @@ const members = {
     'As a designer at Prodigy, Marvin is currently on a mission to help kids around the world love math. He spent three years at Fanshawe College, obtaining both a diploma and post-graduate in Interactive Media. Marvin is better than you at video games and can play any Blink-182 song on his trusty air guitar.',
   'Miguel Barbosa':
     'Miguel is a film director, editor and producer. He creates music videos, documentaries and commercials.',
+  'Matheson Murray':
+    "Matheson is a graduate of Carleton University's faculty of Journalism and Communications and Sheridan College's New Media Journalism program. He worked as a Legislative Assistant on Parliament Hill in University and is now a freelance producer and filmmaker based in Toronto.",
   'Ben Miller':
     'Ben did his bachelors degree at the University of Victoria in Environmental Sciences and Business, and is now finishing his masters at Copenhagen Business School in the Organizational Innovation and Entrepreneurship Program, where he started the improvisation business training program. Ben has a lot of interests, one of those include riding vast distances on 4 person bikes.',
   'Sean Tanner':
     'Sean was born in Vancouver Canada and studied at Capilano University to become a Graphic Designer and Illustrator. Once out in the real world he spent the next 6 years working at Spring Advertising. He now lives in Melbourne Australia, freelancing, and spending as much time as possible relaxing, traveling and taking photos.',
-  'Matheson Murray':
-    "Matheson is a graduate of Carleton University's faculty of Journalism and Communications and Sheridan College's New Media Journalism program. He worked as a Legislative Assistant on Parliament Hill in University and is now a freelance producer and filmmaker based in Toronto.",
   'Joseph Homsy':
     'Joe has received two college certificates in digital media, and has since built a career in the field working at advertising agencies and outdoor clothing company, Sitka. Now, Joe is focused on growing his own company, Voyager Three, and producing films and digital campaigns.',
   'Lorena Perez':
@@ -57,7 +57,7 @@ const Team = () => (
     <CenteredSection>
       <Grid container spacing={theme.spacing.unit * 4}>
         {memberKeys.map(key => (
-          <Grid item xs={4} key={key}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={key}>
             <Typography gutterBottom variant="display1">
               {key}
             </Typography>
