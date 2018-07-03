@@ -1,19 +1,28 @@
-import Divider from '@material-ui/core/Divider';
 import Helmet from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
 import React, {Fragment} from 'react';
 import Section from '../components/section';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
-import team from '../assets/images/team.jpg';
+import team, {color} from '../assets/images/team.jpg';
 import theme from '../theme';
 import withProps from 'recompose/withProps';
 
+const Hero = styled.div({backgroundColor: color});
 const CenteredSection = withProps({centered: true})(Section);
 const StyledImage = styled.img({
   width: '100%',
   marginBottom: theme.spacing.unit * 3
 });
+
+const HeroText = withProps({
+  gutterBottom: true,
+  variant: 'headline'
+})(
+  styled(Typography)({
+    maxWidth: theme.breakpoints.values.sm
+  })
+);
 
 const members = {
   'Trevor Blades':
@@ -42,20 +51,22 @@ const Team = () => (
     <Helmet>
       <title>Our team</title>
     </Helmet>
+    <Hero>
+      <CenteredSection>
+        <Typography gutterBottom variant="display3">
+          Our team
+        </Typography>
+        <StyledImage src={team} />
+        <HeroText>
+          Pollenize is created by a collection of friends spread out across 6
+          cities and 3 countries who are passionate about educating and creating
+          beautiful, functional experiences. Read on to learn more about our
+          crew.
+        </HeroText>
+      </CenteredSection>
+    </Hero>
     <CenteredSection>
-      <Typography gutterBottom variant="display3">
-        Our team
-      </Typography>
-      <StyledImage src={team} />
-      <Typography variant="headline">
-        Pollenize is created by a collection of friends spread out across 6
-        cities and 3 countries who are passionate about educating and creating
-        beautiful, functional experiences. Read on to learn more about our crew.
-      </Typography>
-    </CenteredSection>
-    <Divider />
-    <CenteredSection>
-      <Grid container spacing={theme.spacing.unit * 4}>
+      <Grid container spacing={theme.spacing.unit * 5}>
         {memberKeys.map(key => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={key}>
             <Typography gutterBottom variant="display1">

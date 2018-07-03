@@ -49,6 +49,7 @@
     "babel-loader": "^8.0.0-beta.3",
     "babel-plugin-emotion": "^9.2.0",
     "babel-polyfill": "^6.26.0",
+    "color-loader": "^2.1.2",
     "eslint": "^4.19.1",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
