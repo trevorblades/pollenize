@@ -1,36 +1,28 @@
 import api from '../api';
 import cookies from 'browser-cookies';
-import jwtDecode from 'jwt-decode';
-import {logIn, logOut, success, failure} from '../actions/user';
+import {logIn, logOut, renewToken, success, failure} from '../actions/user';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
+import {userFromToken} from '../util';
 
-async function auth(email, password) {
+async function authenticate(email, password) {
   const response = await api.auth(email, password).post('/auth');
   api.auth();
 
   if (response.err) {
     throw response.body;
   }
-
-  const token = response.body;
-  api.jwt(token);
-  cookies.set('token', token);
-  return token;
+  return response.body;
 }
 
-function userFromToken(token) {
-  if (!token) {
-    return null;
-  }
+async function renew(token) {
+  const response = await api.jwt(token).post('/auth/renew');
+  api.jwt(null);
 
-  const claims = jwtDecode(token);
-  delete claims.exp;
-  delete claims.iat;
-  return {
-    ...claims,
-    token
-  };
+  if (response.err) {
+    throw response.body;
+  }
+  return response.body;
 }
 
 const defaultState = {
@@ -47,16 +39,28 @@ export default handleActions(
           ...state,
           loading: true
         },
-        Cmd.run(auth, {
+        Cmd.run(authenticate, {
           successActionCreator: success,
           failActionCreator: failure,
           args: payload
         })
       ),
+    [renewToken]: (state, {payload}) =>
+      loop(
+        {
+          ...state,
+          loading: true
+        },
+        Cmd.run(renew, {
+          successActionCreator: success,
+          failActionCreator: failure,
+          args: [payload]
+        })
+      ),
     [success]: (state, {payload}) => ({
       ...state,
       loading: false,
-      data: userFromToken(payload)
+      data: payload
     }),
     [failure]: (state, {payload}) => ({
       ...state,

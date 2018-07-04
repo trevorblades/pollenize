@@ -1,4 +1,5 @@
 import filter from 'lodash/filter';
+import jwtDecode from 'jwt-decode';
 import slugify from 'limax';
 
 // TODO: publish this as an npm package
@@ -21,4 +22,28 @@ export function getNextSlug(title, slugs) {
 
 export function scrollToTop() {
   window.scrollTo(0, 0);
+}
+
+export function userFromToken(token) {
+  if (!token) {
+    return null;
+  }
+
+  let claims;
+  try {
+    claims = jwtDecode(token);
+  } catch (error) {
+    // token is invalid
+  }
+
+  if (!claims || !claims.exp || Date.now() > claims.exp * 1000) {
+    return null;
+  }
+
+  delete claims.exp;
+  delete claims.iat;
+  return {
+    ...claims,
+    token
+  };
 }
