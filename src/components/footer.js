@@ -15,6 +15,7 @@ import withProps from 'recompose/withProps';
 import {size} from 'polished';
 
 const Container = styled.footer({
+  marginTop: 'auto',
   color: theme.palette.grey[500],
   backgroundColor: theme.palette.grey[100]
 });
