@@ -6,6 +6,7 @@ import map from './map';
 import position from './position';
 import settings from './settings';
 import topic from './topic';
+import user from './user';
 import {combineReducers} from 'redux-loop';
 import {routerReducer} from 'react-router-redux';
 
@@ -18,5 +19,6 @@ export default combineReducers({
   position,
   router: routerReducer,
   settings,
-  topic
+  topic,
+  user
 });

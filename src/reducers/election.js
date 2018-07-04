@@ -23,7 +23,6 @@ async function fetchElection(id) {
   if (response.err) {
     throw response.body;
   }
-
   return response.body;
 }
 

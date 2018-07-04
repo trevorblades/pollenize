@@ -5,14 +5,21 @@ import DialogActions from '@material-ui/core/DialogActions';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {FormField} from './form';
+import {connect} from 'react-redux';
+import {logIn} from '../actions/user';
 
 class LoginForm extends Component {
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
 
   onSubmit = event => {
     event.preventDefault();
+    this.props.dispatch(
+      logIn([event.target.email.value, event.target.password.value])
+    );
   };
 
   render() {
@@ -25,7 +32,7 @@ class LoginForm extends Component {
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.onClose}>Cancel</Button>
-          <Button color="primary" type="submit">
+          <Button disabled={this.props.loading} color="primary" type="submit">
             Submit
           </Button>
         </DialogActions>
@@ -34,4 +41,8 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+const mapStateToProps = state => ({
+  loading: state.user.loading
+});
+
+export default connect(mapStateToProps)(LoginForm);
