@@ -55,7 +55,7 @@ const Home = () => (
     <ScrollableAnchor id="donate">
       <DonateSection>
         <Typography gutterBottom variant="display1">
-          To a politically-engaged future
+          For a politically-engaged future
         </Typography>
         <Typography paragraph variant="subheading">
           Pollenize is a registered non-profit. We&apos;re an all-volunteer team

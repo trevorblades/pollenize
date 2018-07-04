@@ -7,6 +7,7 @@ import styled from 'react-emotion';
 import theme from '../../theme';
 import defaultProps from 'recompose/defaultProps';
 import withProps from 'recompose/withProps';
+import {Link} from 'react-router-dom';
 
 const Container = styled.div({
   display: 'flex',
@@ -39,6 +40,17 @@ const Content = styled.div({
   position: 'relative'
 });
 
+const LargeButton = defaultProps({size: 'large'})(Button);
+const PrimaryButton = withProps({
+  component: Link,
+  color: 'primary',
+  variant: 'raised'
+})(
+  styled(LargeButton)({
+    marginRight: theme.spacing.unit * 1.5
+  })
+);
+
 const StyledImage = withProps({src: noise})(
   styled.img({
     height: 736,
@@ -62,17 +74,10 @@ class Home extends Component {
               We break down elections and provide voters with an organized,
               unbiased overview of each candidate&apos;s platform.
             </Text>
-            <Button
-              color="primary"
-              size="large"
-              variant="raised"
-              style={{marginRight: theme.spacing.unit * 1.5}}
-            >
-              View elections
-            </Button>
-            <Button color="inherit" size="large" variant="outlined">
+            <PrimaryButton to="/elections">View elections</PrimaryButton>
+            <LargeButton color="inherit" variant="outlined">
               Learn more
-            </Button>
+            </LargeButton>
             <StyledImage />
           </Content>
         </InnerContainer>

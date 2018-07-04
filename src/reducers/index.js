@@ -1,5 +1,6 @@
 import candidate from './candidate';
 import election from './election';
+import elections from './elections';
 import lastSuccess from './last-success';
 import map from './map';
 import position from './position';
@@ -11,6 +12,7 @@ import {routerReducer} from 'react-router-redux';
 export default combineReducers({
   candidate,
   election,
+  elections,
   lastSuccess,
   map,
   position,

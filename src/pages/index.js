@@ -13,7 +13,7 @@ const Pages = () => (
     <Switch>
       <Route exact path="/" component={Home} />
       <Route exact path="/team" component={Team} />
-      <Route exact path="/elections" render={Elections} />
+      <Route exact path="/elections" component={Elections} />
       <Route render={NotFound} />
     </Switch>
     <Footer />
