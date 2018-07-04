@@ -41,6 +41,7 @@ export function userFromToken(token) {
   }
 
   delete claims.exp;
+  delete claims.sub;
   delete claims.iat;
   return {
     ...claims,
