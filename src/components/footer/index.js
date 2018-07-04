@@ -1,16 +1,17 @@
 import EmailIcon from '@material-ui/icons/Email';
-import Logo from '../assets/logo.svg';
-import Navigation from './navigation';
+import LoginButton from './login-button';
+import Logo from '../../assets/logo.svg';
+import Navigation from '../navigation';
 import React from 'react';
-import Section from './section';
-import TwitterLogo from '../assets/logos/twitter.svg';
-import InstagramLogo from '../assets/logos/instagram.svg';
-import FacebookLogo from '../assets/logos/facebook.svg';
-import YouTubeLogo from '../assets/logos/youtube.svg';
+import Section from '../section';
+import TwitterLogo from '../../assets/logos/twitter.svg';
+import InstagramLogo from '../../assets/logos/instagram.svg';
+import FacebookLogo from '../../assets/logos/facebook.svg';
+import YouTubeLogo from '../../assets/logos/youtube.svg';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
 import styled, {css} from 'react-emotion';
-import theme from '../theme';
+import theme from '../../theme';
 import withProps from 'recompose/withProps';
 import {size} from 'polished';
 
@@ -105,7 +106,7 @@ const navs = {
   },
   Contribute: {
     'Be an editor': '/editors',
-    'Log in': '/login',
+    'Log in': {component: LoginButton},
     GitHub: {
       component: 'a',
       href: 'https://github.com/pollenize',
