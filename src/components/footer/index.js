@@ -1,8 +1,10 @@
+import ButtonBase from '@material-ui/core/ButtonBase';
 import EmailIcon from '@material-ui/icons/Email';
 import LoginButton from './login-button';
 import Logo from '../../assets/logo.svg';
+import PropTypes from 'prop-types';
 import Navigation from '../navigation';
-import React from 'react';
+import React, {Component} from 'react';
 import Section from '../section';
 import TwitterLogo from '../../assets/logos/twitter.svg';
 import InstagramLogo from '../../assets/logos/instagram.svg';
@@ -13,6 +15,8 @@ import defaultProps from 'recompose/defaultProps';
 import styled, {css} from 'react-emotion';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
+import {connect} from 'react-redux';
+import {logOut} from '../../actions/user';
 import {size} from 'polished';
 
 const Container = styled.footer({
@@ -89,33 +93,6 @@ const StyledNavigation = styled(Navigation)({
   }
 });
 
-const date = new Date();
-const year = date.getFullYear();
-const mailto = 'mailto:info@pollenize.org';
-
-const navs = {
-  'Main menu': undefined,
-  'The organization': {
-    'Our team': '/team',
-    'Contact us': {
-      component: 'a',
-      href: mailto
-    },
-    Donate: '/#donate',
-    Shop: '/shop'
-  },
-  Contribute: {
-    'Be an editor': '/editors',
-    'Log in': {component: LoginButton},
-    GitHub: {
-      component: 'a',
-      href: 'https://github.com/pollenize',
-      target: '_blank',
-      rel: 'noopener noreferrer'
-    }
-  }
-};
-
 const socialMediaAccounts = {
   Twitter: {
     url: 'https://twitter.com/pollenizeorg',
@@ -135,48 +112,92 @@ const socialMediaAccounts = {
   }
 };
 
-const navKeys = Object.keys(navs);
-const socialMediaAccountKeys = Object.keys(socialMediaAccounts);
+const date = new Date();
+const year = date.getFullYear();
+const mailto = 'mailto:info@pollenize.org';
 
-const Footer = () => (
-  <Container>
-    <InnerContainer>
-      <Colophon>
-        <StyledLogo />
-        <Typography gutterBottom color="inherit">
-          &copy; {year} Really Awesome Doings
+class Footer extends Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    user: PropTypes.object
+  };
+
+  logOut = () => this.props.dispatch(logOut());
+
+  renderNavigation(heading, items) {
+    return (
+      <NavigationContainer>
+        <Typography gutterBottom color="primary" variant="caption">
+          {heading}
         </Typography>
-        <Icons>
-          {socialMediaAccountKeys.map(key => {
-            const {url, logo} = socialMediaAccounts[key];
-            return (
-              <BlankTargetAnchor
-                key={key}
-                href={url}
-                title={`Pollenize on ${key}`}
-              >
-                {React.createElement(logo, {className: logoClassName})}
-              </BlankTargetAnchor>
-            );
-          })}
-          <StyledAnchor href={mailto}>
-            <StyledEmailIcon />
-          </StyledAnchor>
-        </Icons>
-      </Colophon>
-      {navKeys.map(key => {
-        const items = navs[key];
-        return (
-          <NavigationContainer key={key}>
-            <Typography gutterBottom color="primary" variant="caption">
-              {key}
-            </Typography>
-            {items ? <StyledNavigation items={items} /> : <StyledNavigation />}
-          </NavigationContainer>
-        );
-      })}
-    </InnerContainer>
-  </Container>
-);
+        {items ? <StyledNavigation items={items} /> : <StyledNavigation />}
+      </NavigationContainer>
+    );
+  }
 
-export default Footer;
+  render() {
+    const loginButton = this.props.user
+      ? {
+          'Log out': {
+            component: ButtonBase,
+            onClick: this.logOut
+          }
+        }
+      : {'Log in': {component: LoginButton}};
+    return (
+      <Container>
+        <InnerContainer>
+          <Colophon>
+            <StyledLogo />
+            <Typography gutterBottom color="inherit">
+              &copy; {year} Really Awesome Doings
+            </Typography>
+            <Icons>
+              {Object.keys(socialMediaAccounts).map(key => {
+                const {url, logo} = socialMediaAccounts[key];
+                return (
+                  <BlankTargetAnchor
+                    key={key}
+                    href={url}
+                    title={`Pollenize on ${key}`}
+                  >
+                    {React.createElement(logo, {className: logoClassName})}
+                  </BlankTargetAnchor>
+                );
+              })}
+              <StyledAnchor href={mailto}>
+                <StyledEmailIcon />
+              </StyledAnchor>
+            </Icons>
+          </Colophon>
+          {this.renderNavigation('Main menu')}
+          {this.renderNavigation('The organization', {
+            'Our team': '/team',
+            'Contact us': {
+              component: 'a',
+              href: mailto
+            },
+            Donate: '/#donate',
+            Shop: '/shop'
+          })}
+          {this.renderNavigation('Contribute', {
+            'Be an editor': '/editors',
+            ...loginButton,
+            GitHub: {
+              component: 'a',
+              href: 'https://github.com/pollenize',
+              target: '_blank',
+              rel: 'noopener noreferrer'
+            }
+          })}
+        </InnerContainer>
+      </Container>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  user: state.user.data
+});
+
+export default connect(mapStateToProps)(Footer);
