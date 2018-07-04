@@ -4,7 +4,7 @@ import {User} from '../models';
 
 export default new BasicStrategy(async (email, password, done) => {
   try {
-    const user = await User.findOne({email});
+    const user = await User.findOne({where: {email}});
     if (user) {
       const valid = await bcrypt.compare(password, user.password);
       if (valid) {

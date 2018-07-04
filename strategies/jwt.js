@@ -8,14 +8,13 @@ export default new Strategy(
   },
   async (payload, done) => {
     try {
-      console.log(payload);
-      const user = await User.findOne({id: payload.sub});
+      const user = await User.findById(payload.sub);
       if (!user) {
         return done(null, false);
       }
       return done(null, user);
     } catch (error) {
-      return done(error, false);
+      return done(error);
     }
   }
 );

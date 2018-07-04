@@ -8,7 +8,11 @@ export default (sequelize, DataTypes) => {
   });
 
   User.prototype.toJWT = function(expiresIn = '7 days') {
-    return jwt.sign(this.get(), process.env.TOKEN_SECRET, {expiresIn});
+    const payload = this.get();
+    return jwt.sign(payload, process.env.TOKEN_SECRET, {
+      expiresIn,
+      subject: payload.id.toString()
+    });
   };
 
   return User;
