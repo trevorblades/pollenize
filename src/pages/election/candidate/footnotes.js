@@ -17,8 +17,13 @@ const Sources = styled.ol({
   margin: 0,
   padding: 0,
   listStyle: 'inside decimal',
-  columnCount: 2,
-  columnGap: theme.spacing.unit * 2
+  [theme.breakpoints.up('md')]: {
+    columnCount: 2,
+    columnGap: theme.spacing.unit * 2
+  },
+  [theme.breakpoints.up('lg')]: {
+    columnCount: 3
+  }
 });
 
 const Source = withProps({
