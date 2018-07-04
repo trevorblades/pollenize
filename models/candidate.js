@@ -4,7 +4,7 @@ export default (sequelize, DataTypes) => {
   const Candidate = sequelize.define('candidate', {
     slug: DataTypes.STRING,
     name: DataTypes.STRING,
-    birth_date: DataTypes.DATEONLY,
+    birth_date: DataTypes.DATE,
     hometown: DataTypes.STRING,
     bio: DataTypes.TEXT,
     party: DataTypes.STRING,

@@ -1,7 +1,8 @@
 export default (sequelize, DataTypes) => {
   const Election = sequelize.define('election', {
     slug: DataTypes.STRING,
-    title: DataTypes.STRING
+    title: DataTypes.STRING,
+    ends_at: DataTypes.DATE
   });
 
   Election.associate = models => {
