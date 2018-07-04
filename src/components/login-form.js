@@ -12,7 +12,7 @@ class LoginForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired
   };
 
   onSubmit = event => {
@@ -31,7 +31,7 @@ class LoginForm extends Component {
           <FormField label="Password" name="password" type="password" />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose}>Cancel</Button>
+          <Button onClick={this.props.onCancel}>Cancel</Button>
           <Button disabled={this.props.loading} color="primary" type="submit">
             Submit
           </Button>

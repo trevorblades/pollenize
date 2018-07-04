@@ -1,10 +1,10 @@
 import Avatar from '@material-ui/core/Avatar';
 import Bio from './bio';
-import CandidateForm from '../../../components/candidate-form';
+import CandidateForm from '../candidate-form';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
 import ElectionHeader from '../election-header';
-import FormDialogTrigger from '../../../components/form-dialog-trigger';
+import DialogTrigger from '../../../components/dialog-trigger';
 import Footer from '../../../components/footer';
 import Footnotes from './footnotes';
 import Helmet from 'react-helmet';
@@ -137,13 +137,19 @@ class Candidate extends Component {
             {this.props.candidate.party}
           </Typography>
           {this.props.editMode && (
-            <FormDialogTrigger
-              form={<CandidateForm candidate={this.props.candidate} />}
+            <DialogTrigger
+              renderContent={closeDialog => (
+                <CandidateForm
+                  candidate={this.props.candidate}
+                  onCancel={closeDialog}
+                  onSuccess={closeDialog}
+                />
+              )}
             >
               <EditButton>
                 <EditIcon />
               </EditButton>
-            </FormDialogTrigger>
+            </DialogTrigger>
           )}
         </Hero>
         <Container>

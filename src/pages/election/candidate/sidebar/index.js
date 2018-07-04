@@ -1,6 +1,6 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
 import EditButton from '../../../../components/edit-button';
-import FormDialogTrigger from '../../../../components/form-dialog-trigger';
+import DialogTrigger from '../../../../components/dialog-trigger';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TopicForm from './topic-form';
@@ -80,8 +80,12 @@ const AddTopicButton = styled(SidebarButton)({
 
 const TopicFormDialogTrigger = mapProps(props => ({
   children: props.children,
-  form: <TopicForm topic={props.topic} />
-}))(FormDialogTrigger);
+  renderContent: mapProps(closeDialog => ({
+    topic: props.topic,
+    onCancel: closeDialog,
+    onSuccess: closeDialog
+  }))(TopicForm)
+}))(DialogTrigger);
 
 const Sidebar = props => (
   <Container>

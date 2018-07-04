@@ -4,7 +4,7 @@ import Popover from '@material-ui/core/Popover';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
-import theme from '../../theme';
+import theme from '../../../theme';
 import {ChromePicker} from 'react-color';
 
 const centerOrigin = {

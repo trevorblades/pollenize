@@ -1,8 +1,8 @@
 import ColorPicker from './color-picker';
-import Form from '../form';
+import AutoForm from '../../../components/auto-form';
 import FormControl from '@material-ui/core/FormControl';
 import Grid from '@material-ui/core/Grid';
-import ImageButton from '../image-button';
+import ImageButton from '../../../components/image-button';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
@@ -12,13 +12,13 @@ import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import {DatePicker} from 'material-ui-pickers';
 import {connect} from 'react-redux';
-import {getNextSlug} from '../../util';
+import {getNextSlug} from '../../../util';
 import {size} from 'polished';
 import {
   save as saveCandidate,
   remove as removeCandidate,
   reset as resetCandidate
-} from '../../actions/candidate';
+} from '../../../actions/candidate';
 
 const gridItemProps = {xs: 6};
 const GridItem = withProps({
@@ -84,7 +84,7 @@ class CandidateForm extends Component {
 
   render() {
     return (
-      <Form
+      <AutoForm
         noun="candidate"
         initialData={this.props.candidate}
         fields={[

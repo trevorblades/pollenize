@@ -182,13 +182,13 @@ class Footer extends Component {
           })}
           {this.renderNavigation('Contribute', {
             'Be an editor': '/editors',
-            ...loginButton,
             GitHub: {
               component: 'a',
               href: 'https://github.com/pollenize',
               target: '_blank',
               rel: 'noopener noreferrer'
-            }
+            },
+            ...loginButton
           })}
         </InnerContainer>
       </Container>

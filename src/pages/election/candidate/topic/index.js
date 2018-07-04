@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import EditButton from '../../../../components/edit-button';
-import FormDialogTrigger from '../../../../components/form-dialog-trigger';
+import DialogTrigger from '../../../../components/dialog-trigger';
 import PositionForm from './position-form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -66,8 +66,12 @@ const Action = styled(Button)({
 
 const PositionFormDialogTrigger = mapProps(props => ({
   children: props.children,
-  form: <PositionForm position={props.position} />
-}))(FormDialogTrigger);
+  renderContent: mapProps(closeDialog => ({
+    position: props.position,
+    onCancel: closeDialog,
+    onSuccess: closeDialog
+  }))(PositionForm)
+}))(DialogTrigger);
 
 class Topic extends Component {
   static propTypes = {

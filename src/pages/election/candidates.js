@@ -2,8 +2,8 @@ import AddIcon from '@material-ui/icons/Add';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import CandidateForm from '../../components/candidate-form';
-import FormDialogTrigger from '../../components/form-dialog-trigger';
+import CandidateForm from './candidate-form';
+import DialogTrigger from '../../components/dialog-trigger';
 import Grid from '@material-ui/core/Grid';
 import ElectionHeader from './election-header';
 import PropTypes from 'prop-types';
@@ -123,8 +123,8 @@ class Candidates extends Component {
           </Grid>
         </RootRef>
         {this.props.editMode && (
-          <FormDialogTrigger
-            form={
+          <DialogTrigger
+            renderContent={closeDialog => (
               <CandidateForm
                 candidate={{
                   name: '',
@@ -132,15 +132,17 @@ class Candidates extends Component {
                   color: theme.palette.grey[500],
                   election_id: this.props.election.id
                 }}
+                onCancel={closeDialog}
+                onSuccess={closeDialog}
               />
-            }
+            )}
             tooltip="Create a candidate"
             tooltipProps={{placement: 'left'}}
           >
             <CreateButton>
               <AddIcon />
             </CreateButton>
-          </FormDialogTrigger>
+          </DialogTrigger>
         )}
       </Fragment>
     );

@@ -1,8 +1,9 @@
-import Form, {FormField} from '../../../../components/form';
+import AutoForm from '../../../../components/auto-form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import filter from 'lodash/filter';
 import map from 'lodash/map';
+import {FormField} from '../../../../components/form';
 import {connect} from 'react-redux';
 import {
   save as savePosition,
@@ -117,7 +118,7 @@ class PositionForm extends Component {
     }
 
     return (
-      <Form
+      <AutoForm
         noun="position"
         initialData={this.props.position}
         fields={fields}

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 
-class FormDialogTrigger extends Component {
+class DialogTrigger extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    form: PropTypes.element.isRequired,
+    renderContent: PropTypes.func.isRequired,
     tooltip: PropTypes.string,
     tooltipProps: PropTypes.object
   };
@@ -45,14 +45,11 @@ class FormDialogTrigger extends Component {
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
         >
-          {React.cloneElement(this.props.form, {
-            onCancel: this.closeDialog,
-            onSuccess: this.closeDialog
-          })}
+          {this.props.renderContent(this.closeDialog)}
         </Dialog>
       </Fragment>
     );
   }
 }
 
-export default FormDialogTrigger;
+export default DialogTrigger;

@@ -1,5 +1,5 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Form from '../../../../components/form';
+import AutoForm from '../../../../components/auto-form';
 import FormControl from '@material-ui/core/FormControl';
 import ImageButton from '../../../../components/image-button';
 import PropTypes from 'prop-types';
@@ -86,7 +86,7 @@ class TopicForm extends Component {
       ? this.state.image.dataUrl
       : this.props.topic.image;
     return (
-      <Form
+      <AutoForm
         noun="topic"
         initialData={this.props.topic}
         fields={[
