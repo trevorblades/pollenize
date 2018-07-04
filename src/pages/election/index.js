@@ -66,7 +66,7 @@ class Election extends Component {
 const mapStateToProps = state => ({
   election: state.election.data,
   loading: state.election.loading,
-  lastSuccess: state.lastSuccess
+  lastSuccess: state.election.lastSuccess
 });
 
 export default connect(mapStateToProps)(Election);

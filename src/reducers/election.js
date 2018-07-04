@@ -1,7 +1,7 @@
 import api from '../api';
 import findIndex from 'lodash/findIndex';
 import reject from 'lodash/reject';
-import {handleActions} from 'redux-actions';
+import {combineActions, handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 import {load, success, failure, reset} from '../actions/election';
 import {push} from 'react-router-redux';
@@ -48,7 +48,8 @@ function replaceOrUpdate(collection = [], item) {
 const defaultState = {
   loading: false,
   error: null,
-  data: null
+  data: null,
+  lastSuccess: null
 };
 
 export default handleActions(
@@ -75,6 +76,13 @@ export default handleActions(
       ...state,
       loading: false,
       error: payload
+    }),
+    [combineActions(candidateSuccess, positionSuccess, topicSuccess)]: (
+      state,
+      {payload}
+    ) => ({
+      ...state,
+      lastSuccess: payload.updated_at
     }),
     [candidateSuccess]: (state, {payload}) => {
       const {result, updated} = replaceOrUpdate(state.data.candidates, payload);
