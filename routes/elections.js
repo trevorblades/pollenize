@@ -4,8 +4,8 @@ import {Election, Topic, Position, Source} from '../models';
 
 const router = express.Router();
 router.get('/', async (req, res) => {
-  const skaters = await Election.findAll();
-  res.send(skaters);
+  const elections = await Election.findAll();
+  res.send(elections);
 });
 
 router.get('/:id', async (req, res) => {
