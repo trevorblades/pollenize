@@ -1,14 +1,58 @@
+import ButtonBase from '@material-ui/core/ButtonBase';
+import CanadaFlag from '../assets/flags/canada.svg';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Section from '../components/section';
 import Typography from '@material-ui/core/Typography';
+import defaultProps from 'recompose/defaultProps';
+import styled, {css} from 'react-emotion';
+import theme from '../theme';
+import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {load as loadElections} from '../actions/elections';
 
+const ElectionButton = withProps({component: Link})(
+  styled(ButtonBase)({
+    flexDirection: 'column',
+    width: '100%',
+    padding: theme.spacing.unit * 6,
+    color: theme.palette.grey[50],
+    backgroundColor: theme.palette.grey[900]
+  })
+);
+
+const StyledCanadaFlag = styled(CanadaFlag)({
+  display: 'block',
+  height: theme.spacing.unit * 5,
+  marginBottom: theme.spacing.unit * 2
+});
+
+const height = theme.spacing.unit * 2.5;
+const Status = defaultProps({
+  color: 'inherit',
+  variant: 'caption'
+})(
+  styled(Typography)({
+    height,
+    padding: `0 ${theme.spacing.unit * 2}px`,
+    borderRadius: height / 2,
+    lineHeight: `${height}px`,
+    backgroundColor: theme.palette.grey[800]
+  })
+);
+
+const activeStatusClassName = css({
+  backgroundColor: theme.palette.primary[500]
+});
+
 const title = 'Elections';
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
 class Elections extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -28,21 +72,36 @@ class Elections extends Component {
       return <Typography variant="headline">No elections found</Typography>;
     }
 
-    return this.props.elections.map(election => (
-      <Link key={election.id} to={`/elections/${election.slug}`}>
-        {election.title}
-      </Link>
-    ));
+    return (
+      <Grid container spacing={theme.spacing.unit * 3}>
+        {this.props.elections.map(election => {
+          const active = today.getTime() <= Date.parse(election.ends_at);
+          return (
+            <Grid item key={election.id} xs={12} sm={6} md={4} lg={3}>
+              <ElectionButton to={`/elections/${election.slug}`}>
+                <StyledCanadaFlag />
+                <Typography gutterBottom color="inherit" variant="title">
+                  {election.title}
+                </Typography>
+                <Status className={active && activeStatusClassName}>
+                  {active ? 'Active' : 'Concluded'}
+                </Status>
+              </ElectionButton>
+            </Grid>
+          );
+        })}
+      </Grid>
+    );
   }
 
   render() {
     return (
       <Section centered>
         <Helmet>
-          <title>{title}</title>
+          <title>Elections</title>
         </Helmet>
         <Typography gutterBottom variant="display3">
-          {title}
+          Election guides
         </Typography>
         {this.renderContent()}
       </Section>

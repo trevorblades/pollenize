@@ -1,3 +1,4 @@
+import CanadaFlag from '../../assets/flags/canada.svg';
 import Header, {HEADER_LOGO_SIZE} from '../../components/header';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -17,10 +18,16 @@ const Title = withProps({
 })(
   styled(Typography)({
     display: 'flex',
+    alignItems: 'center',
     margin: '0 auto',
     fontWeight: theme.typography.fontWeightMedium
   })
 );
+
+const StyledCanadaFlag = styled(CanadaFlag)({
+  height: theme.spacing.unit * 2,
+  marginRight: theme.spacing.unit
+});
 
 const menuButtonSize = theme.spacing.unit * 6;
 const MenuButton = styled(IconButton)(size(menuButtonSize), {
@@ -38,8 +45,11 @@ class ElectionHeader extends Component {
 
   render() {
     return (
-      <Header dark simple>
-        <Title>{this.props.children}</Title>
+      <Header dark simple logoHref="/elections">
+        <Title>
+          <StyledCanadaFlag />
+          {this.props.children}
+        </Title>
         <MenuButton
           color={this.props.editMode ? 'primary' : 'inherit'}
           onClick={this.toggleEditMode}

@@ -46,7 +46,7 @@ const Header = props => (
     className={props.dark && darkClassName}
   >
     <Toolbar className={props.centered && centered}>
-      <LogoLink to="/">
+      <LogoLink to={props.logoHref}>
         <StyledLogo />
         {!props.simple && <StyledWordmark />}
       </LogoLink>
@@ -59,7 +59,12 @@ Header.propTypes = {
   centered: PropTypes.bool,
   children: PropTypes.node,
   dark: PropTypes.bool,
+  logoHref: PropTypes.string,
   simple: PropTypes.bool
+};
+
+Header.defaultProps = {
+  logoHref: '/'
 };
 
 export default Header;
