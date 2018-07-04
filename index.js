@@ -1,4 +1,5 @@
 import basicStrategy from './strategies/basic';
+import jwtStrategy from './strategies/jwt';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
@@ -13,6 +14,7 @@ app.use(passport.initialize());
 app.use('/', routes);
 
 passport.use(basicStrategy);
+passport.use(jwtStrategy);
 
 sequelize
   .sync()

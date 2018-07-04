@@ -27,6 +27,7 @@
     "pascalcase": "^0.1.1",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
+    "passport-jwt": "^4.0.0",
     "pg": "^7.4.3",
     "prepend-http": "^2.0.0",
     "sequelize": "^4.37.10"
