@@ -105,13 +105,13 @@ class ElectionHeader extends Component {
               </ListItem>
             ))}
             <ListSubheader>Settings</ListSubheader>
-            <ListItem>
+            <ListItem disabled>
               <ListItemIcon>
                 <CompareArrowsIcon />
               </ListItemIcon>
-              <ListItemText primary="Compare mode" />
+              <ListItemText primary="Compare mode" secondary="Coming soon" />
               <ListItemSecondaryAction>
-                <Switch />
+                <Switch disabled />
               </ListItemSecondaryAction>
             </ListItem>
             {this.props.user && (
