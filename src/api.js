@@ -5,4 +5,9 @@ export const headers = {
   'Content-Type': 'application/json'
 };
 
-export default new Frisbee({baseURI: 'http://localhost:3000'});
+export default new Frisbee({
+  baseURI:
+    process.env.NODE_ENV === 'production'
+      ? 'https://api.pollenize.org'
+      : 'http://localhost:3000'
+});

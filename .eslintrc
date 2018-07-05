@@ -1,6 +1,10 @@
 {
   "parser": "babel-eslint",
   "extends": "@knoword/eslint-config/react",
+  "globals": {
+    "APP_TITLE": true,
+    "PUBLIC_PATH": true
+  },
   "env": {
     "browser": true,
     "node": true,

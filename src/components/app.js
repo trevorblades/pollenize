@@ -26,10 +26,7 @@ class App extends Component {
     return (
       <Fragment>
         <CssBaseline />
-        <Helmet
-          defaultTitle={process.env.APP_TITLE}
-          titleTemplate={`%s · ${process.env.APP_TITLE}`}
-        />
+        <Helmet defaultTitle={APP_TITLE} titleTemplate={`%s · ${APP_TITLE}`} />
         <Switch>
           <Route path="/elections/:id" component={Election} />
           <Route component={Pages} />

@@ -55,8 +55,8 @@ module.exports = {
       }
     }),
     new webpack.DefinePlugin({
-      'process.env.APP_TITLE': JSON.stringify(title),
-      'process.env.PUBLIC_PATH': JSON.stringify(publicPath)
+      APP_TITLE: JSON.stringify(title),
+      PUBLIC_PATH: JSON.stringify(publicPath)
     })
   ]
 };

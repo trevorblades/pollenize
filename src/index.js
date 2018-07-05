@@ -21,7 +21,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {install} from 'redux-loop';
 
-const history = createHistory({basename: process.env.PUBLIC_PATH});
+const history = createHistory({basename: PUBLIC_PATH});
 const middleware = routerMiddleware(history);
 const enhancer = composeWithDevTools(install(), applyMiddleware(middleware));
 const store = createStore(reducers, enhancer);
