@@ -75,9 +75,9 @@ class Home extends Component {
               unbiased overview of each candidate&apos;s platform.
             </Text>
             <PrimaryButton to="/elections">View elections</PrimaryButton>
-            <LargeButton color="inherit" variant="outlined">
+            {/* <LargeButton color="inherit" variant="outlined">
               Learn more
-            </LargeButton>
+            </LargeButton> */}
             <StyledImage />
           </Content>
         </InnerContainer>
