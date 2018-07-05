@@ -21,17 +21,20 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
       - run: CIRCLE_BRANCH=$CIRCLE_BRANCH npm run build
+      - persist_to_workspace:
+          paths: 
+            - build
 
   deploy:
     docker:
-      - image: circleci/python:2.7-jessie
-    working_directory: ~/repo
+      - image: cibuilds/aws:1.15.44
     steps:
-      - run: sudo pip install awscli
+      - attach_workspace:
+          at: ./client
       - run: aws configure set region us-west-2
       - run: aws configure set preview.cloudfront true
       - run: aws configure set preview.create-invalidation true
-      - run: aws s3 sync ./build s3://pollenize/$CIRCLE_BRANCH --delete
+      - run: aws s3 sync client/build s3://pollenize/$CIRCLE_BRANCH --delete
       - run: aws cloudfront create-invalidation --cli-input-json "{\"DistributionId\":\"$AWS_CLOUDFRONT_ID\",\"InvalidationBatch\":{\"Paths\":{\"Quantity\":2,\"Items\":[\"/index.html\",\"/*\"]},\"CallerReference\":\"$(date +%s)\"}}"
 
 workflows:
