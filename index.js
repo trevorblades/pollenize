@@ -8,6 +8,8 @@ import routes from './routes';
 import {sequelize} from './models';
 
 const app = express();
+app.enable('trust proxy');
+
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(
