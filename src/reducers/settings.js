@@ -1,7 +1,14 @@
 import {combineReducers} from 'redux';
-import {handleAction} from 'redux-actions';
+import {handleActions} from 'redux-actions';
+import {logOut} from '../actions/user';
 import {setEditMode} from '../actions/settings';
 
 export default combineReducers({
-  editMode: handleAction(setEditMode, state => !state, true)
+  editMode: handleActions(
+    {
+      [setEditMode]: (state, {payload}) => payload,
+      [logOut]: () => false
+    },
+    false
+  )
 });

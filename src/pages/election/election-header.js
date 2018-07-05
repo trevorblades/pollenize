@@ -68,7 +68,7 @@ class ElectionHeader extends Component {
 
   closeDrawer = () => this.setState({drawerOpen: false});
 
-  toggleEditMode = event =>
+  onEditModeChange = event =>
     this.props.dispatch(setEditMode(event.target.checked));
 
   render() {
@@ -104,7 +104,6 @@ class ElectionHeader extends Component {
                 />
               </ListItem>
             ))}
-
             <ListSubheader>Settings</ListSubheader>
             <ListItem>
               <ListItemIcon>
@@ -124,7 +123,7 @@ class ElectionHeader extends Component {
                 <ListItemSecondaryAction>
                   <Switch
                     checked={this.props.editMode}
-                    onChange={this.toggleEditMode}
+                    onChange={this.onEditModeChange}
                   />
                 </ListItemSecondaryAction>
               </ListItem>

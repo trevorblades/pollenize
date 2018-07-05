@@ -53,7 +53,7 @@ export default handleActions(
         },
         Cmd.run(renew, {
           successActionCreator: success,
-          failActionCreator: failure,
+          failActionCreator: logOut,
           args: [payload]
         })
       ),
