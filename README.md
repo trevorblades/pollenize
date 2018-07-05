@@ -1,3 +1,3 @@
 # server
 
-[![Heroku](http://heroku-badge.herokuapp.com/?app=pollenize&style=flat)]
+![Heroku](https://heroku-badge.herokuapp.com/?app=pollenize&root=elections&style=flat)
