@@ -8,10 +8,15 @@ import routes from './routes';
 import {sequelize} from './models';
 
 const app = express();
-app.use(cors());
+app.use('/', routes);
 app.use(bodyParser.json());
 app.use(passport.initialize());
-app.use('/', routes);
+app.use(
+  cors({
+    origin: /^https?:\/\/((localhost(:\d{4})?)|((\w*\.)?pollenize.org))$/,
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  })
+);
 
 passport.use(basicStrategy);
 passport.use(jwtStrategy);
