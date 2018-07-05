@@ -25,26 +25,20 @@ export function scrollToTop() {
 }
 
 export function userFromToken(token) {
-  if (!token) {
-    return null;
-  }
-
-  let claims;
   try {
-    claims = jwtDecode(token);
-  } catch (error) {
-    // token is invalid
-  }
+    const {exp, ...claims} = jwtDecode(token);
+    if (!exp || Date.now() > exp * 1000) {
+      return null;
+    }
 
-  if (!claims || !claims.exp || Date.now() > claims.exp * 1000) {
+    delete claims.iat;
+    delete claims.sub;
+
+    return {
+      ...claims,
+      token
+    };
+  } catch (error) {
     return null;
   }
-
-  delete claims.exp;
-  delete claims.sub;
-  delete claims.iat;
-  return {
-    ...claims,
-    token
-  };
 }
