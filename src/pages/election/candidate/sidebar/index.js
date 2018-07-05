@@ -10,7 +10,11 @@ import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
 import mapProps from 'recompose/mapProps';
 import withProps from 'recompose/withProps';
-import {SECTION_PADDING_SMALL} from '../../../../components/section';
+import {
+  SECTION_PADDING_SMALL,
+  SECTION_PADDING_SMALLER,
+  breakpoint as sectionBreakpoint
+} from '../../../../components/section';
 import {SIDEBAR_WIDTH} from '../common';
 import {connect} from 'react-redux';
 import {scrollToTop} from '../../../../util';
@@ -26,7 +30,10 @@ const Container = styled.aside({
   padding,
   paddingRight: 0,
   position: 'sticky',
-  top: theme.mixins.toolbar.height
+  top: theme.mixins.toolbar.height,
+  [theme.breakpoints.down(sectionBreakpoint)]: {
+    marginTop: SECTION_PADDING_SMALLER - padding
+  }
 });
 
 const TopicsHeading = withProps({

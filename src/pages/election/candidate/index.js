@@ -18,11 +18,11 @@ import find from 'lodash/find';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import theme from '../../../theme';
-import {SECTION_PADDING_SMALL} from '../../../components/section';
 import {Link} from 'react-router-dom';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
 import {getCandidates} from '../../../selectors';
+import {getSectionPadding} from '../../../components/section';
 import {size} from 'polished';
 
 const Hero = styled.div({
@@ -73,7 +73,6 @@ const InnerContainer = styled.div({
   backgroundColor: theme.palette.background.paper
 });
 
-const topicOffset = SECTION_PADDING_SMALL + theme.mixins.toolbar.height;
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
@@ -95,11 +94,13 @@ class Candidate extends Component {
 
   onScroll = () => {
     let activeTopicIndex = -1;
-    const {scrollY} = window;
+    const {scrollY, innerWidth} = window;
     const topics = this.innerContainer.querySelectorAll('[data-topic]');
     for (let i = topics.length - 1; i >= 0; i--) {
       const topic = topics[i];
       const {top} = topic.getBoundingClientRect();
+      const topicOffset =
+        getSectionPadding(innerWidth, true) + theme.mixins.toolbar.height;
       const offset = Math.round(top) + scrollY - topicOffset;
       if (scrollY >= offset) {
         activeTopicIndex = i;
