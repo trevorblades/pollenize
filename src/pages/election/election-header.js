@@ -53,14 +53,18 @@ class ElectionHeader extends Component {
     children: PropTypes.node.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
-    election: PropTypes.object.isRequired
+    election: PropTypes.object.isRequired,
+    user: PropTypes.object
   };
 
   state = {
     drawerOpen: false
   };
 
-  onMenuClick = () => this.setState({drawerOpen: true});
+  onMenuClick = event => {
+    event.currentTarget.blur();
+    this.setState({drawerOpen: true});
+  };
 
   closeDrawer = () => this.setState({drawerOpen: false});
 
@@ -111,18 +115,20 @@ class ElectionHeader extends Component {
                 <Switch />
               </ListItemSecondaryAction>
             </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <EditIcon />
-              </ListItemIcon>
-              <ListItemText primary="Edit mode" />
-              <ListItemSecondaryAction>
-                <Switch
-                  checked={this.props.editMode}
-                  onChange={this.toggleEditMode}
-                />
-              </ListItemSecondaryAction>
-            </ListItem>
+            {this.props.user && (
+              <ListItem>
+                <ListItemIcon>
+                  <EditIcon />
+                </ListItemIcon>
+                <ListItemText primary="Edit mode" />
+                <ListItemSecondaryAction>
+                  <Switch
+                    checked={this.props.editMode}
+                    onChange={this.toggleEditMode}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
+            )}
           </List>
         </Drawer>
       </Header>
@@ -132,7 +138,8 @@ class ElectionHeader extends Component {
 
 const mapStateToProps = state => ({
   editMode: state.settings.editMode,
-  election: state.election.data
+  election: state.election.data,
+  user: state.user.data
 });
 
 export default connect(mapStateToProps)(ElectionHeader);
