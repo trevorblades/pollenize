@@ -8,7 +8,6 @@ import routes from './routes';
 import {sequelize} from './models';
 
 const app = express();
-app.use('/', routes);
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(
@@ -20,6 +19,8 @@ app.use(
 
 passport.use(basicStrategy);
 passport.use(jwtStrategy);
+
+app.use('/', routes);
 
 sequelize
   .sync()
