@@ -51,7 +51,7 @@ class Navigation extends Component {
     items: {
       Home: '/',
       Elections: '/elections',
-      Tools: '/tools',
+      // Tools: '/tools',
       Blog: {
         component: 'a',
         href: 'https://medium.com/pollenize',
