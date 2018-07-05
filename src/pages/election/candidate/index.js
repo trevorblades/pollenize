@@ -130,7 +130,10 @@ class Candidate extends Component {
           }}
         >
           {this.props.candidate.avatar && (
-            <StyledAvatar src={this.props.candidate.avatar} />
+            <StyledAvatar
+              alt={this.props.candidate.name}
+              src={this.props.candidate.avatar}
+            />
           )}
           <Name>{this.props.candidate.name}</Name>
           <Typography gutterBottom variant="title" color="inherit">

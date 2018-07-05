@@ -142,7 +142,7 @@ class TestimonialCarousel extends Component {
                   {testimonial.text}
                 </Typography>
                 <Source>
-                  <Avatar src={testimonial.avatar} />
+                  <Avatar alt={testimonial.source} src={testimonial.avatar} />
                   <SourceText>
                     <Typography variant="body2">
                       {testimonial.source}

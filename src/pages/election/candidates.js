@@ -113,7 +113,9 @@ class Candidates extends Component {
                   backgroundColor: candidate.color
                 }}
               >
-                {candidate.avatar && <StyledAvatar src={candidate.avatar} />}
+                {candidate.avatar && (
+                  <StyledAvatar alt={candidate.name} src={candidate.avatar} />
+                )}
                 <Name>{candidate.name}</Name>
                 <Typography variant="subheading" color="inherit">
                   {candidate.party}
