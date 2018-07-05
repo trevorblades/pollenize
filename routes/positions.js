@@ -1,5 +1,6 @@
 import express from 'express';
 import createValidationMiddleware from '../middleware/validation';
+import jwtMiddleware from '../middleware/jwt';
 import prependHttp from 'prepend-http';
 import {Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
@@ -32,6 +33,8 @@ const validationMiddleware = createValidationMiddleware(
 );
 
 const router = express.Router();
+router.use(jwtMiddleware);
+
 router.post('/', validationMiddleware, async (req, res) => {
   const data = matchedData(req);
   const position = await Position.create(data, {include: Source});

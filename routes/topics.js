@@ -1,5 +1,6 @@
-import express from 'express';
 import createValidationMiddleware from '../middleware/validation';
+import express from 'express';
+import jwtMiddleware from '../middleware/jwt';
 import uploadMiddleware from '../middleware/upload';
 import {Topic} from '../models';
 import {checkSchema} from 'express-validator/check';
@@ -34,6 +35,8 @@ const validationMiddleware = createValidationMiddleware(
 );
 
 const router = express.Router();
+router.use(jwtMiddleware);
+
 router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
   const data = matchedData(req);
   if (req.file) {

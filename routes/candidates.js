@@ -1,4 +1,5 @@
 import createValidationMiddleware from '../middleware/validation';
+import jwtMiddleware from '../middleware/jwt';
 import uploadMiddleware from '../middleware/upload';
 import express from 'express';
 import {Candidate, Position, Source} from '../models';
@@ -34,6 +35,8 @@ const validationMiddleware = createValidationMiddleware(
 );
 
 const router = express.Router();
+router.use(jwtMiddleware);
+
 router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
   const data = matchedData(req);
   if (req.file) {
