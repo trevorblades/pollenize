@@ -6,8 +6,8 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8
-    working_directory: ~/client
+      - image: circleci/node:8-browsers
+    working_directory: ~/repo
     steps:
       - checkout
       - restore_cache:
@@ -25,7 +25,7 @@ jobs:
   deploy:
     docker:
       - image: circleci/python:2.7-jessie
-    working_directory: ~/client
+    working_directory: ~/repo
     steps:
       - run: sudo pip install awscli
       - run: aws configure set region us-west-2
