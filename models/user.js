@@ -9,6 +9,8 @@ export default (sequelize, DataTypes) => {
 
   User.prototype.toJWT = function(expiresIn = '7 days') {
     const payload = this.get();
+    delete payload.password;
+
     return jwt.sign(payload, process.env.TOKEN_SECRET, {
       expiresIn,
       subject: payload.id.toString()
