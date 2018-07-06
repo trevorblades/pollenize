@@ -38,13 +38,19 @@ const Video = styled.div({
   position: 'relative'
 });
 
-const StyledIframe = styled.iframe({
-  width: '100%',
-  height: '100%',
-  position: 'absolute',
-  top: 0,
-  left: 0
-});
+const StyledIframe = withProps({
+  allowFullScreen: true,
+  allow: 'autoplay; encrypted-media',
+  frameBorder: 0
+})(
+  styled.iframe({
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0
+  })
+);
 
 const VideoCaption = withProps({variant: 'caption'})(
   styled(Typography)({
@@ -73,9 +79,6 @@ export default class Bio extends Component {
           <VideoContainer>
             <Video>
               <StyledIframe
-                allowFullScreen
-                allow="autoplay; encrypted-media"
-                frameBorder={0}
                 src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`}
               />
             </Video>
