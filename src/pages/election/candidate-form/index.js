@@ -102,6 +102,14 @@ class CandidateForm extends Component {
           </GridItem>,
           ['hometown', gridItemProps],
           ['bio', {multiline: true}],
+          [
+            'video_url',
+            {
+              label: 'YouTube URL',
+              placeholder: 'https://www.youtube.com/watch?v=lz4nHQJo6Lc'
+            }
+          ],
+          'video_caption',
           <GridItem key="avatar">
             <FormControl margin="dense">
               <Typography gutterBottom variant="caption">
