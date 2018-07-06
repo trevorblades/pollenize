@@ -34,6 +34,7 @@ const VideoContainer = styled.div({
 const Video = styled.div({
   width: '100%',
   paddingTop: `${(9 / 16) * 100}%`,
+  backgroundColor: theme.palette.grey[900],
   position: 'relative'
 });
 
