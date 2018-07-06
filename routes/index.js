@@ -6,6 +6,7 @@ import positions from './positions';
 import topics from './topics';
 
 const router = express.Router();
+router.get('/', (req, res) => res.sendStatus(200));
 router.use('/auth', auth);
 router.use('/candidates', candidates);
 router.use('/elections', elections);
