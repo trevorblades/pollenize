@@ -76,7 +76,7 @@ export default class Bio extends Component {
                 allowFullScreen
                 allow="autoplay; encrypted-media"
                 frameBorder={0}
-                src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&amp;showinfo=0`}
+                src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`}
               />
             </Video>
             {this.props.candidate.video_caption && (
