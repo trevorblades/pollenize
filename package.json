@@ -30,6 +30,7 @@
     "passport-jwt": "^4.0.0",
     "pg": "^7.4.3",
     "prepend-http": "^2.0.0",
-    "sequelize": "^4.37.10"
+    "sequelize": "^4.37.10",
+    "youtube-regex": "^1.0.5"
   }
 }

@@ -2,6 +2,7 @@ import createValidationMiddleware from '../middleware/validation';
 import jwtMiddleware from '../middleware/jwt';
 import uploadMiddleware from '../middleware/upload';
 import express from 'express';
+import youtubeRegex from 'youtube-regex';
 import {Candidate, Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
@@ -27,6 +28,12 @@ const validationMiddleware = createValidationMiddleware(
     color: {
       isHexColor: true
     },
+    video_url: {
+      custom: {
+        options: value => youtubeRegex().test(value)
+      }
+    },
+    video_caption: exists,
     election_id: {
       isInt: true,
       toInt: true

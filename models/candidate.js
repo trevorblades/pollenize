@@ -9,7 +9,9 @@ export default (sequelize, DataTypes) => {
     bio: DataTypes.TEXT,
     party: DataTypes.STRING,
     color: DataTypes.STRING,
-    avatar: DataTypes.STRING
+    avatar: DataTypes.STRING,
+    video_url: DataTypes.STRING,
+    video_caption: DataTypes.STRING
   });
 
   Candidate.associate = models => {
