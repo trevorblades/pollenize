@@ -9,8 +9,9 @@ import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 
+const breakpoint = theme.breakpoints.up('md');
 const Content = styled.div({
-  [theme.breakpoints.up('md')]: {
+  [breakpoint]: {
     display: 'flex',
     alignItems: 'flex-start'
   }
@@ -19,7 +20,7 @@ const Content = styled.div({
 const videoMargin = theme.spacing.unit * 3;
 const VideoContainer = styled.div({
   marginTop: videoMargin,
-  [theme.breakpoints.up('md')]: {
+  [breakpoint]: {
     flexShrink: 0,
     maxWidth: 360,
     marginTop: 0,
@@ -31,10 +32,7 @@ const VideoContainer = styled.div({
 });
 
 const Video = styled.div({
-  width: '100%'
-});
-
-const VideoInner = styled.div({
+  width: '100%',
   paddingTop: `${(9 / 16) * 100}%`,
   position: 'relative'
 });
@@ -73,14 +71,12 @@ export default class Bio extends Component {
         return (
           <VideoContainer>
             <Video>
-              <VideoInner>
-                <StyledIframe
-                  allowFullScreen
-                  allow="autoplay; encrypted-media"
-                  frameBorder={0}
-                  src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&amp;showinfo=0`}
-                />
-              </VideoInner>
+              <StyledIframe
+                allowFullScreen
+                allow="autoplay; encrypted-media"
+                frameBorder={0}
+                src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&amp;showinfo=0`}
+              />
             </Video>
             {this.props.candidate.video_caption && (
               <VideoCaption>{this.props.candidate.video_caption}</VideoCaption>
