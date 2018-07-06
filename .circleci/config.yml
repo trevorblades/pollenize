@@ -1,3 +1,7 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2
 jobs:
   build:
@@ -7,12 +11,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - dependencies-{{ .Environment.CACHE_VERSION }}-
       - run: npm install
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: dependencies-{{ .Environment.CACHE_VERSION }}-{{ checksum "package.json" }}
       - run: npm test
