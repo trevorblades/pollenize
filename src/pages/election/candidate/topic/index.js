@@ -149,7 +149,7 @@ class Topic extends Component {
         <Action key="more" onClick={this.onMoreClick}>
           {this.state.more
             ? 'Show less'
-            : `Read more (${this.props.positions.length - 1})`}
+            : `See more (${this.props.positions.length - 1})`}
         </Action>
       );
     }
