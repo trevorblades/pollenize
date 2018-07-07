@@ -22,7 +22,7 @@ import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {setEditMode} from '../../actions/settings';
-import {size} from 'polished';
+import {size, transparentize} from 'polished';
 
 const Title = withProps({
   color: 'inherit',
@@ -47,6 +47,9 @@ const MenuButton = styled(IconButton)(size(menuButtonSize), {
 });
 
 const drawerClassName = css({width: 320});
+const StyledListSubheader = styled(ListSubheader)({
+  backgroundColor: transparentize(0.15, theme.palette.background.paper)
+});
 
 class ElectionHeader extends Component {
   static propTypes = {
@@ -88,7 +91,7 @@ class ElectionHeader extends Component {
           anchor="right"
         >
           <List>
-            <ListSubheader>Jump to candidate</ListSubheader>
+            <StyledListSubheader>Jump to candidate</StyledListSubheader>
             {this.props.election.candidates.map(candidate => (
               <ListItem
                 button
@@ -104,7 +107,7 @@ class ElectionHeader extends Component {
                 />
               </ListItem>
             ))}
-            <ListSubheader>Settings</ListSubheader>
+            <StyledListSubheader>Settings</StyledListSubheader>
             <ListItem disabled>
               <ListItemIcon>
                 <CompareArrowsIcon />
