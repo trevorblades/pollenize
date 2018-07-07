@@ -1,7 +1,7 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
 import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
-import DragHandleIcon from '@material-ui/icons/DragHandle';
+import DragInteractionIcon from '../../../../assets/icons/drag-interaction.svg';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TopicForm from './topic-form';
@@ -95,7 +95,7 @@ const DragHandle = styled.div({
   right: '100%',
   top: '50%',
   transform: 'translateY(-50%)',
-  svg: css(size(theme.spacing.unit * 2.5), {
+  svg: css(size(theme.spacing.unit * 2), {
     display: 'block',
     fill: theme.palette.grey[300]
   })
@@ -163,7 +163,7 @@ class Sidebar extends Component {
                       >
                         {this.props.editMode && (
                           <DragHandle {...provided.dragHandleProps}>
-                            <DragHandleIcon />
+                            <DragInteractionIcon />
                           </DragHandle>
                         )}
                         <SidebarItem href={`#${topic.slug}`}>
