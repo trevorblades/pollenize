@@ -32,7 +32,10 @@ const jss = create(jssPreset());
 jss.options.insertionPoint = 'jss-insertion-point';
 
 styles();
-configureAnchors({offset: -theme.mixins.toolbar.height});
+configureAnchors({
+  offset: -theme.mixins.toolbar.height,
+  scrollDuration: 0
+});
 
 ReactDOM.render(
   <Provider store={store}>
