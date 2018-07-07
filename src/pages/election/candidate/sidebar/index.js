@@ -1,8 +1,9 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
 import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
+import DragHandleIcon from '@material-ui/icons/DragHandle';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Component} from 'react';
 import TopicForm from './topic-form';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
@@ -16,8 +17,10 @@ import {
   breakpoint as sectionBreakpoint
 } from '../../../../components/section';
 import {SIDEBAR_WIDTH} from '../common';
+import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {connect} from 'react-redux';
 import {scrollToTop} from '../../../../util';
+import {size} from 'polished';
 
 const padding = theme.spacing.unit * 4;
 const Container = styled.aside({
@@ -62,6 +65,7 @@ const SidebarTopic = styled.div`
   border-right-width: 3px;
   border-right-style: solid;
   border-color: ${props => (props.active ? 'inherit' : 'transparent')};
+  position: relative;
   ${notLastBottomMargin}
   :not(:hover) ${StyledEditButton} {
     display: none;
@@ -85,6 +89,17 @@ const AddTopicButton = styled(SidebarButton)({
   color: theme.palette.text.secondary
 });
 
+const DragHandle = styled.div({
+  position: 'absolute',
+  right: '100%',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  svg: css(size(theme.spacing.unit * 2.5), {
+    display: 'block',
+    fill: theme.palette.grey[300]
+  })
+});
+
 const TopicFormDialogTrigger = mapProps(props => ({
   children: props.children,
   renderContent: mapProps(closeDialog => ({
@@ -94,45 +109,104 @@ const TopicFormDialogTrigger = mapProps(props => ({
   }))(TopicForm)
 }))(DialogTrigger);
 
-const Sidebar = props => (
-  <Container>
-    <SidebarButton onClick={scrollToTop}>
-      About {props.candidate.firstName}
-    </SidebarButton>
-    <TopicsHeading>Topics</TopicsHeading>
-    <SidebarTopics style={{borderColor: props.candidate.color}}>
-      {props.election.topics.map((topic, index) => (
-        <SidebarTopic key={topic.id} active={index === props.activeTopicIndex}>
-          <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
-          {props.editMode && (
-            <TopicFormDialogTrigger topic={topic}>
-              <StyledEditButton />
-            </TopicFormDialogTrigger>
-          )}
-        </SidebarTopic>
-      ))}
-    </SidebarTopics>
-    {props.editMode && (
-      <TopicFormDialogTrigger
-        topic={{
-          title: '',
-          slug: '',
-          description: '',
-          election_id: props.election.id
-        }}
-      >
-        <AddTopicButton>Add topic...</AddTopicButton>
-      </TopicFormDialogTrigger>
-    )}
-  </Container>
-);
+class Sidebar extends Component {
+  static propTypes = {
+    activeTopicIndex: PropTypes.number.isRequired,
+    candidate: PropTypes.object.isRequired,
+    editMode: PropTypes.bool.isRequired,
+    election: PropTypes.object.isRequired
+  };
 
-Sidebar.propTypes = {
-  activeTopicIndex: PropTypes.number.isRequired,
-  candidate: PropTypes.object.isRequired,
-  editMode: PropTypes.bool.isRequired,
-  election: PropTypes.object.isRequired
-};
+  constructor(props) {
+    super(props);
+    this.state = {
+      topics: Array.from(props.election.topics)
+    };
+  }
+
+  onDragEnd = result => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    this.setState(prevState => {
+      const topics = Array.from(prevState.topics);
+      const [removed] = topics.splice(result.source.index, 1);
+      topics.splice(result.destination.index, 0, removed);
+      return {topics};
+    });
+  };
+
+  render() {
+    return (
+      <Container>
+        <SidebarButton onClick={scrollToTop}>
+          About {this.props.candidate.firstName}
+        </SidebarButton>
+        <TopicsHeading>Topics</TopicsHeading>
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable droppableId="topics">
+            {(provided, {isDraggingOver}) => (
+              <SidebarTopics
+                innerRef={provided.innerRef}
+                style={{borderColor: this.props.candidate.color}}
+              >
+                {this.state.topics.map((topic, index) => (
+                  <Draggable
+                    key={topic.id}
+                    draggableId={topic.id}
+                    index={index}
+                    isDragDisabled={!this.props.editMode}
+                  >
+                    {(provided, snapshot) => (
+                      <SidebarTopic
+                        {...provided.draggableProps}
+                        innerRef={provided.innerRef}
+                        active={
+                          !snapshot.isDragging &&
+                          index === this.props.activeTopicIndex
+                        }
+                      >
+                        {this.props.editMode && (
+                          <DragHandle {...provided.dragHandleProps}>
+                            <DragHandleIcon />
+                          </DragHandle>
+                        )}
+                        <SidebarItem href={`#${topic.slug}`}>
+                          {topic.title}
+                        </SidebarItem>
+                        {!isDraggingOver &&
+                          this.props.editMode && (
+                            <TopicFormDialogTrigger topic={topic}>
+                              <StyledEditButton />
+                            </TopicFormDialogTrigger>
+                          )}
+                      </SidebarTopic>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </SidebarTopics>
+            )}
+          </Droppable>
+        </DragDropContext>
+        {this.props.editMode && (
+          <TopicFormDialogTrigger
+            topic={{
+              title: '',
+              slug: '',
+              description: '',
+              election_id: this.props.election.id
+            }}
+          >
+            <AddTopicButton>Add topic...</AddTopicButton>
+          </TopicFormDialogTrigger>
+        )}
+      </Container>
+    );
+  }
+}
 
 const mapStateToProps = state => ({
   editMode: state.settings.editMode
