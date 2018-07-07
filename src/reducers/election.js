@@ -17,6 +17,10 @@ import {
   success as topicSuccess,
   removed as topicRemoved
 } from '../actions/topic';
+import {
+  reorder as reorderTopics,
+  success as topicsSuccess
+} from '../actions/topics';
 
 async function fetchElection(id) {
   const response = await api.get(`/elections/${id}`);
@@ -172,6 +176,13 @@ export default handleActions(
       data: {
         ...state.data,
         topics: reject(state.data.topics, ['id', payload.id])
+      }
+    }),
+    [combineActions(reorderTopics, topicsSuccess)]: (state, {payload}) => ({
+      ...state,
+      data: {
+        ...state.data,
+        topics: payload
       }
     }),
     [reset]: () => defaultState

@@ -19,6 +19,7 @@ import {
 import {SIDEBAR_WIDTH} from '../common';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {connect} from 'react-redux';
+import {reorder as reorderTopics} from '../../../../actions/topics';
 import {scrollToTop} from '../../../../util';
 import {size} from 'polished';
 
@@ -113,16 +114,10 @@ class Sidebar extends Component {
   static propTypes = {
     activeTopicIndex: PropTypes.number.isRequired,
     candidate: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      topics: Array.from(props.election.topics)
-    };
-  }
 
   onDragEnd = result => {
     // dropped outside the list
@@ -130,12 +125,10 @@ class Sidebar extends Component {
       return;
     }
 
-    this.setState(prevState => {
-      const topics = Array.from(prevState.topics);
-      const [removed] = topics.splice(result.source.index, 1);
-      topics.splice(result.destination.index, 0, removed);
-      return {topics};
-    });
+    const topics = Array.from(this.props.election.topics);
+    const [removed] = topics.splice(result.source.index, 1);
+    topics.splice(result.destination.index, 0, removed);
+    this.props.dispatch(reorderTopics(topics));
   };
 
   render() {
@@ -152,7 +145,7 @@ class Sidebar extends Component {
                 innerRef={provided.innerRef}
                 style={{borderColor: this.props.candidate.color}}
               >
-                {this.state.topics.map((topic, index) => (
+                {this.props.election.topics.map((topic, index) => (
                   <Draggable
                     key={topic.id}
                     draggableId={topic.id}
