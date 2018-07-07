@@ -14,7 +14,7 @@ router.get('/:id', async (req, res) => {
       slug: req.params.id
     },
     include: Topic,
-    order: [[Topic, 'id', 'ASC']]
+    order: [[Topic, 'order', 'ASC']]
   });
 
   if (!election) {

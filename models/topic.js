@@ -3,7 +3,8 @@ export default (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
+    order: DataTypes.INTEGER
   });
 
   Topic.associate = models => {

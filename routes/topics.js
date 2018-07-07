@@ -13,6 +13,11 @@ const required = {
   }
 };
 
+const isInt = {
+  isInt: true,
+  toInt: true
+};
+
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
     title: required,
@@ -21,10 +26,7 @@ const validationMiddleware = createValidationMiddleware(
       exists: true,
       trim: true
     },
-    election_id: {
-      isInt: true,
-      toInt: true
-    },
+    election_id: isInt,
     file: {
       optional: true,
       equals: {
@@ -45,6 +47,32 @@ router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
 
   const topic = await Topic.create(data);
   res.send(topic);
+});
+
+const reorderValidationMiddleware = createValidationMiddleware(
+  checkSchema({
+    topics: {
+      isArray: true
+    },
+    'topics.*.id': isInt,
+    'topics.*.order': isInt
+  })
+);
+
+router.post('/reorder', reorderValidationMiddleware, async (req, res) => {
+  const updates = req.body.topics.map(async ({id, order}) => {
+    const update = await Topic.update(
+      {order},
+      {
+        where: {id},
+        returning: true
+      }
+    );
+    return update[1][0];
+  });
+
+  const topics = await Promise.all(updates);
+  res.send(topics);
 });
 
 router
