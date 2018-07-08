@@ -54,22 +54,22 @@ const TopicsHeading = withProps({
   })
 );
 
-const StyledEditButton = styled(EditButton)({
-  marginLeft: 'auto'
-});
-
-const notLastBottomMargin = css({
+const NotLastBottomMargin = styled.div({
   ':not(:last-child)': {
     marginBottom: theme.spacing.unit
   }
 });
 
 const SidebarTopics = SortableContainer(
-  styled.div(notLastBottomMargin, {width: '100%'})
+  styled(NotLastBottomMargin)({width: '100%'})
 );
 
+const StyledEditButton = styled(EditButton)({
+  marginLeft: 'auto'
+});
+
 const SidebarTopic = SortableElement(
-  styled.div(notLastBottomMargin, props => ({
+  styled(NotLastBottomMargin)(props => ({
     display: 'flex',
     alignItems: 'flex-start',
     paddingRight: theme.spacing.unit / 2,

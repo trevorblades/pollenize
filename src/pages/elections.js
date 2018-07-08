@@ -57,11 +57,20 @@ class Elections extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     elections: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired,
+    user: PropTypes.object
   };
 
   componentDidMount() {
     this.props.dispatch(loadElections());
+  }
+
+  componentDidUpdate(prevProps) {
+    const hasUser = Boolean(this.props.user);
+    const didHaveUser = Boolean(prevProps.user);
+    if (hasUser !== didHaveUser) {
+      this.props.dispatch(loadElections());
+    }
   }
 
   renderContent() {
@@ -111,7 +120,8 @@ class Elections extends Component {
 
 const mapStateToProps = state => ({
   elections: state.elections.data,
-  loading: state.elections.loading
+  loading: state.elections.loading,
+  user: state.user.data
 });
 
 export default connect(mapStateToProps)(Elections);

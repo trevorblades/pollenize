@@ -8,8 +8,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import Switch from '@material-ui/core/Switch';
 import styled, {css} from 'react-emotion';
 import theme from '../../../theme';
@@ -17,6 +19,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {setEditMode} from '../../../actions/settings';
 import {transparentize} from 'polished';
+import {update as updateElection} from '../../../actions/election';
 
 const drawerClassName = css({width: 320});
 const StyledListSubheader = styled(ListSubheader)({
@@ -35,6 +38,17 @@ class ElectionDrawer extends Component {
 
   onEditModeChange = event =>
     this.props.dispatch(setEditMode(event.target.checked));
+
+  onVisibilityChange = event => {
+    const {slug, title} = this.props.election;
+    this.props.dispatch(
+      updateElection({
+        slug,
+        title,
+        public: event.target.checked
+      })
+    );
+  };
 
   render() {
     return (
@@ -66,24 +80,44 @@ class ElectionDrawer extends Component {
             <ListItemIcon>
               <CompareArrowsIcon />
             </ListItemIcon>
-            <ListItemText primary="Compare mode" secondary="Coming soon" />
+            <ListItemText primary="Compare mode" />
             <ListItemSecondaryAction>
               <Switch disabled />
             </ListItemSecondaryAction>
           </ListItem>
           {this.props.user && (
-            <ListItem>
-              <ListItemIcon>
-                <EditIcon />
-              </ListItemIcon>
-              <ListItemText primary="Edit mode" />
-              <ListItemSecondaryAction>
-                <Switch
-                  checked={this.props.editMode}
-                  onChange={this.onEditModeChange}
+            <Fragment>
+              <ListItem>
+                <ListItemIcon>
+                  {this.props.election.public ? (
+                    <VisibilityIcon />
+                  ) : (
+                    <VisibilityOffIcon />
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={this.props.election.public ? 'Public' : 'Private'}
                 />
-              </ListItemSecondaryAction>
-            </ListItem>
+                <ListItemSecondaryAction>
+                  <Switch
+                    checked={this.props.election.public}
+                    onChange={this.onVisibilityChange}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem>
+                <ListItemIcon>
+                  <EditIcon />
+                </ListItemIcon>
+                <ListItemText primary="Edit mode" />
+                <ListItemSecondaryAction>
+                  <Switch
+                    checked={this.props.editMode}
+                    onChange={this.onEditModeChange}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
+            </Fragment>
           )}
         </List>
       </Drawer>

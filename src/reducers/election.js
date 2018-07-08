@@ -1,9 +1,9 @@
-import api from '../api';
+import api, {headers} from '../api';
 import findIndex from 'lodash/findIndex';
 import reject from 'lodash/reject';
 import {combineActions, handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
-import {load, success, failure, reset} from '../actions/election';
+import {load, update, success, failure, reset} from '../actions/election';
 import {push} from 'react-router-redux';
 import {
   success as candidateSuccess,
@@ -24,6 +24,18 @@ import {
 
 async function fetchElection(id) {
   const response = await api.get(`/elections/${id}`);
+  if (response.err) {
+    throw response.body;
+  }
+  return response.body;
+}
+
+async function updateElection(id, body) {
+  const response = await api.put(`/elections/${id}`, {
+    body,
+    headers
+  });
+
   if (response.err) {
     throw response.body;
   }
@@ -70,11 +82,24 @@ export default handleActions(
           args: [payload]
         })
       ),
+    [update]: (state, {payload}) =>
+      loop(
+        {
+          ...state,
+          loading: true
+        },
+        Cmd.run(updateElection, {
+          successActionCreator: success,
+          failActionCreator: failure,
+          args: [state.data.id, payload]
+        })
+      ),
     [success]: (state, {payload}) => ({
       ...state,
       loading: false,
       error: null,
-      data: payload
+      // spread the new election in if we already have one
+      data: state.data ? {...state.data, ...payload} : payload
     }),
     [failure]: (state, {payload}) => ({
       ...state,
