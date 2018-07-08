@@ -1,7 +1,6 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
-import map from 'lodash/map';
 import shuffle from 'lodash/shuffle';
 import {
   Election,
@@ -13,6 +12,7 @@ import {
 } from '../models';
 import {checkSchema} from 'express-validator/check';
 import {election as electionSchema} from '../schemas';
+import {getOwnedElectionIds} from '../util/user';
 import {jwtFromRequest} from '../strategies/jwt';
 import {matchedData} from 'express-validator/filter';
 
@@ -22,20 +22,6 @@ function optionalJwtMiddleware(req, res, next) {
     return;
   }
   next();
-}
-
-async function getOwnedElectionIds(user) {
-  let organization;
-  if (user) {
-    organization = await user.getOrganization({
-      include: {
-        model: Election,
-        attributes: ['id']
-      }
-    });
-  }
-
-  return organization ? map(organization.elections, 'id') : [];
 }
 
 async function getOptions(user, where = {}) {
@@ -115,7 +101,7 @@ router
     const data = matchedData(req);
     const ids = await getOwnedElectionIds(req.user);
     if (ids.length) {
-      const updates = await Election.update(data, {
+      const update = await Election.update(data, {
         where: {
           [Sequelize.Op.and]: [
             {id: req.params.id},
@@ -128,11 +114,12 @@ router
         },
         returning: true
       });
-      election = updates[1][0];
+
+      election = update[1][0];
     }
 
     if (!election) {
-      res.sendStatus(401);
+      res.sendStatus(403);
       return;
     }
 

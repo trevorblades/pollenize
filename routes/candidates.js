@@ -5,6 +5,7 @@ import express from 'express';
 import {Candidate, Position, Source} from '../models';
 import {candidate as candidateSchema} from '../schemas';
 import {checkSchema} from 'express-validator/check';
+import {getOwnedElectionIds} from '../util/user';
 import {matchedData} from 'express-validator/filter';
 
 const validationMiddleware = createValidationMiddleware(
@@ -33,6 +34,22 @@ router
         include: Source
       }
     });
+
+    if (!res.locals.candidate) {
+      res.sendStatus(404);
+      return;
+    }
+
+    const ids = await getOwnedElectionIds(req.user);
+    const election = await res.locals.candidate.getElection({
+      attributes: ['id']
+    });
+
+    if (!ids.includes(election.id)) {
+      res.sendStatus(403);
+      return;
+    }
+
     next();
   })
   .put(uploadMiddleware, validationMiddleware, async (req, res, next) => {
