@@ -7,6 +7,10 @@ export default (sequelize, DataTypes) => {
     password: DataTypes.STRING
   });
 
+  User.associate = models => {
+    User.belongsTo(models.Organization);
+  };
+
   User.prototype.toJWT = function(expiresIn = '7 days') {
     const payload = this.get();
     delete payload.password;
