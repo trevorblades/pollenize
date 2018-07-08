@@ -24,7 +24,7 @@ function optionalJwtMiddleware(req, res, next) {
   next();
 }
 
-async function getOptions(user, where = {}) {
+async function getOwnedElectionIds(user) {
   let organization;
   if (user) {
     organization = await user.getOrganization({
@@ -35,7 +35,12 @@ async function getOptions(user, where = {}) {
     });
   }
 
-  if (!organization) {
+  return organization ? map(organization.elections, 'id') : [];
+}
+
+async function getOptions(user, where = {}) {
+  const ids = await getOwnedElectionIds(user);
+  if (!ids.length) {
     return {
       where: {
         ...where,
@@ -47,7 +52,6 @@ async function getOptions(user, where = {}) {
     };
   }
 
-  const ids = map(organization.elections, 'id');
   return {
     where: {
       ...where,
@@ -107,15 +111,32 @@ router
     res.send(election);
   })
   .put(jwtMiddleware, validationMiddleware, async (req, res) => {
+    let election;
     const data = matchedData(req);
-    const updates = await Election.update(data, {
-      where: {
-        id: req.params.id
-      },
-      returning: true
-    });
+    const ids = await getOwnedElectionIds(req.user);
+    if (ids.length) {
+      const updates = await Election.update(data, {
+        where: {
+          [Sequelize.Op.and]: [
+            {id: req.params.id},
+            {
+              id: {
+                [Sequelize.Op.in]: ids
+              }
+            }
+          ]
+        },
+        returning: true
+      });
+      election = updates[1][0];
+    }
 
-    res.send(updates[1][0]);
+    if (!election) {
+      res.sendStatus(401);
+      return;
+    }
+
+    res.send(election);
   });
 
 export default router;
