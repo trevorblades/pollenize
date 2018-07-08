@@ -3,7 +3,7 @@ import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
 import DragInteractionIcon from '../../../../assets/icons/drag-interaction.svg';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import TopicForm from './topic-form';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
@@ -17,7 +17,12 @@ import {
   breakpoint as sectionBreakpoint
 } from '../../../../components/section';
 import {SIDEBAR_WIDTH} from '../common';
-import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
+import {
+  SortableContainer,
+  SortableElement,
+  SortableHandle,
+  arrayMove
+} from 'react-sortable-hoc';
 import {connect} from 'react-redux';
 import {reorder as reorderTopics} from '../../../../actions/topics';
 import {scrollToTop} from '../../../../util';
@@ -59,19 +64,24 @@ const notLastBottomMargin = css({
   }
 });
 
-const SidebarTopics = styled.div(notLastBottomMargin, {width: '100%'});
-const SidebarTopic = styled.div`
-  display: flex;
-  padding-right: ${theme.spacing.unit / 2}px;
-  border-right-width: 3px;
-  border-right-style: solid;
-  border-color: ${props => (props.active ? 'inherit' : 'transparent')};
-  position: relative;
-  ${notLastBottomMargin}
-  :not(:hover) ${StyledEditButton} {
-    display: none;
-  }
-`;
+const SidebarTopics = SortableContainer(
+  styled.div(notLastBottomMargin, {width: '100%'})
+);
+
+const SidebarTopic = SortableElement(
+  styled.div(notLastBottomMargin, props => ({
+    display: 'flex',
+    alignItems: 'flex-start',
+    paddingRight: theme.spacing.unit / 2,
+    borderRightWidth: 3,
+    borderRightStyle: 'solid',
+    borderColor: props.active ? 'inherit' : 'transparent',
+    position: 'relative',
+    [`:not(:hover) ${StyledEditButton}`]: {
+      display: 'none'
+    }
+  }))
+);
 
 const SidebarItem = defaultProps({
   component: 'a',
@@ -90,16 +100,18 @@ const AddTopicButton = styled(SidebarButton)({
   color: theme.palette.text.secondary
 });
 
-const DragHandle = styled.div({
-  position: 'absolute',
-  right: '100%',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  svg: css(size(theme.spacing.unit * 2), {
-    display: 'block',
-    fill: theme.palette.grey[300]
+const DragHandle = SortableHandle(
+  styled.div({
+    position: 'absolute',
+    right: '100%',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    svg: css(size(theme.spacing.unit * 2), {
+      display: 'block',
+      fill: theme.palette.grey[300]
+    })
   })
-});
+);
 
 const TopicFormDialogTrigger = mapProps(props => ({
   children: props.children,
@@ -119,15 +131,16 @@ class Sidebar extends Component {
     election: PropTypes.object.isRequired
   };
 
-  onDragEnd = result => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
+  state = {
+    sorting: false
+  };
 
-    const topics = Array.from(this.props.election.topics);
-    const [removed] = topics.splice(result.source.index, 1);
-    topics.splice(result.destination.index, 0, removed);
+  onSortStart = () => this.setState({sorting: true});
+
+  onSortEnd = ({oldIndex, newIndex}) => {
+    this.setState({sorting: false});
+
+    const topics = arrayMove(this.props.election.topics, oldIndex, newIndex);
     this.props.dispatch(reorderTopics(topics));
   };
 
@@ -138,52 +151,36 @@ class Sidebar extends Component {
           About {this.props.candidate.firstName}
         </SidebarButton>
         <TopicsHeading>Topics</TopicsHeading>
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="topics">
-            {(provided, {isDraggingOver}) => (
-              <SidebarTopics
-                innerRef={provided.innerRef}
-                style={{borderColor: this.props.candidate.color}}
-              >
-                {this.props.election.topics.map((topic, index) => (
-                  <Draggable
-                    key={topic.id}
-                    draggableId={topic.id}
-                    index={index}
-                    isDragDisabled={!this.props.editMode}
-                  >
-                    {(provided, snapshot) => (
-                      <SidebarTopic
-                        {...provided.draggableProps}
-                        innerRef={provided.innerRef}
-                        active={
-                          !snapshot.isDragging &&
-                          index === this.props.activeTopicIndex
-                        }
-                      >
-                        {this.props.editMode && (
-                          <DragHandle {...provided.dragHandleProps}>
-                            <DragInteractionIcon />
-                          </DragHandle>
-                        )}
-                        <SidebarItem href={`#${topic.slug}`}>
-                          {topic.title}
-                        </SidebarItem>
-                        {!isDraggingOver &&
-                          this.props.editMode && (
-                            <TopicFormDialogTrigger topic={topic}>
-                              <StyledEditButton />
-                            </TopicFormDialogTrigger>
-                          )}
-                      </SidebarTopic>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </SidebarTopics>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <SidebarTopics
+          useDragHandle
+          onSortStart={this.onSortStart}
+          onSortEnd={this.onSortEnd}
+          style={{borderColor: this.props.candidate.color}}
+        >
+          {this.props.election.topics.map((topic, index) => (
+            <SidebarTopic
+              key={topic.id}
+              index={index}
+              active={
+                !this.state.sorting && index === this.props.activeTopicIndex
+              }
+            >
+              <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
+              {this.props.editMode && (
+                <Fragment>
+                  <DragHandle>
+                    <DragInteractionIcon />
+                  </DragHandle>
+                  {!this.state.sorting && (
+                    <TopicFormDialogTrigger topic={topic}>
+                      <StyledEditButton />
+                    </TopicFormDialogTrigger>
+                  )}
+                </Fragment>
+              )}
+            </SidebarTopic>
+          ))}
+        </SidebarTopics>
         {this.props.editMode && (
           <TopicFormDialogTrigger
             topic={{
