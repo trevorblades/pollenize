@@ -60,7 +60,8 @@ const reorderValidationMiddleware = createValidationMiddleware(
 );
 
 router.post('/reorder', reorderValidationMiddleware, async (req, res) => {
-  const updates = req.body.topics.map(async ({id, order}) => {
+  const data = matchedData(req);
+  const updates = data.topics.map(async ({id, order}) => {
     const update = await Topic.update(
       {order},
       {
