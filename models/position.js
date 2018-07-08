@@ -4,9 +4,9 @@ export default (sequelize, DataTypes) => {
   });
 
   Position.associate = models => {
-    models.Position.belongsTo(models.Candidate);
-    models.Position.belongsTo(models.Topic);
-    models.Position.hasMany(models.Source);
+    Position.belongsTo(models.Candidate);
+    Position.belongsTo(models.Topic);
+    Position.hasMany(models.Source);
   };
 
   return Position;

@@ -8,8 +8,8 @@ export default (sequelize, DataTypes) => {
   });
 
   Topic.associate = models => {
-    models.Topic.belongsTo(models.Election);
-    models.Topic.hasMany(models.Position);
+    Topic.belongsTo(models.Election);
+    Topic.hasMany(models.Position);
   };
 
   return Topic;

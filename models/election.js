@@ -7,8 +7,8 @@ export default (sequelize, DataTypes) => {
   });
 
   Election.associate = models => {
-    models.Election.hasMany(models.Candidate);
-    models.Election.hasMany(models.Topic);
+    Election.hasMany(models.Candidate);
+    Election.hasMany(models.Topic);
   };
 
   return Election;

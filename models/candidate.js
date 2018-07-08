@@ -15,8 +15,8 @@ export default (sequelize, DataTypes) => {
   });
 
   Candidate.associate = models => {
-    models.Candidate.belongsTo(models.Election);
-    models.Candidate.hasMany(models.Position);
+    Candidate.belongsTo(models.Election);
+    Candidate.hasMany(models.Position);
   };
 
   Candidate.prototype.toJSON = function() {
