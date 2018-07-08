@@ -2,43 +2,13 @@ import createValidationMiddleware from '../middleware/validation';
 import jwtMiddleware from '../middleware/jwt';
 import uploadMiddleware from '../middleware/upload';
 import express from 'express';
-import youtubeRegex from 'youtube-regex';
 import {Candidate, Position, Source} from '../models';
+import {candidate as candidateSchema} from '../schemas';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
 
-const exists = {exists: true};
-const required = {
-  trim: true,
-  isEmpty: {
-    negated: true
-  }
-};
-
 const validationMiddleware = createValidationMiddleware(
-  checkSchema({
-    slug: required,
-    name: required,
-    birth_date: {
-      isISO8601: true
-    },
-    hometown: exists,
-    bio: exists,
-    party: required,
-    color: {
-      isHexColor: true
-    },
-    video_url: {
-      custom: {
-        options: value => youtubeRegex().test(value)
-      }
-    },
-    video_caption: exists,
-    election_id: {
-      isInt: true,
-      toInt: true
-    }
-  })
+  checkSchema(candidateSchema)
 );
 
 const router = express.Router();

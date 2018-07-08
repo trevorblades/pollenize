@@ -1,35 +1,13 @@
 import express from 'express';
 import createValidationMiddleware from '../middleware/validation';
 import jwtMiddleware from '../middleware/jwt';
-import prependHttp from 'prepend-http';
 import {Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
+import {position as positionSchema} from '../schemas';
 
-const isInt = {isInt: true};
 const validationMiddleware = createValidationMiddleware(
-  checkSchema({
-    text: {
-      trim: true,
-      isEmpty: {
-        negated: true
-      }
-    },
-    sources: {
-      isArray: true
-    },
-    'sources.*': {
-      customSanitizer: {
-        options: value => ({url: prependHttp(value)})
-      }
-    },
-    'sources.*.url': {
-      // prependHttp trims so we don't need to set trim: true here
-      isURL: true
-    },
-    candidate_id: isInt,
-    topic_id: isInt
-  })
+  checkSchema(positionSchema)
 );
 
 const router = express.Router();

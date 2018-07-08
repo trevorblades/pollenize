@@ -5,35 +5,13 @@ import uploadMiddleware from '../middleware/upload';
 import {Topic} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
-
-const required = {
-  trim: true,
-  isEmpty: {
-    negated: true
-  }
-};
-
-const isInt = {
-  isInt: true,
-  toInt: true
-};
+import {
+  topic as topicSchema,
+  reorderTopics as reorderTopicsSchema
+} from '../schemas';
 
 const validationMiddleware = createValidationMiddleware(
-  checkSchema({
-    title: required,
-    slug: required,
-    description: {
-      exists: true,
-      trim: true
-    },
-    election_id: isInt,
-    file: {
-      optional: true,
-      equals: {
-        options: 'null'
-      }
-    }
-  })
+  checkSchema(topicSchema)
 );
 
 const router = express.Router();
@@ -50,13 +28,7 @@ router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
 });
 
 const reorderValidationMiddleware = createValidationMiddleware(
-  checkSchema({
-    topics: {
-      isArray: true
-    },
-    'topics.*.id': isInt,
-    'topics.*.order': isInt
-  })
+  checkSchema(reorderTopicsSchema)
 );
 
 router.post('/reorder', reorderValidationMiddleware, async (req, res) => {

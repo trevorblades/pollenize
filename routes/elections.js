@@ -1,9 +1,18 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
+import map from 'lodash/map';
 import shuffle from 'lodash/shuffle';
-import {Election, Topic, Position, Source} from '../models';
+import {
+  Election,
+  Topic,
+  Position,
+  Source,
+  Sequelize,
+  sequelize
+} from '../models';
 import {checkSchema} from 'express-validator/check';
+import {election as electionSchema} from '../schemas';
 import {jwtFromRequest} from '../strategies/jwt';
 import {matchedData} from 'express-validator/filter';
 
@@ -15,42 +24,69 @@ function optionalJwtMiddleware(req, res, next) {
   next();
 }
 
-function getWhere(user, where = {}) {
-  return user ? where : {...where, public: true};
+async function getOptions(user, where = {}) {
+  let organization;
+  if (user) {
+    organization = await user.getOrganization({
+      include: {
+        model: Election,
+        attributes: ['id']
+      }
+    });
+  }
+
+  if (!organization) {
+    return {
+      where: {
+        ...where,
+        public: true
+      },
+      attributes: {
+        include: [[sequelize.literal('false'), 'editable']]
+      }
+    };
+  }
+
+  const ids = map(organization.elections, 'id');
+  return {
+    where: {
+      ...where,
+      [Sequelize.Op.or]: {
+        public: true,
+        id: {
+          [Sequelize.Op.in]: ids
+        }
+      }
+    },
+    attributes: {
+      include: [
+        [
+          // sequelize.where(sequelize.col('id'), Sequelize.Op.in, `(${ids})`),
+          sequelize.literal(`"election"."id" IN (${ids})`),
+          'editable'
+        ]
+      ]
+    }
+  };
 }
 
 const router = express.Router();
 router.get('/', optionalJwtMiddleware, async (req, res) => {
-  const elections = await Election.findAll({
-    where: getWhere(req.user)
-  });
+  const options = await getOptions(req.user);
+  const elections = await Election.findAll(options);
   res.send(elections);
 });
 
-const required = {
-  trim: true,
-  isEmpty: {
-    negated: true
-  }
-};
-
 const validationMiddleware = createValidationMiddleware(
-  checkSchema({
-    slug: required,
-    title: required,
-    public: {
-      isBoolean: true
-    }
-  })
+  checkSchema(electionSchema)
 );
 
 router
   .route('/:id')
   .get(optionalJwtMiddleware, async (req, res) => {
+    const options = await getOptions(req.user, {slug: req.params.id});
     const election = await Election.findOne({
-      where: getWhere(req.user, {
-        slug: req.params.id
-      }),
+      ...options,
       include: Topic,
       order: [[Topic, 'order', 'ASC']]
     });
