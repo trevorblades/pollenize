@@ -33,21 +33,42 @@ const StyledCircularProgress = styled(CircularProgress)({
   marginBottom: theme.spacing.unit * 2
 });
 
+const NotFoundPage = () => (
+  <Fragment>
+    <Header centered />
+    <NotFound />
+    <Footer />
+  </Fragment>
+);
+
 class Election extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     election: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     match: PropTypes.object.isRequired,
-    lastSuccess: PropTypes.string
+    lastSuccess: PropTypes.string,
+    user: PropTypes.object
   };
 
   componentDidMount() {
-    this.props.dispatch(loadElection(this.props.match.params.id));
+    this.load();
+  }
+
+  componentDidUpdate(prevProps) {
+    const hasUser = Boolean(this.props.user);
+    const didHaveUser = Boolean(prevProps.user);
+    if (hasUser !== didHaveUser) {
+      this.load();
+    }
   }
 
   componentWillUnmount() {
     this.props.dispatch(resetElection());
+  }
+
+  load() {
+    this.props.dispatch(loadElection(this.props.match.params.id));
   }
 
   render() {
@@ -63,13 +84,7 @@ class Election extends Component {
         );
       }
 
-      return (
-        <Fragment>
-          <Header centered />
-          <NotFound />
-          <Footer />
-        </Fragment>
-      );
+      return <NotFoundPage />;
     }
 
     return (
@@ -83,7 +98,7 @@ class Election extends Component {
             render={props => {
               const slugs = map(this.props.election.candidates, 'slug');
               const found = slugs.includes(props.match.params.id);
-              return found ? <Candidate {...props} /> : <NotFound />;
+              return found ? <Candidate {...props} /> : <NotFoundPage />;
             }}
           />
           <Route component={Candidates} />
@@ -99,7 +114,8 @@ class Election extends Component {
 const mapStateToProps = state => ({
   election: state.election.data,
   loading: state.election.loading,
-  lastSuccess: state.election.lastSuccess
+  lastSuccess: state.election.lastSuccess,
+  user: state.user.data
 });
 
 export default connect(mapStateToProps)(Election);

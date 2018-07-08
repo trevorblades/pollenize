@@ -32,8 +32,7 @@ class ElectionDrawer extends Component {
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    user: PropTypes.object
+    onClose: PropTypes.func.isRequired
   };
 
   onEditModeChange = event =>
@@ -85,7 +84,7 @@ class ElectionDrawer extends Component {
               <Switch disabled />
             </ListItemSecondaryAction>
           </ListItem>
-          {this.props.user && (
+          {this.props.election.editable && (
             <Fragment>
               <ListItem>
                 <ListItemIcon>

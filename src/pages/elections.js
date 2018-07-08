@@ -62,15 +62,19 @@ class Elections extends Component {
   };
 
   componentDidMount() {
-    this.props.dispatch(loadElections());
+    this.load();
   }
 
   componentDidUpdate(prevProps) {
     const hasUser = Boolean(this.props.user);
     const didHaveUser = Boolean(prevProps.user);
     if (hasUser !== didHaveUser) {
-      this.props.dispatch(loadElections());
+      this.load();
     }
+  }
+
+  load() {
+    this.props.dispatch(loadElections());
   }
 
   renderContent() {

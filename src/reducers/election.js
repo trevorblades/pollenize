@@ -104,7 +104,8 @@ export default handleActions(
     [failure]: (state, {payload}) => ({
       ...state,
       loading: false,
-      error: payload
+      error: payload,
+      data: null
     }),
     [combineActions(candidateSuccess, positionSuccess, topicSuccess)]: (
       state,
