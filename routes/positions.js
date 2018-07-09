@@ -1,7 +1,6 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
-import map from 'lodash/map';
 import {Candidate, Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
@@ -20,8 +19,10 @@ router.post('/', validationMiddleware, async (req, res) => {
     attributes: ['election_id']
   });
 
-  const ids = map(req.user.organization.elections, 'id');
-  if (!ids.includes(candidate.election_id)) {
+  if (
+    !candidate ||
+    !req.user.getDataValue('election_ids').includes(candidate.election_id)
+  ) {
     res.sendStatus(403);
     return;
   }
@@ -46,8 +47,10 @@ router
       attributes: ['election_id']
     });
 
-    const ids = map(req.user.organization.elections, 'id');
-    if (!ids.includes(candidate.election_id)) {
+    if (
+      !candidate ||
+      !req.user.getDataValue('election_ids').includes(candidate.election_id)
+    ) {
       res.sendStatus(403);
       return;
     }

@@ -1,5 +1,6 @@
+import map from 'lodash/map';
 import {Strategy, ExtractJwt} from 'passport-jwt';
-import {User, Organization, Election} from '../models';
+import {User, Election} from '../models';
 
 export const jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 export default new Strategy(
@@ -9,20 +10,19 @@ export default new Strategy(
   },
   async (payload, done) => {
     try {
-      const user = await User.findById(payload.sub, {
-        include: {
-          model: Organization,
-          include: {
-            model: Election,
-            attributes: ['id']
-          }
-        }
-      });
-
+      const user = await User.findById(payload.sub);
       if (!user) {
         return done(null, false);
       }
 
+      const organization = await user.getOrganization({
+        include: {
+          model: Election,
+          attributes: ['id']
+        }
+      });
+
+      user.setDataValue('election_ids', map(organization.elections, 'id'));
       return done(null, user);
     } catch (error) {
       return done(error);

@@ -1,7 +1,6 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
-import map from 'lodash/map';
 import shuffle from 'lodash/shuffle';
 import {
   Election,
@@ -25,37 +24,39 @@ function optionalJwtMiddleware(req, res, next) {
 }
 
 async function getOptions(user, where = {}) {
-  if (!user || !user.organization.elections.length) {
-    return {
-      where: {
-        ...where,
-        public: true
-      },
-      attributes: {
-        include: [[sequelize.literal('false'), 'editable']]
-      }
-    };
+  if (user) {
+    const electionIds = user.getDataValue('election_ids');
+    if (electionIds.length) {
+      return {
+        where: {
+          ...where,
+          [Sequelize.Op.or]: {
+            public: true,
+            id: {
+              [Sequelize.Op.in]: electionIds
+            }
+          }
+        },
+        attributes: {
+          include: [
+            [
+              // sequelize.where(sequelize.col('id'), Sequelize.Op.in, `(${electionIds})`),
+              sequelize.literal(`"election"."id" IN (${electionIds})`),
+              'editable'
+            ]
+          ]
+        }
+      };
+    }
   }
 
-  const ids = map(user.organization.elections, 'id');
   return {
     where: {
       ...where,
-      [Sequelize.Op.or]: {
-        public: true,
-        id: {
-          [Sequelize.Op.in]: ids
-        }
-      }
+      public: true
     },
     attributes: {
-      include: [
-        [
-          // sequelize.where(sequelize.col('id'), Sequelize.Op.in, `(${ids})`),
-          sequelize.literal(`"election"."id" IN (${ids})`),
-          'editable'
-        ]
-      ]
+      include: [[sequelize.literal('false'), 'editable']]
     }
   };
 }
@@ -99,16 +100,15 @@ router
   .put(jwtMiddleware, validationMiddleware, async (req, res) => {
     let election;
     const data = matchedData(req);
-    const {elections} = req.user.organization;
-    if (elections.length) {
-      const ids = map(elections, 'id');
+    const electionIds = req.user.getDataValue('election_ids');
+    if (electionIds.length) {
       const update = await Election.update(data, {
         where: {
           [Sequelize.Op.and]: [
             {id: req.params.id},
             {
               id: {
-                [Sequelize.Op.in]: ids
+                [Sequelize.Op.in]: electionIds
               }
             }
           ]
