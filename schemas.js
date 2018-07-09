@@ -59,6 +59,11 @@ export const candidate = {
     isHexColor: true
   },
   video_url: {
+    optional: {
+      options: {
+        checkFalsy: true
+      }
+    },
     custom: {
       options: value => youtubeRegex().test(value)
     }
