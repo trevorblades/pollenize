@@ -1,9 +1,10 @@
 import {combineReducers} from 'redux';
-import {handleActions} from 'redux-actions';
+import {handleAction, handleActions} from 'redux-actions';
 import {logOut} from '../actions/user';
-import {setEditMode} from '../actions/settings';
+import {setLanguage, setEditMode} from '../actions/settings';
 
 export default combineReducers({
+  language: handleAction(setLanguage, (state, {payload}) => payload, 'en'),
   editMode: handleActions(
     {
       [setEditMode]: (state, {payload}) => payload,

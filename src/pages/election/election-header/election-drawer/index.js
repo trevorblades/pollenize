@@ -2,24 +2,25 @@ import Avatar from '@material-ui/core/Avatar';
 import Drawer from '@material-ui/core/Drawer';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import EditIcon from '@material-ui/icons/Edit';
+import LanguagePicker from './language-picker';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Switch from '@material-ui/core/Switch';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import styled, {css} from 'react-emotion';
-import theme from '../../../theme';
+import theme from '../../../../theme';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {setEditMode} from '../../../actions/settings';
+import {setEditMode} from '../../../../actions/settings';
 import {transparentize} from 'polished';
-import {update as updateElection} from '../../../actions/election';
+import {update as updateElection} from '../../../../actions/election';
 
 const drawerClassName = css({width: 320});
 const StyledListSubheader = styled(ListSubheader)({
@@ -84,6 +85,9 @@ class ElectionDrawer extends Component {
               <Switch disabled />
             </ListItemSecondaryAction>
           </ListItem>
+          {this.props.election.languages.length > 1 && (
+            <LanguagePicker languages={this.props.election.languages} />
+          )}
           {this.props.election.editable && (
             <Fragment>
               <ListItem>
