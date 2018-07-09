@@ -78,7 +78,8 @@ class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     editMode: PropTypes.bool.isRequired,
-    election: PropTypes.object.isRequired
+    election: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired
   };
 
   state = {
@@ -166,17 +167,22 @@ class Candidate extends Component {
           <InnerContainer innerRef={node => (this.innerContainer = node)}>
             <Bio candidate={this.props.candidate} />
             <Divider />
-            {this.props.election.topics.map(topic => (
-              <Topic
-                topic={topic}
-                key={topic.id}
-                candidate={this.props.candidate}
-                positions={this.props.candidate.positions[topic.id]}
-              />
-            ))}
+            {this.props.election.topics.map(topic => {
+              const positions = this.props.candidate.positions[topic.id];
+              return (
+                <Topic
+                  topic={topic}
+                  key={topic.id}
+                  candidate={this.props.candidate}
+                  positions={positions && positions[this.props.language]}
+                />
+              );
+            })}
           </InnerContainer>
         </Container>
-        <Footnotes sources={this.props.candidate.sources} />
+        <Footnotes
+          sources={this.props.candidate.sources[this.props.language]}
+        />
         <Footer />
       </Fragment>
     );
@@ -188,7 +194,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     candidate: find(candidates, ['slug', ownProps.match.params.id]),
     editMode: state.settings.editMode,
-    election: state.election.data
+    election: state.election.data,
+    language: state.settings.language
   };
 };
 
