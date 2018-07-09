@@ -8,6 +8,8 @@ import getYouTubeId from 'get-youtube-id';
 import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
+import {connect} from 'react-redux';
+import {getLocalize} from '../../../selectors';
 
 const breakpoint = theme.breakpoints.up('md');
 const Content = styled.div({
@@ -66,9 +68,10 @@ const Text = defaultProps({
 
 const now = Date.now();
 const unknown = 'Unknown';
-export default class Bio extends Component {
+class Bio extends Component {
   static propTypes = {
-    candidate: PropTypes.object.isRequired
+    candidate: PropTypes.object.isRequired,
+    localize: PropTypes.func.isRequired
   };
 
   renderVideo() {
@@ -97,7 +100,7 @@ export default class Bio extends Component {
     return (
       <Section small>
         <Typography gutterBottom variant="display1">
-          About {this.props.candidate.firstName}
+          {this.props.localize('About')} {this.props.candidate.firstName}
         </Typography>
         <Content>
           <div>
@@ -121,3 +124,9 @@ export default class Bio extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  localize: getLocalize(state)
+});
+
+export default connect(mapStateToProps)(Bio);

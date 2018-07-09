@@ -18,6 +18,7 @@ import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {getLocalize} from '../../../../selectors';
 import {setEditMode} from '../../../../actions/settings';
 import {transparentize} from 'polished';
 import {update as updateElection} from '../../../../actions/election';
@@ -32,6 +33,7 @@ class ElectionDrawer extends Component {
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
+    localize: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -59,7 +61,9 @@ class ElectionDrawer extends Component {
         anchor="right"
       >
         <List>
-          <StyledListSubheader>Jump to candidate</StyledListSubheader>
+          <StyledListSubheader>
+            {this.props.localize('Jump to candidate')}
+          </StyledListSubheader>
           {this.props.election.candidates.map(candidate => (
             <ListItem
               button
@@ -75,12 +79,14 @@ class ElectionDrawer extends Component {
               />
             </ListItem>
           ))}
-          <StyledListSubheader>Settings</StyledListSubheader>
+          <StyledListSubheader>
+            {this.props.localize('Settings')}
+          </StyledListSubheader>
           <ListItem disabled>
             <ListItemIcon>
               <CompareArrowsIcon />
             </ListItemIcon>
-            <ListItemText primary="Compare mode" />
+            <ListItemText primary={this.props.localize('Compare mode')} />
             <ListItemSecondaryAction>
               <Switch disabled />
             </ListItemSecondaryAction>
@@ -99,7 +105,9 @@ class ElectionDrawer extends Component {
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  primary={this.props.election.public ? 'Public' : 'Private'}
+                  primary={this.props.localize(
+                    this.props.election.public ? 'Public' : 'Private'
+                  )}
                 />
                 <ListItemSecondaryAction>
                   <Switch
@@ -112,7 +120,7 @@ class ElectionDrawer extends Component {
                 <ListItemIcon>
                   <EditIcon />
                 </ListItemIcon>
-                <ListItemText primary="Edit mode" />
+                <ListItemText primary={this.props.localize('Edit mode')} />
                 <ListItemSecondaryAction>
                   <Switch
                     checked={this.props.editMode}
@@ -131,6 +139,7 @@ class ElectionDrawer extends Component {
 const mapStateToProps = state => ({
   editMode: state.settings.editMode,
   election: state.election.data,
+  localize: getLocalize(state),
   user: state.user.data
 });
 

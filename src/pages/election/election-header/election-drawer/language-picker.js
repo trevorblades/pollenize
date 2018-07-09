@@ -8,13 +8,15 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import TranslateIcon from '@material-ui/icons/Translate';
 import {connect} from 'react-redux';
+import {getLocalize} from '../../../../selectors';
 import {setLanguage} from '../../../../actions/settings';
 
 class LanaguagePicker extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     language: PropTypes.string.isRequired,
-    languages: PropTypes.array.isRequired
+    languages: PropTypes.array.isRequired,
+    localize: PropTypes.func.isRequired
   };
 
   state = {
@@ -38,7 +40,9 @@ class LanaguagePicker extends Component {
             <TranslateIcon />
           </ListItemIcon>
           <ListItemText
-            primary={`Language: ${ISO6391.getNativeName(this.props.language)}`}
+            primary={`${this.props.localize(
+              'Language'
+            )}: ${ISO6391.getNativeName(this.props.language)}`}
           />
         </ListItem>
         <Menu
@@ -63,7 +67,8 @@ class LanaguagePicker extends Component {
 }
 
 const mapStateToProps = state => ({
-  language: state.settings.language
+  language: state.settings.language,
+  localize: getLocalize(state)
 });
 
 export default connect(mapStateToProps)(LanaguagePicker);

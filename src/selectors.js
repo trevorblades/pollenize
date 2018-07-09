@@ -1,6 +1,7 @@
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import mapValues from 'lodash/mapValues';
+import messages from './messages';
 import values from 'lodash/values';
 import {createSelector} from 'reselect';
 
@@ -24,4 +25,9 @@ export const getCandidates = createSelector(getElection, election =>
       )
     };
   })
+);
+
+const getLanguage = state => state.settings.language;
+export const getLocalize = createSelector(getLanguage, language => message =>
+  (messages[message] && messages[message][language]) || message
 );

@@ -18,6 +18,7 @@ import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {divisors} from 'number-theory';
+import {getLocalize} from '../../selectors';
 import {size} from 'polished';
 
 const containerClassName = css({flexGrow: 1});
@@ -56,7 +57,8 @@ const CreateButton = withProps({variant: 'fab'})(
 class Candidates extends Component {
   static propTypes = {
     editMode: PropTypes.bool.isRequired,
-    election: PropTypes.object.isRequired
+    election: PropTypes.object.isRequired,
+    localize: PropTypes.func.isRequired
   };
 
   state = {
@@ -138,7 +140,7 @@ class Candidates extends Component {
                 onSuccess={closeDialog}
               />
             )}
-            tooltip="Create a candidate"
+            tooltip={this.props.localize('Create a candidate')}
             tooltipProps={{placement: 'left'}}
           >
             <CreateButton>
@@ -153,7 +155,8 @@ class Candidates extends Component {
 
 const mapStateToProps = state => ({
   editMode: state.settings.editMode,
-  election: state.election.data
+  election: state.election.data,
+  localize: getLocalize(state)
 });
 
 export default connect(mapStateToProps)(Candidates);
