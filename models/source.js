@@ -4,7 +4,7 @@ export default (sequelize, DataTypes) => {
   });
 
   Source.associate = models => {
-    Source.belongsTo(models.Position);
+    Source.belongsTo(models.Message);
   };
 
   return Source;

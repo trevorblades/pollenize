@@ -7,6 +7,7 @@ import {
   Language,
   Topic,
   Position,
+  Message,
   Source,
   Sequelize,
   sequelize
@@ -91,7 +92,10 @@ router
     const candidates = await election.getCandidates({
       include: {
         model: Position,
-        include: Source
+        include: {
+          model: Message,
+          include: [Language, Source]
+        }
       }
     });
 

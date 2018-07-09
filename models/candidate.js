@@ -1,5 +1,3 @@
-import groupBy from 'lodash/groupBy';
-
 export default (sequelize, DataTypes) => {
   const Candidate = sequelize.define('candidate', {
     slug: DataTypes.STRING,
@@ -17,14 +15,6 @@ export default (sequelize, DataTypes) => {
   Candidate.associate = models => {
     Candidate.belongsTo(models.Election);
     Candidate.hasMany(models.Position);
-  };
-
-  Candidate.prototype.toJSON = function() {
-    const candidate = this.get();
-    return {
-      ...candidate,
-      positions: groupBy(candidate.positions, 'topic_id')
-    };
   };
 
   return Candidate;
