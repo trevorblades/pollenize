@@ -2,6 +2,7 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import filter from 'lodash/filter';
 import jwtMiddleware from '../middleware/jwt';
+import map from 'lodash/map';
 import uploadMiddleware from '../middleware/upload';
 import {Topic, Sequelize} from '../models';
 import {checkSchema} from 'express-validator/check';
@@ -10,7 +11,6 @@ import {
   topic as topicSchema,
   reorderTopics as reorderTopicsSchema
 } from '../schemas';
-import {getOwnedElectionIds} from '../util/user';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema(topicSchema)
@@ -21,6 +21,12 @@ router.use(jwtMiddleware);
 
 router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
   const data = matchedData(req);
+  const ids = map(req.user.organization.elections, 'id');
+  if (!ids.includes(data.election_id)) {
+    res.sendStatus(403);
+    return;
+  }
+
   if (req.file) {
     data.image = req.file.data.link;
   }
@@ -35,7 +41,7 @@ const reorderValidationMiddleware = createValidationMiddleware(
 
 router.post('/reorder', reorderValidationMiddleware, async (req, res) => {
   const data = matchedData(req);
-  const ids = await getOwnedElectionIds(req.user);
+  const ids = map(req.user.organization.elections, 'id');
   const updates = data.topics.map(async ({id, order}) => {
     const update = await Topic.update(
       {order},
@@ -71,12 +77,8 @@ router
       return;
     }
 
-    const ids = await getOwnedElectionIds(req.user);
-    const election = await res.locals.topic.getElection({
-      attributes: ['id']
-    });
-
-    if (!ids.includes(election.id)) {
+    const ids = map(req.user.organization.elections, 'id');
+    if (!ids.includes(res.locals.topic.election_id)) {
       res.sendStatus(403);
       return;
     }

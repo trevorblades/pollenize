@@ -1,9 +1,9 @@
-import express from 'express';
 import createValidationMiddleware from '../middleware/validation';
+import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
-import {Position, Election, Source} from '../models';
+import map from 'lodash/map';
+import {Candidate, Position, Source} from '../models';
 import {checkSchema} from 'express-validator/check';
-import {getOwnedElectionIds} from '../util/user';
 import {matchedData} from 'express-validator/filter';
 import {position as positionSchema} from '../schemas';
 
@@ -16,6 +16,16 @@ router.use(jwtMiddleware);
 
 router.post('/', validationMiddleware, async (req, res) => {
   const data = matchedData(req);
+  const candidate = await Candidate.findById(data.candidate_id, {
+    attributes: ['election_id']
+  });
+
+  const ids = map(req.user.organization.elections, 'id');
+  if (!ids.includes(candidate.election_id)) {
+    res.sendStatus(403);
+    return;
+  }
+
   const position = await Position.create(data, {include: Source});
   res.send(position);
 });
@@ -32,16 +42,12 @@ router
       return;
     }
 
-    const ids = await getOwnedElectionIds(req.user);
     const candidate = await res.locals.position.getCandidate({
-      attributes: [],
-      include: {
-        model: Election,
-        attributes: ['id']
-      }
+      attributes: ['election_id']
     });
 
-    if (!ids.includes(candidate.election.id)) {
+    const ids = map(req.user.organization.elections, 'id');
+    if (!ids.includes(candidate.election_id)) {
       res.sendStatus(403);
       return;
     }

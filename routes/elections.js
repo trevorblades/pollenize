@@ -1,6 +1,7 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
+import map from 'lodash/map';
 import shuffle from 'lodash/shuffle';
 import {
   Election,
@@ -12,7 +13,6 @@ import {
 } from '../models';
 import {checkSchema} from 'express-validator/check';
 import {election as electionSchema} from '../schemas';
-import {getOwnedElectionIds} from '../util/user';
 import {jwtFromRequest} from '../strategies/jwt';
 import {matchedData} from 'express-validator/filter';
 
@@ -25,8 +25,7 @@ function optionalJwtMiddleware(req, res, next) {
 }
 
 async function getOptions(user, where = {}) {
-  const ids = await getOwnedElectionIds(user);
-  if (!ids.length) {
+  if (!user || !user.organization.elections.length) {
     return {
       where: {
         ...where,
@@ -38,6 +37,7 @@ async function getOptions(user, where = {}) {
     };
   }
 
+  const ids = map(user.organization.elections, 'id');
   return {
     where: {
       ...where,
@@ -99,8 +99,9 @@ router
   .put(jwtMiddleware, validationMiddleware, async (req, res) => {
     let election;
     const data = matchedData(req);
-    const ids = await getOwnedElectionIds(req.user);
-    if (ids.length) {
+    const {elections} = req.user.organization;
+    if (elections.length) {
+      const ids = map(elections, 'id');
       const update = await Election.update(data, {
         where: {
           [Sequelize.Op.and]: [

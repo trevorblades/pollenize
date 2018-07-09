@@ -1,5 +1,5 @@
 import {Strategy, ExtractJwt} from 'passport-jwt';
-import {User} from '../models';
+import {User, Organization, Election} from '../models';
 
 export const jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 export default new Strategy(
@@ -9,10 +9,20 @@ export default new Strategy(
   },
   async (payload, done) => {
     try {
-      const user = await User.findById(payload.sub);
+      const user = await User.findById(payload.sub, {
+        include: {
+          model: Organization,
+          include: {
+            model: Election,
+            attributes: ['id']
+          }
+        }
+      });
+
       if (!user) {
         return done(null, false);
       }
+
       return done(null, user);
     } catch (error) {
       return done(error);
