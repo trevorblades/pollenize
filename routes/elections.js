@@ -4,6 +4,7 @@ import jwtMiddleware from '../middleware/jwt';
 import shuffle from 'lodash/shuffle';
 import {
   Election,
+  Language,
   Topic,
   Position,
   Source,
@@ -78,7 +79,7 @@ router
     const options = await getOptions(req.user, {slug: req.params.id});
     const election = await Election.findOne({
       ...options,
-      include: Topic,
+      include: [Language, Topic],
       order: [[Topic, 'order', 'ASC']]
     });
 
