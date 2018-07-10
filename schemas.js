@@ -73,7 +73,12 @@ export const candidate = {
 };
 
 export const position = {
-  messages: isArray,
+  messages: {
+    isArray,
+    isEmpty: {
+      negated: true
+    }
+  },
   'messages.*.text': notEmpty,
   'messages.*.language_id': isInt,
   sources: isArray,
