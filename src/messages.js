@@ -31,10 +31,6 @@ export default {
     fr: 'Montre moins',
     es: 'Muestra menos'
   },
-  'Translation needed': {
-    fr: 'Traduction nécessaire',
-    es: 'Traducción necesaria'
-  },
   'Add a position': {
     fr: 'Ajouter un poste',
     es: 'Añadir un puesto'

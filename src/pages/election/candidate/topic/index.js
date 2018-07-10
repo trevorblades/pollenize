@@ -3,7 +3,7 @@ import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
 import PositionForm from './position-form';
 import PropTypes from 'prop-types';
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../../../components/section';
 import Typography from '@material-ui/core/Typography';
@@ -135,18 +135,12 @@ class Topic extends Component {
       return (
         <Text paragraph={index < array.length - 1} key={position.id}>
           <TextInner needsTranslation={needsTranslation}>
-            {message ? (
-              <Fragment>
-                {message.text}
-                {position.sources.map(source => (
-                  <Superscript key={source.id}>
-                    [<a href="#sources">{source.index + 1}</a>]
-                  </Superscript>
-                ))}
-              </Fragment>
-            ) : (
-              this.props.localize('Translation needed')
-            )}
+            {message.text}
+            {position.sources.map(source => (
+              <Superscript key={source.id}>
+                [<a href="#sources">{source.index + 1}</a>]
+              </Superscript>
+            ))}
           </TextInner>
           {this.props.editMode && (
             <PositionFormDialogTrigger position={position}>
