@@ -92,10 +92,7 @@ router
     const candidates = await election.getCandidates({
       include: {
         model: Position,
-        include: {
-          model: Message,
-          include: [Language, Source]
-        }
+        include: [Source, Message]
       }
     });
 

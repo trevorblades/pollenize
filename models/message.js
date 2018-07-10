@@ -6,7 +6,6 @@ export default (sequelize, DataTypes) => {
   Message.associate = models => {
     Message.belongsTo(models.Position);
     Message.belongsTo(models.Language);
-    Message.hasMany(models.Source);
   };
 
   return Message;
