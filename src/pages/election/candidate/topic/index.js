@@ -171,7 +171,7 @@ class Topic extends Component {
             topic_id: this.props.topic.id
           }}
         >
-          <Action>Add a position</Action>
+          <Action>{this.props.localize('Add a position')}</Action>
         </PositionFormDialogTrigger>
       );
     } else if (this.props.positions.length > 1) {

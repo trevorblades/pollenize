@@ -7,6 +7,10 @@ export default {
     fr: 'Traduction nécessaire',
     es: 'Traducción necesaria'
   },
+  'Add a position': {
+    fr: 'Ajouter un poste',
+    es: 'Añadir un puesto'
+  },
   'Jump to candidate': {
     fr: 'Aller au candidat',
     es: 'Saltar al candidato'
@@ -28,7 +32,7 @@ export default {
     es: 'Privado'
   },
   Language: {
-    fr: 'La langue',
+    fr: 'Langue',
     es: 'Idioma'
   },
   'Edit mode': {
