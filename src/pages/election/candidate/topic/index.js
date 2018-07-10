@@ -39,7 +39,11 @@ const Text = withProps({
   variant: 'subheading'
 })(Typography);
 
-const TextInner = styled.span({marginRight: theme.spacing.unit / 2});
+const TextInner = styled.span(props => ({
+  marginRight: theme.spacing.unit / 2,
+  color: props.needsTranslation && theme.palette.text.secondary
+}));
+
 const Superscript = styled.sup({lineHeight: 1});
 const StyledEditButton = styled(EditButton)({verticalAlign: 'top'});
 
@@ -76,6 +80,7 @@ class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     editMode: PropTypes.bool.isRequired,
+    election: PropTypes.object.isRequired,
     language: PropTypes.string.isRequired,
     localize: PropTypes.func.isRequired,
     positions: PropTypes.array,
@@ -113,10 +118,23 @@ class Topic extends Component {
         ? this.props.positions
         : [this.props.positions[0]];
     return positions.map((position, index, array) => {
-      const message = position.messages[this.props.language];
+      let needsTranslation = false;
+      let message = position.messages[this.props.language];
+      if (!message) {
+        needsTranslation = true;
+
+        const {languages} = this.props.election;
+        for (let i = 0; i < languages.length; i++) {
+          message = position.messages[languages[i].code];
+          if (message) {
+            break;
+          }
+        }
+      }
+
       return (
         <Text paragraph={index < array.length - 1} key={position.id}>
-          <TextInner>
+          <TextInner needsTranslation={needsTranslation}>
             {message ? (
               <Fragment>
                 {message.text}
@@ -201,6 +219,7 @@ class Topic extends Component {
 
 const mapStateToProps = state => ({
   editMode: state.settings.editMode,
+  election: state.election.data,
   language: state.settings.language,
   localize: getLocalize(state)
 });

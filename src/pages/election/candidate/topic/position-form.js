@@ -86,6 +86,20 @@ class PositionForm extends Component {
 
   render() {
     const {errors} = this.props.error || {};
+    const messages = this.props.election.languages.map(({code}, index) => {
+      const error =
+        errors && (errors.messages || errors[`messages[${index}].text`]);
+      return [
+        `messages.${code}.text`,
+        {
+          error: Boolean(error),
+          helperText: error && error.msg,
+          label: `Summary (${ISO6391.getNativeName(code)})`,
+          multiline: true
+        }
+      ];
+    });
+
     const sources = this.state.sources.map((source, index) => {
       const key = `sources[${index}].url`;
       const error = errors && errors[key];
@@ -102,16 +116,7 @@ class PositionForm extends Component {
       );
     });
 
-    const fields = this.props.election.languages
-      .map(({code}) => [
-        `messages.${code}.text`,
-        {
-          label: `Summary (${ISO6391.getNativeName(code)})`,
-          multiline: true
-        }
-      ])
-      .concat(sources);
-
+    const fields = messages.concat(sources);
     if (!this.state.sources.includes('')) {
       fields.push(
         <FormField
