@@ -1,7 +1,7 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
-import {Candidate, Position, Source} from '../models';
+import {Candidate, Position, Source, Message} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
 import {position as positionSchema} from '../schemas';
@@ -27,7 +27,7 @@ router.post('/', validationMiddleware, async (req, res) => {
     return;
   }
 
-  const position = await Position.create(data, {include: Source});
+  const position = await Position.create(data, {include: [Message, Source]});
   res.send(position);
 });
 
@@ -35,7 +35,7 @@ router
   .route('/:id')
   .all(async (req, res, next) => {
     res.locals.position = await Position.findById(req.params.id, {
-      include: Source
+      include: [Message, Source]
     });
 
     if (!res.locals.position) {
@@ -59,9 +59,12 @@ router
   })
   .put(validationMiddleware, async (req, res, next) => {
     const data = matchedData(req);
-    res.locals.position.setDataValue('text', data.text);
     res.locals.position.changed('updated_at', true);
     await res.locals.position.save();
+
+    const messages = await Message.bulkCreate(data.messages, {returning: true});
+    await res.locals.position.setMessages(messages);
+    res.locals.position.setDataValue('messages', messages);
 
     const sources = await Source.bulkCreate(data.sources, {returning: true});
     await res.locals.position.setSources(sources);

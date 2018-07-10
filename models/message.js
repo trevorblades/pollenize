@@ -4,8 +4,8 @@ export default (sequelize, DataTypes) => {
   });
 
   Message.associate = models => {
-    Message.belongsTo(models.Position);
     Message.belongsTo(models.Language);
+    Message.belongsToMany(models.Position, {through: models.PositionMessage});
   };
 
   return Message;

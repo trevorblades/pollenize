@@ -2,7 +2,7 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
 import uploadMiddleware from '../middleware/upload';
-import {Candidate, Position, Source} from '../models';
+import {Candidate, Position, Message, Source} from '../models';
 import {candidate as candidateSchema} from '../schemas';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
@@ -35,7 +35,7 @@ router
     res.locals.candidate = await Candidate.findById(req.params.id, {
       include: {
         model: Position,
-        include: Source
+        include: [Message, Source]
       }
     });
 

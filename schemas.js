@@ -73,15 +73,14 @@ export const candidate = {
 };
 
 export const position = {
-  text: notEmpty,
+  messages: isArray,
+  'messages.*.text': notEmpty,
+  'messages.*.language_id': isInt,
   sources: isArray,
-  'sources.*': {
-    customSanitizer: {
-      options: value => ({url: prependHttp(value)})
-    }
-  },
   'sources.*.url': {
-    // prependHttp trims so we don't need to set trim: true here
+    customSanitizer: {
+      options: prependHttp
+    },
     isURL: true
   },
   candidate_id: isInt,
