@@ -2,16 +2,8 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
 import shuffle from 'lodash/shuffle';
-import {
-  Election,
-  Language,
-  Topic,
-  Position,
-  Message,
-  Source,
-  Sequelize,
-  sequelize
-} from '../models';
+import {Election, Language, Topic, Sequelize, sequelize} from '../models';
+import {candidateOptions} from '../util';
 import {checkSchema} from 'express-validator/check';
 import {election as electionSchema} from '../schemas';
 import {jwtFromRequest} from '../strategies/jwt';
@@ -89,13 +81,7 @@ router
       return;
     }
 
-    const candidates = await election.getCandidates({
-      include: {
-        model: Position,
-        include: [Source, Message]
-      }
-    });
-
+    const candidates = await election.getCandidates(candidateOptions);
     election.setDataValue('candidates', shuffle(candidates));
     res.send(election);
   })
