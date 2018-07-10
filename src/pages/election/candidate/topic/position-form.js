@@ -65,7 +65,7 @@ class PositionForm extends Component {
       savePosition({
         id: this.props.position.id,
         messages: filter(messages, 'text'),
-        sources: filter(this.state.sources),
+        sources: filter(this.state.sources).map(source => ({url: source})),
         candidate_id: this.props.position.candidate_id,
         topic_id: this.props.position.topic_id
       })
