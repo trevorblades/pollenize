@@ -6,6 +6,7 @@ import Form, {FormField} from './form';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import get from 'lodash/get';
 import sentenceCase from 'sentence-case';
 import styled from 'react-emotion';
 import theme from '../theme';
@@ -50,7 +51,7 @@ class AutoForm extends Component {
         <FormField
           name={key}
           label={sentenceCase(key)}
-          defaultValue={this.props.initialData[key]}
+          defaultValue={get(this.props.initialData, key)}
           error={Boolean(error)}
           helperText={error && error.msg}
           {...props}
@@ -76,11 +77,9 @@ class AutoForm extends Component {
                   return this.renderFormField(field);
                 }
                 default:
-                  if (React.isValidElement(field)) {
-                    return field;
-                  }
-
-                  return this.renderFormField(...field);
+                  return React.isValidElement(field)
+                    ? field
+                    : this.renderFormField(...field);
               }
             })}
           </Grid>

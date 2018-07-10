@@ -78,8 +78,7 @@ class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     editMode: PropTypes.bool.isRequired,
-    election: PropTypes.object.isRequired,
-    language: PropTypes.string.isRequired
+    election: PropTypes.object.isRequired
   };
 
   state = {
@@ -174,15 +173,13 @@ class Candidate extends Component {
                   topic={topic}
                   key={topic.id}
                   candidate={this.props.candidate}
-                  positions={positions && positions[this.props.language]}
+                  positions={positions}
                 />
               );
             })}
           </InnerContainer>
         </Container>
-        <Footnotes
-          sources={this.props.candidate.sources[this.props.language]}
-        />
+        <Footnotes sources={this.props.candidate.sources} />
         <Footer />
       </Fragment>
     );
@@ -194,8 +191,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     candidate: find(candidates, ['slug', ownProps.match.params.id]),
     editMode: state.settings.editMode,
-    election: state.election.data,
-    language: state.settings.language
+    election: state.election.data
   };
 };
 

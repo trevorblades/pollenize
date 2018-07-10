@@ -1,52 +1,36 @@
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
-import flatMapDeep from 'lodash/flatMapDeep';
 import groupBy from 'lodash/groupBy';
+import keyBy from 'lodash/keyBy';
 import messages from './messages';
-import mapValues from 'lodash/mapValues';
 import {createSelector} from 'reselect';
 
 const getElection = state => state.election.data;
-export const getCandidates = createSelector(getElection, election =>
-  election.candidates.map(candidate => {
-    const sources = groupBy(
-      flatMapDeep(candidate.positions, position =>
-        position.messages.map(message =>
-          message.sources.map(source => ({
-            ...source,
-            language: message.language
-          }))
-        )
-      ),
-      'language.code'
-    );
-
+export const getCandidates = createSelector(getElection, election => {
+  const languages = keyBy(election.languages, 'id');
+  return election.candidates.map(candidate => {
+    const sources = flatMap(candidate.positions, 'sources');
     return {
       ...candidate,
       sources,
       firstName: candidate.name.replace(/\s+/, ' ').split(' ')[0],
-      positions: mapValues(
-        groupBy(
-          flatMap(candidate.positions, position =>
-            position.messages.map(message => ({
-              ...message,
-              topic_id: position.topic_id,
-              sources: message.sources.map(source => ({
-                ...source,
-                index: findIndex(sources[message.language.code], [
-                  'id',
-                  source.id
-                ])
-              }))
-            }))
+      positions: groupBy(
+        flatMap(candidate.positions, position => ({
+          ...position,
+          messages: keyBy(
+            position.messages,
+            message => languages[message.language_id].code
           ),
-          'topic_id'
-        ),
-        value => groupBy(value, 'language.code')
+          sources: position.sources.map(source => ({
+            ...source,
+            index: findIndex(sources, ['id', source.id])
+          }))
+        })),
+        'topic_id'
       )
     };
-  })
-);
+  });
+});
 
 const getLanguage = state => state.settings.language;
 export const getLocalize = createSelector(getLanguage, language => message =>

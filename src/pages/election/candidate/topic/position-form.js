@@ -1,3 +1,4 @@
+import ISO6391 from 'iso-639-1';
 import AutoForm from '../../../../components/auto-form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -14,6 +15,7 @@ import {
 class PositionForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    election: PropTypes.object.isRequired,
     error: PropTypes.object,
     loading: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
@@ -95,16 +97,15 @@ class PositionForm extends Component {
       );
     });
 
-    const fields = [
-      [
-        'text',
+    const fields = this.props.election.languages
+      .map(({code}) => [
+        `messages.${code}.text`,
         {
-          multiline: true,
-          label: 'Summary'
+          label: `Summary (${ISO6391.getNativeName(code)})`,
+          multiline: true
         }
-      ],
-      ...sources
-    ];
+      ])
+      .concat(sources);
 
     if (!this.state.sources.includes('')) {
       fields.push(
@@ -135,6 +136,7 @@ class PositionForm extends Component {
 }
 
 const mapStateToProps = state => ({
+  election: state.election.data,
   error: state.position.error,
   loading: state.position.loading,
   success: state.position.success

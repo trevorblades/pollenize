@@ -44,6 +44,7 @@ class DialogTrigger extends Component {
           fullWidth
           open={this.state.dialogOpen}
           onClose={this.closeDialog}
+          scroll="body"
         >
           {this.props.renderContent(this.closeDialog)}
         </Dialog>

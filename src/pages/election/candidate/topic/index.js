@@ -3,7 +3,7 @@ import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
 import PositionForm from './position-form';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../../../components/section';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +13,7 @@ import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {connect} from 'react-redux';
+import {getLocalize} from '../../../../selectors';
 
 const Banner = styled.div({
   display: 'flex',
@@ -77,6 +78,8 @@ class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     editMode: PropTypes.bool.isRequired,
+    language: PropTypes.string.isRequired,
+    localize: PropTypes.func.isRequired,
     positions: PropTypes.array,
     topic: PropTypes.object.isRequired
   };
@@ -111,21 +114,30 @@ class Topic extends Component {
       this.state.more || this.props.editMode
         ? this.props.positions
         : [this.props.positions[0]];
-    return positions.map((position, index, array) => (
-      <Text paragraph={index < array.length - 1} key={position.id}>
-        {position.text}
-        {position.sources.map(source => (
-          <Superscript key={source.id}>
-            [<a href="#sources">{source.index + 1}</a>]
-          </Superscript>
-        ))}
-        {this.props.editMode && (
-          <PositionFormDialogTrigger position={position}>
-            <StyledEditButton />
-          </PositionFormDialogTrigger>
-        )}
-      </Text>
-    ));
+    return positions.map((position, index, array) => {
+      const message = position.messages[this.props.language];
+      return (
+        <Text paragraph={index < array.length - 1} key={position.id}>
+          {message ? (
+            <Fragment>
+              {message.text}
+              {position.sources.map(source => (
+                <Superscript key={source.id}>
+                  [<a href="#sources">{source.index + 1}</a>]
+                </Superscript>
+              ))}
+            </Fragment>
+          ) : (
+            this.props.localize('Translation needed')
+          )}
+          {this.props.editMode && (
+            <PositionFormDialogTrigger position={position}>
+              <StyledEditButton />
+            </PositionFormDialogTrigger>
+          )}
+        </Text>
+      );
+    });
   }
 
   renderActions() {
@@ -188,7 +200,9 @@ class Topic extends Component {
 }
 
 const mapStateToProps = state => ({
-  editMode: state.settings.editMode
+  editMode: state.settings.editMode,
+  language: state.settings.language,
+  localize: getLocalize(state)
 });
 
 export default connect(mapStateToProps)(Topic);

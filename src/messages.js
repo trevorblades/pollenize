@@ -3,6 +3,10 @@ export default {
     fr: 'Créer un candidat',
     es: 'Crear un candidato'
   },
+  'Translation needed': {
+    fr: 'Traduction nécessaire',
+    es: 'Traducción necesaria'
+  },
   'Jump to candidate': {
     fr: 'Aller au candidat',
     es: 'Saltar al candidato'

@@ -59,11 +59,7 @@ const Footnotes = props => (
 );
 
 Footnotes.propTypes = {
-  sources: PropTypes.array
-};
-
-Footnotes.defaultProps = {
-  sources: []
+  sources: PropTypes.array.isRequired
 };
 
 export default Footnotes;
