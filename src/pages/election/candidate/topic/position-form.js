@@ -56,20 +56,21 @@ class PositionForm extends Component {
       };
     });
 
-  onSubmit = event =>
+  onSubmit = event => {
+    const messages = this.props.election.languages.map(language => ({
+      text: event.target[`messages.${language.code}.text`].value,
+      language_id: language.id
+    }));
     this.props.dispatch(
       savePosition({
         id: this.props.position.id,
-        messages: this.props.election.languages.map(language => ({
-          text: event.target[`messages.${language.code}.text`].value,
-          language_id: language.id,
-          position_id: this.props.position.id
-        })),
+        messages: filter(messages, 'text'),
         sources: filter(this.state.sources),
         candidate_id: this.props.position.candidate_id,
         topic_id: this.props.position.topic_id
       })
     );
+  };
 
   onDelete = () => this.props.dispatch(removePosition(this.props.position.id));
 
