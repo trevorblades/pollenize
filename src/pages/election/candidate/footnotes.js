@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
+import {connect} from 'react-redux';
+import {getLocalize} from '../../../selectors';
 
 const Container = styled.section({
   borderBottom: `1px solid ${theme.palette.grey[200]}`,
@@ -42,7 +44,7 @@ const Footnotes = props => (
     <Container>
       <Section centered>
         <Typography gutterBottom variant="display1" color="inherit">
-          Sources
+          {props.localize('Sources')}
         </Typography>
         <Sources>
           {props.sources.map(source => (
@@ -59,7 +61,12 @@ const Footnotes = props => (
 );
 
 Footnotes.propTypes = {
+  localize: PropTypes.func.isRequired,
   sources: PropTypes.array.isRequired
 };
 
-export default Footnotes;
+const mapStateToProps = state => ({
+  localize: getLocalize(state)
+});
+
+export default connect(mapStateToProps)(Footnotes);

@@ -3,6 +3,34 @@ export default {
     fr: 'Créer un candidat',
     es: 'Crear un candidato'
   },
+  Topics: {
+    fr: 'Les sujets',
+    es: 'Temas'
+  },
+  'Add topic': {
+    fr: 'Ajouter un sujet',
+    es: 'Agregar tema'
+  },
+  About: {
+    fr: 'À propos de',
+    es: 'Acerca de'
+  },
+  'years old': {
+    fr: 'ans',
+    es: 'años'
+  },
+  Hometown: {
+    fr: 'Ville natale',
+    es: 'Ciudad natal'
+  },
+  'See more': {
+    fr: 'Voir plus',
+    es: 'Ver más'
+  },
+  'Show less': {
+    fr: 'Montre moins',
+    es: 'Muestra menos'
+  },
   'Translation needed': {
     fr: 'Traduction nécessaire',
     es: 'Traducción necesaria'
@@ -10,6 +38,9 @@ export default {
   'Add a position': {
     fr: 'Ajouter un poste',
     es: 'Añadir un puesto'
+  },
+  Sources: {
+    es: 'Fuentes'
   },
   'Jump to candidate': {
     fr: 'Aller au candidat',
@@ -38,9 +69,5 @@ export default {
   'Edit mode': {
     fr: 'Mode édition',
     es: 'Modo de edición'
-  },
-  About: {
-    fr: 'A propos de',
-    es: 'Acerca de'
   }
 };

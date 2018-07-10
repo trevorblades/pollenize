@@ -175,11 +175,12 @@ class Topic extends Component {
         </PositionFormDialogTrigger>
       );
     } else if (this.props.positions.length > 1) {
+      const count = this.props.positions.length - 1;
       actions.push(
         <Action key="more" onClick={this.onMoreClick}>
           {this.state.more
-            ? 'Show less'
-            : `See more (${this.props.positions.length - 1})`}
+            ? this.props.localize('Show less')
+            : `${this.props.localize('See more')} (${count})`}
         </Action>
       );
     }

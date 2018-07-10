@@ -105,15 +105,17 @@ class Bio extends Component {
         <Content>
           <div>
             <Text>
-              Age:{' '}
               {this.props.candidate.birth_date
                 ? `${differenceInYears(
                     now,
                     this.props.candidate.birth_date
-                  )} years`
+                  )} ${this.props.localize('years old')}`
                 : unknown}
             </Text>
-            <Text>Hometown: {this.props.candidate.hometown || unknown}</Text>
+            <Text>
+              {this.props.localize('Hometown')}:{' '}
+              {this.props.candidate.hometown || unknown}
+            </Text>
             {this.props.candidate.bio && (
               <Text gutterBottom={false}>{this.props.candidate.bio}</Text>
             )}

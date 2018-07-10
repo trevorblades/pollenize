@@ -24,6 +24,7 @@ import {
   arrayMove
 } from 'react-sortable-hoc';
 import {connect} from 'react-redux';
+import {getLocalize} from '../../../../selectors';
 import {reorder as reorderTopics} from '../../../../actions/topics';
 import {scrollToTop} from '../../../../util';
 import {size} from 'polished';
@@ -128,7 +129,8 @@ class Sidebar extends Component {
     candidate: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
-    election: PropTypes.object.isRequired
+    election: PropTypes.object.isRequired,
+    localize: PropTypes.func.isRequired
   };
 
   state = {
@@ -148,9 +150,9 @@ class Sidebar extends Component {
     return (
       <Container>
         <SidebarButton onClick={scrollToTop}>
-          About {this.props.candidate.firstName}
+          {this.props.localize('About')} {this.props.candidate.firstName}
         </SidebarButton>
-        <TopicsHeading>Topics</TopicsHeading>
+        <TopicsHeading>{this.props.localize('Topics')}</TopicsHeading>
         <SidebarTopics
           useDragHandle
           onSortStart={this.onSortStart}
@@ -190,7 +192,9 @@ class Sidebar extends Component {
               election_id: this.props.election.id
             }}
           >
-            <AddTopicButton>Add topic...</AddTopicButton>
+            <AddTopicButton>
+              {this.props.localize('Add topic...')}
+            </AddTopicButton>
           </TopicFormDialogTrigger>
         )}
       </Container>
@@ -199,7 +203,8 @@ class Sidebar extends Component {
 }
 
 const mapStateToProps = state => ({
-  editMode: state.settings.editMode
+  editMode: state.settings.editMode,
+  localize: getLocalize(state)
 });
 
 export default connect(mapStateToProps)(Sidebar);
