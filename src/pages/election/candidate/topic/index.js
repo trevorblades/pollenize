@@ -39,11 +39,9 @@ const Text = withProps({
   variant: 'subheading'
 })(Typography);
 
+const TextInner = styled.span({marginRight: theme.spacing.unit / 2});
 const Superscript = styled.sup({lineHeight: 1});
-const StyledEditButton = styled(EditButton)({
-  marginLeft: theme.spacing.unit / 2,
-  verticalAlign: 'top'
-});
+const StyledEditButton = styled(EditButton)({verticalAlign: 'top'});
 
 const alternateContentWidth = 250;
 const alternateContentPadding = theme.spacing.unit * 4;
@@ -118,18 +116,20 @@ class Topic extends Component {
       const message = position.messages[this.props.language];
       return (
         <Text paragraph={index < array.length - 1} key={position.id}>
-          {message ? (
-            <Fragment>
-              {message.text}
-              {position.sources.map(source => (
-                <Superscript key={source.id}>
-                  [<a href="#sources">{source.index + 1}</a>]
-                </Superscript>
-              ))}
-            </Fragment>
-          ) : (
-            this.props.localize('Translation needed')
-          )}
+          <TextInner>
+            {message ? (
+              <Fragment>
+                {message.text}
+                {position.sources.map(source => (
+                  <Superscript key={source.id}>
+                    [<a href="#sources">{source.index + 1}</a>]
+                  </Superscript>
+                ))}
+              </Fragment>
+            ) : (
+              this.props.localize('Translation needed')
+            )}
+          </TextInner>
           {this.props.editMode && (
             <PositionFormDialogTrigger position={position}>
               <StyledEditButton />

@@ -60,7 +60,11 @@ class PositionForm extends Component {
     this.props.dispatch(
       savePosition({
         id: this.props.position.id,
-        text: event.target.text.value,
+        messages: this.props.election.languages.map(language => ({
+          text: event.target[`messages.${language.code}.text`].value,
+          language_id: language.id,
+          position_id: this.props.position.id
+        })),
         sources: filter(this.state.sources),
         candidate_id: this.props.position.candidate_id,
         topic_id: this.props.position.topic_id
