@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
   Election.associate = models => {
     Election.hasMany(models.Candidate);
     Election.hasMany(models.Topic);
-    Election.belongsToMany(models.Language, {through: 'election_languages'});
+    Election.belongsToMany(models.Language, {through: models.ElectionLanguage});
   };
 
   return Election;

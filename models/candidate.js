@@ -18,7 +18,7 @@ export default (sequelize, DataTypes) => {
         singular: 'party',
         plural: 'parties'
       },
-      through: 'candidate_parties'
+      through: models.CandidateParty
     });
 
     Candidate.belongsToMany(models.Message, {
@@ -26,7 +26,7 @@ export default (sequelize, DataTypes) => {
         singular: 'bio',
         plural: 'bios'
       },
-      through: 'candidate_bios'
+      through: models.CandidateBio
     });
   };
 
