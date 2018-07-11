@@ -26,7 +26,9 @@ router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
     data.avatar = req.file.data.link;
   }
 
-  const candidate = await Candidate.create(data, {include: Position});
+  const candidate = await Candidate.create(data, {
+    include: ['parties', 'bios', Position]
+  });
   res.send(candidate);
 });
 
@@ -55,14 +57,20 @@ router
     next();
   })
   .put(uploadMiddleware, validationMiddleware, async (req, res, next) => {
-    const {bios, ...data} = matchedData(req);
+    const data = matchedData(req);
     if (req.file) {
       data.avatar = req.file.data.link;
     }
 
-    const messages = await Message.bulkCreate(bios, {returning: true});
-    await res.locals.candidate.setBios(messages);
-    res.locals.candidate.setDataValue('bios', messages);
+    const parties = await Message.bulkCreate(data.parties, {returning: true});
+    await res.locals.candidate.setParties(parties);
+    res.locals.candidate.setDataValue('parties', parties);
+    delete data.parties;
+
+    const bios = await Message.bulkCreate(data.bios, {returning: true});
+    await res.locals.candidate.setBios(bios);
+    res.locals.candidate.setDataValue('bios', bios);
+    delete data.bios;
 
     await res.locals.candidate.update(data);
     next();

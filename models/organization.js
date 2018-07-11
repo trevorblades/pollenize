@@ -6,7 +6,7 @@ export default (sequelize, DataTypes) => {
   Organization.associate = models => {
     Organization.hasMany(models.User);
     Organization.belongsToMany(models.Election, {
-      through: models.OrganizationElection
+      through: 'organization_elections'
     });
   };
 

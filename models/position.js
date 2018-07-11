@@ -4,7 +4,7 @@ export default sequelize => {
     Position.belongsTo(models.Candidate);
     Position.belongsTo(models.Topic);
     Position.hasMany(models.Source);
-    Position.belongsToMany(models.Message, {through: models.PositionMessage});
+    Position.belongsToMany(models.Message, {through: 'position_messages'});
   };
 
   return Position;

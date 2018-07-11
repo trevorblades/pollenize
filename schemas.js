@@ -62,6 +62,14 @@ export const candidate = {
     isISO8601: true
   },
   hometown: exists,
+  parties: {
+    ...notEmptyArray,
+    customSanitizer: {
+      options: JSON.parse
+    }
+  },
+  'parties.*.text': notEmptyString,
+  'parties.*.language_id': isInt,
   bios: {
     ...notEmptyArray,
     customSanitizer: {
@@ -70,7 +78,6 @@ export const candidate = {
   },
   'bios.*.text': notEmptyString,
   'bios.*.language_id': isInt,
-  party: notEmptyString,
   color: {
     isHexColor: true
   },

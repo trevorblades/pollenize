@@ -2,6 +2,7 @@ import {Position, Message, Source} from './models';
 
 export const candidateOptions = {
   include: [
+    'parties',
     'bios',
     {
       model: Position,
