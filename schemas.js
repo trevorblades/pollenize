@@ -7,29 +7,38 @@ const exists = {
 };
 
 const notEmpty = {
-  trim: true,
   isEmpty: {
     negated: true
   }
 };
 
 const isArray = {isArray: true};
+const notEmptyArray = {
+  ...isArray,
+  ...notEmpty
+};
+
+const notEmptyString = {
+  trim: true,
+  ...notEmpty
+};
+
 const isInt = {
   isInt: true,
   toInt: true
 };
 
 export const election = {
-  slug: notEmpty,
-  title: notEmpty,
+  slug: notEmptyString,
+  title: notEmptyString,
   public: {
     isBoolean: true
   }
 };
 
 export const topic = {
-  title: notEmpty,
-  slug: notEmpty,
+  title: notEmptyString,
+  slug: notEmptyString,
   description: exists,
   election_id: isInt,
   file: {
@@ -47,14 +56,21 @@ export const reorderTopics = {
 };
 
 export const candidate = {
-  slug: notEmpty,
-  name: notEmpty,
+  slug: notEmptyString,
+  name: notEmptyString,
   birth_date: {
     isISO8601: true
   },
   hometown: exists,
-  bio: exists,
-  party: notEmpty,
+  bios: {
+    ...notEmptyArray,
+    customSanitizer: {
+      options: JSON.parse
+    }
+  },
+  'bios.*.text': notEmptyString,
+  'bios.*.language_id': isInt,
+  party: notEmptyString,
   color: {
     isHexColor: true
   },
@@ -73,13 +89,8 @@ export const candidate = {
 };
 
 export const position = {
-  messages: {
-    isArray,
-    isEmpty: {
-      negated: true
-    }
-  },
-  'messages.*.text': notEmpty,
+  messages: notEmptyArray,
+  'messages.*.text': notEmptyString,
   'messages.*.language_id': isInt,
   sources: isArray,
   'sources.*.url': {

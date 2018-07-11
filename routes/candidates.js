@@ -2,7 +2,7 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
 import uploadMiddleware from '../middleware/upload';
-import {Candidate, Position} from '../models';
+import {Candidate, Position, Message} from '../models';
 import {candidate as candidateSchema} from '../schemas';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
@@ -55,10 +55,14 @@ router
     next();
   })
   .put(uploadMiddleware, validationMiddleware, async (req, res, next) => {
-    const data = matchedData(req);
+    const {bios, ...data} = matchedData(req);
     if (req.file) {
       data.avatar = req.file.data.link;
     }
+
+    const messages = await Message.bulkCreate(bios, {returning: true});
+    await res.locals.candidate.setBios(messages);
+    res.locals.candidate.setDataValue('bios', messages);
 
     await res.locals.candidate.update(data);
     next();

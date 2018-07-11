@@ -4,7 +4,6 @@ export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     birth_date: DataTypes.DATE,
     hometown: DataTypes.STRING,
-    bio: DataTypes.TEXT,
     party: DataTypes.STRING,
     color: DataTypes.STRING,
     avatar: DataTypes.STRING,
@@ -15,6 +14,13 @@ export default (sequelize, DataTypes) => {
   Candidate.associate = models => {
     Candidate.belongsTo(models.Election);
     Candidate.hasMany(models.Position);
+    Candidate.belongsToMany(models.Message, {
+      as: {
+        singular: 'bio',
+        plural: 'bios'
+      },
+      through: models.CandidateBio
+    });
   };
 
   return Candidate;
