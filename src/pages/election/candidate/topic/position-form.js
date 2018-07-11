@@ -61,6 +61,7 @@ class PositionForm extends Component {
       text: event.target[`messages.${language.code}.text`].value,
       language_id: language.id
     }));
+
     this.props.dispatch(
       savePosition({
         id: this.props.position.id,

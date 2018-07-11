@@ -1,3 +1,4 @@
+import ISO6391 from 'iso-639-1';
 import ColorPicker from './color-picker';
 import AutoForm from '../../../components/auto-form';
 import FormControl from '@material-ui/core/FormControl';
@@ -6,6 +7,7 @@ import ImageButton from '../../../components/image-button';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
+import filter from 'lodash/filter';
 import map from 'lodash/map';
 import reject from 'lodash/reject';
 import styled from 'react-emotion';
@@ -64,11 +66,20 @@ class CandidateForm extends Component {
   onSubmit = event => {
     event.preventDefault();
 
+    const bios = this.props.election.languages.map(language => ({
+      text: event.target[`bios.${language.code}.text`].value,
+      language_id: language.id
+    }));
+
     const {id} = this.props.candidate;
-    const candidates = reject(this.props.election.candidates, ['id', id]);
-    const slugs = map(candidates, 'slug');
+    const slug = getNextSlug(
+      event.target.name.value,
+      map(reject(this.props.election.candidates, ['id', id]), 'slug')
+    );
+
     const formData = new FormData(event.target);
-    formData.append('slug', getNextSlug(event.target.name.value, slugs));
+    formData.append('bios', JSON.stringify(filter(bios, 'text')));
+    formData.append('slug', slug);
     formData.append('birth_date', this.state.birthDate.toISOString());
     formData.append('color', this.state.color);
     formData.append('election_id', this.props.candidate.election_id);
@@ -83,6 +94,7 @@ class CandidateForm extends Component {
     this.props.dispatch(removeCandidate(this.props.candidate.id));
 
   render() {
+    const {errors} = this.props.error || {};
     return (
       <AutoForm
         noun="candidate"
@@ -101,7 +113,23 @@ class CandidateForm extends Component {
             />
           </GridItem>,
           ['hometown', gridItemProps],
-          ['bio', {multiline: true}],
+          ...this.props.election.languages.map(({code}, index) => {
+            const error =
+              errors && (errors.bios || errors[`bios[${index}].text`]);
+            return [
+              `bios.${code}.text`,
+              {
+                error: Boolean(error),
+                helperText: error && error.msg,
+                label: `Bio (${ISO6391.getNativeName(code)})`,
+                multiline: true
+              }
+            ];
+          }),
+          // <Typography key="tip" variant="caption" gutterBottom>
+          //   Tip: You may format the bios using markdown syntax. For example:{' '}
+          //   <em>_italics_</em> <strong>*bold*</strong>
+          // </Typography>,
           [
             'video_url',
             {

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import ReactMarkdown from 'react-markdown';
 import Section from '../../../components/section';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
@@ -18,6 +19,8 @@ const Content = styled.div({
     alignItems: 'flex-start'
   }
 });
+
+const InnerContent = styled.div({flexGrow: 1});
 
 const videoMargin = theme.spacing.unit * 3;
 const VideoContainer = styled.div({
@@ -62,8 +65,7 @@ const VideoCaption = withProps({variant: 'caption'})(
 
 const Text = defaultProps({
   component: 'p',
-  variant: 'subheading',
-  gutterBottom: true
+  variant: 'subheading'
 })(Typography);
 
 const now = Date.now();
@@ -71,6 +73,7 @@ const unknown = 'Unknown';
 class Bio extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired,
     localize: PropTypes.func.isRequired
   };
 
@@ -97,14 +100,15 @@ class Bio extends Component {
   }
 
   render() {
+    const bio = this.props.candidate.bios[this.props.language];
     return (
       <Section small>
         <Typography gutterBottom variant="display1">
           {this.props.localize('About')} {this.props.candidate.firstName}
         </Typography>
         <Content>
-          <div>
-            <Text>
+          <InnerContent>
+            <Text gutterBottom>
               {this.props.candidate.birth_date
                 ? `${differenceInYears(
                     now,
@@ -112,14 +116,18 @@ class Bio extends Component {
                   )} ${this.props.localize('years old')}`
                 : unknown}
             </Text>
-            <Text>
+            <Text gutterBottom={Boolean(bio)}>
               {this.props.localize('Hometown')}:{' '}
               {this.props.candidate.hometown || unknown}
             </Text>
-            {this.props.candidate.bio && (
-              <Text gutterBottom={false}>{this.props.candidate.bio}</Text>
+            {bio && (
+              <ReactMarkdown
+                allowedTypes={['paragraph', 'strong', 'emphasis']}
+                renderers={{paragraph: Text}}
+                source={bio.text}
+              />
             )}
-          </div>
+          </InnerContent>
           {this.renderVideo()}
         </Content>
       </Section>
@@ -128,6 +136,7 @@ class Bio extends Component {
 }
 
 const mapStateToProps = state => ({
+  language: state.settings.language,
   localize: getLocalize(state)
 });
 
