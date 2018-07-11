@@ -80,6 +80,7 @@ class Bio extends Component {
   renderVideo() {
     if (this.props.candidate.video_url) {
       const youtubeId = getYouTubeId(this.props.candidate.video_url);
+      const caption = this.props.candidate.captions[this.props.language];
       if (youtubeId) {
         return (
           <VideoContainer>
@@ -88,9 +89,7 @@ class Bio extends Component {
                 src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`}
               />
             </Video>
-            {this.props.candidate.video_caption && (
-              <VideoCaption>{this.props.candidate.video_caption}</VideoCaption>
-            )}
+            {caption && <VideoCaption>{caption.text}</VideoCaption>}
           </VideoContainer>
         );
       }

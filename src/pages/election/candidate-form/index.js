@@ -76,6 +76,11 @@ class CandidateForm extends Component {
       language_id: language.id
     }));
 
+    const captions = this.props.election.languages.map(language => ({
+      text: event.target[`captions.${language.code}.text`].value,
+      language_id: language.id
+    }));
+
     const {id} = this.props.candidate;
     const slug = getNextSlug(
       event.target.name.value,
@@ -85,6 +90,7 @@ class CandidateForm extends Component {
     const formData = new FormData(event.target);
     formData.append('parties', JSON.stringify(filter(parties, 'text')));
     formData.append('bios', JSON.stringify(filter(bios, 'text')));
+    formData.append('captions', JSON.stringify(filter(captions, 'text')));
     formData.append('slug', slug);
     formData.append('birth_date', this.state.birthDate.toISOString());
     formData.append('color', this.state.color);
@@ -156,7 +162,18 @@ class CandidateForm extends Component {
               placeholder: 'https://www.youtube.com/watch?v=lz4nHQJo6Lc'
             }
           ],
-          'video_caption',
+          ...this.props.election.languages.map(({code}, index) => {
+            const error =
+              errors && (errors.captions || errors[`captions[${index}].text`]);
+            return [
+              `captions.${code}.text`,
+              {
+                error: Boolean(error),
+                helperText: error && error.msg,
+                label: `Video caption (${ISO6391.getNativeName(code)})`
+              }
+            ];
+          }),
           <GridItem key="avatar">
             <FormControl margin="dense">
               <Typography gutterBottom variant="caption">

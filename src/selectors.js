@@ -19,6 +19,10 @@ export const getCandidates = createSelector(getElection, election => {
         party => languages[party.language_id].code
       ),
       bios: keyBy(candidate.bios, bio => languages[bio.language_id].code),
+      captions: keyBy(
+        candidate.captions,
+        caption => languages[caption.language_id].code
+      ),
       positions: groupBy(
         flatMap(candidate.positions, position => ({
           ...position,
