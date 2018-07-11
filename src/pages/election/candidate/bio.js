@@ -24,6 +24,7 @@ const InnerContent = styled.div({flexGrow: 1});
 
 const videoMargin = theme.spacing.unit * 3;
 const VideoContainer = styled.div({
+  width: '100%',
   marginTop: videoMargin,
   [breakpoint]: {
     flexShrink: 0,
@@ -37,7 +38,6 @@ const VideoContainer = styled.div({
 });
 
 const Video = styled.div({
-  width: '100%',
   paddingTop: `${(9 / 16) * 100}%`,
   backgroundColor: theme.palette.grey[900],
   position: 'relative'
