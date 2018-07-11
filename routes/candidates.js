@@ -72,6 +72,11 @@ router
     res.locals.candidate.setDataValue('bios', bios);
     delete data.bios;
 
+    const captions = await Message.bulkCreate(data.captions, {returning: true});
+    await res.locals.candidate.setCaptions(captions);
+    res.locals.candidate.setDataValue('captions', captions);
+    delete data.captions;
+
     await res.locals.candidate.update(data);
     next();
   })

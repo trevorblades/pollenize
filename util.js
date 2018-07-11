@@ -4,6 +4,7 @@ export const candidateOptions = {
   include: [
     'parties',
     'bios',
+    'captions',
     {
       model: Position,
       include: [Source, Message]

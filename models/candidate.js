@@ -28,6 +28,14 @@ export default (sequelize, DataTypes) => {
       },
       through: models.CandidateBio
     });
+
+    Candidate.belongsToMany(models.Message, {
+      as: {
+        singular: 'caption',
+        plural: 'captions'
+      },
+      through: models.CandidateCaption
+    });
   };
 
   return Candidate;

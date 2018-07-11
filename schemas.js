@@ -91,7 +91,14 @@ export const candidate = {
       options: value => youtubeRegex().test(value)
     }
   },
-  video_caption: exists,
+  captions: {
+    ...notEmptyArray,
+    customSanitizer: {
+      options: JSON.parse
+    }
+  },
+  'captions.*.text': notEmptyString,
+  'captions.*.language_id': isInt,
   election_id: isInt
 };
 
