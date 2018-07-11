@@ -66,6 +66,11 @@ class CandidateForm extends Component {
   onSubmit = event => {
     event.preventDefault();
 
+    const parties = this.props.election.languages.map(language => ({
+      text: event.target[`parties.${language.code}.text`].value,
+      language_id: language.id
+    }));
+
     const bios = this.props.election.languages.map(language => ({
       text: event.target[`bios.${language.code}.text`].value,
       language_id: language.id
@@ -78,6 +83,7 @@ class CandidateForm extends Component {
     );
 
     const formData = new FormData(event.target);
+    formData.append('parties', JSON.stringify(filter(parties, 'text')));
     formData.append('bios', JSON.stringify(filter(bios, 'text')));
     formData.append('slug', slug);
     formData.append('birth_date', this.state.birthDate.toISOString());
@@ -113,6 +119,19 @@ class CandidateForm extends Component {
             />
           </GridItem>,
           ['hometown', gridItemProps],
+          ...this.props.election.languages.map(({code}, index) => {
+            const error =
+              errors && (errors.parties || errors[`parties[${index}].text`]);
+            return [
+              `parties.${code}.text`,
+              {
+                error: Boolean(error),
+                helperText: error && error.msg,
+                label: `Party (${ISO6391.getNativeName(code)})`,
+                multiline: true
+              }
+            ];
+          }),
           ...this.props.election.languages.map(({code}, index) => {
             const error =
               errors && (errors.bios || errors[`bios[${index}].text`]);

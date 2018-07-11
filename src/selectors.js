@@ -14,6 +14,10 @@ export const getCandidates = createSelector(getElection, election => {
       ...candidate,
       sources,
       firstName: candidate.name.replace(/\s+/, ' ').split(' ')[0],
+      parties: keyBy(
+        candidate.parties,
+        party => languages[party.language_id].code
+      ),
       bios: keyBy(candidate.bios, bio => languages[bio.language_id].code),
       positions: groupBy(
         flatMap(candidate.positions, position => ({

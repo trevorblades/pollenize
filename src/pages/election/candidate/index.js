@@ -78,7 +78,8 @@ class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
     editMode: PropTypes.bool.isRequired,
-    election: PropTypes.object.isRequired
+    election: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired
   };
 
   state = {
@@ -113,6 +114,7 @@ class Candidate extends Component {
   };
 
   render() {
+    const party = this.props.candidate.parties[this.props.language];
     return (
       <Fragment>
         <Helmet>
@@ -138,9 +140,11 @@ class Candidate extends Component {
             />
           )}
           <Name>{this.props.candidate.name}</Name>
-          <Typography gutterBottom variant="title" color="inherit">
-            {this.props.candidate.party}
-          </Typography>
+          {party && (
+            <Typography gutterBottom variant="title" color="inherit">
+              {party.text}
+            </Typography>
+          )}
           {this.props.editMode && (
             <DialogTrigger
               renderContent={closeDialog => (
@@ -191,7 +195,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     candidate: find(candidates, ['slug', ownProps.match.params.id]),
     editMode: state.settings.editMode,
-    election: state.election.data
+    election: state.election.data,
+    language: state.settings.language
   };
 };
 

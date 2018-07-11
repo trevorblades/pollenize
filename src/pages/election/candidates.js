@@ -18,7 +18,7 @@ import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {divisors} from 'number-theory';
-import {getLocalize} from '../../selectors';
+import {getLocalize, getCandidates} from '../../selectors';
 import {size} from 'polished';
 
 const containerClassName = css({flexGrow: 1});
@@ -56,8 +56,10 @@ const CreateButton = withProps({variant: 'fab'})(
 
 class Candidates extends Component {
   static propTypes = {
+    candidates: PropTypes.array.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired,
     localize: PropTypes.func.isRequired
   };
 
@@ -105,25 +107,32 @@ class Candidates extends Component {
         <ElectionHeader>{this.props.election.title}</ElectionHeader>
         <RootRef rootRef={node => (this.container = node)}>
           <Grid container className={containerClassName}>
-            {this.props.election.candidates.map(candidate => (
-              <GridItem
-                xs={this.state.size}
-                key={candidate.id}
-                to={`/elections/${this.props.election.slug}/${candidate.slug}`}
-                style={{
-                  color: theme.palette.getContrastText(candidate.color),
-                  backgroundColor: candidate.color
-                }}
-              >
-                {candidate.avatar && (
-                  <StyledAvatar alt={candidate.name} src={candidate.avatar} />
-                )}
-                <Name>{candidate.name}</Name>
-                <Typography variant="subheading" color="inherit">
-                  {candidate.party}
-                </Typography>
-              </GridItem>
-            ))}
+            {this.props.candidates.map(candidate => {
+              const party = candidate.parties[this.props.language];
+              return (
+                <GridItem
+                  xs={this.state.size}
+                  key={candidate.id}
+                  to={`/elections/${this.props.election.slug}/${
+                    candidate.slug
+                  }`}
+                  style={{
+                    color: theme.palette.getContrastText(candidate.color),
+                    backgroundColor: candidate.color
+                  }}
+                >
+                  {candidate.avatar && (
+                    <StyledAvatar alt={candidate.name} src={candidate.avatar} />
+                  )}
+                  <Name>{candidate.name}</Name>
+                  {party && (
+                    <Typography variant="subheading" color="inherit">
+                      {party.text}
+                    </Typography>
+                  )}
+                </GridItem>
+              );
+            })}
           </Grid>
         </RootRef>
         {this.props.editMode && (
@@ -154,8 +163,10 @@ class Candidates extends Component {
 }
 
 const mapStateToProps = state => ({
+  candidates: getCandidates(state),
   editMode: state.settings.editMode,
   election: state.election.data,
+  language: state.settings.language,
   localize: getLocalize(state)
 });
 
