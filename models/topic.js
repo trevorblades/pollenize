@@ -1,8 +1,8 @@
+import {createThroughAssociations} from '../util/helpers';
+
 export default (sequelize, DataTypes) => {
   const Topic = sequelize.define('topic', {
     slug: DataTypes.STRING,
-    title: DataTypes.STRING,
-    description: DataTypes.TEXT,
     image: DataTypes.STRING,
     order: DataTypes.INTEGER
   });
@@ -10,6 +10,13 @@ export default (sequelize, DataTypes) => {
   Topic.associate = models => {
     Topic.belongsTo(models.Election);
     Topic.hasMany(models.Position);
+
+    createThroughAssociations(
+      Topic,
+      models.Message,
+      [models.TopicTitle, 'title'],
+      [models.TopicDescription, 'description']
+    );
   };
 
   return Topic;

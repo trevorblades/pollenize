@@ -7,14 +7,8 @@ import {CANDIDATE_OPTIONS} from '../constants';
 import {Candidate, Position} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
-import {
-  notEmptyString,
-  exists,
-  isInt,
-  stringToArray,
-  stringToNotEmptyArray
-} from '../util/schema';
-import {setMessages} from '../util/helpers';
+import {notEmptyString, exists, isInt, stringToArray} from '../util/schema';
+import {getMessageSchema, setMessages} from '../util/messages';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
@@ -24,12 +18,8 @@ const validationMiddleware = createValidationMiddleware(
       isISO8601: true
     },
     hometown: exists,
-    parties: stringToNotEmptyArray,
-    'parties.*.text': notEmptyString,
-    'parties.*.language_id': isInt,
-    bios: stringToNotEmptyArray,
-    'bios.*.text': notEmptyString,
-    'bios.*.language_id': isInt,
+    ...getMessageSchema('parties', true, true),
+    ...getMessageSchema('bios', false, true),
     color: {
       isHexColor: true
     },

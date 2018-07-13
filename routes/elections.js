@@ -78,7 +78,13 @@ router
     const options = await getOptions(req.user, {slug: req.params.id});
     const election = await Election.findOne({
       ...options,
-      include: [Language, Topic],
+      include: [
+        Language,
+        {
+          model: Topic,
+          include: ['titles', 'descriptions']
+        }
+      ],
       order: [[Topic, 'order', 'ASC']]
     });
 

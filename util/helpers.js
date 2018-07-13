@@ -1,5 +1,5 @@
 import camelCase from 'lodash/camelCase';
-import {Message} from '../models';
+import {Utils} from 'sequelize';
 
 export async function bulkCreateAndSet(
   instance,
@@ -13,10 +13,20 @@ export async function bulkCreateAndSet(
   instance.setDataValue(key, created);
 }
 
-export function setMessage(instance, data, key) {
-  return bulkCreateAndSet(instance, data, Message, key);
+function createThroughAssociation(model, associated, through, as) {
+  const options = {through};
+  if (as) {
+    options.as = {
+      singular: as,
+      plural: Utils.pluralize(as)
+    };
+  }
+
+  model.belongsToMany(associated, options);
 }
 
-export function setMessages(instance, data, keys) {
-  return Promise.all(keys.map(key => setMessage(instance, data[key], key)));
+export function createThroughAssociations(model, associated, ...associations) {
+  associations.forEach(association =>
+    createThroughAssociation(model, associated, ...association)
+  );
 }

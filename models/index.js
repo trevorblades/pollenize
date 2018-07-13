@@ -4,9 +4,7 @@ const Sequelize = require('sequelize');
 const pascalcase = require('pascalcase');
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  define: {
-    underscored: true
-  }
+  define: {underscored: true}
 });
 
 const db = {};

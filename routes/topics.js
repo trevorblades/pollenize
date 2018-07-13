@@ -6,13 +6,14 @@ import uploadMiddleware from '../middleware/upload';
 import {Topic, Sequelize} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
-import {notEmptyString, isInt, exists, isArray} from '../util/schema';
+import {notEmptyString, isInt, isArray} from '../util/schema';
+import {setMessages, getMessageSchema} from '../util/messages';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
-    title: notEmptyString,
+    ...getMessageSchema('titles', true, true),
+    ...getMessageSchema('descriptions', false, true),
     slug: notEmptyString,
-    description: exists,
     election_id: isInt,
     file: {
       optional: true,
@@ -80,7 +81,9 @@ router.post('/reorder', reorderValidationMiddleware, async (req, res) => {
 router
   .route('/:id')
   .all(async (req, res, next) => {
-    res.locals.topic = await Topic.findById(req.params.id);
+    res.locals.topic = await Topic.findById(req.params.id, {
+      include: ['titles', 'descriptions']
+    });
 
     if (!res.locals.topic) {
       res.sendStatus(404);
@@ -106,6 +109,8 @@ router
     }
 
     await res.locals.topic.update(data);
+    await setMessages(res.locals.topic, data, ['titles', 'descriptions']);
+
     next();
   })
   .delete(async (req, res, next) => {

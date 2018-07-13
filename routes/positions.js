@@ -5,14 +5,13 @@ import prependHttp from 'prepend-http';
 import {Candidate, Position, Source, Message} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
-import {notEmptyArray, notEmptyString, isInt, isArray} from '../util/schema';
-import {setMessage, bulkCreateAndSet} from '../util/helpers';
+import {isInt, isArray} from '../util/schema';
+import {getMessageSchema, setMessage} from '../util/messages';
+import {bulkCreateAndSet} from '../util/helpers';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
-    messages: notEmptyArray,
-    'messages.*.text': notEmptyString,
-    'messages.*.language_id': isInt,
+    ...getMessageSchema('messages', true),
     sources: isArray,
     'sources.*.url': {
       customSanitizer: {

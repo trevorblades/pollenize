@@ -1,3 +1,5 @@
+import {createThroughAssociations} from '../util/helpers';
+
 export default (sequelize, DataTypes) => {
   const Candidate = sequelize.define('candidate', {
     slug: DataTypes.STRING,
@@ -12,29 +14,14 @@ export default (sequelize, DataTypes) => {
   Candidate.associate = models => {
     Candidate.belongsTo(models.Election);
     Candidate.hasMany(models.Position);
-    Candidate.belongsToMany(models.Message, {
-      as: {
-        singular: 'party',
-        plural: 'parties'
-      },
-      through: models.CandidateParty
-    });
 
-    Candidate.belongsToMany(models.Message, {
-      as: {
-        singular: 'bio',
-        plural: 'bios'
-      },
-      through: models.CandidateBio
-    });
-
-    Candidate.belongsToMany(models.Message, {
-      as: {
-        singular: 'caption',
-        plural: 'captions'
-      },
-      through: models.CandidateCaption
-    });
+    createThroughAssociations(
+      Candidate,
+      models.Message,
+      [models.CandidateParty, 'party'],
+      [models.CandidateBio, 'bio'],
+      [models.CandidateCaption, 'caption']
+    );
   };
 
   return Candidate;
