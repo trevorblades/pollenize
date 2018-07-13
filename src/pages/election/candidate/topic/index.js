@@ -14,6 +14,7 @@ import withProps from 'recompose/withProps';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {connect} from 'react-redux';
 import {getLocalize} from '../../../../selectors';
+import {getMessageOrUntranslated} from '../../../../util/messages';
 
 const Banner = styled.div({
   display: 'flex',
@@ -101,12 +102,22 @@ class Topic extends Component {
     }));
 
   renderTitle(gutterBottom) {
+    const [title] = this.getMessage(this.props.topic.titles);
     return (
       <Typography gutterBottom={gutterBottom} variant="display1">
-        {this.props.topic.title}
+        {title.text}
       </Typography>
     );
   }
+
+  getMessage = messages => {
+    const {message, match} = getMessageOrUntranslated(
+      messages,
+      this.props.language,
+      this.props.election.languages
+    );
+    return [message, match];
+  };
 
   renderPositions() {
     if (!this.props.positions.length) {
@@ -118,23 +129,10 @@ class Topic extends Component {
         ? this.props.positions
         : [this.props.positions[0]];
     return positions.map((position, index, array) => {
-      let needsTranslation = false;
-      let message = position.messages[this.props.language];
-      if (!message) {
-        needsTranslation = true;
-
-        const {languages} = this.props.election;
-        for (let i = 0; i < languages.length; i++) {
-          message = position.messages[languages[i].code];
-          if (message) {
-            break;
-          }
-        }
-      }
-
+      const [message, match] = this.getMessage(position.messages);
       return (
         <Text paragraph={index < array.length - 1} key={position.id}>
-          <TextInner needsTranslation={needsTranslation}>
+          <TextInner needsTranslation={!match}>
             {message.text}
             {position.sources.map(source => (
               <Superscript key={source.id}>
@@ -183,7 +181,8 @@ class Topic extends Component {
   }
 
   render() {
-    const {slug, image, description} = this.props.topic;
+    const {slug, image, descriptions} = this.props.topic;
+    const [description] = this.getMessage(descriptions);
     return (
       <ScrollableAnchor id={slug}>
         <div data-topic={slug}>
@@ -201,7 +200,7 @@ class Topic extends Component {
               </MainContent>
               {description && (
                 <AlternateContent>
-                  <Typography>{description}</Typography>
+                  <Typography>{description.text}</Typography>
                 </AlternateContent>
               )}
             </InnerContainer>

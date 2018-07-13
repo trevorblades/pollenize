@@ -28,6 +28,7 @@ import {getLocalize} from '../../../../selectors';
 import {reorder as reorderTopics} from '../../../../actions/topics';
 import {scrollToTop} from '../../../../util';
 import {size} from 'polished';
+import {getMessageOrUntranslated} from '../../../../util/messages';
 
 const padding = theme.spacing.unit * 4;
 const Container = styled.aside({
@@ -160,33 +161,38 @@ class Sidebar extends Component {
           onSortEnd={this.onSortEnd}
           style={{borderColor: this.props.candidate.color}}
         >
-          {this.props.election.topics.map((topic, index) => (
-            <SidebarTopic
-              key={topic.id}
-              index={index}
-              active={
-                !this.state.sorting && index === this.props.activeTopicIndex
-              }
-            >
-              <SidebarItem href={`#${topic.slug}`}>
-                {topic.titles[this.props.language]
-                  ? topic.titles[this.props.language].text
-                  : topic.slug}
-              </SidebarItem>
-              {this.props.editMode && (
-                <Fragment>
-                  <DragHandle>
-                    <DragInteractionIcon />
-                  </DragHandle>
-                  {!this.state.sorting && (
-                    <TopicFormDialogTrigger topic={topic}>
-                      <StyledEditButton />
-                    </TopicFormDialogTrigger>
-                  )}
-                </Fragment>
-              )}
-            </SidebarTopic>
-          ))}
+          {this.props.election.topics.map((topic, index) => {
+            const {message} = getMessageOrUntranslated(
+              topic.titles,
+              this.props.language,
+              this.props.election.languages
+            );
+            return (
+              <SidebarTopic
+                key={topic.id}
+                index={index}
+                active={
+                  !this.state.sorting && index === this.props.activeTopicIndex
+                }
+              >
+                <SidebarItem href={`#${topic.slug}`}>
+                  {message.text}
+                </SidebarItem>
+                {this.props.editMode && (
+                  <Fragment>
+                    <DragHandle>
+                      <DragInteractionIcon />
+                    </DragHandle>
+                    {!this.state.sorting && (
+                      <TopicFormDialogTrigger topic={topic}>
+                        <StyledEditButton />
+                      </TopicFormDialogTrigger>
+                    )}
+                  </Fragment>
+                )}
+              </SidebarTopic>
+            );
+          })}
         </SidebarTopics>
         {this.props.editMode && (
           <TopicFormDialogTrigger

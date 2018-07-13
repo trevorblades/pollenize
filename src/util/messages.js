@@ -1,6 +1,25 @@
 import ISO6391 from 'iso-639-1';
 import filter from 'lodash/filter';
 
+export function getMessageOrUntranslated(messages, language, languages) {
+  const message = messages[language];
+  if (message) {
+    return {
+      message,
+      match: true
+    };
+  }
+
+  for (let i = 0; i < languages.length; i++) {
+    const message = messages[languages[i].code];
+    if (message) {
+      return {message};
+    }
+  }
+
+  return {message: null};
+}
+
 export function messagesFromEvent(
   event,
   languages,
