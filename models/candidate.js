@@ -6,8 +6,7 @@ export default (sequelize, DataTypes) => {
     hometown: DataTypes.STRING,
     color: DataTypes.STRING,
     avatar: DataTypes.STRING,
-    video_url: DataTypes.STRING,
-    video_caption: DataTypes.STRING
+    video_url: DataTypes.STRING
   });
 
   Candidate.associate = models => {
