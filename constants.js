@@ -1,6 +1,6 @@
 import {Position, Message, Source} from './models';
 
-export const candidateOptions = {
+export const CANDIDATE_OPTIONS = {
   include: [
     'parties',
     'bios',

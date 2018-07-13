@@ -1,13 +1,28 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
+import prependHttp from 'prepend-http';
 import {Candidate, Position, Source, Message} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
-import {position as positionSchema} from '../schemas';
+import {notEmptyArray, notEmptyString, isInt, isArray} from '../util/schema';
+import {setMessage, bulkCreateAndSet} from '../util/helpers';
 
 const validationMiddleware = createValidationMiddleware(
-  checkSchema(positionSchema)
+  checkSchema({
+    messages: notEmptyArray,
+    'messages.*.text': notEmptyString,
+    'messages.*.language_id': isInt,
+    sources: isArray,
+    'sources.*.url': {
+      customSanitizer: {
+        options: prependHttp
+      },
+      isURL: true
+    },
+    candidate_id: isInt,
+    topic_id: isInt
+  })
 );
 
 const router = express.Router();
@@ -59,16 +74,13 @@ router
   })
   .put(validationMiddleware, async (req, res, next) => {
     const data = matchedData(req);
+    await Promise.all([
+      setMessage(res.locals.position, data.messages),
+      bulkCreateAndSet(res.locals.position, data.sources, Source)
+    ]);
+
     res.locals.position.changed('updated_at', true);
     await res.locals.position.save();
-
-    const messages = await Message.bulkCreate(data.messages, {returning: true});
-    await res.locals.position.setMessages(messages);
-    res.locals.position.setDataValue('messages', messages);
-
-    const sources = await Source.bulkCreate(data.sources, {returning: true});
-    await res.locals.position.setSources(sources);
-    res.locals.position.setDataValue('sources', sources);
 
     next();
   })

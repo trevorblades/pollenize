@@ -6,13 +6,21 @@ import uploadMiddleware from '../middleware/upload';
 import {Topic, Sequelize} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
-import {
-  topic as topicSchema,
-  reorderTopics as reorderTopicsSchema
-} from '../schemas';
+import {notEmptyString, isInt, exists, isArray} from '../util/schema';
 
 const validationMiddleware = createValidationMiddleware(
-  checkSchema(topicSchema)
+  checkSchema({
+    title: notEmptyString,
+    slug: notEmptyString,
+    description: exists,
+    election_id: isInt,
+    file: {
+      optional: true,
+      equals: {
+        options: 'null'
+      }
+    }
+  })
 );
 
 const router = express.Router();
@@ -34,7 +42,11 @@ router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
 });
 
 const reorderValidationMiddleware = createValidationMiddleware(
-  checkSchema(reorderTopicsSchema)
+  checkSchema({
+    topics: isArray,
+    'topics.*.id': isInt,
+    'topics.*.order': isInt
+  })
 );
 
 router.post('/reorder', reorderValidationMiddleware, async (req, res) => {

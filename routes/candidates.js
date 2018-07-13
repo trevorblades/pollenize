@@ -2,14 +2,52 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
 import uploadMiddleware from '../middleware/upload';
-import {Candidate, Position, Message} from '../models';
-import {candidate as candidateSchema} from '../schemas';
+import youtubeRegex from 'youtube-regex';
+import {CANDIDATE_OPTIONS} from '../constants';
+import {Candidate, Position} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
-import {candidateOptions} from '../util';
+import {
+  notEmptyString,
+  exists,
+  isInt,
+  stringToArray,
+  stringToNotEmptyArray
+} from '../util/schema';
+import {setMessages} from '../util/helpers';
 
 const validationMiddleware = createValidationMiddleware(
-  checkSchema(candidateSchema)
+  checkSchema({
+    slug: notEmptyString,
+    name: notEmptyString,
+    birth_date: {
+      isISO8601: true
+    },
+    hometown: exists,
+    parties: stringToNotEmptyArray,
+    'parties.*.text': notEmptyString,
+    'parties.*.language_id': isInt,
+    bios: stringToNotEmptyArray,
+    'bios.*.text': notEmptyString,
+    'bios.*.language_id': isInt,
+    color: {
+      isHexColor: true
+    },
+    video_url: {
+      optional: {
+        options: {
+          checkFalsy: true
+        }
+      },
+      custom: {
+        options: value => youtubeRegex().test(value)
+      }
+    },
+    captions: stringToArray,
+    'captions.*.text': notEmptyString,
+    'captions.*.language_id': isInt,
+    election_id: isInt
+  })
 );
 
 const router = express.Router();
@@ -37,7 +75,7 @@ router
   .all(async (req, res, next) => {
     res.locals.candidate = await Candidate.findById(
       req.params.id,
-      candidateOptions
+      CANDIDATE_OPTIONS
     );
 
     if (!res.locals.candidate) {
@@ -62,22 +100,10 @@ router
       data.avatar = req.file.data.link;
     }
 
-    const parties = await Message.bulkCreate(data.parties, {returning: true});
-    await res.locals.candidate.setParties(parties);
-    res.locals.candidate.setDataValue('parties', parties);
-    delete data.parties;
+    await res.locals.candidate.set(data);
+    const keys = ['parties', 'bios', 'captions'];
+    await setMessages(res.locals.candidate, data, keys);
 
-    const bios = await Message.bulkCreate(data.bios, {returning: true});
-    await res.locals.candidate.setBios(bios);
-    res.locals.candidate.setDataValue('bios', bios);
-    delete data.bios;
-
-    const captions = await Message.bulkCreate(data.captions, {returning: true});
-    await res.locals.candidate.setCaptions(captions);
-    res.locals.candidate.setDataValue('captions', captions);
-    delete data.captions;
-
-    await res.locals.candidate.update(data);
     next();
   })
   .delete(async (req, res, next) => {

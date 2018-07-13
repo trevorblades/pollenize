@@ -3,11 +3,11 @@ import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
 import shuffle from 'lodash/shuffle';
 import {Election, Language, Topic, Sequelize, sequelize} from '../models';
-import {candidateOptions} from '../util';
+import {CANDIDATE_OPTIONS} from '../constants';
 import {checkSchema} from 'express-validator/check';
-import {election as electionSchema} from '../schemas';
 import {jwtFromRequest} from '../strategies/jwt';
 import {matchedData} from 'express-validator/filter';
+import {notEmptyString} from '../util/schema';
 
 function optionalJwtMiddleware(req, res, next) {
   if (jwtFromRequest(req)) {
@@ -63,7 +63,13 @@ router.get('/', optionalJwtMiddleware, async (req, res) => {
 });
 
 const validationMiddleware = createValidationMiddleware(
-  checkSchema(electionSchema)
+  checkSchema({
+    slug: notEmptyString,
+    title: notEmptyString,
+    public: {
+      isBoolean: true
+    }
+  })
 );
 
 router
@@ -81,7 +87,7 @@ router
       return;
     }
 
-    const candidates = await election.getCandidates(candidateOptions);
+    const candidates = await election.getCandidates(CANDIDATE_OPTIONS);
     election.setDataValue('candidates', shuffle(candidates));
     res.send(election);
   })
