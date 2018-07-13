@@ -12,6 +12,10 @@ import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {connect} from 'react-redux';
+import {
+  createMessageFields,
+  messagesFromEvent
+} from '../../../../util/messages';
 import {getNextSlug} from '../../../../util';
 import {
   save as saveTopic,
@@ -58,11 +62,21 @@ class TopicForm extends Component {
   onSubmit = event => {
     event.preventDefault();
 
+    const [titles, descriptions] = messagesFromEvent(
+      event,
+      this.props.election.languages,
+      ['titles', 'descriptions']
+    );
+
+    const formData = new FormData();
+    formData.append('titles', JSON.stringify(titles));
+    formData.append('descriptions', JSON.stringify(descriptions));
+
     const {id} = this.props.topic;
     const topics = reject(this.props.election.topics, ['id', id]);
     const slugs = map(topics, 'slug');
-    const formData = new FormData(event.target);
-    formData.append('slug', getNextSlug(event.target.title.value, slugs));
+    const firstTitle = map(titles, 'text')[0];
+    formData.append('slug', getNextSlug(firstTitle || '', slugs));
     formData.append('election_id', this.props.topic.election_id);
     if (this.state.image) {
       formData.append('file', this.state.image.file);
@@ -85,13 +99,21 @@ class TopicForm extends Component {
     const image = this.state.image
       ? this.state.image.dataUrl
       : this.props.topic.image;
+    const {errors} = this.props.error || {};
+    const [titles, descriptions] = createMessageFields(
+      this.props.election.languages,
+      errors,
+      ['Title', 'titles'],
+      ['Description', 'descriptions', true]
+    );
+
     return (
       <AutoForm
         noun="topic"
         initialData={this.props.topic}
         fields={[
-          'title',
-          ['description', {multiline: true}],
+          ...titles,
+          ...descriptions,
           <FormControl fullWidth key="image" margin="dense">
             <ImageLabel>
               Banner image ({TOPIC_MAX_WIDTH * 2} x{' '}

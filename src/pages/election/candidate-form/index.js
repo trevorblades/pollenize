@@ -1,4 +1,3 @@
-import ISO6391 from 'iso-639-1';
 import ColorPicker from './color-picker';
 import AutoForm from '../../../components/auto-form';
 import FormControl from '@material-ui/core/FormControl';
@@ -7,7 +6,6 @@ import ImageButton from '../../../components/image-button';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
-import filter from 'lodash/filter';
 import map from 'lodash/map';
 import reject from 'lodash/reject';
 import styled from 'react-emotion';
@@ -21,6 +19,7 @@ import {
   remove as removeCandidate,
   reset as resetCandidate
 } from '../../../actions/candidate';
+import {messagesFromEvent, createMessageFields} from '../../../util/messages';
 
 const gridItemProps = {xs: 6};
 const GridItem = withProps({
@@ -66,20 +65,12 @@ class CandidateForm extends Component {
   onSubmit = event => {
     event.preventDefault();
 
-    const parties = this.props.election.languages.map(language => ({
-      text: event.target[`parties.${language.code}.text`].value,
-      language_id: language.id
-    }));
-
-    const bios = this.props.election.languages.map(language => ({
-      text: event.target[`bios.${language.code}.text`].value,
-      language_id: language.id
-    }));
-
-    const captions = this.props.election.languages.map(language => ({
-      text: event.target[`captions.${language.code}.text`].value,
-      language_id: language.id
-    }));
+    const [parties, bios, captions] = messagesFromEvent(
+      event,
+      this.props.election.languages,
+      ['parties', 'bios', 'captions'],
+      true
+    );
 
     const {id} = this.props.candidate;
     const slug = getNextSlug(
@@ -88,9 +79,9 @@ class CandidateForm extends Component {
     );
 
     const formData = new FormData(event.target);
-    formData.append('parties', JSON.stringify(filter(parties, 'text')));
-    formData.append('bios', JSON.stringify(filter(bios, 'text')));
-    formData.append('captions', JSON.stringify(filter(captions, 'text')));
+    formData.append('parties', parties);
+    formData.append('bios', bios);
+    formData.append('captions', captions);
     formData.append('slug', slug);
     formData.append('birth_date', this.state.birthDate.toISOString());
     formData.append('color', this.state.color);
@@ -107,6 +98,14 @@ class CandidateForm extends Component {
 
   render() {
     const {errors} = this.props.error || {};
+    const [parties, bios, captions] = createMessageFields(
+      this.props.election.languages,
+      errors,
+      ['Party', 'parties'],
+      ['Bio', 'bios', true],
+      ['Video caption', 'captions']
+    );
+
     return (
       <AutoForm
         noun="candidate"
@@ -125,36 +124,8 @@ class CandidateForm extends Component {
             />
           </GridItem>,
           ['hometown', gridItemProps],
-          ...this.props.election.languages.map(({code}, index) => {
-            const error =
-              errors && (errors.parties || errors[`parties[${index}].text`]);
-            return [
-              `parties.${code}.text`,
-              {
-                error: Boolean(error),
-                helperText: error && error.msg,
-                label: `Party (${ISO6391.getNativeName(code)})`,
-                multiline: true
-              }
-            ];
-          }),
-          ...this.props.election.languages.map(({code}, index) => {
-            const error =
-              errors && (errors.bios || errors[`bios[${index}].text`]);
-            return [
-              `bios.${code}.text`,
-              {
-                error: Boolean(error),
-                helperText: error && error.msg,
-                label: `Bio (${ISO6391.getNativeName(code)})`,
-                multiline: true
-              }
-            ];
-          }),
-          // <Typography key="tip" variant="caption" gutterBottom>
-          //   Tip: You may format the bios using markdown syntax. For example:{' '}
-          //   <em>_italics_</em> <strong>*bold*</strong>
-          // </Typography>,
+          ...parties,
+          ...bios,
           [
             'video_url',
             {
@@ -162,18 +133,7 @@ class CandidateForm extends Component {
               placeholder: 'https://www.youtube.com/watch?v=lz4nHQJo6Lc'
             }
           ],
-          ...this.props.election.languages.map(({code}, index) => {
-            const error =
-              errors && (errors.captions || errors[`captions[${index}].text`]);
-            return [
-              `captions.${code}.text`,
-              {
-                error: Boolean(error),
-                helperText: error && error.msg,
-                label: `Video caption (${ISO6391.getNativeName(code)})`
-              }
-            ];
-          }),
+          ...captions,
           <GridItem key="avatar">
             <FormControl margin="dense">
               <Typography gutterBottom variant="caption">

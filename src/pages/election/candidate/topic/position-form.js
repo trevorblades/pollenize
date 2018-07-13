@@ -1,4 +1,3 @@
-import ISO6391 from 'iso-639-1';
 import AutoForm from '../../../../components/auto-form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -11,6 +10,7 @@ import {
   remove as removePosition,
   reset as resetPosition
 } from '../../../../actions/position';
+import {messagesFromEvent, createMessageField} from '../../../../util/messages';
 
 class PositionForm extends Component {
   static propTypes = {
@@ -57,11 +57,7 @@ class PositionForm extends Component {
     });
 
   onSubmit = event => {
-    const messages = this.props.election.languages.map(language => ({
-      text: event.target[`messages.${language.code}.text`].value,
-      language_id: language.id
-    }));
-
+    const [messages] = messagesFromEvent(event, this.props.election.languages);
     this.props.dispatch(
       savePosition({
         id: this.props.position.id,
@@ -75,31 +71,15 @@ class PositionForm extends Component {
 
   onDelete = () => this.props.dispatch(removePosition(this.props.position.id));
 
-  renderButtonText() {
-    const verbs = [['Create', 'Creating'], ['Save', 'Saving']];
-    const verb =
-      verbs[Number(Boolean(this.props.position.id))][
-        Number(this.props.loading)
-      ];
-
-    return `${verb} position${this.props.loading ? '...' : ''}`;
-  }
-
   render() {
     const {errors} = this.props.error || {};
-    const messages = this.props.election.languages.map(({code}, index) => {
-      const error =
-        errors && (errors.messages || errors[`messages[${index}].text`]);
-      return [
-        `messages.${code}.text`,
-        {
-          error: Boolean(error),
-          helperText: error && error.msg,
-          label: `Summary (${ISO6391.getNativeName(code)})`,
-          multiline: true
-        }
-      ];
-    });
+    const messages = createMessageField(
+      this.props.election.languages,
+      errors,
+      'Summary',
+      undefined,
+      true
+    );
 
     const sources = this.state.sources.map((source, index) => {
       const key = `sources[${index}].url`;

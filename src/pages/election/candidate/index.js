@@ -22,7 +22,7 @@ import theme from '../../../theme';
 import {Link} from 'react-router-dom';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
-import {getCandidates} from '../../../selectors';
+import {getCandidates, getElection} from '../../../selectors';
 import {getSectionPadding} from '../../../components/section';
 import {size} from 'polished';
 
@@ -195,7 +195,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     candidate: find(candidates, ['slug', ownProps.match.params.id]),
     editMode: state.settings.editMode,
-    election: state.election.data,
+    election: getElection(state),
     language: state.settings.language
   };
 };

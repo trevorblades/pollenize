@@ -5,31 +5,59 @@ import keyBy from 'lodash/keyBy';
 import messages from './messages';
 import {createSelector} from 'reselect';
 
-const getElection = state => state.election.data;
+function keyByLanguage(collection, languages) {
+  return keyBy(collection, item => languages[item.language_id].code);
+}
+
+function keyMultipleByLanguage(languages, ...collections) {
+  return collections.map(collection => keyByLanguage(collection, languages));
+}
+
+export const getElection = createSelector(
+  state => state.election.data,
+  election => {
+    const languages = keyBy(election.languages, 'id');
+    return {
+      ...election,
+      topics: election.topics.map(topic => {
+        const [titles, descriptions] = keyMultipleByLanguage(
+          languages,
+          topic.titles,
+          topic.descriptions
+        );
+
+        return {
+          ...topic,
+          titles,
+          descriptions
+        };
+      })
+    };
+  }
+);
+
 export const getCandidates = createSelector(getElection, election => {
   const languages = keyBy(election.languages, 'id');
   return election.candidates.map(candidate => {
     const sources = flatMap(candidate.positions, 'sources');
+    const [parties, bios, captions] = keyMultipleByLanguage(
+      languages,
+      candidate.parties,
+      candidate.bios,
+      candidate.captions
+    );
+
     return {
       ...candidate,
       sources,
+      parties,
+      bios,
+      captions,
       firstName: candidate.name.replace(/\s+/, ' ').split(' ')[0],
-      parties: keyBy(
-        candidate.parties,
-        party => languages[party.language_id].code
-      ),
-      bios: keyBy(candidate.bios, bio => languages[bio.language_id].code),
-      captions: keyBy(
-        candidate.captions,
-        caption => languages[caption.language_id].code
-      ),
       positions: groupBy(
         flatMap(candidate.positions, position => ({
           ...position,
-          messages: keyBy(
-            position.messages,
-            message => languages[message.language_id].code
-          ),
+          messages: keyByLanguage(position.messages, languages),
           sources: position.sources.map(source => ({
             ...source,
             index: findIndex(sources, ['id', source.id])

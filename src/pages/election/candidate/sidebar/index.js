@@ -130,6 +130,7 @@ class Sidebar extends Component {
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired,
     localize: PropTypes.func.isRequired
   };
 
@@ -167,7 +168,11 @@ class Sidebar extends Component {
                 !this.state.sorting && index === this.props.activeTopicIndex
               }
             >
-              <SidebarItem href={`#${topic.slug}`}>{topic.title}</SidebarItem>
+              <SidebarItem href={`#${topic.slug}`}>
+                {topic.titles[this.props.language]
+                  ? topic.titles[this.props.language].text
+                  : topic.slug}
+              </SidebarItem>
               {this.props.editMode && (
                 <Fragment>
                   <DragHandle>
@@ -204,6 +209,7 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
   editMode: state.settings.editMode,
+  language: state.settings.language,
   localize: getLocalize(state)
 });
 
