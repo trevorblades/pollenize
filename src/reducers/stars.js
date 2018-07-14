@@ -4,10 +4,6 @@ import {handleAction, combineActions} from 'redux-actions';
 import {add, remove} from '../actions/stars';
 import {loop, Cmd} from 'redux-loop';
 
-function persistStars(stars) {
-  store.set(STARS_KEY, stars);
-}
-
 const defaultState = store.get(STARS_KEY) || {};
 export default handleAction(
   combineActions(add, remove),
@@ -17,7 +13,10 @@ export default handleAction(
       [action.payload]: action.type === add.toString()
     };
 
-    return loop(nextState, Cmd.run(persistStars, {args: [nextState]}));
+    return loop(
+      nextState,
+      Cmd.run(store.set.bind(store), {args: [STARS_KEY, nextState]})
+    );
   },
   defaultState
 );
