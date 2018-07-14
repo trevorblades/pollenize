@@ -18,7 +18,7 @@ import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {divisors} from 'number-theory';
-import {getLocalize, getCandidates} from '../../selectors';
+import {getLocalize, getCandidates, getMatchMessage} from '../../selectors';
 import {size} from 'polished';
 
 const containerClassName = css({flexGrow: 1});
@@ -59,8 +59,8 @@ class Candidates extends Component {
     candidates: PropTypes.array.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
-    language: PropTypes.string.isRequired,
-    localize: PropTypes.func.isRequired
+    localize: PropTypes.func.isRequired,
+    matchMessage: PropTypes.func.isRequired
   };
 
   state = {
@@ -108,7 +108,9 @@ class Candidates extends Component {
         <RootRef rootRef={node => (this.container = node)}>
           <Grid container className={containerClassName}>
             {this.props.candidates.map(candidate => {
-              const party = candidate.parties[this.props.language];
+              const {message: party} = this.props.matchMessage(
+                candidate.parties
+              );
               return (
                 <GridItem
                   xs={this.state.size}
@@ -166,8 +168,8 @@ const mapStateToProps = state => ({
   candidates: getCandidates(state),
   editMode: state.settings.editMode,
   election: state.election.data,
-  language: state.settings.language,
-  localize: getLocalize(state)
+  localize: getLocalize(state),
+  matchMessage: getMatchMessage(state)
 });
 
 export default connect(mapStateToProps)(Candidates);

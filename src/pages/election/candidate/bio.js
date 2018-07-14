@@ -10,7 +10,7 @@ import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
-import {getLocalize} from '../../../selectors';
+import {getLocalize, getMatchMessage} from '../../../selectors';
 
 const breakpoint = theme.breakpoints.up('md');
 const Content = styled.div({
@@ -73,14 +73,16 @@ const unknown = 'Unknown';
 class Bio extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    language: PropTypes.string.isRequired,
-    localize: PropTypes.func.isRequired
+    localize: PropTypes.func.isRequired,
+    matchMessage: PropTypes.func.isRequired
   };
 
   renderVideo() {
     if (this.props.candidate.video_url) {
       const youtubeId = getYouTubeId(this.props.candidate.video_url);
-      const caption = this.props.candidate.captions[this.props.language];
+      const {message: caption} = this.props.matchMessage(
+        this.props.candidate.captions
+      );
       if (youtubeId) {
         return (
           <VideoContainer>
@@ -99,7 +101,7 @@ class Bio extends Component {
   }
 
   render() {
-    const bio = this.props.candidate.bios[this.props.language];
+    const {message: bio} = this.props.matchMessage(this.props.candidate.bios);
     return (
       <Section small>
         <Typography gutterBottom variant="display1">
@@ -135,8 +137,8 @@ class Bio extends Component {
 }
 
 const mapStateToProps = state => ({
-  language: state.settings.language,
-  localize: getLocalize(state)
+  localize: getLocalize(state),
+  matchMessage: getMatchMessage(state)
 });
 
 export default connect(mapStateToProps)(Bio);

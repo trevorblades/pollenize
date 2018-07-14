@@ -24,11 +24,10 @@ import {
   arrayMove
 } from 'react-sortable-hoc';
 import {connect} from 'react-redux';
-import {getLocalize} from '../../../../selectors';
+import {getLocalize, getMatchMessage} from '../../../../selectors';
 import {reorder as reorderTopics} from '../../../../actions/topics';
 import {scrollToTop} from '../../../../util';
 import {size} from 'polished';
-import {getMessageOrUntranslated} from '../../../../util/messages';
 
 const padding = theme.spacing.unit * 4;
 const Container = styled.aside({
@@ -131,8 +130,8 @@ class Sidebar extends Component {
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
-    language: PropTypes.string.isRequired,
-    localize: PropTypes.func.isRequired
+    localize: PropTypes.func.isRequired,
+    matchMessage: PropTypes.func.isRequired
   };
 
   state = {
@@ -162,11 +161,7 @@ class Sidebar extends Component {
           style={{borderColor: this.props.candidate.color}}
         >
           {this.props.election.topics.map((topic, index) => {
-            const {message} = getMessageOrUntranslated(
-              topic.titles,
-              this.props.language,
-              this.props.election.languages
-            );
+            const {message: title} = this.props.matchMessage(topic.titles);
             return (
               <SidebarTopic
                 key={topic.id}
@@ -175,9 +170,7 @@ class Sidebar extends Component {
                   !this.state.sorting && index === this.props.activeTopicIndex
                 }
               >
-                <SidebarItem href={`#${topic.slug}`}>
-                  {message.text}
-                </SidebarItem>
+                <SidebarItem href={`#${topic.slug}`}>{title.text}</SidebarItem>
                 {this.props.editMode && (
                   <Fragment>
                     <DragHandle>
@@ -215,8 +208,8 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
   editMode: state.settings.editMode,
-  language: state.settings.language,
-  localize: getLocalize(state)
+  localize: getLocalize(state),
+  matchMessage: getMatchMessage(state)
 });
 
 export default connect(mapStateToProps)(Sidebar);

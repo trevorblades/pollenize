@@ -22,7 +22,7 @@ import theme from '../../../theme';
 import {Link} from 'react-router-dom';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
-import {getCandidates, getElection} from '../../../selectors';
+import {getCandidates, getElection, getMatchMessage} from '../../../selectors';
 import {getSectionPadding} from '../../../components/section';
 import {size} from 'polished';
 
@@ -79,7 +79,7 @@ class Candidate extends Component {
     candidate: PropTypes.object.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
-    language: PropTypes.string.isRequired
+    matchMessage: PropTypes.func.isRequired
   };
 
   state = {
@@ -114,7 +114,9 @@ class Candidate extends Component {
   };
 
   render() {
-    const party = this.props.candidate.parties[this.props.language];
+    const {message: party} = this.props.matchMessage(
+      this.props.candidate.parties
+    );
     return (
       <Fragment>
         <Helmet>
@@ -196,7 +198,7 @@ const mapStateToProps = (state, ownProps) => {
     candidate: find(candidates, ['slug', ownProps.match.params.id]),
     editMode: state.settings.editMode,
     election: getElection(state),
-    language: state.settings.language
+    matchMessage: getMatchMessage(state)
   };
 };
 

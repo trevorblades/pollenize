@@ -18,8 +18,7 @@ import withProps from 'recompose/withProps';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {add as addStar, remove as removeStar} from '../../../../actions/stars';
 import {connect} from 'react-redux';
-import {getLocalize} from '../../../../selectors';
-import {getMessageOrUntranslated} from '../../../../util/messages';
+import {getLocalize, getMatchMessage} from '../../../../selectors';
 
 const Banner = styled.div({
   display: 'flex',
@@ -88,9 +87,8 @@ class Topic extends Component {
     candidate: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
-    election: PropTypes.object.isRequired,
-    language: PropTypes.string.isRequired,
     localize: PropTypes.func.isRequired,
+    matchMessage: PropTypes.func.isRequired,
     positions: PropTypes.array,
     stars: PropTypes.object.isRequired,
     topic: PropTypes.object.isRequired
@@ -118,17 +116,8 @@ class Topic extends Component {
     this.props.dispatch(actionCreator(this.id));
   };
 
-  getMessage = messages => {
-    const {message, match} = getMessageOrUntranslated(
-      messages,
-      this.props.language,
-      this.props.election.languages
-    );
-    return [message, match];
-  };
-
   renderTitle(gutterBottom) {
-    const [title] = this.getMessage(this.props.topic.titles);
+    const {message: title} = this.props.matchMessage(this.props.topic.titles);
     return (
       <Typography gutterBottom={gutterBottom} variant="display1">
         {title.text}
@@ -146,7 +135,7 @@ class Topic extends Component {
         ? this.props.positions
         : [this.props.positions[0]];
     return positions.map((position, index, array) => {
-      const [message, match] = this.getMessage(position.messages);
+      const {message, match} = this.props.matchMessage(position.messages);
       return (
         <Text paragraph={index < array.length - 1} key={position.id}>
           <TextInner needsTranslation={!match}>
@@ -207,7 +196,7 @@ class Topic extends Component {
 
   render() {
     const {slug, image, descriptions} = this.props.topic;
-    const [description] = this.getMessage(descriptions);
+    const {message: description} = this.props.matchMessage(descriptions);
     return (
       <ScrollableAnchor id={slug}>
         <div data-topic={slug}>
@@ -239,8 +228,8 @@ class Topic extends Component {
 const mapStateToProps = state => ({
   editMode: state.settings.editMode,
   election: state.election.data,
-  language: state.settings.language,
   localize: getLocalize(state),
+  matchMessage: getMatchMessage(state),
   stars: state.stars
 });
 

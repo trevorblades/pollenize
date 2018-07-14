@@ -18,7 +18,11 @@ import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {getLocalize} from '../../../../selectors';
+import {
+  getLocalize,
+  getMatchMessage,
+  getCandidates
+} from '../../../../selectors';
 import {setEditMode} from '../../../../actions/settings';
 import {transparentize} from 'polished';
 import {update as updateElection} from '../../../../actions/election';
@@ -30,10 +34,12 @@ const StyledListSubheader = styled(ListSubheader)({
 
 class ElectionDrawer extends Component {
   static propTypes = {
+    candidates: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired,
+    matchMessage: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired
   };
@@ -64,21 +70,22 @@ class ElectionDrawer extends Component {
           <StyledListSubheader>
             {this.props.localize('Jump to candidate')}
           </StyledListSubheader>
-          {this.props.election.candidates.map(candidate => (
-            <ListItem
-              button
-              component={Link}
-              to={`/elections/${this.props.election.slug}/${candidate.slug}`}
-              key={candidate.id}
-              onClick={this.props.onClose}
-            >
-              <Avatar alt={candidate.name} src={candidate.avatar} />
-              <ListItemText
-                primary={candidate.name}
-                secondary={candidate.party}
-              />
-            </ListItem>
-          ))}
+          {this.props.candidates.map(candidate => {
+            const {message: party} = this.props.matchMessage(candidate.parties);
+
+            return (
+              <ListItem
+                button
+                component={Link}
+                to={`/elections/${this.props.election.slug}/${candidate.slug}`}
+                key={candidate.id}
+                onClick={this.props.onClose}
+              >
+                <Avatar alt={candidate.name} src={candidate.avatar} />
+                <ListItemText primary={candidate.name} secondary={party.text} />
+              </ListItem>
+            );
+          })}
           <StyledListSubheader>
             {this.props.localize('Settings')}
           </StyledListSubheader>
@@ -137,9 +144,11 @@ class ElectionDrawer extends Component {
 }
 
 const mapStateToProps = state => ({
+  candidates: getCandidates(state),
   editMode: state.settings.editMode,
   election: state.election.data,
   localize: getLocalize(state),
+  matchMessage: getMatchMessage(state),
   user: state.user.data
 });
 

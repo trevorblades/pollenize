@@ -73,3 +73,26 @@ const getLanguage = state => state.settings.language;
 export const getLocalize = createSelector(getLanguage, language => message =>
   (messages[message] && messages[message][language]) || message
 );
+
+export const getMatchMessage = createSelector(
+  getLanguage,
+  getElection,
+  (language, {languages}) => messages => {
+    const message = messages[language];
+    if (message) {
+      return {
+        message,
+        match: true
+      };
+    }
+
+    for (let i = 0; i < languages.length; i++) {
+      const message = messages[languages[i].code];
+      if (message) {
+        return {message};
+      }
+    }
+
+    return {message: null};
+  }
+);
