@@ -1,5 +1,6 @@
 import api from '../api';
-import cookies from 'browser-cookies';
+import store from 'store';
+import {TOKEN_KEY} from '../constants';
 import {logIn, logOut, renewToken, success, failure} from '../actions/user';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
@@ -28,7 +29,7 @@ async function renew(token) {
 const defaultState = {
   loading: false,
   error: null,
-  data: userFromToken(cookies.get('token'))
+  data: userFromToken(store.get(TOKEN_KEY))
 };
 
 export default handleActions(
