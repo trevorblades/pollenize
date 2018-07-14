@@ -58,20 +58,34 @@ export default handleActions(
           args: [payload]
         })
       ),
-    [success]: (state, {payload}) => ({
-      ...state,
-      loading: false,
-      data: payload
-    }),
+    [success]: (state, {payload}) =>
+      loop(
+        {
+          ...state,
+          loading: false,
+          data: userFromToken(payload)
+        },
+        Cmd.list([
+          Cmd.run(api.jwt.bind(api), {args: [payload]}),
+          Cmd.run(store.set.bind(store), {args: [TOKEN_KEY, payload]})
+        ])
+      ),
     [failure]: (state, {payload}) => ({
       ...state,
       loading: false,
       error: payload
     }),
-    [logOut]: () => ({
-      ...defaultState,
-      data: null
-    })
+    [logOut]: () =>
+      loop(
+        {
+          ...defaultState,
+          data: null
+        },
+        Cmd.list([
+          Cmd.run(api.jwt.bind(api), {args: [null]}),
+          Cmd.run(store.remove.bind(store), {args: [TOKEN_KEY]})
+        ])
+      )
   },
   defaultState
 );
