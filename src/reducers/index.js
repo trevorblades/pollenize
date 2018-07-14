@@ -4,6 +4,7 @@ import elections from './elections';
 import map from './map';
 import position from './position';
 import settings from './settings';
+import stars from './stars';
 import topic from './topic';
 import topics from './topics';
 import user from './user';
@@ -18,6 +19,7 @@ export default combineReducers({
   position,
   router: routerReducer,
   settings,
+  stars,
   topic,
   topics,
   user

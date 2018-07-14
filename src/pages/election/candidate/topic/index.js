@@ -8,6 +8,7 @@ import React, {Component} from 'react';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../../../components/section';
+import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Typography from '@material-ui/core/Typography';
 import mapProps from 'recompose/mapProps';
@@ -15,6 +16,7 @@ import styled from 'react-emotion';
 import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
+import {add as addStar, remove as removeStar} from '../../../../actions/stars';
 import {connect} from 'react-redux';
 import {getLocalize} from '../../../../selectors';
 import {getMessageOrUntranslated} from '../../../../util/messages';
@@ -84,11 +86,13 @@ const PositionFormDialogTrigger = mapProps(props => ({
 class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     language: PropTypes.string.isRequired,
     localize: PropTypes.func.isRequired,
     positions: PropTypes.array,
+    stars: PropTypes.object.isRequired,
     topic: PropTypes.object.isRequired
   };
 
@@ -96,23 +100,23 @@ class Topic extends Component {
     positions: []
   };
 
-  state = {
-    more: false
-  };
+  constructor(props) {
+    super(props);
+    this.id = `${props.candidate.id}:${props.topic.id}`;
+    this.state = {
+      more: false
+    };
+  }
 
   onMoreClick = () =>
     this.setState(prevState => ({
       more: !prevState.more
     }));
 
-  renderTitle(gutterBottom) {
-    const [title] = this.getMessage(this.props.topic.titles);
-    return (
-      <Typography gutterBottom={gutterBottom} variant="display1">
-        {title.text}
-      </Typography>
-    );
-  }
+  onStarClick = () => {
+    const actionCreator = this.props.stars[this.id] ? removeStar : addStar;
+    this.props.dispatch(actionCreator(this.id));
+  };
 
   getMessage = messages => {
     const {message, match} = getMessageOrUntranslated(
@@ -122,6 +126,15 @@ class Topic extends Component {
     );
     return [message, match];
   };
+
+  renderTitle(gutterBottom) {
+    const [title] = this.getMessage(this.props.topic.titles);
+    return (
+      <Typography gutterBottom={gutterBottom} variant="display1">
+        {title.text}
+      </Typography>
+    );
+  }
 
   renderPositions() {
     if (!this.props.positions.length) {
@@ -156,8 +169,8 @@ class Topic extends Component {
 
   renderActions() {
     const actions = [
-      <StyledIconButton key="star">
-        <StarBorderIcon />
+      <StyledIconButton key="star" onClick={this.onStarClick}>
+        {this.props.stars[this.id] ? <StarIcon /> : <StarBorderIcon />}
       </StyledIconButton>,
       <StyledIconButton key="share">
         <ReplyIcon />
@@ -227,7 +240,8 @@ const mapStateToProps = state => ({
   editMode: state.settings.editMode,
   election: state.election.data,
   language: state.settings.language,
-  localize: getLocalize(state)
+  localize: getLocalize(state),
+  stars: state.stars
 });
 
 export default connect(mapStateToProps)(Topic);
