@@ -98,12 +98,12 @@ class Topic extends Component {
     positions: []
   };
 
-  constructor(props) {
-    super(props);
-    this.id = `${props.candidate.id}:${props.topic.id}`;
-    this.state = {
-      more: false
-    };
+  state = {
+    more: false
+  };
+
+  get id() {
+    return `${this.props.candidate.id}:${this.props.topic.id}`;
   }
 
   onMoreClick = () =>
