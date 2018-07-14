@@ -32,6 +32,7 @@ const defaultState = {
   data: userFromToken(store.get(TOKEN_KEY))
 };
 
+const setJwt = api.jwt.bind(api);
 export default handleActions(
   {
     [logIn]: (state, {payload}) =>
@@ -66,7 +67,7 @@ export default handleActions(
           data: userFromToken(payload)
         },
         Cmd.list([
-          Cmd.run(api.jwt.bind(api), {args: [payload]}),
+          Cmd.run(setJwt, {args: [payload]}),
           Cmd.run(store.set.bind(store), {args: [TOKEN_KEY, payload]})
         ])
       ),
@@ -82,7 +83,7 @@ export default handleActions(
           data: null
         },
         Cmd.list([
-          Cmd.run(api.jwt.bind(api), {args: [null]}),
+          Cmd.run(setJwt, {args: [null]}),
           Cmd.run(store.remove.bind(store), {args: [TOKEN_KEY]})
         ])
       )
