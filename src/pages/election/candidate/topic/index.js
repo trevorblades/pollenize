@@ -1,11 +1,14 @@
 import Button from '@material-ui/core/Button';
 import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
+import IconButton from '@material-ui/core/IconButton';
 import PositionForm from './position-form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import ReplyIcon from '@material-ui/icons/Reply';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../../../components/section';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Typography from '@material-ui/core/Typography';
 import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
@@ -58,12 +61,13 @@ const AlternateContent = styled.div({
   borderLeft: `1px solid ${theme.palette.grey[100]}`
 });
 
-const actionsMargin = theme.spacing.unit * 2;
 const Actions = styled.div({
-  marginTop: actionsMargin,
-  marginLeft: -actionsMargin
+  marginTop: theme.spacing.unit,
+  marginLeft: theme.spacing.unit * -1.5,
+  color: theme.palette.text.primary
 });
 
+const StyledIconButton = withProps({color: 'inherit'})(IconButton);
 const Action = styled(Button)({
   marginRight: theme.spacing.unit
 });
@@ -151,7 +155,15 @@ class Topic extends Component {
   }
 
   renderActions() {
-    const actions = [];
+    const actions = [
+      <StyledIconButton key="star">
+        <StarBorderIcon />
+      </StyledIconButton>,
+      <StyledIconButton key="share">
+        <ReplyIcon />
+      </StyledIconButton>
+    ];
+
     if (this.props.editMode) {
       actions.push(
         <PositionFormDialogTrigger
