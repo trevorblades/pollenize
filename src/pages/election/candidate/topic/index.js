@@ -99,7 +99,8 @@ class Topic extends Component {
   };
 
   state = {
-    more: false
+    more: false,
+    shareDialogShown: false
   };
 
   get id() {
@@ -115,6 +116,8 @@ class Topic extends Component {
     const actionCreator = this.props.stars[this.id] ? removeStar : addStar;
     this.props.dispatch(actionCreator(this.id));
   };
+
+  onShareClick = () => this.setState({shareDialogShown: true});
 
   renderTitle(gutterBottom) {
     const {message: title} = this.props.matchMessage(this.props.topic.titles);
@@ -157,14 +160,17 @@ class Topic extends Component {
   }
 
   renderActions() {
-    const actions = [
-      <StyledIconButton key="star" onClick={this.onStarClick}>
-        {this.props.stars[this.id] ? <StarIcon /> : <StarBorderIcon />}
-      </StyledIconButton>,
-      <StyledIconButton key="share">
-        <ReplyIcon />
-      </StyledIconButton>
-    ];
+    const actions = [];
+    if (this.props.positions.length) {
+      actions.push(
+        <StyledIconButton key="star" onClick={this.onStarClick}>
+          {this.props.stars[this.id] ? <StarIcon /> : <StarBorderIcon />}
+        </StyledIconButton>,
+        <StyledIconButton key="share" onClick={this.onShareClick}>
+          <ReplyIcon />
+        </StyledIconButton>
+      );
+    }
 
     if (this.props.editMode) {
       actions.push(
@@ -219,6 +225,7 @@ class Topic extends Component {
               )}
             </InnerContainer>
           </Container>
+          {this.state.shareDialogShown && <div>Hello</div>}
         </div>
       </ScrollableAnchor>
     );
