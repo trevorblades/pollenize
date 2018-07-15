@@ -9,6 +9,7 @@ import React, {Component} from 'react';
 import ReplyIcon from '@material-ui/icons/Reply';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../../../components/section';
+import ShareDialog from './share-dialog';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Typography from '@material-ui/core/Typography';
@@ -102,7 +103,7 @@ class Topic extends Component {
 
   state = {
     more: false,
-    shareDialogShown: false
+    shareDialogOpen: false
   };
 
   get id() {
@@ -121,7 +122,9 @@ class Topic extends Component {
     this.props.dispatch(actionCreator(this.id));
   };
 
-  onShareClick = () => this.setState({shareDialogShown: true});
+  onShareClick = () => this.setState({shareDialogOpen: true});
+
+  closeShareDialog = () => this.setState({shareDialogOpen: false});
 
   renderTitle(gutterBottom) {
     const {message: title} = this.props.matchMessage(this.props.topic.titles);
@@ -231,7 +234,10 @@ class Topic extends Component {
               )}
             </InnerContainer>
           </Container>
-          {this.state.shareDialogShown && <div>Hello</div>}
+          <ShareDialog
+            open={this.state.shareDialogOpen}
+            onClose={this.closeShareDialog}
+          />
         </div>
       </ScrollableAnchor>
     );
