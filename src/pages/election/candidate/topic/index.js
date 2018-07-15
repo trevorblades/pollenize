@@ -1,6 +1,7 @@
 import Button from '@material-ui/core/Button';
-import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
+import Divider from '@material-ui/core/Divider';
+import EditButton from '../../../../components/edit-button';
 import IconButton from '@material-ui/core/IconButton';
 import PositionForm from './position-form';
 import PropTypes from 'prop-types';
@@ -206,10 +207,12 @@ class Topic extends Component {
     return (
       <ScrollableAnchor id={slug}>
         <div data-topic={slug}>
-          {image && (
+          {image ? (
             <Banner style={{backgroundImage: `url(${image})`}}>
               {this.renderTitle()}
             </Banner>
+          ) : (
+            <Divider />
           )}
           <Container>
             {!image && this.renderTitle(true)}

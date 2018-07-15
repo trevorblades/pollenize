@@ -2,7 +2,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Bio from './bio';
 import CandidateForm from '../candidate-form';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Divider from '@material-ui/core/Divider';
 import EditIcon from '@material-ui/icons/Edit';
 import ElectionHeader from '../election-header';
 import DialogTrigger from '../../../components/dialog-trigger';
@@ -171,7 +170,6 @@ class Candidate extends Component {
           />
           <InnerContainer innerRef={node => (this.innerContainer = node)}>
             <Bio candidate={this.props.candidate} />
-            <Divider />
             {this.props.election.topics.map(topic => {
               const positions = this.props.candidate.positions[topic.id];
               return (
