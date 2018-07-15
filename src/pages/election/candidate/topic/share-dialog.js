@@ -68,7 +68,7 @@ class ShareDialog extends Component {
         open={this.props.open}
         onClose={this.props.onClose}
       >
-        <DialogTitle>Share this position</DialogTitle>
+        <DialogTitle>{this.props.localize('Share this position')}</DialogTitle>
         <DialogContent>
           <ShareButtons>
             <ShareButton

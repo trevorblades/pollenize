@@ -70,6 +70,10 @@ export default {
     fr: 'Mode édition',
     es: 'Modo de edición'
   },
+  'Share this position': {
+    fr: 'Partager cette position',
+    es: 'Comparte esta posición'
+  },
   Done: {
     fr: 'Terminé',
     es: 'Terminado'
