@@ -9,9 +9,10 @@ import TwitterLogo from '../../../../assets/logos/twitter.svg';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
+import querystring from 'querystring';
 import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
-import withProps from 'recompose/withProps';
+import mapProps from 'recompose/mapProps';
 import {size} from 'polished';
 
 const buttonSpacing = theme.spacing.unit * 1.5;
@@ -20,11 +21,14 @@ const ShareButtons = styled.div({
   marginBottom: buttonSpacing
 });
 
-const ShareButton = withProps({
+const ShareButton = mapProps(({children, href, query, style}) => ({
+  style,
+  children,
+  href: `${href}?${querystring.stringify(query)}`,
   component: 'a',
   target: '_blank',
   rel: 'noopener noreferrer'
-})(
+}))(
   styled(ButtonBase)({
     padding: theme.spacing.unit,
     borderRadius: '50%',
@@ -49,6 +53,7 @@ class ShareDialog extends Component {
   };
 
   render() {
+    const url = window.location.href;
     return (
       <Dialog
         fullWidth
@@ -61,6 +66,11 @@ class ShareDialog extends Component {
           <ShareButtons>
             <ShareButton
               href="https://twitter.com/intent/tweet"
+              query={{
+                url,
+                text: "Check out Candidate's stance on Topic",
+                related: 'pollenizeorg'
+              }}
               style={{
                 color: theme.palette.common.white,
                 backgroundColor: '#1da1f2'
@@ -70,6 +80,7 @@ class ShareDialog extends Component {
             </ShareButton>
             <ShareButton
               href="https://facebook.com/sharer.php"
+              query={{u: url}}
               style={{
                 color: theme.palette.common.white,
                 backgroundColor: '#3b5998'
@@ -78,12 +89,7 @@ class ShareDialog extends Component {
               <FacebookLogo />
             </ShareButton>
           </ShareButtons>
-          <TextField
-            fullWidth
-            readOnly
-            value={window.location.href}
-            onClick={focusAndSelect}
-          />
+          <TextField fullWidth readOnly value={url} onClick={focusAndSelect} />
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.onClose}>Done</Button>
