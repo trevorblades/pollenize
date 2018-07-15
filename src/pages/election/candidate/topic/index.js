@@ -237,6 +237,8 @@ class Topic extends Component {
           <ShareDialog
             open={this.state.shareDialogOpen}
             onClose={this.closeShareDialog}
+            candidate={this.props.candidate}
+            topic={this.props.topic}
           />
         </div>
       </ScrollableAnchor>

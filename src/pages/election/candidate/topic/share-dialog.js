@@ -48,8 +48,10 @@ function focusAndSelect({target}) {
 
 class ShareDialog extends Component {
   static propTypes = {
+    candidate: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    topic: PropTypes.object.isRequired
   };
 
   render() {
@@ -68,7 +70,9 @@ class ShareDialog extends Component {
               href="https://twitter.com/intent/tweet"
               query={{
                 url,
-                text: "Check out Candidate's stance on Topic",
+                text: `Check out ${
+                  this.props.candidate.name
+                }'s stance on ${this.props.topic.titles.en.text.toLowerCase()}`,
                 related: 'pollenizeorg'
               }}
               style={{
