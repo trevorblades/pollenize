@@ -11,7 +11,9 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import StarIcon from '@material-ui/icons/Star';
 import Switch from '@material-ui/core/Switch';
+import Typography from '@material-ui/core/Typography';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import styled, {css} from 'react-emotion';
@@ -21,15 +23,25 @@ import {connect} from 'react-redux';
 import {
   getLocalize,
   getMatchMessage,
-  getCandidates
+  getCandidates,
+  getStarCounts
 } from '../../../../selectors';
 import {setEditMode} from '../../../../actions/settings';
-import {transparentize} from 'polished';
+import {transparentize, size} from 'polished';
 import {update as updateElection} from '../../../../actions/election';
+import {reset as resetStars} from '../../../../actions/stars';
 
 const drawerClassName = css({width: 320});
 const StyledListSubheader = styled(ListSubheader)({
   backgroundColor: transparentize(0.15, theme.palette.background.paper)
+});
+
+const Stars = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  marginRight: theme.spacing.unit * 2,
+  color: theme.palette.text.secondary,
+  svg: size(theme.spacing.unit * 2)
 });
 
 class ElectionDrawer extends Component {
@@ -41,7 +53,8 @@ class ElectionDrawer extends Component {
     localize: PropTypes.func.isRequired,
     matchMessage: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    starCounts: PropTypes.object.isRequired
   };
 
   onEditModeChange = event =>
@@ -58,6 +71,8 @@ class ElectionDrawer extends Component {
     );
   };
 
+  resetStars = () => this.props.dispatch(resetStars());
+
   render() {
     return (
       <Drawer
@@ -72,7 +87,7 @@ class ElectionDrawer extends Component {
           </StyledListSubheader>
           {this.props.candidates.map(candidate => {
             const {message: party} = this.props.matchMessage(candidate.parties);
-
+            const starCount = this.props.starCounts[candidate.id];
             return (
               <ListItem
                 button
@@ -83,12 +98,26 @@ class ElectionDrawer extends Component {
               >
                 <Avatar alt={candidate.name} src={candidate.avatar} />
                 <ListItemText primary={candidate.name} secondary={party.text} />
+                {starCount && (
+                  <ListItemSecondaryAction>
+                    <Stars>
+                      <Typography color="inherit">{starCount}</Typography>
+                      <StarIcon />
+                    </Stars>
+                  </ListItemSecondaryAction>
+                )}
               </ListItem>
             );
           })}
           <StyledListSubheader>
             {this.props.localize('Settings')}
           </StyledListSubheader>
+          <ListItem button onClick={this.resetStars}>
+            <ListItemIcon>
+              <StarIcon />
+            </ListItemIcon>
+            <ListItemText primary={this.props.localize('Reset stars')} />
+          </ListItem>
           <ListItem disabled>
             <ListItemIcon>
               <CompareArrowsIcon />
@@ -149,6 +178,7 @@ const mapStateToProps = state => ({
   election: state.election.data,
   localize: getLocalize(state),
   matchMessage: getMatchMessage(state),
+  starCounts: getStarCounts(state),
   user: state.user.data
 });
 

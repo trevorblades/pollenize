@@ -1,22 +1,27 @@
 import store from 'store';
 import {STARS_KEY} from '../constants';
-import {handleAction, combineActions} from 'redux-actions';
-import {add, remove} from '../actions/stars';
+import {handleActions, combineActions} from 'redux-actions';
+import {add, remove, reset} from '../actions/stars';
 import {loop, Cmd} from 'redux-loop';
 
-const defaultState = store.get(STARS_KEY) || {};
-export default handleAction(
-  combineActions(add, remove),
-  (state, action) => {
-    const nextState = {
-      ...state,
-      [action.payload]: action.type === add.toString()
-    };
+function persist(getState) {
+  const {stars} = getState();
+  store.set(STARS_KEY, stars);
+}
 
-    return loop(
-      nextState,
-      Cmd.run(store.set.bind(store), {args: [STARS_KEY, nextState]})
-    );
+const cmd = Cmd.run(persist, {args: [Cmd.getState]});
+const defaultState = store.get(STARS_KEY) || {};
+export default handleActions(
+  {
+    [combineActions(add, remove)]: (state, action) =>
+      loop(
+        {
+          ...state,
+          [action.payload]: action.type === add.toString()
+        },
+        cmd
+      ),
+    [reset]: () => loop({}, cmd)
   },
   defaultState
 );

@@ -46,6 +46,10 @@ export default {
     fr: 'Paramètres',
     es: 'Configuraciones'
   },
+  'Reset stars': {
+    fr: 'Réinitialiser les étoiles',
+    es: 'Restablecer estrellas'
+  },
   'Compare mode': {
     fr: 'Mode de comparaison',
     es: 'Modo de comparación'

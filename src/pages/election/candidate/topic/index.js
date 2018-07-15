@@ -20,6 +20,7 @@ import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {add as addStar, remove as removeStar} from '../../../../actions/stars';
 import {connect} from 'react-redux';
 import {getLocalize, getMatchMessage} from '../../../../selectors';
+import {STAR_ID_DELIMITER} from '../../../../constants';
 
 const Banner = styled.div({
   display: 'flex',
@@ -105,7 +106,9 @@ class Topic extends Component {
   };
 
   get id() {
-    return `${this.props.candidate.id}:${this.props.topic.id}`;
+    return [this.props.candidate.id, this.props.topic.id].join(
+      STAR_ID_DELIMITER
+    );
   }
 
   onMoreClick = () =>

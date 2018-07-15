@@ -1,9 +1,11 @@
+import countBy from 'lodash/countBy';
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import groupBy from 'lodash/groupBy';
 import keyBy from 'lodash/keyBy';
 import messages from './messages';
 import {createSelector} from 'reselect';
+import {STAR_ID_DELIMITER} from './constants';
 
 function keyByLanguage(collection, languages) {
   return keyBy(collection, item => languages[item.language_id].code);
@@ -96,3 +98,9 @@ export const getMatchMessage = createSelector(
     return {message: null};
   }
 );
+
+const getStars = state => state.stars;
+export const getStarCounts = createSelector(getStars, stars => {
+  const keys = Object.keys(stars);
+  return countBy(keys, key => key.split(STAR_ID_DELIMITER)[0]);
+});
