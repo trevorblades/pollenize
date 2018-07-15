@@ -14,6 +14,8 @@ import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
 import mapProps from 'recompose/mapProps';
 import {size} from 'polished';
+import {connect} from 'react-redux';
+import {getLocalize, getMatchMessage} from '../../../../selectors';
 
 const buttonSpacing = theme.spacing.unit * 1.5;
 const ShareButtons = styled.div({
@@ -49,6 +51,8 @@ function focusAndSelect({target}) {
 class ShareDialog extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    localize: PropTypes.func.isRequired,
+    matchMessage: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     topic: PropTypes.object.isRequired
@@ -56,6 +60,7 @@ class ShareDialog extends Component {
 
   render() {
     const url = window.location.href;
+    const {message: title} = this.props.matchMessage(this.props.topic.titles);
     return (
       <Dialog
         fullWidth
@@ -72,7 +77,7 @@ class ShareDialog extends Component {
                 url,
                 text: `Check out ${
                   this.props.candidate.name
-                }'s stance on ${this.props.topic.titles.en.text.toLowerCase()}`,
+                }'s stance on ${title.text.toLowerCase()}`,
                 related: 'pollenizeorg'
               }}
               style={{
@@ -96,11 +101,18 @@ class ShareDialog extends Component {
           <TextField fullWidth readOnly value={url} onClick={focusAndSelect} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose}>Done</Button>
+          <Button onClick={this.props.onClose}>
+            {this.props.localize('Done')}
+          </Button>
         </DialogActions>
       </Dialog>
     );
   }
 }
 
-export default ShareDialog;
+const mapStateToProps = state => ({
+  localize: getLocalize(state),
+  matchMessage: getMatchMessage(state)
+});
+
+export default connect(mapStateToProps)(ShareDialog);

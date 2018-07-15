@@ -69,5 +69,9 @@ export default {
   'Edit mode': {
     fr: 'Mode édition',
     es: 'Modo de edición'
+  },
+  Done: {
+    fr: 'Terminé',
+    es: 'Terminado'
   }
 };
