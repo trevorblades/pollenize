@@ -36,11 +36,12 @@ const StyledListSubheader = styled(ListSubheader)({
   backgroundColor: transparentize(0.15, theme.palette.background.paper)
 });
 
-const Stars = styled.div({
+const Stars = styled(ListItemSecondaryAction)({
   display: 'flex',
   alignItems: 'center',
   marginRight: theme.spacing.unit * 2,
   color: theme.palette.text.secondary,
+  pointerEvents: 'none',
   svg: size(theme.spacing.unit * 2)
 });
 
@@ -99,12 +100,10 @@ class ElectionDrawer extends Component {
                 <Avatar alt={candidate.name} src={candidate.avatar} />
                 <ListItemText primary={candidate.name} secondary={party.text} />
                 {starCount && (
-                  <ListItemSecondaryAction>
-                    <Stars>
-                      <Typography color="inherit">{starCount}</Typography>
-                      <StarIcon />
-                    </Stars>
-                  </ListItemSecondaryAction>
+                  <Stars>
+                    <Typography color="inherit">{starCount}</Typography>
+                    <StarIcon />
+                  </Stars>
                 )}
               </ListItem>
             );
