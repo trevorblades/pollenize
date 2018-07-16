@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import FacebookLogo from '../../../../assets/logos/facebook.svg';
 import TwitterLogo from '../../../../assets/logos/twitter.svg';
+import GooglePlusLogo from '../../../../assets/logos/google-plus.svg';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -34,6 +35,7 @@ const ShareButton = mapProps(({children, href, query, style}) => ({
   styled(ButtonBase)({
     padding: theme.spacing.unit,
     borderRadius: '50%',
+    color: theme.palette.common.white,
     ':not(:last-child)': {
       marginRight: buttonSpacing
     },
@@ -72,6 +74,7 @@ class ShareDialog extends Component {
         <DialogContent>
           <ShareButtons>
             <ShareButton
+              style={{backgroundColor: '#1da1f2'}}
               href="https://twitter.com/intent/tweet"
               query={{
                 url,
@@ -80,22 +83,22 @@ class ShareDialog extends Component {
                 }'s stance on ${title.text.toLowerCase()}`,
                 related: 'pollenizeorg'
               }}
-              style={{
-                color: theme.palette.common.white,
-                backgroundColor: '#1da1f2'
-              }}
             >
               <TwitterLogo />
             </ShareButton>
             <ShareButton
+              style={{backgroundColor: '#3b5998'}}
               href="https://facebook.com/sharer.php"
               query={{u: url}}
-              style={{
-                color: theme.palette.common.white,
-                backgroundColor: '#3b5998'
-              }}
             >
               <FacebookLogo />
+            </ShareButton>
+            <ShareButton
+              style={{backgroundColor: '#dc4e41'}}
+              href="https://plus.google.com/share"
+              query={{url}}
+            >
+              <GooglePlusLogo />
             </ShareButton>
           </ShareButtons>
           <TextField fullWidth readOnly value={url} onClick={focusAndSelect} />
