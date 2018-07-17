@@ -1,3 +1,4 @@
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import DialogTrigger from '../../../../components/dialog-trigger';
 import Divider from '@material-ui/core/Divider';
@@ -17,15 +18,12 @@ import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
+import {STAR_ID_DELIMITER} from '../../../../constants';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {add as addStar, remove as removeStar} from '../../../../actions/stars';
 import {connect} from 'react-redux';
-import {
-  getLocalize,
-  getMatchMessage,
-  getCandidates
-} from '../../../../selectors';
-import {STAR_ID_DELIMITER} from '../../../../constants';
+import {getLocalize, getMatchMessage} from '../../../../selectors';
+import {size} from 'polished';
 
 const Banner = styled.div({
   display: 'flex',
@@ -70,6 +68,16 @@ const AlternateContent = styled.div(props => {
   };
 });
 
+const Comparate = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  marginBottom: theme.spacing.unit
+});
+
+const ComparateAvatar = styled(Avatar)(size(theme.spacing.unit * 3), {
+  marginRight: theme.spacing.unit
+});
+
 const Actions = styled.div({
   marginTop: theme.spacing.unit,
   marginLeft: theme.spacing.unit * -1.5,
@@ -93,7 +101,7 @@ const PositionFormDialogTrigger = mapProps(props => ({
 class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    candidates: PropTypes.array.isRequired,
+    comparate: PropTypes.object.isRequired,
     compareMode: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
@@ -170,10 +178,14 @@ class Topic extends Component {
 
   renderAlternateContent() {
     if (this.props.compareMode) {
-      const candidate = this.props.candidates[0];
-      const positions = candidate.positions[this.props.topic.id] || [];
+      const positions =
+        this.props.comparate.positions[this.props.topic.id] || [];
       return (
         <AlternateContent compare>
+          <Comparate>
+            <ComparateAvatar src={this.props.comparate.avatar} />
+            <Typography variant="body2">{this.props.comparate.name}</Typography>
+          </Comparate>
           {this.renderPositions(positions)}
         </AlternateContent>
       );
@@ -267,7 +279,6 @@ class Topic extends Component {
 }
 
 const mapStateToProps = state => ({
-  candidates: getCandidates(state),
   compareMode: state.settings.compareMode,
   editMode: state.settings.editMode,
   localize: getLocalize(state),

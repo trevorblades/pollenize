@@ -15,13 +15,14 @@ import Sidebar from './sidebar';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
+import reject from 'lodash/reject';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import theme from '../../../theme';
 import {Link} from 'react-router-dom';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
-import {getCandidates, getElection, getMatchMessage} from '../../../selectors';
+import {getCandidates, getTopics, getMatchMessage} from '../../../selectors';
 import {getSectionPadding} from '../../../components/section';
 import {size} from 'polished';
 
@@ -76,9 +77,11 @@ const InnerContainer = styled.div({
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    comparate: PropTypes.object.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
-    matchMessage: PropTypes.func.isRequired
+    matchMessage: PropTypes.func.isRequired,
+    topics: PropTypes.array.isRequired
   };
 
   state = {
@@ -170,11 +173,12 @@ class Candidate extends Component {
           />
           <InnerContainer innerRef={node => (this.innerContainer = node)}>
             <Bio candidate={this.props.candidate} />
-            {this.props.election.topics.map(topic => (
+            {this.props.topics.map(topic => (
               <Topic
                 topic={topic}
                 key={topic.id}
                 candidate={this.props.candidate}
+                comparate={this.props.comparate}
               />
             ))}
           </InnerContainer>
@@ -188,11 +192,14 @@ class Candidate extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const candidates = getCandidates(state);
+  const predicate = ['slug', ownProps.match.params.id];
   return {
-    candidate: find(candidates, ['slug', ownProps.match.params.id]),
+    candidate: find(candidates, predicate),
+    comparate: reject(candidates, predicate)[0],
     editMode: state.settings.editMode,
-    election: getElection(state),
-    matchMessage: getMatchMessage(state)
+    election: state.election.data,
+    matchMessage: getMatchMessage(state),
+    topics: getTopics(state)
   };
 };
 

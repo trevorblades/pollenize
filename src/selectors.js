@@ -15,28 +15,23 @@ function keyMultipleByLanguage(languages, ...collections) {
   return collections.map(collection => keyByLanguage(collection, languages));
 }
 
-export const getElection = createSelector(
-  state => state.election.data,
-  election => {
-    const languages = keyBy(election.languages, 'id');
-    return {
-      ...election,
-      topics: election.topics.map(topic => {
-        const [titles, descriptions] = keyMultipleByLanguage(
-          languages,
-          topic.titles,
-          topic.descriptions
-        );
+const getElection = state => state.election.data;
+export const getTopics = createSelector(getElection, election => {
+  const languages = keyBy(election.languages, 'id');
+  return election.topics.map(topic => {
+    const [titles, descriptions] = keyMultipleByLanguage(
+      languages,
+      topic.titles,
+      topic.descriptions
+    );
 
-        return {
-          ...topic,
-          titles,
-          descriptions
-        };
-      })
+    return {
+      ...topic,
+      titles,
+      descriptions
     };
-  }
-);
+  });
+});
 
 export const getCandidates = createSelector(getElection, election => {
   const languages = keyBy(election.languages, 'id');

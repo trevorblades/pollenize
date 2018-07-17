@@ -24,7 +24,7 @@ import {
   arrayMove
 } from 'react-sortable-hoc';
 import {connect} from 'react-redux';
-import {getLocalize, getMatchMessage} from '../../../../selectors';
+import {getLocalize, getMatchMessage, getTopics} from '../../../../selectors';
 import {reorder as reorderTopics} from '../../../../actions/topics';
 import {scrollToTop} from '../../../../util';
 import {size} from 'polished';
@@ -131,7 +131,8 @@ class Sidebar extends Component {
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired,
-    matchMessage: PropTypes.func.isRequired
+    matchMessage: PropTypes.func.isRequired,
+    topics: PropTypes.array.isRequired
   };
 
   state = {
@@ -143,7 +144,7 @@ class Sidebar extends Component {
   onSortEnd = ({oldIndex, newIndex}) => {
     this.setState({sorting: false});
 
-    const topics = arrayMove(this.props.election.topics, oldIndex, newIndex);
+    const topics = arrayMove(this.props.topics, oldIndex, newIndex);
     this.props.dispatch(reorderTopics(topics));
   };
 
@@ -160,7 +161,7 @@ class Sidebar extends Component {
           onSortEnd={this.onSortEnd}
           style={{borderColor: this.props.candidate.color}}
         >
-          {this.props.election.topics.map((topic, index) => {
+          {this.props.topics.map((topic, index) => {
             const {message: title} = this.props.matchMessage(topic.titles);
             return (
               <SidebarTopic
@@ -208,8 +209,10 @@ class Sidebar extends Component {
 
 const mapStateToProps = state => ({
   editMode: state.settings.editMode,
+  election: state.election.data,
   localize: getLocalize(state),
-  matchMessage: getMatchMessage(state)
+  matchMessage: getMatchMessage(state),
+  topics: getTopics(state)
 });
 
 export default connect(mapStateToProps)(Sidebar);
