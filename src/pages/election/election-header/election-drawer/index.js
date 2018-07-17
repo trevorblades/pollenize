@@ -26,7 +26,7 @@ import {
   getCandidates,
   getStarCounts
 } from '../../../../selectors';
-import {setEditMode} from '../../../../actions/settings';
+import {setCompareMode, setEditMode} from '../../../../actions/settings';
 import {transparentize, size} from 'polished';
 import {update as updateElection} from '../../../../actions/election';
 import {reset as resetStars} from '../../../../actions/stars';
@@ -48,6 +48,7 @@ const Stars = styled(ListItemSecondaryAction)({
 class ElectionDrawer extends Component {
   static propTypes = {
     candidates: PropTypes.array.isRequired,
+    compareMode: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
@@ -60,6 +61,9 @@ class ElectionDrawer extends Component {
 
   onEditModeChange = event =>
     this.props.dispatch(setEditMode(event.target.checked));
+
+  onCompareModeChange = event =>
+    this.props.dispatch(setCompareMode(event.target.checked));
 
   onVisibilityChange = event => {
     const {slug, title} = this.props.election;
@@ -117,13 +121,16 @@ class ElectionDrawer extends Component {
             </ListItemIcon>
             <ListItemText primary={this.props.localize('Reset stars')} />
           </ListItem>
-          <ListItem disabled>
+          <ListItem>
             <ListItemIcon>
               <CompareArrowsIcon />
             </ListItemIcon>
             <ListItemText primary={this.props.localize('Compare mode')} />
             <ListItemSecondaryAction>
-              <Switch disabled />
+              <Switch
+                checked={this.props.compareMode}
+                onChange={this.onCompareModeChange}
+              />
             </ListItemSecondaryAction>
           </ListItem>
           {this.props.election.languages.length > 1 && (
@@ -173,6 +180,7 @@ class ElectionDrawer extends Component {
 
 const mapStateToProps = state => ({
   candidates: getCandidates(state),
+  compareMode: state.settings.compareMode,
   editMode: state.settings.editMode,
   election: state.election.data,
   localize: getLocalize(state),
