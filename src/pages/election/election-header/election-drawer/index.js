@@ -181,7 +181,7 @@ class ElectionDrawer extends Component {
 
 const mapStateToProps = state => ({
   candidates: getCandidates(state),
-  compareMode: state.settings.compareMode,
+  compareMode: state.settings.compareMode.active,
   editMode: state.settings.editMode,
   election: state.election.data,
   localize: getLocalize(state),

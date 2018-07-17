@@ -77,7 +77,7 @@ const InnerContainer = styled.div({
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    comparate: PropTypes.object.isRequired,
+    comparates: PropTypes.array.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     matchMessage: PropTypes.func.isRequired,
@@ -178,7 +178,7 @@ class Candidate extends Component {
                 topic={topic}
                 key={topic.id}
                 candidate={this.props.candidate}
-                comparate={this.props.comparate}
+                comparates={this.props.comparates}
               />
             ))}
           </InnerContainer>
@@ -195,7 +195,7 @@ const mapStateToProps = (state, ownProps) => {
   const predicate = ['slug', ownProps.match.params.id];
   return {
     candidate: find(candidates, predicate),
-    comparate: reject(candidates, predicate)[0],
+    comparates: reject(candidates, predicate),
     editMode: state.settings.editMode,
     election: state.election.data,
     matchMessage: getMatchMessage(state),

@@ -77,5 +77,9 @@ export default {
   Done: {
     fr: 'Terminé',
     es: 'Terminado'
+  },
+  Change: {
+    fr: 'Changer',
+    es: 'Cambiar'
   }
 };

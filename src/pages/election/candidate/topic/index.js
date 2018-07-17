@@ -1,5 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
+import ChangeButton from './change-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
 import Divider from '@material-ui/core/Divider';
 import EditButton from '../../../../components/edit-button';
@@ -78,6 +79,12 @@ const ComparateAvatar = styled(Avatar)(size(theme.spacing.unit * 3), {
   marginRight: theme.spacing.unit
 });
 
+const ComparateName = withProps({variant: 'body2'})(
+  styled(Typography)({
+    marginRight: 'auto'
+  })
+);
+
 const Actions = styled.div({
   marginTop: theme.spacing.unit,
   marginLeft: theme.spacing.unit * -1.5,
@@ -101,8 +108,9 @@ const PositionFormDialogTrigger = mapProps(props => ({
 class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    comparate: PropTypes.object.isRequired,
+    comparates: PropTypes.array.isRequired,
     compareMode: PropTypes.bool.isRequired,
+    compareIndex: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     localize: PropTypes.func.isRequired,
@@ -178,13 +186,14 @@ class Topic extends Component {
 
   renderAlternateContent() {
     if (this.props.compareMode) {
-      const positions =
-        this.props.comparate.positions[this.props.topic.id] || [];
+      const comparate = this.props.comparates[this.props.compareIndex];
+      const positions = comparate.positions[this.props.topic.id] || [];
       return (
         <AlternateContent compare>
           <Comparate>
-            <ComparateAvatar src={this.props.comparate.avatar} />
-            <Typography variant="body2">{this.props.comparate.name}</Typography>
+            <ComparateAvatar src={comparate.avatar} />
+            <ComparateName>{comparate.name}</ComparateName>
+            <ChangeButton comparates={this.props.comparates} />
           </Comparate>
           {this.renderPositions(positions)}
         </AlternateContent>
@@ -279,7 +288,8 @@ class Topic extends Component {
 }
 
 const mapStateToProps = state => ({
-  compareMode: state.settings.compareMode,
+  compareMode: state.settings.compareMode.active,
+  compareIndex: state.settings.compareMode.index,
   editMode: state.settings.editMode,
   localize: getLocalize(state),
   matchMessage: getMatchMessage(state),

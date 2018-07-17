@@ -1,16 +1,13 @@
+import compareMode from './compare-mode';
 import language from './language';
 import {combineReducers} from 'redux-loop';
-import {handleAction, handleActions} from 'redux-actions';
+import {handleActions} from 'redux-actions';
 import {logOut} from '../../actions/user';
-import {setCompareMode, setEditMode} from '../../actions/settings';
+import {setEditMode} from '../../actions/settings';
 
 export default combineReducers({
   language,
-  compareMode: handleAction(
-    setCompareMode,
-    (state, {payload}) => payload,
-    false
-  ),
+  compareMode,
   editMode: handleActions(
     {
       [setEditMode]: (state, {payload}) => payload,
