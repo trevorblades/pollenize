@@ -20,7 +20,11 @@ import withProps from 'recompose/withProps';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {add as addStar, remove as removeStar} from '../../../../actions/stars';
 import {connect} from 'react-redux';
-import {getLocalize, getMatchMessage} from '../../../../selectors';
+import {
+  getLocalize,
+  getMatchMessage,
+  getCandidates
+} from '../../../../selectors';
 import {STAR_ID_DELIMITER} from '../../../../constants';
 
 const Banner = styled.div({
@@ -55,14 +59,15 @@ const TextInner = styled.span(props => ({
 const Superscript = styled.sup({lineHeight: 1});
 const StyledEditButton = styled(EditButton)({verticalAlign: 'top'});
 
-const alternateContentWidth = 250;
-const alternateContentPadding = theme.spacing.unit * 4;
-const AlternateContent = styled.div({
-  flexShrink: 0,
-  width: alternateContentWidth,
-  marginLeft: alternateContentPadding,
-  paddingLeft: alternateContentPadding,
-  borderLeft: `1px solid ${theme.palette.grey[100]}`
+const AlternateContent = styled.div(props => {
+  const spacing = theme.spacing.unit * (props.compare ? 5 : 4);
+  return {
+    flexShrink: 0,
+    width: props.compare ? '50%' : 250,
+    marginLeft: spacing,
+    paddingLeft: spacing,
+    borderLeft: `1px solid ${theme.palette.grey[100]}`
+  };
 });
 
 const Actions = styled.div({
@@ -88,17 +93,14 @@ const PositionFormDialogTrigger = mapProps(props => ({
 class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    candidates: PropTypes.array.isRequired,
+    compareMode: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     localize: PropTypes.func.isRequired,
     matchMessage: PropTypes.func.isRequired,
-    positions: PropTypes.array,
     stars: PropTypes.object.isRequired,
     topic: PropTypes.object.isRequired
-  };
-
-  static defaultProps = {
-    positions: []
   };
 
   state = {
@@ -135,40 +137,62 @@ class Topic extends Component {
     );
   }
 
-  renderPositions() {
-    if (!this.props.positions.length) {
+  renderPosition = (position, index = 0, array = []) => {
+    const {message, match} = this.props.matchMessage(position.messages);
+    return (
+      <Text paragraph={index < array.length - 1} key={position.id}>
+        <TextInner needsTranslation={!match}>
+          {message.text}
+          {position.sources.map(source => (
+            <Superscript key={source.id}>
+              [<a href="#sources">{source.index + 1}</a>]
+            </Superscript>
+          ))}
+        </TextInner>
+        {this.props.editMode && (
+          <PositionFormDialogTrigger position={position}>
+            <StyledEditButton />
+          </PositionFormDialogTrigger>
+        )}
+      </Text>
+    );
+  };
+
+  renderPositions(positions) {
+    if (!positions.length) {
       return <Text>No official stance has been taken on this topic.</Text>;
     }
 
-    const positions =
-      this.state.more || this.props.editMode
-        ? this.props.positions
-        : [this.props.positions[0]];
-    return positions.map((position, index, array) => {
-      const {message, match} = this.props.matchMessage(position.messages);
-      return (
-        <Text paragraph={index < array.length - 1} key={position.id}>
-          <TextInner needsTranslation={!match}>
-            {message.text}
-            {position.sources.map(source => (
-              <Superscript key={source.id}>
-                [<a href="#sources">{source.index + 1}</a>]
-              </Superscript>
-            ))}
-          </TextInner>
-          {this.props.editMode && (
-            <PositionFormDialogTrigger position={position}>
-              <StyledEditButton />
-            </PositionFormDialogTrigger>
-          )}
-        </Text>
-      );
-    });
+    return this.state.more || this.props.editMode
+      ? positions.map(this.renderPosition)
+      : this.renderPosition(positions[0]);
   }
 
-  renderActions() {
+  renderAlternateContent() {
+    if (this.props.compareMode) {
+      const candidate = this.props.candidates[0];
+      const positions = candidate.positions[this.props.topic.id] || [];
+      return (
+        <AlternateContent compare>
+          {this.renderPositions(positions)}
+        </AlternateContent>
+      );
+    }
+
+    const {descriptions} = this.props.topic;
+    const {message: description} = this.props.matchMessage(descriptions);
+    return (
+      description && (
+        <AlternateContent>
+          <Typography>{description.text}</Typography>
+        </AlternateContent>
+      )
+    );
+  }
+
+  renderActions(positions) {
     const actions = [];
-    if (this.props.positions.length) {
+    if (positions.length) {
       actions.push(
         <StyledIconButton key="star" onClick={this.onStarClick}>
           {this.props.stars[this.id] ? <StarIcon /> : <StarBorderIcon />}
@@ -193,8 +217,8 @@ class Topic extends Component {
           <Action>{this.props.localize('Add a position')}</Action>
         </PositionFormDialogTrigger>
       );
-    } else if (this.props.positions.length > 1) {
-      const count = this.props.positions.length - 1;
+    } else if (positions.length > 1) {
+      const count = positions.length - 1;
       actions.push(
         <Action key="more" onClick={this.onMoreClick}>
           {this.state.more
@@ -208,8 +232,8 @@ class Topic extends Component {
   }
 
   render() {
-    const {slug, image, descriptions} = this.props.topic;
-    const {message: description} = this.props.matchMessage(descriptions);
+    const {slug, image} = this.props.topic;
+    const positions = this.props.candidate.positions[this.props.topic.id] || [];
     return (
       <ScrollableAnchor id={slug}>
         <div data-topic={slug}>
@@ -224,14 +248,10 @@ class Topic extends Component {
             {!image && this.renderTitle(true)}
             <InnerContainer>
               <MainContent>
-                {this.renderPositions()}
-                {this.renderActions()}
+                {this.renderPositions(positions)}
+                {this.renderActions(positions)}
               </MainContent>
-              {description && (
-                <AlternateContent>
-                  <Typography>{description.text}</Typography>
-                </AlternateContent>
-              )}
+              {this.renderAlternateContent()}
             </InnerContainer>
           </Container>
           <ShareDialog
@@ -247,8 +267,9 @@ class Topic extends Component {
 }
 
 const mapStateToProps = state => ({
+  candidates: getCandidates(state),
+  compareMode: state.settings.compareMode,
   editMode: state.settings.editMode,
-  election: state.election.data,
   localize: getLocalize(state),
   matchMessage: getMatchMessage(state),
   stars: state.stars

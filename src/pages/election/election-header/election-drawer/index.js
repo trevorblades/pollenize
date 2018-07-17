@@ -128,6 +128,7 @@ class ElectionDrawer extends Component {
             <ListItemText primary={this.props.localize('Compare mode')} />
             <ListItemSecondaryAction>
               <Switch
+                disabled={this.props.election.candidates.length < 2}
                 checked={this.props.compareMode}
                 onChange={this.onCompareModeChange}
               />

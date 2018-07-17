@@ -170,17 +170,13 @@ class Candidate extends Component {
           />
           <InnerContainer innerRef={node => (this.innerContainer = node)}>
             <Bio candidate={this.props.candidate} />
-            {this.props.election.topics.map(topic => {
-              const positions = this.props.candidate.positions[topic.id];
-              return (
-                <Topic
-                  topic={topic}
-                  key={topic.id}
-                  candidate={this.props.candidate}
-                  positions={positions}
-                />
-              );
-            })}
+            {this.props.election.topics.map(topic => (
+              <Topic
+                topic={topic}
+                key={topic.id}
+                candidate={this.props.candidate}
+              />
+            ))}
           </InnerContainer>
         </Container>
         <Footnotes sources={this.props.candidate.sources} />
