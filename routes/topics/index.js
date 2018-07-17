@@ -1,13 +1,13 @@
-import createValidationMiddleware from '../middleware/validation';
+import createValidationMiddleware from '../../middleware/validation';
 import express from 'express';
-import filter from 'lodash/filter';
-import jwtMiddleware from '../middleware/jwt';
-import uploadMiddleware from '../middleware/upload';
-import {Topic, Sequelize} from '../models';
+import jwtMiddleware from '../../middleware/jwt';
+import uploadMiddleware from '../../middleware/upload';
+import reorder from './reorder';
+import {Topic} from '../../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
-import {notEmptyString, isInt, isArray} from '../util/schema';
-import {setMessages, getMessageSchema} from '../util/messages';
+import {notEmptyString, isInt} from '../../util/schema';
+import {setMessages, getMessageSchema} from '../../util/messages';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
@@ -26,6 +26,7 @@ const validationMiddleware = createValidationMiddleware(
 
 const router = express.Router();
 router.use(jwtMiddleware);
+router.use('/reorder', reorder);
 
 router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
   const data = matchedData(req);
@@ -40,42 +41,6 @@ router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
 
   const topic = await Topic.create(data);
   res.send(topic);
-});
-
-const reorderValidationMiddleware = createValidationMiddleware(
-  checkSchema({
-    topics: isArray,
-    'topics.*.id': isInt,
-    'topics.*.order': isInt
-  })
-);
-
-router.post('/reorder', reorderValidationMiddleware, async (req, res) => {
-  const data = matchedData(req);
-  const electionIds = req.user.getDataValue('election_ids');
-  const updates = data.topics.map(async ({id, order}) => {
-    const update = await Topic.update(
-      {order},
-      {
-        where: {
-          id,
-          election_id: {
-            [Sequelize.Op.in]: electionIds
-          }
-        },
-        returning: true
-      }
-    );
-    return update[1][0];
-  });
-
-  const topics = await Promise.all(updates);
-  if (filter(topics).length !== data.topics.length) {
-    res.sendStatus(403);
-    return;
-  }
-
-  res.send(topics);
 });
 
 router
