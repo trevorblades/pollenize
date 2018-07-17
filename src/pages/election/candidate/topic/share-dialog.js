@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import FacebookLogo from '../../../../assets/logos/facebook.svg';
 import TwitterLogo from '../../../../assets/logos/twitter.svg';
 import GooglePlusLogo from '../../../../assets/logos/google-plus.svg';
+import VKLogo from '../../../../assets/logos/vk.svg';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -99,6 +100,13 @@ class ShareDialog extends Component {
               query={{url}}
             >
               <GooglePlusLogo />
+            </ShareButton>
+            <ShareButton
+              style={{backgroundColor: '#6383a8'}}
+              href="https://vk.com/share.php"
+              query={{url}}
+            >
+              <VKLogo />
             </ShareButton>
           </ShareButtons>
           <TextField fullWidth readOnly value={url} onClick={focusAndSelect} />
