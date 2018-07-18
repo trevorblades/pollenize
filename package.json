@@ -20,6 +20,7 @@
     "jwt-decode": "^2.2.0",
     "limax": "^1.6.0",
     "material-ui-pickers": "^1.0.0-rc.10",
+    "mustache": "^2.3.0",
     "number-theory": "^1.1.0",
     "ol": "^4.6.5",
     "polished": "^1.9.2",

@@ -105,21 +105,23 @@ class Bio extends Component {
     return (
       <Section small>
         <Typography gutterBottom variant="display1">
-          {this.props.localize('About')} {this.props.candidate.firstName}
+          {this.props.localize('About {{name}}', {
+            name: this.props.candidate.firstName
+          })}
         </Typography>
         <Content>
           <InnerContent>
             <Text gutterBottom>
               {this.props.candidate.birth_date
-                ? `${differenceInYears(
-                    now,
-                    this.props.candidate.birth_date
-                  )} ${this.props.localize('years old')}`
+                ? this.props.localize('{{age}} years old', {
+                    age: differenceInYears(now, this.props.candidate.birth_date)
+                  })
                 : unknown}
             </Text>
             <Text gutterBottom={Boolean(bio)}>
-              {this.props.localize('Hometown')}:{' '}
-              {this.props.candidate.hometown || unknown}
+              {this.props.localize('Hometown: {{name}}', {
+                name: this.props.candidate.hometown || unknown
+              })}
             </Text>
             {bio && (
               <ReactMarkdown

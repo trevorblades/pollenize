@@ -11,21 +11,21 @@ export default {
     fr: 'Ajouter un sujet',
     es: 'Agregar tema'
   },
-  About: {
-    fr: 'À propos de',
-    es: 'Acerca de'
+  'About {{name}}': {
+    fr: 'À propos de {{name}}',
+    es: 'Acerca de {{name}}'
   },
-  'years old': {
-    fr: 'ans',
-    es: 'años'
+  '{{age}} years old': {
+    fr: '{{age}} ans',
+    es: '{{age}} años'
   },
-  Hometown: {
-    fr: 'Ville natale',
-    es: 'Ciudad natal'
+  'Hometown: {{name}}': {
+    fr: 'Ville natale: {{name}}',
+    es: 'Ciudad natal: {{name}}'
   },
-  'See more': {
-    fr: 'Voir plus',
-    es: 'Ver más'
+  'See more ({{count}})': {
+    fr: 'Voir plus ({{count}})',
+    es: 'Ver más ({{count}})'
   },
   'Show less': {
     fr: 'Montre moins',
@@ -62,9 +62,9 @@ export default {
     fr: 'Privé',
     es: 'Privado'
   },
-  Language: {
-    fr: 'Langue',
-    es: 'Idioma'
+  'Language: {{name}}': {
+    fr: 'Langue: {{name}}',
+    es: 'Idioma: {{name}}'
   },
   'Edit mode': {
     fr: 'Mode édition',
@@ -73,6 +73,10 @@ export default {
   'Share this position': {
     fr: 'Partager cette position',
     es: 'Comparte esta posición'
+  },
+  "Check out {{name}}'s stance on {{topic}}": {
+    fr: 'Découvrez la position de {{name}} sur {{topic}}',
+    es: 'Mira la postura de {{name}} en {{topic}}'
   },
   Done: {
     fr: 'Terminé',

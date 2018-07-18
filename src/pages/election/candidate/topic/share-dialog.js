@@ -79,9 +79,13 @@ class ShareDialog extends Component {
               href="https://twitter.com/intent/tweet"
               query={{
                 url,
-                text: `Check out ${
-                  this.props.candidate.name
-                }'s stance on ${title.text.toLowerCase()}`,
+                text: this.props.localize(
+                  "Check out {{name}}'s stance on {{topic}}",
+                  {
+                    name: this.props.candidate.name,
+                    topic: title.text.toLowerCase()
+                  }
+                ),
                 related: 'pollenizeorg'
               }}
             >

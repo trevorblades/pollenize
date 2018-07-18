@@ -1,3 +1,4 @@
+import Mustache from 'mustache';
 import countBy from 'lodash/countBy';
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
@@ -67,8 +68,13 @@ export const getCandidates = createSelector(getElection, election => {
 });
 
 const getLanguage = state => state.settings.language;
-export const getLocalize = createSelector(getLanguage, language => message =>
-  (messages[message] && messages[message][language]) || message
+export const getLocalize = createSelector(
+  getLanguage,
+  language => (message, options) => {
+    const template =
+      (messages[message] && messages[message][language]) || message;
+    return Mustache.render(template, options);
+  }
 );
 
 export const getMatchMessage = createSelector(

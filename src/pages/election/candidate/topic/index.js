@@ -244,7 +244,7 @@ class Topic extends Component {
         <Action key="more" onClick={this.onMoreClick}>
           {this.state.more
             ? this.props.localize('Show less')
-            : `${this.props.localize('See more')} (${count})`}
+            : this.props.localize('See more ({{count}})', {count})}
         </Action>
       );
     }

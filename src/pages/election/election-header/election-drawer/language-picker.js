@@ -40,9 +40,9 @@ class LanaguagePicker extends Component {
             <TranslateIcon />
           </ListItemIcon>
           <ListItemText
-            primary={`${this.props.localize(
-              'Language'
-            )}: ${ISO6391.getNativeName(this.props.language)}`}
+            primary={this.props.localize('Language: {{name}}', {
+              name: ISO6391.getNativeName(this.props.language)
+            })}
           />
         </ListItem>
         <Menu
