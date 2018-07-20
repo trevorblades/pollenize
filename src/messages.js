@@ -70,6 +70,10 @@ export default {
     fr: 'Mode édition',
     es: 'Modo de edición'
   },
+  'I like this': {
+    fr: "J'aime ça",
+    es: 'Me gusta esto'
+  },
   'Share this position': {
     fr: 'Partager cette position',
     es: 'Comparte esta posición'

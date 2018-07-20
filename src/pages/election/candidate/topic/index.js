@@ -14,6 +14,7 @@ import Section from '../../../../components/section';
 import ShareDialog from './share-dialog';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
@@ -104,6 +105,8 @@ const PositionFormDialogTrigger = mapProps(props => ({
     onSuccess: closeDialog
   }))(PositionForm)
 }))(DialogTrigger);
+
+const DelayedTooltip = withProps({enterDelay: 500})(Tooltip);
 
 class Topic extends Component {
   static propTypes = {
@@ -215,12 +218,19 @@ class Topic extends Component {
     const actions = [];
     if (positions.length) {
       actions.push(
-        <StyledIconButton key="star" onClick={this.onStarClick}>
-          {this.props.stars[this.id] ? <StarIcon /> : <StarBorderIcon />}
-        </StyledIconButton>,
-        <StyledIconButton key="share" onClick={this.onShareClick}>
-          <ReplyIcon />
-        </StyledIconButton>
+        <DelayedTooltip key="star" title={this.props.localize('I like this')}>
+          <StyledIconButton onClick={this.onStarClick}>
+            {this.props.stars[this.id] ? <StarIcon /> : <StarBorderIcon />}
+          </StyledIconButton>
+        </DelayedTooltip>,
+        <DelayedTooltip
+          key="share"
+          title={this.props.localize('Share this position')}
+        >
+          <StyledIconButton onClick={this.onShareClick}>
+            <ReplyIcon />
+          </StyledIconButton>
+        </DelayedTooltip>
       );
     }
 
