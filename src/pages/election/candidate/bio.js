@@ -68,11 +68,11 @@ const Text = defaultProps({
   variant: 'subheading'
 })(Typography);
 
-const now = Date.now();
 const unknown = 'Unknown';
 class Bio extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired,
     matchMessage: PropTypes.func.isRequired
   };
@@ -114,7 +114,10 @@ class Bio extends Component {
             <Text gutterBottom>
               {this.props.candidate.birth_date
                 ? this.props.localize('{{age}} years old', {
-                    age: differenceInYears(now, this.props.candidate.birth_date)
+                    age: differenceInYears(
+                      this.props.election.ends_at,
+                      this.props.candidate.birth_date
+                    )
                   })
                 : unknown}
             </Text>
@@ -139,6 +142,7 @@ class Bio extends Component {
 }
 
 const mapStateToProps = state => ({
+  election: state.election.data,
   localize: getLocalize(state),
   matchMessage: getMatchMessage(state)
 });
