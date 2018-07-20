@@ -94,7 +94,10 @@ class ElectionDrawer extends Component {
                 onClick={this.props.onClose}
               >
                 <Avatar alt={candidate.name} src={candidate.avatar} />
-                <ListItemText primary={candidate.name} secondary={party.text} />
+                <ListItemText
+                  primary={candidate.name}
+                  secondary={party && party.text}
+                />
                 {starCount && (
                   <Stars>
                     <Typography color="inherit">{starCount}</Typography>

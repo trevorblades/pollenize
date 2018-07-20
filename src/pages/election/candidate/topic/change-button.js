@@ -61,7 +61,10 @@ class ChangeButton extends Component {
                 selected={index === this.props.compareIndex}
                 onClick={() => this.onMenuItemClick(index)}
               >
-                <ListItemText primary={comparate.name} secondary={party.text} />
+                <ListItemText
+                  primary={comparate.name}
+                  secondary={party && party.text}
+                />
               </StyledMenuItem>
             );
           })}
