@@ -65,16 +65,8 @@ class ElectionDrawer extends Component {
   onCompareModeChange = event =>
     this.props.dispatch(setCompareMode(event.target.checked));
 
-  onVisibilityChange = event => {
-    const {slug, title} = this.props.election;
-    this.props.dispatch(
-      updateElection({
-        slug,
-        title,
-        public: event.target.checked
-      })
-    );
-  };
+  onVisibilityChange = event =>
+    this.props.dispatch(updateElection({public: event.target.checked}));
 
   resetStars = () => this.props.dispatch(resetStars());
 
