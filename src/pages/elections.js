@@ -1,5 +1,4 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
-import CanadaFlag from '../assets/flags/canada.svg';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import Helmet from 'react-helmet';
@@ -25,7 +24,7 @@ const ElectionButton = withProps({component: Link})(
   })
 );
 
-const StyledCanadaFlag = styled(CanadaFlag)({
+const Flag = styled.img({
   display: 'block',
   height: theme.spacing.unit * 5,
   marginBottom: theme.spacing.unit * 2
@@ -92,7 +91,7 @@ class Elections extends Component {
           return (
             <Grid item key={election.id} xs={12} sm={6} md={4} lg={3}>
               <ElectionButton to={`/elections/${election.slug}`}>
-                <StyledCanadaFlag />
+                <Flag src={election.flag} />
                 <Typography gutterBottom color="inherit" variant="title">
                   {election.title}
                 </Typography>

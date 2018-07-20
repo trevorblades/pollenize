@@ -1,4 +1,3 @@
-import CanadaFlag from '../../../assets/flags/canada.svg';
 import ElectionDrawer from './election-drawer';
 import Header, {HEADER_LOGO_SIZE} from '../../../components/header';
 import IconButton from '@material-ui/core/IconButton';
@@ -31,7 +30,7 @@ const Title = withProps({
   })
 );
 
-const StyledCanadaFlag = styled(CanadaFlag)({
+const Flag = styled.img({
   height: theme.spacing.unit * 2,
   marginRight: theme.spacing.unit
 });
@@ -87,7 +86,7 @@ class ElectionHeader extends Component {
       <Header dark simple logoHref="/elections">
         <TitleContainer>
           <Title>
-            <StyledCanadaFlag />
+            <Flag src={this.props.election.flag} />
             {this.props.children}
           </Title>
           {this.renderSubtitle()}
