@@ -2,7 +2,14 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
 import shuffle from 'lodash/shuffle';
-import {Election, Language, Topic, Sequelize, sequelize} from '../models';
+import {
+  Election,
+  Language,
+  Topic,
+  Organization,
+  Sequelize,
+  sequelize
+} from '../models';
 import {CANDIDATE_OPTIONS} from '../constants';
 import {checkSchema} from 'express-validator/check';
 import {jwtFromRequest} from '../strategies/jwt';
@@ -80,6 +87,7 @@ router
       ...options,
       include: [
         Language,
+        Organization,
         {
           model: Topic,
           include: ['titles', 'descriptions']
@@ -92,6 +100,15 @@ router
       res.sendStatus(404);
       return;
     }
+
+    const partners = await election.getOrganizations({
+      where: {
+        id: {
+          [Sequelize.Op.ne]: 1
+        }
+      }
+    });
+    election.setDataValue('partners', partners);
 
     const candidates = await election.getCandidates(CANDIDATE_OPTIONS);
     election.setDataValue('candidates', shuffle(candidates));
