@@ -18,7 +18,7 @@ const validationMiddleware = createValidationMiddleware(
       isISO8601: true
     },
     hometown: exists,
-    ...getMessageSchema('parties', true, true),
+    ...getMessageSchema('parties', false, true),
     ...getMessageSchema('bios', false, true),
     color: {
       isHexColor: true
