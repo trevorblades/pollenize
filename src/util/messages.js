@@ -29,6 +29,7 @@ export function createMessageField(
   key = 'messages',
   multiline
 ) {
+  const isMultilingual = languages.length > 1;
   return languages.map(({code}, index) => {
     const error = errors && (errors[key] || errors[`${key}[${index}].text`]);
     return [
@@ -36,7 +37,9 @@ export function createMessageField(
       {
         error: Boolean(error),
         helperText: error && error.msg,
-        label: `${label} (${ISO6391.getNativeName(code)})`,
+        label: isMultilingual
+          ? `${label} (${ISO6391.getNativeName(code)})`
+          : label,
         multiline
       }
     ];
