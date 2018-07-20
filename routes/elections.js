@@ -14,7 +14,6 @@ import {CANDIDATE_OPTIONS} from '../constants';
 import {checkSchema} from 'express-validator/check';
 import {jwtFromRequest} from '../strategies/jwt';
 import {matchedData} from 'express-validator/filter';
-import {notEmptyString} from '../util/schema';
 
 function optionalJwtMiddleware(req, res, next) {
   if (jwtFromRequest(req)) {
@@ -65,14 +64,15 @@ async function getOptions(user, where = {}) {
 const router = express.Router();
 router.get('/', optionalJwtMiddleware, async (req, res) => {
   const options = await getOptions(req.user);
-  const elections = await Election.findAll(options);
+  const elections = await Election.findAll({
+    ...options,
+    order: [['ends_at', 'DESC']]
+  });
   res.send(elections);
 });
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
-    slug: notEmptyString,
-    title: notEmptyString,
     public: {
       isBoolean: true
     }
@@ -93,7 +93,7 @@ router
           include: ['titles', 'descriptions']
         }
       ],
-      order: [[Topic, 'order', 'ASC']]
+      order: [[Topic, 'order']]
     });
 
     if (!election) {
