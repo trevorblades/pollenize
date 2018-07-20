@@ -111,8 +111,7 @@ class CandidateForm extends Component {
         noun="candidate"
         initialData={this.props.candidate}
         fields={[
-          ['name', gridItemProps],
-          ['party', gridItemProps],
+          'name',
           <GridItem key="date">
             <DatePicker
               fullWidth
