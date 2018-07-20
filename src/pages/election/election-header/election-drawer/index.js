@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import styled, {css} from 'react-emotion';
+import sumBy from 'lodash/sumBy';
 import theme from '../../../../theme';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -70,6 +71,21 @@ class ElectionDrawer extends Component {
 
   resetStars = () => this.props.dispatch(resetStars());
 
+  renderResetStarsButton() {
+    const total = sumBy(
+      this.props.candidates,
+      candidate => this.props.starCounts[candidate.id]
+    );
+    return (
+      <ListItem button disabled={!total} onClick={this.resetStars}>
+        <ListItemIcon>
+          <StarIcon />
+        </ListItemIcon>
+        <ListItemText primary={this.props.localize('Reset stars')} />
+      </ListItem>
+    );
+  }
+
   render() {
     return (
       <Drawer
@@ -110,25 +126,21 @@ class ElectionDrawer extends Component {
           <StyledListSubheader>
             {this.props.localize('Settings')}
           </StyledListSubheader>
-          <ListItem button onClick={this.resetStars}>
-            <ListItemIcon>
-              <StarIcon />
-            </ListItemIcon>
-            <ListItemText primary={this.props.localize('Reset stars')} />
-          </ListItem>
-          <ListItem>
-            <ListItemIcon>
-              <CompareArrowsIcon />
-            </ListItemIcon>
-            <ListItemText primary={this.props.localize('Compare mode')} />
-            <ListItemSecondaryAction>
-              <Switch
-                disabled={this.props.election.candidates.length < 2}
-                checked={this.props.compareMode}
-                onChange={this.onCompareModeChange}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
+          {this.renderResetStarsButton()}
+          {this.props.election.candidates.length > 1 && (
+            <ListItem>
+              <ListItemIcon>
+                <CompareArrowsIcon />
+              </ListItemIcon>
+              <ListItemText primary={this.props.localize('Compare mode')} />
+              <ListItemSecondaryAction>
+                <Switch
+                  checked={this.props.compareMode}
+                  onChange={this.onCompareModeChange}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          )}
           {this.props.election.languages.length > 1 && (
             <LanguagePicker languages={this.props.election.languages} />
           )}
