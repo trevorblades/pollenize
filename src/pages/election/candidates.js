@@ -88,17 +88,19 @@ class Candidates extends Component {
   calculateSize = () => {
     const {offsetWidth, offsetHeight} = this.container;
     const cellCount = Math.round(this.props.election.candidates.length / 2) * 2;
-    const deltas = divisors(cellCount).map(divisor => {
-      const width = offsetWidth / divisor;
-      const height = offsetHeight / (cellCount / divisor);
-      return {
-        divisor,
-        delta: Math.abs(width - height)
-      };
-    });
+    if (cellCount) {
+      const deltas = divisors(cellCount).map(divisor => {
+        const width = offsetWidth / divisor;
+        const height = offsetHeight / (cellCount / divisor);
+        return {
+          divisor,
+          delta: Math.abs(width - height)
+        };
+      });
 
-    const {divisor} = minBy(deltas, 'delta');
-    this.setState({size: 12 / divisor});
+      const {divisor} = minBy(deltas, 'delta');
+      this.setState({size: 12 / divisor});
+    }
   };
 
   render() {
