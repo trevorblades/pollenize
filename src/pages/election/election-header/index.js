@@ -6,11 +6,19 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
+import arrayToSentence from 'array-to-sentence';
+import map from 'lodash/map';
 import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
+import {getLocalize} from '../../../selectors';
 import {size} from 'polished';
+
+const TitleContainer = styled.div({
+  margin: '0 auto',
+  textAlign: 'center'
+});
 
 const Title = withProps({
   color: 'inherit',
@@ -19,7 +27,6 @@ const Title = withProps({
   styled(Typography)({
     display: 'flex',
     alignItems: 'center',
-    margin: '0 auto',
     fontWeight: theme.typography.fontWeightMedium
   })
 );
@@ -29,6 +36,12 @@ const StyledCanadaFlag = styled(CanadaFlag)({
   marginRight: theme.spacing.unit
 });
 
+const Subtitle = withProps({variant: 'caption'})(
+  styled(Typography)({
+    color: theme.palette.grey[300]
+  })
+);
+
 const menuButtonSize = theme.spacing.unit * 6;
 const MenuButton = styled(IconButton)(size(menuButtonSize), {
   margin: (HEADER_LOGO_SIZE - menuButtonSize) / 2
@@ -36,7 +49,9 @@ const MenuButton = styled(IconButton)(size(menuButtonSize), {
 
 class ElectionHeader extends Component {
   static propTypes = {
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    election: PropTypes.object.isRequired,
+    localize: PropTypes.func.isRequired
   };
 
   state = {
@@ -50,13 +65,33 @@ class ElectionHeader extends Component {
 
   closeDrawer = () => this.setState({drawerOpen: false});
 
+  renderSubtitle() {
+    if (!this.props.election.partners.length) {
+      return null;
+    }
+
+    const partners = map(this.props.election.partners, 'name');
+    return (
+      <Subtitle>
+        {this.props.localize('Presented by {{partners}}', {
+          partners: arrayToSentence(partners, {
+            lastSeparator: this.props.localize('and')
+          })
+        })}
+      </Subtitle>
+    );
+  }
+
   render() {
     return (
       <Header dark simple logoHref="/elections">
-        <Title>
-          <StyledCanadaFlag />
-          {this.props.children}
-        </Title>
+        <TitleContainer>
+          <Title>
+            <StyledCanadaFlag />
+            {this.props.children}
+          </Title>
+          {this.renderSubtitle()}
+        </TitleContainer>
         <MenuButton color="inherit" onClick={this.onMenuClick}>
           <MenuIcon />
         </MenuButton>
@@ -70,9 +105,8 @@ class ElectionHeader extends Component {
 }
 
 const mapStateToProps = state => ({
-  editMode: state.settings.editMode,
   election: state.election.data,
-  user: state.user.data
+  localize: getLocalize(state)
 });
 
 export default connect(mapStateToProps)(ElectionHeader);

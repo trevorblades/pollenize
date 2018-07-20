@@ -85,5 +85,13 @@ export default {
   Change: {
     fr: 'Changer',
     es: 'Cambiar'
+  },
+  'Presented by {{partners}}': {
+    fr: 'Présenté par {{partners}}',
+    es: 'Presentado por {{partners}}'
+  },
+  and: {
+    fr: 'et',
+    es: 'y'
   }
 };
