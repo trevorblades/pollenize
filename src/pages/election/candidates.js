@@ -75,10 +75,7 @@ class Candidates extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.election.candidates.length !==
-      prevProps.election.candidates.length
-    ) {
+    if (this.props.candidates.length !== prevProps.candidates.length) {
       this.calculateSize();
     }
   }
@@ -89,7 +86,7 @@ class Candidates extends Component {
 
   calculateSize = () => {
     const {offsetWidth, offsetHeight} = this.container;
-    const cellCount = Math.round(this.props.election.candidates.length / 2) * 2;
+    const cellCount = Math.round(this.props.candidates.length / 2) * 2;
     if (cellCount) {
       const deltas = divisors(cellCount).map(divisor => {
         const width = offsetWidth / divisor;

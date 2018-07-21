@@ -16,6 +16,7 @@ import {
   load as loadElection,
   reset as resetElection
 } from '../../actions/election';
+import {getCandidates} from '../../selectors';
 
 const Loading = styled.div({
   display: 'flex',
@@ -33,6 +34,7 @@ const StyledCircularProgress = styled(CircularProgress)({
 
 class Election extends Component {
   static propTypes = {
+    candidates: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
     election: PropTypes.object,
     loading: PropTypes.bool.isRequired,
@@ -86,7 +88,7 @@ class Election extends Component {
           <Route
             path="/elections/:election/:id"
             render={props => {
-              const slugs = map(this.props.election.candidates, 'slug');
+              const slugs = map(this.props.candidates, 'slug');
               const found = slugs.includes(props.match.params.id);
               return found ? <Candidate {...props} /> : <NotFound page />;
             }}
@@ -102,6 +104,7 @@ class Election extends Component {
 }
 
 const mapStateToProps = state => ({
+  candidates: getCandidates(state),
   election: state.election.data,
   loading: state.election.loading,
   lastSuccess: state.election.lastSuccess,

@@ -127,7 +127,7 @@ class ElectionDrawer extends Component {
             {this.props.localize('Settings')}
           </StyledListSubheader>
           {this.renderResetStarsButton()}
-          {this.props.election.candidates.length > 1 && (
+          {this.props.candidates.length > 1 && (
             <ListItem>
               <ListItemIcon>
                 <CompareArrowsIcon />

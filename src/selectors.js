@@ -1,5 +1,6 @@
 import Mustache from 'mustache';
 import countBy from 'lodash/countBy';
+import filter from 'lodash/filter';
 import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import groupBy from 'lodash/groupBy';
@@ -34,38 +35,51 @@ export const getTopics = createSelector(getElection, election => {
   });
 });
 
-export const getCandidates = createSelector(getElection, election => {
-  const languages = keyBy(election.languages, 'id');
-  return election.candidates.map(candidate => {
-    const sources = flatMap(candidate.positions, 'sources');
-    const [parties, bios, captions] = keyMultipleByLanguage(
-      languages,
-      candidate.parties,
-      candidate.bios,
-      candidate.captions
-    );
+const getEditMode = state => state.settings.editMode;
+export const getCandidates = createSelector(
+  getElection,
+  getEditMode,
+  (election, editMode) => {
+    if (!election) {
+      return [];
+    }
 
-    return {
-      ...candidate,
-      sources,
-      parties,
-      bios,
-      captions,
-      firstName: candidate.name.replace(/\s+/, ' ').split(' ')[0],
-      positions: groupBy(
-        flatMap(candidate.positions, position => ({
-          ...position,
-          messages: keyByLanguage(position.messages, languages),
-          sources: position.sources.map(source => ({
-            ...source,
-            index: findIndex(sources, ['id', source.id])
-          }))
-        })),
-        'topic_id'
-      )
-    };
-  });
-});
+    const languages = keyBy(election.languages, 'id');
+    const filtered = editMode
+      ? election.candidates
+      : filter(election.candidates, 'active');
+
+    return filtered.map(candidate => {
+      const sources = flatMap(candidate.positions, 'sources');
+      const [parties, bios, captions] = keyMultipleByLanguage(
+        languages,
+        candidate.parties,
+        candidate.bios,
+        candidate.captions
+      );
+
+      return {
+        ...candidate,
+        sources,
+        parties,
+        bios,
+        captions,
+        firstName: candidate.name.replace(/\s+/, ' ').split(' ')[0],
+        positions: groupBy(
+          flatMap(candidate.positions, position => ({
+            ...position,
+            messages: keyByLanguage(position.messages, languages),
+            sources: position.sources.map(source => ({
+              ...source,
+              index: findIndex(sources, ['id', source.id])
+            }))
+          })),
+          'topic_id'
+        )
+      };
+    });
+  }
+);
 
 const getLanguage = state => state.settings.language;
 export const getLocalize = createSelector(
