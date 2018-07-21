@@ -1,11 +1,14 @@
 import ColorPicker from './color-picker';
 import AutoForm from '../../../components/auto-form';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
 import ImageButton from '../../../components/image-button';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
+import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
+import defaultProps from 'recompose/defaultProps';
 import map from 'lodash/map';
 import reject from 'lodash/reject';
 import styled from 'react-emotion';
@@ -22,10 +25,12 @@ import {
 import {messagesFromEvent, createMessageFields} from '../../../util/messages';
 
 const gridItemProps = {xs: 6};
-const GridItem = withProps({
+const GridItem = defaultProps({
   ...gridItemProps,
   item: true
 })(Grid);
+
+const SmallGridItem = withProps({xs: 4})(GridItem);
 
 const AvatarButton = styled(ImageButton)(size(96), {
   borderRadius: '50%'
@@ -46,6 +51,7 @@ class CandidateForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      active: props.candidate.active,
       avatar: null,
       birthDate: new Date(props.candidate.birth_date || Date.now()),
       color: props.candidate.color
@@ -61,6 +67,8 @@ class CandidateForm extends Component {
   onAvatarChange = avatar => this.setState({avatar});
 
   onColorChange = color => this.setState({color: color.hex});
+
+  onActiveChange = event => this.setState({active: event.target.checked});
 
   onSubmit = event => {
     event.preventDefault();
@@ -85,6 +93,7 @@ class CandidateForm extends Component {
     formData.append('slug', slug);
     formData.append('birth_date', this.state.birthDate.toISOString());
     formData.append('color', this.state.color);
+    formData.append('active', this.state.active);
     formData.append('election_id', this.props.candidate.election_id);
     if (this.state.avatar) {
       formData.append('file', this.state.avatar.file);
@@ -133,7 +142,7 @@ class CandidateForm extends Component {
             }
           ],
           ...captions,
-          <GridItem key="avatar">
+          <SmallGridItem key="avatar">
             <FormControl margin="dense">
               <Typography gutterBottom variant="caption">
                 Avatar image
@@ -147,13 +156,24 @@ class CandidateForm extends Component {
                 onChange={this.onAvatarChange}
               />
             </FormControl>
-          </GridItem>,
-          <GridItem key="color">
+          </SmallGridItem>,
+          <SmallGridItem key="color">
             <ColorPicker
               color={this.state.color}
               onChange={this.onColorChange}
             />
-          </GridItem>
+          </SmallGridItem>,
+          <SmallGridItem key="active">
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={this.state.active}
+                  onChange={this.onActiveChange}
+                />
+              }
+              label="Active"
+            />
+          </SmallGridItem>
         ]}
         loading={this.props.loading}
         error={this.props.error}
