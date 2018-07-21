@@ -23,6 +23,10 @@ export default {
     fr: 'Ville natale: {{name}}',
     es: 'Ciudad natal: {{name}}'
   },
+  'No official stance has been taken on this topic.': {
+    fr: "Aucune position officielle n'a été prise sur ce sujet.",
+    es: 'No se ha adoptado ninguna postura oficial sobre este tema.'
+  },
   'See more ({{count}})': {
     fr: 'Voir plus ({{count}})',
     es: 'Ver más ({{count}})'

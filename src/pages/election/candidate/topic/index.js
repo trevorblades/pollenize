@@ -179,7 +179,13 @@ class Topic extends Component {
 
   renderPositions(positions) {
     if (!positions.length) {
-      return <Text>No official stance has been taken on this topic.</Text>;
+      return (
+        <Text>
+          {this.props.localize(
+            'No official stance has been taken on this topic.'
+          )}
+        </Text>
+      );
     }
 
     return this.state.more || this.props.editMode
