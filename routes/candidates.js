@@ -23,6 +23,9 @@ const validationMiddleware = createValidationMiddleware(
     color: {
       isHexColor: true
     },
+    active: {
+      isBoolean: true
+    },
     video_url: {
       optional: {
         options: {
