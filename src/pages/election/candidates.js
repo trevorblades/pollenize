@@ -29,7 +29,8 @@ const GridItem = defaultProps({
 })(
   styled(Grid)({
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    padding: theme.spacing.unit * 4
   })
 );
 
@@ -39,7 +40,8 @@ const StyledAvatar = styled(Avatar)(size(80), {
 
 const Name = withProps({
   variant: 'display1',
-  color: 'inherit'
+  color: 'inherit',
+  align: 'center'
 })(
   styled(Typography)({
     marginBottom: theme.spacing.unit / 2
