@@ -39,7 +39,7 @@ router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
     data.image = req.file.data.link;
   }
 
-  const topic = await Topic.create(data);
+  const topic = await Topic.create(data, {include: ['titles', 'descriptions']});
   res.send(topic);
 });
 

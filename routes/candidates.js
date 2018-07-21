@@ -90,7 +90,7 @@ router
       data.avatar = req.file.data.link;
     }
 
-    await res.locals.candidate.set(data);
+    await res.locals.candidate.update(data);
     const keys = ['parties', 'bios', 'captions'];
     await setMessages(res.locals.candidate, data, keys);
 
