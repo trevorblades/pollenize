@@ -1,8 +1,6 @@
 import Candidate from './candidate';
 import Candidates from './candidates';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Footer from '../../components/footer';
-import Header from '../../components/header';
 import Helmet from 'react-helmet';
 import NotFound from '../not-found';
 import PropTypes from 'prop-types';
@@ -32,14 +30,6 @@ const Loading = styled.div({
 const StyledCircularProgress = styled(CircularProgress)({
   marginBottom: theme.spacing.unit * 2
 });
-
-const NotFoundPage = () => (
-  <Fragment>
-    <Header centered />
-    <NotFound />
-    <Footer />
-  </Fragment>
-);
 
 class Election extends Component {
   static propTypes = {
@@ -84,7 +74,7 @@ class Election extends Component {
         );
       }
 
-      return <NotFoundPage />;
+      return <NotFound page />;
     }
 
     return (
@@ -98,7 +88,7 @@ class Election extends Component {
             render={props => {
               const slugs = map(this.props.election.candidates, 'slug');
               const found = slugs.includes(props.match.params.id);
-              return found ? <Candidate {...props} /> : <NotFoundPage />;
+              return found ? <Candidate {...props} /> : <NotFound page />;
             }}
           />
           <Route component={Candidates} />
