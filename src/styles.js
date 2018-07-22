@@ -8,8 +8,16 @@ export const centered = css({
   margin: '0 auto'
 });
 
+const print = css`
+  @media print {
+    @page {
+      size: 297mm 210mm; /* force landscape */
+    }
+  }
+`;
+
 export default () =>
-  injectGlobal({
+  injectGlobal(print, {
     [['html', 'body']]: {
       height: '100%'
     },

@@ -73,7 +73,7 @@ const SidebarTopic = SortableElement(
   styled(NotLastBottomMargin)(props => ({
     display: 'flex',
     alignItems: 'flex-start',
-    paddingRight: theme.spacing.unit / 2,
+    paddingRight: theme.spacing.unit,
     borderRightWidth: 3,
     borderRightStyle: 'solid',
     borderColor: props.active ? 'inherit' : 'transparent',

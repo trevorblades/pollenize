@@ -9,6 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import PrintIcon from '@material-ui/icons/Print';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import StarIcon from '@material-ui/icons/Star';
@@ -127,6 +128,20 @@ class ElectionDrawer extends Component {
             {this.props.localize('Settings')}
           </StyledListSubheader>
           {this.renderResetStarsButton()}
+          <ListItem
+            button
+            component="a"
+            href={`/elections/${this.props.election.slug}?printable=true`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ListItemIcon>
+              <PrintIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={this.props.localize('View printable table')}
+            />
+          </ListItem>
           {this.props.candidates.length > 1 && (
             <ListItem>
               <ListItemIcon>
