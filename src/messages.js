@@ -1,3 +1,5 @@
+import {EMPTY_MESSAGE} from './constants';
+
 export default {
   'Create a candidate': {
     fr: 'Créer un candidat',
@@ -23,7 +25,7 @@ export default {
     fr: 'Ville natale: {{name}}',
     es: 'Ciudad natal: {{name}}'
   },
-  'No official stance has been taken on this topic.': {
+  [EMPTY_MESSAGE]: {
     fr: "Aucune position officielle n'a été prise sur ce sujet.",
     es: 'No se ha adoptado ninguna postura oficial sobre este tema.'
   },

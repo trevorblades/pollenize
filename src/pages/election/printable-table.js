@@ -8,8 +8,14 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme from '../../theme';
+import {EMPTY_MESSAGE} from '../../constants';
 import {connect} from 'react-redux';
-import {getMatchMessage, getTopics, getCandidates} from '../../selectors';
+import {
+  getMatchMessage,
+  getTopics,
+  getCandidates,
+  getLocalize
+} from '../../selectors';
 
 const StyledTableRow = styled(TableRow)({
   verticalAlign: 'text-top'
@@ -28,15 +34,14 @@ const CandidateName = styled(TableCell)({
 class PrintableTable extends Component {
   static propTypes = {
     candidates: PropTypes.array.isRequired,
+    localize: PropTypes.func.isRequired,
     matchMessage: PropTypes.func.isRequired,
     topics: PropTypes.array.isRequired
   };
 
   renderPositions(positions) {
-    if (!positions.length) {
-      return this.this.props.localize(
-        'No official stance has been taken on this topic.'
-      );
+    if (!positions) {
+      return this.props.localize(EMPTY_MESSAGE);
     }
 
     return positions.map((position, index, array) => {
@@ -87,6 +92,7 @@ class PrintableTable extends Component {
 
 const mapStateToProps = state => ({
   candidates: getCandidates(state),
+  localize: getLocalize(state),
   matchMessage: getMatchMessage(state),
   topics: getTopics(state)
 });

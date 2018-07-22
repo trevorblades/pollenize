@@ -20,7 +20,7 @@ import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
 import theme from '../../../../theme';
 import withProps from 'recompose/withProps';
-import {STAR_ID_DELIMITER} from '../../../../constants';
+import {STAR_ID_DELIMITER, EMPTY_MESSAGE} from '../../../../constants';
 import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
 import {add as addStar, remove as removeStar} from '../../../../actions/stars';
 import {connect} from 'react-redux';
@@ -179,13 +179,7 @@ class Topic extends Component {
 
   renderPositions(positions) {
     if (!positions.length) {
-      return (
-        <Text>
-          {this.props.localize(
-            'No official stance has been taken on this topic.'
-          )}
-        </Text>
-      );
+      return <Text>{this.props.localize(EMPTY_MESSAGE)}</Text>;
     }
 
     return this.state.more || this.props.editMode
