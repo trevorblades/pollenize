@@ -48,9 +48,9 @@ export default {
     fr: 'Aller au candidat',
     es: 'Saltar al candidato'
   },
-  Settings: {
-    fr: 'Paramètres',
-    es: 'Configuraciones'
+  'More options': {
+    fr: "Plus d'options",
+    es: 'Mas opciones'
   },
   'Reset stars': {
     fr: 'Réinitialiser les étoiles',

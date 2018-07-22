@@ -172,7 +172,7 @@ class CandidateForm extends Component {
                   onChange={this.onActiveChange}
                 />
               }
-              label="Active"
+              label={this.state.active ? 'Active' : 'Inactive'}
             />
           </SmallGridItem>
         ]}
