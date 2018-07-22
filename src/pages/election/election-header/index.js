@@ -72,7 +72,7 @@ class ElectionHeader extends Component {
     const partners = map(this.props.election.partners, 'name');
     return (
       <Subtitle>
-        {this.props.localize('Presented by {{partners}}', {
+        {this.props.localize('In partnership with {{partners}}', {
           partners: arrayToSentence(partners, {
             lastSeparator: this.props.localize('and')
           })

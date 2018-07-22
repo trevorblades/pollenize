@@ -94,9 +94,9 @@ export default {
     fr: 'Changer',
     es: 'Cambiar'
   },
-  'Presented by {{partners}}': {
-    fr: 'Présenté par {{partners}}',
-    es: 'Presentado por {{partners}}'
+  'In partnership with {{partners}}': {
+    fr: 'En partenariat avec {{partners}}',
+    es: 'En asociación con {{partners}}'
   },
   and: {
     fr: 'et',
