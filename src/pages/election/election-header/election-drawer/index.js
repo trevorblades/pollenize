@@ -128,20 +128,6 @@ class ElectionDrawer extends Component {
             {this.props.localize('More options')}
           </StyledListSubheader>
           {this.renderResetStarsButton()}
-          <ListItem
-            button
-            component="a"
-            href={`/elections/${this.props.election.slug}?printable=true`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <ListItemIcon>
-              <PrintIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary={this.props.localize('View printable table')}
-            />
-          </ListItem>
           {this.props.candidates.length > 1 && (
             <ListItem>
               <ListItemIcon>
@@ -159,6 +145,20 @@ class ElectionDrawer extends Component {
           {this.props.election.languages.length > 1 && (
             <LanguagePicker languages={this.props.election.languages} />
           )}
+          <ListItem
+            button
+            component="a"
+            href={`/elections/${this.props.election.slug}?printable=true`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ListItemIcon>
+              <PrintIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={this.props.localize('View printable table')}
+            />
+          </ListItem>
           {this.props.election.editable && (
             <Fragment>
               <ListItem>
