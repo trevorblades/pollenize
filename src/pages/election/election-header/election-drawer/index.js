@@ -125,7 +125,7 @@ class ElectionDrawer extends Component {
             );
           })}
           <StyledListSubheader>
-            {this.props.localize('Settings')}
+            {this.props.localize('More options')}
           </StyledListSubheader>
           {this.renderResetStarsButton()}
           <ListItem
