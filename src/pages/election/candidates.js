@@ -66,7 +66,7 @@ class Candidates extends Component {
   };
 
   state = {
-    size: false
+    cellSize: null
   };
 
   componentDidMount() {
@@ -98,7 +98,7 @@ class Candidates extends Component {
       });
 
       const {divisor} = minBy(deltas, 'delta');
-      this.setState({size: 12 / divisor});
+      this.setState({cellSize: 1 / divisor});
     }
   };
 
@@ -114,12 +114,13 @@ class Candidates extends Component {
               );
               return (
                 <GridItem
-                  xs={this.state.size}
                   key={candidate.id}
                   to={`/elections/${this.props.election.slug}/${
                     candidate.slug
                   }`}
                   style={{
+                    width:
+                      this.state.cellSize && `${100 * this.state.cellSize}%`,
                     color: theme.palette.getContrastText(candidate.color),
                     backgroundColor: candidate.color
                   }}
