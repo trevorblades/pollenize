@@ -125,6 +125,7 @@ class CandidateForm extends Component {
             <DatePicker
               fullWidth
               disableFuture
+              openToYearSelection
               margin="dense"
               label="Date of birth"
               onChange={this.onBirthDateChange}
