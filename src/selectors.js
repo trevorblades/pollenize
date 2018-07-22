@@ -5,6 +5,7 @@ import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import groupBy from 'lodash/groupBy';
 import keyBy from 'lodash/keyBy';
+import uniqBy from 'lodash/uniqBy';
 import messages from './messages';
 import {createSelector} from 'reselect';
 import {STAR_ID_DELIMITER} from './constants';
@@ -50,7 +51,7 @@ export const getCandidates = createSelector(
       : filter(election.candidates, 'active');
 
     return filtered.map(candidate => {
-      const sources = flatMap(candidate.positions, 'sources');
+      const sources = uniqBy(flatMap(candidate.positions, 'sources'), 'url');
       const [parties, bios, captions] = keyMultipleByLanguage(
         languages,
         candidate.parties,
@@ -71,7 +72,7 @@ export const getCandidates = createSelector(
             messages: keyByLanguage(position.messages, languages),
             sources: position.sources.map(source => ({
               ...source,
-              index: findIndex(sources, ['id', source.id])
+              index: findIndex(sources, ['url', source.url])
             }))
           })),
           'topic_id'
