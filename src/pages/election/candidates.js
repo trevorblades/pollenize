@@ -147,7 +147,8 @@ class Candidates extends Component {
                   name: '',
                   party: '',
                   color: theme.palette.grey[500],
-                  election_id: this.props.election.id
+                  election_id: this.props.election.id,
+                  active: true
                 }}
                 onCancel={closeDialog}
                 onSuccess={closeDialog}
