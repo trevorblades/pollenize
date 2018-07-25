@@ -10,6 +10,7 @@ export default (sequelize, DataTypes) => {
   Election.associate = models => {
     Election.hasMany(models.Candidate);
     Election.hasMany(models.Topic);
+    Election.belongsTo(models.Language, {as: 'default_language'});
     Election.belongsToMany(models.Language, {through: models.ElectionLanguage});
     Election.belongsToMany(models.Organization, {
       through: models.OrganizationElection

@@ -87,6 +87,7 @@ router
       ...options,
       include: [
         Language,
+        'default_language',
         Organization,
         {
           model: Topic,
