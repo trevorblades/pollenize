@@ -12,10 +12,6 @@ import {hot} from 'react-hot-loader';
 import {renewToken} from '../actions/user';
 
 ReactGA.initialize('UA-53329033-1');
-function track(page) {
-  ReactGA.set({page});
-  ReactGA.pageview({page});
-}
 
 class App extends Component {
   static propTypes = {
@@ -26,7 +22,7 @@ class App extends Component {
 
   componentDidMount() {
     const {pathname, search} = this.props.location;
-    track(pathname + search);
+    ReactGA.pageview(pathname + search);
     if (this.props.user) {
       this.props.dispatch(renewToken(this.props.user.token));
     }
@@ -34,7 +30,7 @@ class App extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.location.pathname !== this.props.location.pathname) {
-      track(this.props.location.pathname);
+      ReactGA.pageview(this.props.location.pathname);
     }
   }
 
