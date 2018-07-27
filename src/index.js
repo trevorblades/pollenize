@@ -3,6 +3,7 @@ import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactGA from 'react-ga';
 import createHistory from 'history/createBrowserHistory';
 import reducers from './reducers';
 import styles from './styles';
@@ -37,6 +38,7 @@ configureAnchors({
   scrollDuration: 0
 });
 
+ReactGA.initialize('UA-53329033-1');
 ReactDOM.render(
   <Provider store={store}>
     <JssProvider jss={jss} generateClassName={generateClassName}>

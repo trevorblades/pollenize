@@ -11,8 +11,6 @@ import {connect} from 'react-redux';
 import {hot} from 'react-hot-loader';
 import {renewToken} from '../actions/user';
 
-ReactGA.initialize('UA-53329033-1');
-
 class App extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
