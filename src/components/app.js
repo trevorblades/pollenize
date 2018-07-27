@@ -4,21 +4,37 @@ import Helmet from 'react-helmet';
 import Pages from '../pages';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import ReactGA from 'react-ga';
 import compose from 'recompose/compose';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {hot} from 'react-hot-loader';
 import {renewToken} from '../actions/user';
 
+ReactGA.initialize('UA-53329033-1');
+function track(page) {
+  ReactGA.set({page});
+  ReactGA.pageview({page});
+}
+
 class App extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
     user: PropTypes.object
   };
 
   componentDidMount() {
+    const {pathname, search} = this.props.location;
+    track(pathname + search);
     if (this.props.user) {
       this.props.dispatch(renewToken(this.props.user.token));
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      track(this.props.location.pathname);
     }
   }
 
