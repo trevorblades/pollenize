@@ -55,8 +55,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       TITLE: JSON.stringify(title),
-      PUBLIC_PATH: JSON.stringify(publicPath),
-      ELECTION: JSON.stringify('quebec-2018')
+      PUBLIC_PATH: JSON.stringify(publicPath)
     })
   ]
 };

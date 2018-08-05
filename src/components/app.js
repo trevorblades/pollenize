@@ -1,15 +1,14 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Election from '../pages/election';
 import Helmet from 'react-helmet';
-import Pages from '../pages';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import ReactGA from 'react-ga';
 import compose from 'recompose/compose';
-import {Route, Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {hot} from 'react-hot-loader';
 import {renew as renewUser} from '../actions/user';
+import {withRouter} from 'react-router-dom';
 
 class App extends Component {
   static propTypes = {
@@ -37,10 +36,14 @@ class App extends Component {
       <Fragment>
         <CssBaseline />
         <Helmet defaultTitle={TITLE} titleTemplate={`%s · ${TITLE}`} />
-        <Switch>
-          <Route path="/elections/:id" component={Election} />
-          <Route component={Pages} />
-        </Switch>
+        <Election
+          match={{
+            url: '',
+            params: {
+              id: 'quebec-2018'
+            }
+          }}
+        />
       </Fragment>
     );
   }
