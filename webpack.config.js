@@ -47,7 +47,6 @@ module.exports = {
           appleIcon: false,
           appleStartup: false,
           coast: false,
-          favicons: true,
           firefox: false,
           yandex: false,
           windows: false
