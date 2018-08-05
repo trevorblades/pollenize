@@ -5,8 +5,9 @@ const webpack = require('webpack');
 
 const title = 'Pollenize';
 const branchName = process.env.CIRCLE_BRANCH;
+const productionBranch = 'master';
 const publicPath =
-  branchName && branchName !== 'master' ? `/${branchName}/` : '/';
+  branchName && branchName !== productionBranch ? `/${branchName}/` : '/';
 
 module.exports = {
   context: path.join(__dirname, 'src'),
