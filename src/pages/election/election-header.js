@@ -89,7 +89,7 @@ class ElectionHeader extends Component {
 
   render() {
     return (
-      <Header dark simple logoHref="/elections">
+      <Header dark simple logoHref={null}>
         <TitleContainer>
           <Title color="inherit" variant="subheading">
             <Flag src={this.props.election.flag} />
