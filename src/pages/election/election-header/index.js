@@ -48,6 +48,7 @@ const MenuButton = styled(IconButton)(size(menuButtonSize), {
 
 class ElectionHeader extends Component {
   static propTypes = {
+    basePath: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired
@@ -95,6 +96,7 @@ class ElectionHeader extends Component {
           <MenuIcon />
         </MenuButton>
         <ElectionDrawer
+          basePath={this.props.basePath}
           open={this.state.drawerOpen}
           onClose={this.closeDrawer}
         />

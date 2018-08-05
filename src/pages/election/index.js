@@ -1,6 +1,8 @@
 import Candidate from './candidate';
 import Candidates from './candidates';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ElectionHeader from './election-header';
 import Helmet from 'react-helmet';
 import NotFound from '../not-found';
 import PrintableTable from './printable-table';
@@ -12,7 +14,7 @@ import map from 'lodash/map';
 import querystring from 'querystring';
 import styled from 'react-emotion';
 import theme from '../../theme';
-import {Switch, Route} from 'react-router-dom';
+import {Link, Switch, Route} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
   load as loadElection,
@@ -32,6 +34,10 @@ const Loading = styled.div({
 
 const StyledCircularProgress = styled(CircularProgress)({
   marginBottom: theme.spacing.unit * 2
+});
+
+const StyledLink = styled(Link)({
+  textDecoration: 'none'
 });
 
 class Election extends Component {
@@ -88,11 +94,27 @@ class Election extends Component {
         </Helmet>
         <Switch>
           <Route
-            path="/elections/:election/:id"
+            path={`${this.props.match.url}/:id`}
             render={props => {
               const slugs = map(this.props.candidates, 'slug');
-              const found = slugs.includes(props.match.params.id);
-              return found ? <Candidate {...props} /> : <NotFound page />;
+              if (slugs.includes(props.match.params.id)) {
+                return (
+                  <Candidate
+                    {...props}
+                    renderHeader={candidate => (
+                      <ElectionHeader basePath={this.props.match.url}>
+                        <StyledLink to={this.props.match.url}>
+                          {this.props.election.title}
+                        </StyledLink>
+                        <ChevronRightIcon />
+                        {candidate.name}
+                      </ElectionHeader>
+                    )}
+                  />
+                );
+              }
+
+              return <NotFound page />;
             }}
           />
           <Route
@@ -105,7 +127,16 @@ class Election extends Component {
                 }
               }
 
-              return <Candidates {...props} />;
+              return (
+                <Candidates
+                  {...props}
+                  renderHeader={() => (
+                    <ElectionHeader basePath={this.props.match.url}>
+                      {this.props.election.title}
+                    </ElectionHeader>
+                  )}
+                />
+              );
             }}
           />
         </Switch>

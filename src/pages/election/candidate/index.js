@@ -1,9 +1,7 @@
 import Avatar from '@material-ui/core/Avatar';
 import Bio from './bio';
 import CandidateForm from '../candidate-form';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import EditIcon from '@material-ui/icons/Edit';
-import ElectionHeader from '../election-header';
 import DialogTrigger from '../../../components/dialog-trigger';
 import Footer from '../../../components/footer';
 import Footnotes from './footnotes';
@@ -19,7 +17,6 @@ import reject from 'lodash/reject';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import theme from '../../../theme';
-import {Link} from 'react-router-dom';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
 import {getCandidates, getTopics, getMatchMessage} from '../../../selectors';
@@ -59,10 +56,6 @@ const EditButton = withProps({color: 'inherit'})(
   })
 );
 
-const StyledLink = styled(Link)({
-  textDecoration: 'none'
-});
-
 const Container = styled.div(centered, {
   display: 'flex',
   alignItems: 'flex-start',
@@ -81,6 +74,7 @@ class Candidate extends Component {
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     matchMessage: PropTypes.func.isRequired,
+    renderHeader: PropTypes.func.isRequired,
     topics: PropTypes.array.isRequired
   };
 
@@ -119,18 +113,13 @@ class Candidate extends Component {
     const {message: party} = this.props.matchMessage(
       this.props.candidate.parties
     );
+
     return (
       <Fragment>
         <Helmet>
           <title>{this.props.candidate.name}</title>
         </Helmet>
-        <ElectionHeader>
-          <StyledLink to={`/elections/${this.props.election.slug}`}>
-            {this.props.election.title}
-          </StyledLink>
-          <ChevronRightIcon />
-          {this.props.candidate.name}
-        </ElectionHeader>
+        {this.props.renderHeader(this.props.candidate)}
         <Hero
           style={{
             color: theme.palette.getContrastText(this.props.candidate.color),

@@ -133,8 +133,10 @@ export default handleActions(
 
       return nextState;
     },
-    [candidateRemoved]: (state, {payload}) =>
-      loop(
+    [candidateRemoved]: (state, {payload}) => {
+      const pattern = new RegExp(`(?!^/)/?${payload.slug}$`);
+      const redirectTo = window.location.pathname.replace(pattern, '');
+      return loop(
         {
           ...state,
           data: {
@@ -142,8 +144,9 @@ export default handleActions(
             candidates: reject(state.data.candidates, ['id', payload.id])
           }
         },
-        Cmd.action(push(`/elections/${state.data.slug}`))
-      ),
+        Cmd.action(push(redirectTo))
+      );
+    },
     [positionSuccess]: (state, {payload}) => ({
       ...state,
       data: {

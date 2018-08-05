@@ -17,10 +17,11 @@ import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import compose from 'recompose/compose';
 import styled, {css} from 'react-emotion';
 import sumBy from 'lodash/sumBy';
 import theme from '../../../../theme';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
   getLocalize,
@@ -49,6 +50,7 @@ const Stars = styled(ListItemSecondaryAction)({
 
 class ElectionDrawer extends Component {
   static propTypes = {
+    basePath: PropTypes.string.isRequired,
     candidates: PropTypes.array.isRequired,
     compareMode: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -106,7 +108,7 @@ class ElectionDrawer extends Component {
               <ListItem
                 button
                 component={Link}
-                to={`/elections/${this.props.election.slug}/${candidate.slug}`}
+                to={`${this.props.basePath}/${candidate.slug}`}
                 key={candidate.id}
                 onClick={this.props.onClose}
               >
@@ -148,7 +150,7 @@ class ElectionDrawer extends Component {
           <ListItem
             button
             component="a"
-            href={`/elections/${this.props.election.slug}?printable=true`}
+            href={`${this.props.basePath}?printable=true`}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -212,4 +214,7 @@ const mapStateToProps = state => ({
   user: state.user.data
 });
 
-export default connect(mapStateToProps)(ElectionDrawer);
+export default compose(
+  withRouter,
+  connect(mapStateToProps)
+)(ElectionDrawer);

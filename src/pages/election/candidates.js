@@ -5,7 +5,6 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import CandidateForm from './candidate-form';
 import DialogTrigger from '../../components/dialog-trigger';
 import Grid from '@material-ui/core/Grid';
-import ElectionHeader from './election-header';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import RootRef from '@material-ui/core/RootRef';
@@ -62,7 +61,9 @@ class Candidates extends Component {
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired,
-    matchMessage: PropTypes.func.isRequired
+    match: PropTypes.object.isRequired,
+    matchMessage: PropTypes.func.isRequired,
+    renderHeader: PropTypes.func.isRequired
   };
 
   state = {
@@ -105,7 +106,7 @@ class Candidates extends Component {
   render() {
     return (
       <Fragment>
-        <ElectionHeader>{this.props.election.title}</ElectionHeader>
+        {this.props.renderHeader()}
         <RootRef rootRef={node => (this.container = node)}>
           <Grid container className={containerClassName}>
             {this.props.candidates.map(candidate => {
@@ -115,9 +116,7 @@ class Candidates extends Component {
               return (
                 <GridItem
                   key={candidate.id}
-                  to={`/elections/${this.props.election.slug}/${
-                    candidate.slug
-                  }`}
+                  to={`${this.props.match.url}/${candidate.slug}`}
                   style={{
                     width:
                       this.state.cellSize && `${100 * this.state.cellSize}%`,
