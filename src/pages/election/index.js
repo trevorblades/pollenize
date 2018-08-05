@@ -130,6 +130,7 @@ class Election extends Component {
               return (
                 <Candidates
                   {...props}
+                  basePath={this.props.match.url}
                   renderHeader={() => (
                     <ElectionHeader basePath={this.props.match.url}>
                       {this.props.election.title}

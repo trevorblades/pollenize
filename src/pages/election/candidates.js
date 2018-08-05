@@ -57,11 +57,11 @@ const CreateButton = withProps({variant: 'fab'})(
 
 class Candidates extends Component {
   static propTypes = {
+    basePath: PropTypes.string.isRequired,
     candidates: PropTypes.array.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired,
-    match: PropTypes.object.isRequired,
     matchMessage: PropTypes.func.isRequired,
     renderHeader: PropTypes.func.isRequired
   };
@@ -116,7 +116,7 @@ class Candidates extends Component {
               return (
                 <GridItem
                   key={candidate.id}
-                  to={`${this.props.match.url}/${candidate.slug}`}
+                  to={`${this.props.basePath}/${candidate.slug}`}
                   style={{
                     width:
                       this.state.cellSize && `${100 * this.state.cellSize}%`,
