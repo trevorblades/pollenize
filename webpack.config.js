@@ -5,7 +5,7 @@ const webpack = require('webpack');
 
 const title = 'Pollenize';
 const branchName = process.env.CIRCLE_BRANCH;
-const productionBranch = 'master';
+const productionBranch = 'quebec';
 const publicPath =
   branchName && branchName !== productionBranch ? `/${branchName}/` : '/';
 
