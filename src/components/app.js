@@ -32,34 +32,15 @@ class App extends Component {
     }
   }
 
-  renderContent() {
-    if (typeof ELECTION !== 'undefined') {
-      return (
-        <Election
-          match={{
-            url: '',
-            params: {
-              id: ELECTION
-            }
-          }}
-        />
-      );
-    }
-
-    return (
-      <Switch>
-        <Route path="/elections/:id" component={Election} />
-        <Route component={Pages} />
-      </Switch>
-    );
-  }
-
   render() {
     return (
       <Fragment>
         <CssBaseline />
         <Helmet defaultTitle={TITLE} titleTemplate={`%s · ${TITLE}`} />
-        {this.renderContent()}
+        <Switch>
+          <Route path="/elections/:id" component={Election} />
+          <Route component={Pages} />
+        </Switch>
       </Fragment>
     );
   }

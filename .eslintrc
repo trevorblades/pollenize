@@ -3,8 +3,7 @@
   "extends": "@trevorblades/eslint-config/react",
   "globals": {
     "TITLE": true,
-    "PUBLIC_PATH": true,
-    "ELECTION": true
+    "PUBLIC_PATH": true
   },
   "env": {
     "browser": true,
