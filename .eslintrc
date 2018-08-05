@@ -1,8 +1,8 @@
 {
   "parser": "babel-eslint",
-  "extends": "@knoword/eslint-config/react",
+  "extends": "@trevorblades/eslint-config/react",
   "globals": {
-    "APP_TITLE": true,
+    "TITLE": true,
     "PUBLIC_PATH": true
   },
   "env": {
