@@ -6,6 +6,7 @@ const router = express.Router();
 router.use(jwtMiddleware);
 
 router.get('/', async (req, res) => {
+  // TODO: add this org checking to the jwt middleware
   if (req.user.organization_id !== 1) {
     res.sendStatus(403);
     return;
