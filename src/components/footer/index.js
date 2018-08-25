@@ -137,29 +137,29 @@ class Footer extends Component {
   }
 
   render() {
-    const loginButton = this.props.user
-      ? {
-          'Log out': {
-            component: ButtonBase,
-            onClick: this.logOut
-          }
-        }
-      : {'Log in': {component: LoginButton}};
     const contributeNav = {
-      'Be an editor': '/editors',
       GitHub: {
         component: 'a',
         href: 'https://github.com/pollenize',
         target: '_blank',
         rel: 'noopener noreferrer'
       },
-      ...loginButton
+      'Be an editor': '/editors'
     };
 
-    if (this.props.user && this.props.user.organization_id === 1) {
-      contributeNav['Invite a user'] = {
-        component: InviteButton
+    if (this.props.user) {
+      if (this.props.user.organization_id === 1) {
+        contributeNav['Invite a user'] = {
+          component: InviteButton
+        };
+      }
+
+      contributeNav['Log out'] = {
+        component: ButtonBase,
+        onClick: this.logOut
       };
+    } else {
+      contributeNav['Log in'] = {component: LoginButton};
     }
 
     return (
