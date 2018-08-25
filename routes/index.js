@@ -6,6 +6,7 @@ import invitations from './invitations';
 import organizations from './organizations';
 import positions from './positions';
 import topics from './topics';
+import users from './users';
 
 const router = express.Router();
 router.get('/', (req, res) => res.sendStatus(200));
@@ -17,5 +18,6 @@ router.use('/invitations', invitations);
 router.use('/organizations', organizations);
 router.use('/positions', positions);
 router.use('/topics', topics);
+router.use('/users', users);
 
 export default router;
