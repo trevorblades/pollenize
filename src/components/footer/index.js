@@ -1,5 +1,6 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
 import EmailIcon from '@material-ui/icons/Email';
+import InviteButton from './invite-button';
 import LoginButton from './login-button';
 import Logo from '../../assets/logo.svg';
 import PropTypes from 'prop-types';
@@ -144,6 +145,23 @@ class Footer extends Component {
           }
         }
       : {'Log in': {component: LoginButton}};
+    const contributeNav = {
+      'Be an editor': '/editors',
+      GitHub: {
+        component: 'a',
+        href: 'https://github.com/pollenize',
+        target: '_blank',
+        rel: 'noopener noreferrer'
+      },
+      ...loginButton
+    };
+
+    if (this.props.user && this.props.user.organization_id === 1) {
+      contributeNav['Invite a user'] = {
+        component: InviteButton
+      };
+    }
+
     return (
       <Container>
         <InnerContainer>
@@ -180,16 +198,7 @@ class Footer extends Component {
             Donate: '/#donate',
             Shop: '/shop'
           })}
-          {this.renderNavigation('Contribute', {
-            'Be an editor': '/editors',
-            GitHub: {
-              component: 'a',
-              href: 'https://github.com/pollenize',
-              target: '_blank',
-              rel: 'noopener noreferrer'
-            },
-            ...loginButton
-          })}
+          {this.renderNavigation('Contribute', contributeNav)}
         </InnerContainer>
       </Container>
     );

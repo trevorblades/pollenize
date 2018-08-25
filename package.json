@@ -53,7 +53,7 @@
     "@babel/preset-env": "^7.0.0-beta.49",
     "@babel/preset-react": "^7.0.0-beta.49",
     "@babel/preset-stage-0": "^7.0.0-beta.49",
-    "@trevorblades/eslint-config": "^6.14.0",
+    "@trevorblades/eslint-config": "^6.15.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.3",
     "babel-jest": "^23.2.0",
