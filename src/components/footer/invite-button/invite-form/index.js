@@ -4,17 +4,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Organizations from './organizations';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
+import querystring from 'querystring';
 import {FormField} from '../../../form';
+import {connect} from 'react-redux';
 import {
   create as createInvitation,
   reset as resetInvitation
 } from '../../../../actions/invitation';
-import {connect} from 'react-redux';
 
 class InviteForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    invitation: PropTypes.string,
     loading: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired
   };
@@ -42,6 +44,25 @@ class InviteForm extends Component {
     this.setState({organization: event.target.value});
 
   render() {
+    if (this.props.invitation) {
+      const query = querystring.stringify({token: this.props.invitation});
+      return (
+        <Fragment>
+          <DialogTitle>Success!</DialogTitle>
+          <DialogContent>
+            <FormField
+              readOnly
+              label="Invitation URL"
+              value={`${window.location.origin}/invitation?${query}`}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.props.onCancel}>Done</Button>
+          </DialogActions>
+        </Fragment>
+      );
+    }
+
     return (
       <form onSubmit={this.onSubmit}>
         <DialogTitle>Invite a user</DialogTitle>
@@ -67,6 +88,7 @@ class InviteForm extends Component {
 }
 
 const mapStateToProps = state => ({
+  invitation: state.invitation.data,
   loading: state.invitation.loading
 });
 
