@@ -1,6 +1,7 @@
 import candidate from './candidate';
 import election from './election';
 import elections from './elections';
+import invitation from './invitation';
 import map from './map';
 import organizations from './organizations';
 import position from './position';
@@ -16,6 +17,7 @@ export default combineReducers({
   candidate,
   election,
   elections,
+  invitation,
   map,
   organizations,
   position,
