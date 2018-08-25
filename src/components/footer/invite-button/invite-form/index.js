@@ -29,8 +29,13 @@ class InviteForm extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    this.props.dispatch(createInvitation(formData));
+    this.props.dispatch(
+      createInvitation({
+        email: event.target.email.value,
+        name: event.target.name.value,
+        organization_id: this.state.organization
+      })
+    );
   };
 
   onOrganizationChange = event =>

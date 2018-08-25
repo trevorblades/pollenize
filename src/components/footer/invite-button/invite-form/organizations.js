@@ -29,7 +29,6 @@ class Organizations extends Component {
           disabled={!this.props.organizations.length || this.props.loading}
           value={this.props.value}
           onChange={this.props.onChange}
-          name="organization_id"
         >
           {this.props.organizations.map(organization => (
             <MenuItem key={organization.id} value={organization.id}>
