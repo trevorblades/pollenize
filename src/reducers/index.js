@@ -2,6 +2,7 @@ import candidate from './candidate';
 import election from './election';
 import elections from './elections';
 import map from './map';
+import organizations from './organizations';
 import position from './position';
 import settings from './settings';
 import stars from './stars';
@@ -16,6 +17,7 @@ export default combineReducers({
   election,
   elections,
   map,
+  organizations,
   position,
   router: routerReducer,
   settings,
