@@ -1,7 +1,7 @@
 import CreateUserForm from './create-user-form';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import Section from '../../components/section';
 import Typography from '@material-ui/core/Typography';
 import jwtDecode from 'jwt-decode';
@@ -41,21 +41,19 @@ class Invitation extends Component {
     }
 
     return (
-      <Fragment>
-        <Section centered>
-          <Helmet>
-            <title>{title}</title>
-          </Helmet>
-          <Typography gutterBottom variant="display3">
-            {title}
-          </Typography>
-          {this.state.invitation ? (
-            <CreateUserForm invitation={this.state.invitation} />
-          ) : (
-            <Typography variant="subheading">Invalid token</Typography>
-          )}
-        </Section>
-      </Fragment>
+      <Section centered narrow>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        <Typography gutterBottom variant="display3">
+          {title}
+        </Typography>
+        {this.state.invitation ? (
+          <CreateUserForm invitation={this.state.invitation} />
+        ) : (
+          <Typography variant="subheading">Invalid token</Typography>
+        )}
+      </Section>
     );
   }
 }

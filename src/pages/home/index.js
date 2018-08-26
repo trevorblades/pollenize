@@ -16,7 +16,6 @@ import withProps from 'recompose/withProps';
 
 const CenteredSection = defaultProps({centered: true})(Section);
 const DonateSection = styled(CenteredSection)({
-  maxWidth: theme.breakpoints.values.md,
   textAlign: 'center'
 });
 
@@ -53,7 +52,7 @@ const Home = () => (
     </CenteredSection>
     <Divider />
     <ScrollableAnchor id="donate">
-      <DonateSection>
+      <DonateSection narrow>
         <Typography gutterBottom variant="display1">
           For a politically-engaged future
         </Typography>
