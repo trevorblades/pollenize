@@ -39,10 +39,10 @@ class CreateUserForm extends Component {
         <Fields>
           <Grid container>
             <GridItem>
-              <DisabledField label="Email" value={email} />
+              <DisabledField label="Name" value={name} />
             </GridItem>
             <GridItem>
-              <DisabledField label="Name" value={name} />
+              <DisabledField label="Email" value={email} />
             </GridItem>
             <GridItem>
               <DisabledField label="Organization" value={organization.name} />
