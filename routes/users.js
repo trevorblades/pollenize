@@ -36,14 +36,15 @@ router.post('/', validationMiddleware, async (req, res) => {
     return;
   }
 
+  const {email, name, organization_id} = invitation;
   const user = await User.create({
-    email: invitation.email,
-    name: invitation.name,
-    password: bcrypt.hashSync(data.password, 10),
-    organization_id: invitation.organization_id
+    email,
+    name,
+    organization_id,
+    password: bcrypt.hashSync(data.password, 10)
   });
 
-  await invitation.destroy();
+  await Invitation.destroy({where: {email}});
   res.send(user.toJWT());
 });
 
