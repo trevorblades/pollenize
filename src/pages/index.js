@@ -1,4 +1,5 @@
 import Elections from './elections';
+import Invitation from './invitation';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import Home from './home';
@@ -14,6 +15,7 @@ const Pages = () => (
       <Route exact path="/" component={Home} />
       <Route exact path="/team" component={Team} />
       <Route exact path="/elections" component={Elections} />
+      <Route exact path="/invitation" component={Invitation} />
       <Route render={NotFound} />
     </Switch>
     <Footer />
