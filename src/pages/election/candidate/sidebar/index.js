@@ -1,7 +1,7 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
 import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
-import DragInteractionIcon from '../../../../assets/icons/drag-interaction.svg';
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import TopicForm from './topic-form';
@@ -175,7 +175,7 @@ class Sidebar extends Component {
                 {this.props.editMode && (
                   <Fragment>
                     <DragHandle>
-                      <DragInteractionIcon />
+                      <DragIndicatorIcon />
                     </DragHandle>
                     {!this.state.sorting && (
                       <TopicFormDialogTrigger topic={topic}>
