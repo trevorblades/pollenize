@@ -2,11 +2,11 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import Form, {FormField} from '../../../form';
 import Organizations from './organizations';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import querystring from 'querystring';
-import {FormField} from '../../../form';
 import {connect} from 'react-redux';
 import {
   create as createInvitation,
@@ -29,8 +29,7 @@ class InviteForm extends Component {
     this.props.dispatch(resetInvitation());
   }
 
-  onSubmit = event => {
-    event.preventDefault();
+  onSubmit = event =>
     this.props.dispatch(
       createInvitation({
         email: event.target.email.value,
@@ -38,7 +37,6 @@ class InviteForm extends Component {
         organization_id: this.state.organization
       })
     );
-  };
 
   onOrganizationChange = event =>
     this.setState({organization: event.target.value});
@@ -64,7 +62,7 @@ class InviteForm extends Component {
     }
 
     return (
-      <form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.onSubmit}>
         <DialogTitle>Invite a user</DialogTitle>
         <DialogContent>
           <FormField autoFocus name="email" label="Email address" />
@@ -82,7 +80,7 @@ class InviteForm extends Component {
             Submit
           </Button>
         </DialogActions>
-      </form>
+      </Form>
     );
   }
 }

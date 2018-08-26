@@ -2,9 +2,9 @@ import Button from '@material-ui/core/Button';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import Form, {FormField} from './form';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import {FormField} from './form';
 import {connect} from 'react-redux';
 import {logIn} from '../actions/user';
 
@@ -15,16 +15,14 @@ class LoginForm extends Component {
     onCancel: PropTypes.func.isRequired
   };
 
-  onSubmit = event => {
-    event.preventDefault();
+  onSubmit = event =>
     this.props.dispatch(
       logIn([event.target.email.value, event.target.password.value])
     );
-  };
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
+      <Form onSubmit={this.onSubmit}>
         <DialogTitle>Log in</DialogTitle>
         <DialogContent>
           <FormField autoFocus label="Email address" name="email" />
@@ -36,7 +34,7 @@ class LoginForm extends Component {
             Submit
           </Button>
         </DialogActions>
-      </form>
+      </Form>
     );
   }
 }
