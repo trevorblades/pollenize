@@ -1,7 +1,7 @@
-import api from '../api';
+import api, {headers} from '../api';
 import store from 'store';
 import {TOKEN_KEY} from '../constants';
-import {logIn, logOut, renewToken, success, failure} from '../actions/user';
+import {logIn, logOut, renew, create, success, failure} from '../actions/user';
 import {handleActions} from 'redux-actions';
 import {loop, Cmd} from 'redux-loop';
 import {userFromToken} from '../util';
@@ -16,10 +16,18 @@ async function authenticate(email, password) {
   return response.body;
 }
 
-async function renew(token) {
+async function renewToken(token) {
   const response = await api.jwt(token).post('/auth/renew');
   api.jwt(null);
 
+  if (response.err) {
+    throw response.body;
+  }
+  return response.body;
+}
+
+async function createUser(body) {
+  const response = await api.post('/users', {body, headers});
   if (response.err) {
     throw response.body;
   }
@@ -47,15 +55,27 @@ export default handleActions(
           args: payload
         })
       ),
-    [renewToken]: (state, {payload}) =>
+    [renew]: (state, {payload}) =>
       loop(
         {
           ...state,
           loading: true
         },
-        Cmd.run(renew, {
+        Cmd.run(renewToken, {
           successActionCreator: success,
           failActionCreator: logOut,
+          args: [payload.token]
+        })
+      ),
+    [create]: (state, {payload}) =>
+      loop(
+        {
+          ...state,
+          loading: true
+        },
+        Cmd.run(createUser, {
+          successActionCreator: success,
+          failActionCreator: failure,
           args: [payload]
         })
       ),

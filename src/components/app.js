@@ -9,7 +9,7 @@ import compose from 'recompose/compose';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {hot} from 'react-hot-loader';
-import {renewToken} from '../actions/user';
+import {renew as renewUser} from '../actions/user';
 
 class App extends Component {
   static propTypes = {
@@ -22,7 +22,7 @@ class App extends Component {
     const {pathname, search} = this.props.location;
     ReactGA.pageview(pathname + search);
     if (this.props.user) {
-      this.props.dispatch(renewToken(this.props.user.token));
+      this.props.dispatch(renewUser(this.props.user));
     }
   }
 
