@@ -7,15 +7,12 @@ import PropTypes from 'prop-types';
 import Navigation from '../navigation';
 import React, {Component} from 'react';
 import Section from '../section';
-import TwitterLogo from '../../assets/logos/twitter.svg';
-import InstagramLogo from '../../assets/logos/instagram.svg';
-import FacebookLogo from '../../assets/logos/facebook.svg';
-import YouTubeLogo from '../../assets/logos/youtube.svg';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
 import styled, {css} from 'react-emotion';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
+import {FaTwitter, FaInstagram, FaFacebook, FaYoutube} from 'react-icons/fa';
 import {connect} from 'react-redux';
 import {logOut} from '../../actions/user';
 import {size} from 'polished';
@@ -63,19 +60,14 @@ const StyledAnchor = styled.a({
   }
 });
 
-const logoSize = theme.spacing.unit * 3;
-const logoClassName = css(baseIconClassName, size(logoSize));
+const iconSize = theme.spacing.unit * 2.5;
+const iconClassName = css(baseIconClassName, size(iconSize), {
+  margin: theme.spacing.unit / 4
+});
 const BlankTargetAnchor = defaultProps({
   target: '_blank',
   rel: 'noopener noreferrer'
 })(StyledAnchor);
-
-const emailIconSize = theme.spacing.unit * 2.5;
-const StyledEmailIcon = styled(EmailIcon)(
-  baseIconClassName,
-  size(emailIconSize),
-  {margin: (logoSize - emailIconSize) / 2}
-);
 
 const NavigationContainer = styled.div({
   marginLeft: 'auto',
@@ -97,19 +89,19 @@ const StyledNavigation = styled(Navigation)({
 const socialMediaAccounts = {
   Twitter: {
     url: 'https://twitter.com/pollenizeorg',
-    logo: TwitterLogo
+    logo: FaTwitter
   },
   Instagram: {
     url: 'https://instagram.com/pollenize',
-    logo: InstagramLogo
+    logo: FaInstagram
   },
   Facebook: {
     url: 'https://facebook.com/pollenize',
-    logo: FacebookLogo
+    logo: FaFacebook
   },
   YouTube: {
     url: 'https://youtube.com/pollenizeorg',
-    logo: YouTubeLogo
+    logo: FaYoutube
   }
 };
 
@@ -179,12 +171,12 @@ class Footer extends Component {
                     href={url}
                     title={`Pollenize on ${key}`}
                   >
-                    {React.createElement(logo, {className: logoClassName})}
+                    {React.createElement(logo, {className: iconClassName})}
                   </BlankTargetAnchor>
                 );
               })}
               <StyledAnchor href={mailto}>
-                <StyledEmailIcon />
+                <EmailIcon className={iconClassName} />
               </StyledAnchor>
             </Icons>
           </Colophon>

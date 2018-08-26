@@ -4,10 +4,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import FacebookLogo from '../../../../assets/logos/facebook.svg';
-import TwitterLogo from '../../../../assets/logos/twitter.svg';
-import GooglePlusLogo from '../../../../assets/logos/google-plus.svg';
-import VKLogo from '../../../../assets/logos/vk.svg';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -15,6 +11,7 @@ import querystring from 'querystring';
 import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
 import mapProps from 'recompose/mapProps';
+import {FaTwitter, FaFacebookF, FaGooglePlusG, FaVk} from 'react-icons/fa';
 import {size} from 'polished';
 import {connect} from 'react-redux';
 import {getLocalize, getMatchMessage} from '../../../../selectors';
@@ -34,13 +31,13 @@ const ShareButton = mapProps(({children, href, query, style}) => ({
   rel: 'noopener noreferrer'
 }))(
   styled(ButtonBase)({
-    padding: theme.spacing.unit,
+    padding: theme.spacing.unit * 1.5,
     borderRadius: '50%',
     color: theme.palette.common.white,
     ':not(:last-child)': {
       marginRight: buttonSpacing
     },
-    svg: css(size(theme.spacing.unit * 4), {
+    svg: css(size(theme.spacing.unit * 3), {
       fill: 'currentColor'
     })
   })
@@ -89,28 +86,28 @@ class ShareDialog extends Component {
                 related: 'pollenizeorg'
               }}
             >
-              <TwitterLogo />
+              <FaTwitter />
             </ShareButton>
             <ShareButton
               style={{backgroundColor: '#3b5998'}}
               href="https://facebook.com/sharer.php"
               query={{u: url}}
             >
-              <FacebookLogo />
+              <FaFacebookF />
             </ShareButton>
             <ShareButton
               style={{backgroundColor: '#dc4e41'}}
               href="https://plus.google.com/share"
               query={{url}}
             >
-              <GooglePlusLogo />
+              <FaGooglePlusG />
             </ShareButton>
             <ShareButton
               style={{backgroundColor: '#6383a8'}}
               href="https://vk.com/share.php"
               query={{url}}
             >
-              <VKLogo />
+              <FaVk />
             </ShareButton>
           </ShareButtons>
           <TextField fullWidth readOnly value={url} onClick={focusAndSelect} />
