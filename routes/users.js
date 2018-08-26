@@ -2,14 +2,11 @@ import bcrypt from 'bcryptjs';
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import jwtMiddleware from '../middleware/jwt';
 import {Invitation, User} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
 
 const router = express.Router();
-router.use(jwtMiddleware);
-
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
     password: {
@@ -20,10 +17,8 @@ const validationMiddleware = createValidationMiddleware(
       }
     },
     password_confirm: {
-      custom: (value, {req}) => {
-        if (value !== req.body.password) {
-          throw new Error("Passwords don't match");
-        }
+      custom: {
+        options: (value, {req}) => value === req.body.password
       }
     },
     token: {
