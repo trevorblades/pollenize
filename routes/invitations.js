@@ -2,7 +2,7 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import jwtMiddleware from '../middleware/jwt';
-import {Invitation} from '../models';
+import {Invitation, User} from '../models';
 import {checkSchema} from 'express-validator/check';
 import {isInt, notEmpty} from '../util/schema';
 import {matchedData} from 'express-validator/filter';
@@ -28,6 +28,17 @@ router.post('/', validationMiddleware, async (req, res) => {
   }
 
   const data = matchedData(req);
+  const user = await User.findOne({
+    where: {
+      email: data.email
+    }
+  });
+
+  if (user) {
+    res.sendStatus(400, 'Email already in use');
+    return;
+  }
+
   let invitation = await Invitation.findOne({where: data});
   if (!invitation) {
     invitation = await Invitation.create(data);
