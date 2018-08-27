@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
-import Form, {FormField} from '../../components/form';
+import Form from '../../components/form';
+import FormField from '../../components/form-field';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
@@ -20,6 +21,7 @@ const GridItem = withProps({
 class CreateUserForm extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    error: PropTypes.object,
     invitation: PropTypes.object.isRequired
   };
 
@@ -33,6 +35,7 @@ class CreateUserForm extends Component {
     );
 
   render() {
+    const {errors} = this.props.error || {};
     const {email, name, organization} = this.props.invitation;
     return (
       <Form onSubmit={this.onSubmit}>
@@ -48,10 +51,15 @@ class CreateUserForm extends Component {
               <DisabledField label="Organization" value={organization.name} />
             </GridItem>
           </Grid>
-          <PasswordField name="password" label="Choose a password" />
+          <PasswordField
+            name="password"
+            label="Choose a password"
+            errors={errors}
+          />
           <PasswordField
             name="password_confirm"
             label="Confirm your password"
+            errors={errors}
           />
         </Fields>
         <Button color="primary" variant="raised" size="large" type="submit">
@@ -63,6 +71,7 @@ class CreateUserForm extends Component {
 }
 
 const mapStateToProps = state => ({
+  error: state.user.error,
   loading: state.user.loading
 });
 

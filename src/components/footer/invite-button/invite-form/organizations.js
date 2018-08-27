@@ -4,7 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Select from '@material-ui/core/Select';
-import {formFieldProps} from '../../../form';
+import {formFieldProps} from '../../../form-field';
 import {load as loadOrganizations} from '../../../../actions/organizations';
 import {connect} from 'react-redux';
 

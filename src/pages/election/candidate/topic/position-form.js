@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import filter from 'lodash/filter';
 import map from 'lodash/map';
-import {FormField} from '../../../../components/form';
+import FormField from '../../../../components/form-field';
 import {connect} from 'react-redux';
 import {
   save as savePosition,

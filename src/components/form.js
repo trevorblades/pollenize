@@ -1,14 +1,5 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import TextField from '@material-ui/core/TextField';
-import withProps from 'recompose/withProps';
-
-export const formFieldProps = {
-  fullWidth: true,
-  margin: 'dense'
-};
-
-export const FormField = withProps(formFieldProps)(TextField);
 
 class Form extends Component {
   static propTypes = {
