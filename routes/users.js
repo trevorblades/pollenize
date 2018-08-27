@@ -7,17 +7,19 @@ import {checkSchema} from 'express-validator/check';
 import {matchedData} from 'express-validator/filter';
 
 const router = express.Router();
+
+const min = 4;
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
     password: {
       isLength: {
-        options: {
-          min: 4
-        }
+        errorMessage: `Must be at least ${min} characters long`,
+        options: {min}
       }
     },
     password_confirm: {
       custom: {
+        errorMessage: "Passwords don't match",
         options: (value, {req}) => value === req.body.password
       }
     },
