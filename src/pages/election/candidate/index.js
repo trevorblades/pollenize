@@ -9,6 +9,7 @@ import Helmet from 'react-helmet';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
+import Section, {getSectionPadding} from '../../../components/section';
 import Sidebar from './sidebar';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
@@ -20,23 +21,23 @@ import theme from '../../../theme';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
 import {getCandidates, getTopics, getMatchMessage} from '../../../selectors';
-import {getSectionPadding} from '../../../components/section';
 import {size} from 'polished';
 
-const Hero = styled.div({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: theme.spacing.unit * 5,
-  backgroundSize: 'contain',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  backgroundBlendMode: 'multiply',
-  position: 'relative'
-});
+const Hero = withProps({small: true})(
+  styled(Section)({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundSize: 'contain',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundBlendMode: 'multiply',
+    position: 'relative'
+  })
+);
 
 const StyledAvatar = styled(Avatar)(size(120), {
-  marginBottom: theme.spacing.unit * 2
+  marginBottom: theme.spacing.unit * 2.5
 });
 
 const Name = withProps({
