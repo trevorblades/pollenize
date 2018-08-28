@@ -101,13 +101,13 @@ class Election extends Component {
                 return (
                   <Candidate
                     {...props}
-                    renderHeader={candidate => (
+                    renderHeader={title => (
                       <ElectionHeader basePath={this.props.match.url}>
                         <StyledLink to={this.props.match.url}>
                           {this.props.election.title}
                         </StyledLink>
                         <ChevronRightIcon />
-                        {candidate.name}
+                        {title}
                       </ElectionHeader>
                     )}
                   />

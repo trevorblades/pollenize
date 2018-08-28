@@ -36,6 +36,9 @@ export default createMuiTheme({
   typography: {
     fontFamily,
     fontWeightMedium: 700,
+    headline: {
+      fontWeight: 400
+    },
     display1: displayFontStyles,
     display2: displayFontStyles,
     display3: displayFontStyles

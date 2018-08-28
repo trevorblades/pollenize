@@ -20,7 +20,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import compose from 'recompose/compose';
 import styled, {css} from 'react-emotion';
 import sumBy from 'lodash/sumBy';
-import theme from '../../../../theme';
+import theme from '../../../theme';
 import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
@@ -28,11 +28,12 @@ import {
   getMatchMessage,
   getCandidates,
   getStarCounts
-} from '../../../../selectors';
-import {setCompareMode, setEditMode} from '../../../../actions/settings';
+} from '../../../selectors';
+import {getTitles} from '../../../util/election';
+import {setCompareMode, setEditMode} from '../../../actions/settings';
 import {transparentize, size} from 'polished';
-import {update as updateElection} from '../../../../actions/election';
-import {reset as resetStars} from '../../../../actions/stars';
+import {update as updateElection} from '../../../actions/election';
+import {reset as resetStars} from '../../../actions/stars';
 
 const drawerClassName = css({width: 320});
 const StyledListSubheader = styled(ListSubheader)({
@@ -103,6 +104,12 @@ class ElectionDrawer extends Component {
           </StyledListSubheader>
           {this.props.candidates.map(candidate => {
             const {message: party} = this.props.matchMessage(candidate.parties);
+            const [title, subtitle] = getTitles(
+              candidate.name,
+              party,
+              this.props.election.party_first
+            );
+
             const starCount = this.props.starCounts[candidate.id];
             return (
               <ListItem
@@ -113,10 +120,7 @@ class ElectionDrawer extends Component {
                 onClick={this.props.onClose}
               >
                 <Avatar alt={candidate.name} src={candidate.avatar} />
-                <ListItemText
-                  primary={candidate.name}
-                  secondary={party && party.text}
-                />
+                <ListItemText primary={title} secondary={subtitle} />
                 {starCount && (
                   <Stars>
                     <Typography color="inherit">{starCount}</Typography>

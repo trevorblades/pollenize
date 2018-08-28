@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import TranslateIcon from '@material-ui/icons/Translate';
 import {connect} from 'react-redux';
-import {getLocalize} from '../../../../selectors';
-import {setLanguage} from '../../../../actions/settings';
+import {getLocalize} from '../../../selectors';
+import {setLanguage} from '../../../actions/settings';
 
 class LanaguagePicker extends Component {
   static propTypes = {

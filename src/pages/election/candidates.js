@@ -106,9 +106,13 @@ class Candidates extends Component {
   };
 
   renderCandidate = candidate => {
-    const {name, parties} = candidate;
-    const {message: party} = this.props.matchMessage(parties);
-    const titles = getTitles(name, party.text, this.props.election.party_first);
+    const {message: party} = this.props.matchMessage(candidate.parties);
+    const [title, subtitle] = getTitles(
+      candidate.name,
+      party,
+      this.props.election.party_first
+    );
+
     return (
       <GridItem
         key={candidate.id}
@@ -119,9 +123,11 @@ class Candidates extends Component {
           backgroundColor: candidate.color
         }}
       >
-        {candidate.avatar && <StyledAvatar alt={name} src={candidate.avatar} />}
-        <Headline>{titles[0]}</Headline>
-        {titles[1] && <Title variant="title">{titles[1]}</Title>}
+        {candidate.avatar && (
+          <StyledAvatar alt={candidate.name} src={candidate.avatar} />
+        )}
+        <Headline>{title}</Headline>
+        {subtitle && <Title variant="title">{subtitle}</Title>}
       </GridItem>
     );
   };

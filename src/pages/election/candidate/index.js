@@ -114,15 +114,21 @@ class Candidate extends Component {
   };
 
   render() {
-    const {parties, name} = this.props.candidate;
-    const {message: party} = this.props.matchMessage(parties);
-    const titles = getTitles(name, party.text, this.props.election.party_first);
+    const {message: party} = this.props.matchMessage(
+      this.props.candidate.parties
+    );
+    const [title, subtitle] = getTitles(
+      this.props.candidate.name,
+      party,
+      this.props.election.party_first
+    );
+
     return (
       <Fragment>
         <Helmet>
-          <title>{titles[0]}</title>
+          <title>{title}</title>
         </Helmet>
-        {this.props.renderHeader(this.props.candidate)}
+        {this.props.renderHeader(title)}
         <Hero
           style={{
             color: theme.palette.getContrastText(this.props.candidate.color),
@@ -130,12 +136,15 @@ class Candidate extends Component {
           }}
         >
           {this.props.candidate.avatar && (
-            <StyledAvatar alt={name} src={this.props.candidate.avatar} />
+            <StyledAvatar
+              alt={this.props.candidate.name}
+              src={this.props.candidate.avatar}
+            />
           )}
-          <Headline>{titles[0]}</Headline>
-          {titles[1] && (
+          <Headline>{title}</Headline>
+          {subtitle && (
             <Title gutterBottom variant="headline">
-              {titles[1]}
+              {subtitle}
             </Title>
           )}
           {this.props.editMode && (

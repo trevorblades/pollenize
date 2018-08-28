@@ -1,5 +1,5 @@
 import ElectionDrawer from './election-drawer';
-import Header, {HEADER_LOGO_SIZE} from '../../../components/header';
+import Header, {HEADER_LOGO_SIZE} from '../../components/header';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import PropTypes from 'prop-types';
@@ -8,10 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import arrayToSentence from 'array-to-sentence';
 import map from 'lodash/map';
 import styled from 'react-emotion';
-import theme from '../../../theme';
+import theme from '../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
-import {getLocalize} from '../../../selectors';
+import {getLocalize} from '../../selectors';
 import {size} from 'polished';
 
 const TitleContainer = styled.div({
