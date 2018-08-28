@@ -35,7 +35,7 @@ const Hero = styled.div({
   position: 'relative'
 });
 
-const StyledAvatar = styled(Avatar)(size(96), {
+const StyledAvatar = styled(Avatar)(size(120), {
   marginBottom: theme.spacing.unit * 2
 });
 

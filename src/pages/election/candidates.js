@@ -33,7 +33,7 @@ const GridItem = defaultProps({
   })
 );
 
-const StyledAvatar = styled(Avatar)(size(80), {
+const StyledAvatar = styled(Avatar)(size(96), {
   marginBottom: theme.spacing.unit
 });
 
