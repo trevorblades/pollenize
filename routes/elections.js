@@ -23,13 +23,12 @@ function optionalJwtMiddleware(req, res, next) {
   next();
 }
 
-async function getOptions(user, where = {}) {
+function getOptions(user) {
   if (user) {
     const electionIds = user.getDataValue('election_ids');
     if (electionIds.length) {
       return {
         where: {
-          ...where,
           [Sequelize.Op.or]: {
             public: true,
             id: {
@@ -40,7 +39,6 @@ async function getOptions(user, where = {}) {
         attributes: {
           include: [
             [
-              // sequelize.where(sequelize.col('id'), Sequelize.Op.in, `(${electionIds})`),
               sequelize.literal(`"election"."id" IN (${electionIds})`),
               'editable'
             ]
@@ -51,10 +49,7 @@ async function getOptions(user, where = {}) {
   }
 
   return {
-    where: {
-      ...where,
-      public: true
-    },
+    where: {public: true},
     attributes: {
       include: [[sequelize.literal('false'), 'editable']]
     }
@@ -63,7 +58,7 @@ async function getOptions(user, where = {}) {
 
 const router = express.Router();
 router.get('/', optionalJwtMiddleware, async (req, res) => {
-  const options = await getOptions(req.user);
+  const options = getOptions(req.user);
   const elections = await Election.findAll({
     ...options,
     order: [['ends_at', 'DESC']]
@@ -82,9 +77,12 @@ const validationMiddleware = createValidationMiddleware(
 router
   .route('/:id')
   .get(optionalJwtMiddleware, async (req, res) => {
-    const options = await getOptions(req.user, {slug: req.params.id});
+    const {attributes} = getOptions(req.user);
     const election = await Election.findOne({
-      ...options,
+      attributes,
+      where: {
+        slug: req.params.id
+      },
       include: [
         Language,
         'default_language',
