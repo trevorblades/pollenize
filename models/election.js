@@ -4,6 +4,7 @@ export default (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     flag: DataTypes.STRING,
     public: DataTypes.BOOLEAN,
+    party_first: DataTypes.BOOLEAN,
     ends_at: DataTypes.DATE
   });
 
