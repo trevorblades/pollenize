@@ -18,6 +18,7 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {divisors} from 'number-theory';
 import {getLocalize, getCandidates, getMatchMessage} from '../../selectors';
+import {getTitles} from '../../util/election';
 import {size} from 'polished';
 
 const containerClassName = css({flexGrow: 1});
@@ -34,16 +35,17 @@ const GridItem = defaultProps({
 );
 
 const StyledAvatar = styled(Avatar)(size(96), {
-  marginBottom: theme.spacing.unit
+  marginBottom: theme.spacing.unit * 2
 });
 
-const Name = withProps({
-  variant: 'display1',
+const Title = withProps({
   color: 'inherit',
   align: 'center'
-})(
-  styled(Typography)({
-    marginBottom: theme.spacing.unit / 2
+})(Typography);
+
+const Headline = withProps({variant: 'display1'})(
+  styled(Title)({
+    marginBottom: theme.spacing.unit * 0.75
   })
 );
 
@@ -103,39 +105,34 @@ class Candidates extends Component {
     }
   };
 
+  renderCandidate = candidate => {
+    const {name, parties} = candidate;
+    const {message: party} = this.props.matchMessage(parties);
+    const titles = getTitles(name, party.text, this.props.election.party_first);
+    return (
+      <GridItem
+        key={candidate.id}
+        to={`${this.props.basePath}/${candidate.slug}`}
+        style={{
+          width: this.state.cellSize && `${100 * this.state.cellSize}%`,
+          color: theme.palette.getContrastText(candidate.color),
+          backgroundColor: candidate.color
+        }}
+      >
+        {candidate.avatar && <StyledAvatar alt={name} src={candidate.avatar} />}
+        <Headline>{titles[0]}</Headline>
+        {titles[1] && <Title variant="title">{titles[1]}</Title>}
+      </GridItem>
+    );
+  };
+
   render() {
     return (
       <Fragment>
         {this.props.renderHeader()}
         <RootRef rootRef={node => (this.container = node)}>
           <Grid container className={containerClassName}>
-            {this.props.candidates.map(candidate => {
-              const {message: party} = this.props.matchMessage(
-                candidate.parties
-              );
-              return (
-                <GridItem
-                  key={candidate.id}
-                  to={`${this.props.basePath}/${candidate.slug}`}
-                  style={{
-                    width:
-                      this.state.cellSize && `${100 * this.state.cellSize}%`,
-                    color: theme.palette.getContrastText(candidate.color),
-                    backgroundColor: candidate.color
-                  }}
-                >
-                  {candidate.avatar && (
-                    <StyledAvatar alt={candidate.name} src={candidate.avatar} />
-                  )}
-                  <Name>{candidate.name}</Name>
-                  {party && (
-                    <Typography variant="subheading" color="inherit">
-                      {party.text}
-                    </Typography>
-                  )}
-                </GridItem>
-              );
-            })}
+            {this.props.candidates.map(this.renderCandidate)}
           </Grid>
         </RootRef>
         {this.props.editMode && (

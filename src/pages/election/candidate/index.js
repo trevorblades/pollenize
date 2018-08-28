@@ -21,6 +21,7 @@ import theme from '../../../theme';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
 import {getCandidates, getTopics, getMatchMessage} from '../../../selectors';
+import {getTitles} from '../../../util/election';
 import {size} from 'polished';
 
 const Hero = withProps({small: true})(
@@ -40,11 +41,13 @@ const StyledAvatar = styled(Avatar)(size(120), {
   marginBottom: theme.spacing.unit * 2.5
 });
 
-const Name = withProps({
-  variant: 'display2',
-  color: 'inherit'
-})(
-  styled(Typography)({
+const Title = withProps({
+  color: 'inherit',
+  align: 'center'
+})(Typography);
+
+const Headline = withProps({variant: 'display2'})(
+  styled(Title)({
     marginBottom: theme.spacing.unit
   })
 );
@@ -111,14 +114,13 @@ class Candidate extends Component {
   };
 
   render() {
-    const {message: party} = this.props.matchMessage(
-      this.props.candidate.parties
-    );
-
+    const {parties, name} = this.props.candidate;
+    const {message: party} = this.props.matchMessage(parties);
+    const titles = getTitles(name, party.text, this.props.election.party_first);
     return (
       <Fragment>
         <Helmet>
-          <title>{this.props.candidate.name}</title>
+          <title>{titles[0]}</title>
         </Helmet>
         {this.props.renderHeader(this.props.candidate)}
         <Hero
@@ -128,16 +130,13 @@ class Candidate extends Component {
           }}
         >
           {this.props.candidate.avatar && (
-            <StyledAvatar
-              alt={this.props.candidate.name}
-              src={this.props.candidate.avatar}
-            />
+            <StyledAvatar alt={name} src={this.props.candidate.avatar} />
           )}
-          <Name>{this.props.candidate.name}</Name>
-          {party && (
-            <Typography gutterBottom variant="title" color="inherit">
-              {party.text}
-            </Typography>
+          <Headline>{titles[0]}</Headline>
+          {titles[1] && (
+            <Title gutterBottom variant="headline">
+              {titles[1]}
+            </Title>
           )}
           {this.props.editMode && (
             <DialogTrigger
