@@ -5,6 +5,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import CandidateForm from './candidate-form';
 import DialogTrigger from '../../components/dialog-trigger';
 import Grid from '@material-ui/core/Grid';
+import Logo from '../../assets/logo.svg';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import RootRef from '@material-ui/core/RootRef';
@@ -23,16 +24,23 @@ import {size} from 'polished';
 
 const containerClassName = css({flexGrow: 1});
 const LinkButton = withProps({component: Link})(ButtonBase);
-const GridItem = defaultProps({
-  item: true,
-  component: LinkButton
-})(
+const GridItem = defaultProps({item: true})(
   styled(Grid)({
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing.unit * 4
   })
 );
+
+const EmptyGridItem = styled(GridItem)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexGrow: 1,
+  fill: theme.palette.grey[300],
+  backgroundColor: theme.palette.grey[100],
+  svg: size(56)
+});
 
 const StyledAvatar = styled(Avatar)(size(96), {
   marginBottom: theme.spacing.unit * 2
@@ -116,6 +124,7 @@ class Candidates extends Component {
     return (
       <GridItem
         key={candidate.id}
+        component={LinkButton}
         to={`${this.props.basePath}/${candidate.slug}`}
         style={{
           width: this.state.cellSize && `${100 * this.state.cellSize}%`,
@@ -139,6 +148,11 @@ class Candidates extends Component {
         <RootRef rootRef={node => (this.container = node)}>
           <Grid container className={containerClassName}>
             {this.props.candidates.map(this.renderCandidate)}
+            {this.props.candidates.length % 2 > 0 && (
+              <EmptyGridItem>
+                <Logo />
+              </EmptyGridItem>
+            )}
           </Grid>
         </RootRef>
         {this.props.editMode && (
