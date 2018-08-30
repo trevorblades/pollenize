@@ -15,8 +15,10 @@ import {getLocalize} from '../../selectors';
 import {size} from 'polished';
 
 const TitleContainer = styled.div({
-  margin: '0 auto',
-  textAlign: 'center'
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  margin: '0 auto'
 });
 
 const Title = withProps({
@@ -90,7 +92,7 @@ class ElectionHeader extends Component {
             <Flag src={this.props.election.flag} />
             {this.props.children}
           </Title>
-          {/* {this.renderSubtitle()} */}
+          {this.renderSubtitle()}
         </TitleContainer>
         <MenuButton color="inherit" onClick={this.onMenuClick}>
           <MenuIcon />
