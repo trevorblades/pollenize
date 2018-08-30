@@ -103,5 +103,9 @@ export default {
   and: {
     fr: 'et',
     es: 'y'
+  },
+  'View printable table': {
+    fr: 'Voir la table imprimable',
+    es: 'Ver la tabla imprimible'
   }
 };
