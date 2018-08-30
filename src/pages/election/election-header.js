@@ -90,7 +90,7 @@ class ElectionHeader extends Component {
             <Flag src={this.props.election.flag} />
             {this.props.children}
           </Title>
-          {this.renderSubtitle()}
+          {/* {this.renderSubtitle()} */}
         </TitleContainer>
         <MenuButton color="inherit" onClick={this.onMenuClick}>
           <MenuIcon />
