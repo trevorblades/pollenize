@@ -4,7 +4,7 @@ import {LANGUAGE_KEY} from '../../constants';
 import {handleAction} from 'redux-actions';
 import {setLanguage} from '../../actions/settings';
 
-const defaultState = store.get(LANGUAGE_KEY) || 'en';
+const defaultState = store.get(LANGUAGE_KEY) || 'fr';
 export default handleAction(
   setLanguage,
   (state, {payload}) =>
