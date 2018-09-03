@@ -12,7 +12,6 @@ const displayFontStyles = {
   color: defaultTheme.palette.text.primary
 };
 
-const fontWeightMedium = 700;
 export default createMuiTheme({
   overrides: {
     MuiPickersYear: {
@@ -36,10 +35,7 @@ export default createMuiTheme({
   },
   typography: {
     fontFamily,
-    fontWeightMedium,
-    headline: {
-      fontWeight: fontWeightMedium
-    },
+    fontWeightMedium: 700,
     display1: displayFontStyles,
     display2: displayFontStyles,
     display3: displayFontStyles

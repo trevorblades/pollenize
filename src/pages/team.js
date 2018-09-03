@@ -21,8 +21,7 @@ const HeroText = withProps({
   variant: 'headline'
 })(
   styled(Typography)({
-    maxWidth: theme.breakpoints.values.sm,
-    fontWeight: 400
+    maxWidth: theme.breakpoints.values.sm
   })
 );
 

@@ -52,6 +52,15 @@ const Headline = withProps({variant: 'display2'})(
   })
 );
 
+const Subtitle = withProps({
+  gutterBottom: true,
+  variant: 'headline'
+})(
+  styled(Title)({
+    fontWeight: theme.typography.fontWeightMedium
+  })
+);
+
 const EditButton = withProps({color: 'inherit'})(
   styled(IconButton)({
     position: 'absolute',
@@ -142,11 +151,7 @@ class Candidate extends Component {
             />
           )}
           <Headline>{title}</Headline>
-          {subtitle && (
-            <Title gutterBottom variant="headline">
-              {subtitle}
-            </Title>
-          )}
+          {subtitle && <Subtitle>{subtitle}</Subtitle>}
           {this.props.editMode && (
             <DialogTrigger
               renderContent={closeDialog => (
