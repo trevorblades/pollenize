@@ -6,6 +6,7 @@
     "build": "webpack --mode production"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "@material-ui/core": "^1.5.1",
     "@material-ui/icons": "^2.0.3",
     "@planet/layers": "^1.10.4",
@@ -50,15 +51,15 @@
     "store": "^2.0.12"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.49",
-    "@babel/preset-env": "^7.0.0-beta.49",
-    "@babel/preset-react": "^7.0.0-beta.49",
-    "@babel/preset-stage-0": "^7.0.0-beta.49",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
     "@trevorblades/eslint-config": "^6.15.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.3",
     "babel-jest": "^23.2.0",
-    "babel-loader": "^8.0.0-beta.3",
+    "babel-loader": "^8.0.2",
     "babel-plugin-emotion": "^9.2.0",
     "babel-polyfill": "^6.26.0",
     "color-loader": "^2.1.2",
