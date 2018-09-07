@@ -152,7 +152,9 @@ class Sidebar extends Component {
     return (
       <Container>
         <SidebarButton onClick={scrollToTop}>
-          {this.props.localize('About')} {this.props.candidate.firstName}
+          {this.props.localize('About {{name}}', {
+            name: this.props.candidate.firstName
+          })}
         </SidebarButton>
         <TopicsHeading>{this.props.localize('Topics')}</TopicsHeading>
         <SidebarTopics
