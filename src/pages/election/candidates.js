@@ -18,6 +18,7 @@ import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {divisors} from 'number-theory';
+import {footerClassName} from '../../components/footer';
 import {getLocalize, getCandidates, getMatchMessage} from '../../selectors';
 import {getTitles} from '../../util/election';
 import {size} from 'polished';
@@ -32,14 +33,12 @@ const GridItem = defaultProps({item: true})(
   })
 );
 
-const EmptyGridItem = styled(GridItem)({
+const EmptyGridItem = styled(GridItem)(footerClassName, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   flexGrow: 1,
-  fill: theme.palette.grey[300],
-  backgroundColor: theme.palette.grey[100],
-  svg: size(56)
+  svg: css(size(56), {fill: 'currentColor'})
 });
 
 const StyledAvatar = styled(Avatar)(size(96), {
