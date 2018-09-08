@@ -1,10 +1,11 @@
 import CivixQuebecLogo from '../../../assets/logos/civix-quebec.svg';
+import ImpactCampusLogo from '../../../assets/logos/impact-campus.svg';
 import LavalLogo from '../../../assets/logos/laval.svg';
 import LogoWithWordmark from '../../../components/logo-with-wordmark';
 import React from 'react';
 import Section from '../../../components/section';
 import Typography from '@material-ui/core/Typography';
-import styled from 'react-emotion';
+import styled, {css} from 'react-emotion';
 import theme from '../../../theme';
 import defaultProps from 'recompose/defaultProps';
 import withProps from 'recompose/withProps';
@@ -20,8 +21,19 @@ const InnerContainer = styled(Section)({
 
 const Text = withProps({
   color: 'inherit',
-  variant: 'subheading'
+  variant: 'subheading',
+  gutterBottom: true
 })(Typography);
+
+const logoClassName = css({
+  display: 'block',
+  fill: 'currentColor'
+});
+
+const StyledImpactCampusLogo = styled(ImpactCampusLogo)(logoClassName, {
+  height: 100,
+  marginBottom: theme.spacing.unit * 3
+});
 
 const Logos = styled.div({
   display: 'flex',
@@ -37,11 +49,7 @@ const TargetBlankAnchor = defaultProps({
 const StyledAnchor = styled(TargetBlankAnchor)({
   maxWidth: 120,
   maxHeight: 48,
-  svg: {
-    display: 'block',
-    ...size('100%'),
-    fill: 'currentColor'
-  }
+  svg: css(size('100%'), logoClassName)
 });
 
 const X = withProps({
@@ -58,6 +66,7 @@ const Footer = () => (
   <Container>
     <InnerContainer centered>
       <Text>Un projet de</Text>
+      <StyledImpactCampusLogo />
       <Text>en partenariat avec</Text>
       <Logos>
         <StyledAnchor href="https://civix.quebec" title="CIVIX-Québec">
