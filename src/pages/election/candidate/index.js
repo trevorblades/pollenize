@@ -7,7 +7,7 @@ import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import DelayedTooltip from './delayed-tooltip';
 import DialogTrigger from '../../../components/dialog-trigger';
 import EditIcon from '@material-ui/icons/Edit';
-import Footer from '../../../components/footer';
+import Footer from './footer';
 import Footnotes from './footnotes';
 import Helmet from 'react-helmet';
 import IconButton from '@material-ui/core/IconButton';
