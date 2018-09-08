@@ -2,6 +2,7 @@ import CivixQuebecLogo from '../../../assets/logos/civix-quebec.svg';
 import ImpactCampusLogo from '../../../assets/logos/impact-campus.svg';
 import LavalLogo from '../../../assets/logos/laval.svg';
 import LogoWithWordmark from '../../../components/logo-with-wordmark';
+import PropTypes from 'prop-types';
 import React from 'react';
 import Section from '../../../components/section';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +10,9 @@ import styled, {css} from 'react-emotion';
 import theme from '../../../theme';
 import defaultProps from 'recompose/defaultProps';
 import withProps from 'recompose/withProps';
+import {connect} from 'react-redux';
 import {footerClassName} from '../../../components/footer';
+import {getLocalize} from '../../../selectors';
 import {size} from 'polished';
 
 const Container = styled.footer(footerClassName);
@@ -59,12 +62,12 @@ const X = withProps({
   })
 );
 
-const Footer = () => (
+const Footer = props => (
   <Container>
     <InnerContainer centered>
-      <Text gutterBottom>Un projet de</Text>
+      <Text gutterBottom>{props.localize('A project by')}</Text>
       <StyledImpactCampusLogo />
-      <Text gutterBottom>en partenariat avec</Text>
+      <Text gutterBottom>{props.localize('In partnership with')}</Text>
       <Logos>
         <StyledAnchor href="https://civix.quebec" title="CIVIX-Québec">
           <CivixQuebecLogo />
@@ -82,4 +85,12 @@ const Footer = () => (
   </Container>
 );
 
-export default Footer;
+Footer.propTypes = {
+  localize: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  localize: getLocalize(state)
+});
+
+export default connect(mapStateToProps)(Footer);

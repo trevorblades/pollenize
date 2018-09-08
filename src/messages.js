@@ -112,6 +112,9 @@ export default {
     fr: 'et',
     es: 'y'
   },
+  'A project by': {
+    fr: 'Un projet de'
+  },
   'View printable table': {
     fr: 'Voir la table imprimable',
     es: 'Ver la tabla imprimible'
