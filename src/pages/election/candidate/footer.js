@@ -21,8 +21,7 @@ const InnerContainer = styled(Section)({
 
 const Text = withProps({
   color: 'inherit',
-  variant: 'subheading',
-  gutterBottom: true
+  variant: 'subheading'
 })(Typography);
 
 const logoClassName = css({
@@ -53,11 +52,9 @@ const StyledAnchor = styled(TargetBlankAnchor)({
 });
 
 const X = withProps({
-  children: 'x',
-  color: 'inherit',
-  variant: 'subheading'
+  children: 'x'
 })(
-  styled(Typography)({
+  styled(Text)({
     margin: `0 ${theme.spacing.unit * 3}px`
   })
 );
@@ -65,9 +62,9 @@ const X = withProps({
 const Footer = () => (
   <Container>
     <InnerContainer centered>
-      <Text>Un projet de</Text>
+      <Text gutterBottom>Un projet de</Text>
       <StyledImpactCampusLogo />
-      <Text>en partenariat avec</Text>
+      <Text gutterBottom>en partenariat avec</Text>
       <Logos>
         <StyledAnchor href="https://civix.quebec" title="CIVIX-Québec">
           <CivixQuebecLogo />
