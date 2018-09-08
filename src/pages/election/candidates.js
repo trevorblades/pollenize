@@ -5,7 +5,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import CandidateForm from './candidate-form';
 import DialogTrigger from '../../components/dialog-trigger';
 import Grid from '@material-ui/core/Grid';
-import Logo from '../../assets/logo.svg';
+import ImpactCampusLogo from '../../assets/logos/impact-campus.svg';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import RootRef from '@material-ui/core/RootRef';
@@ -37,7 +37,7 @@ const EmptyGridItem = styled(GridItem)(footerClassName, {
   alignItems: 'center',
   justifyContent: 'center',
   flexGrow: 1,
-  svg: css(size(56), {fill: 'currentColor'})
+  svg: css(size(100), {fill: 'currentColor'})
 });
 
 const StyledAvatar = styled(Avatar)(size(96), {
@@ -144,7 +144,7 @@ class Candidates extends Component {
             {this.props.candidates.map(this.renderCandidate)}
             {this.props.candidates.length % 2 > 0 && (
               <EmptyGridItem>
-                <Logo />
+                <ImpactCampusLogo />
               </EmptyGridItem>
             )}
           </Grid>
