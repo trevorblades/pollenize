@@ -17,12 +17,12 @@ import {connect} from 'react-redux';
 import {logOut} from '../../actions/user';
 import {size} from 'polished';
 
-const Container = styled.footer({
-  marginTop: 'auto',
+export const footerClassName = css({
   color: theme.palette.grey[500],
   backgroundColor: theme.palette.grey[100]
 });
 
+const Container = styled.footer(footerClassName, {marginTop: 'auto'});
 const InnerContainer = withProps({centered: true})(
   styled(Section)({
     display: 'flex',

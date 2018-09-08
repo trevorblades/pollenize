@@ -7,12 +7,11 @@ import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
+import {footerClassName} from '../../../components/footer';
 import {getLocalize} from '../../../selectors';
 
-const Container = styled.section({
-  borderBottom: `1px solid ${theme.palette.grey[200]}`,
-  color: theme.palette.grey[500],
-  backgroundColor: theme.palette.grey[100]
+const Container = styled.section(footerClassName, {
+  borderBottom: `1px solid ${theme.palette.grey[200]}`
 });
 
 const Sources = styled.ol({
