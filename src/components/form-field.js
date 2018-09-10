@@ -6,13 +6,13 @@ export const formFieldProps = {
   fullWidth: true
 };
 
-const FormField = mapProps(props => {
-  const error = props.errors && props.errors[props.name];
+const FormField = mapProps(({errors, ...props}) => {
+  const error = errors && errors[props.name];
   return {
-    ...props,
-    ...formFieldProps,
     error: Boolean(error),
-    helperText: error && error.msg
+    helperText: error && error.msg,
+    ...props,
+    ...formFieldProps
   };
 })(TextField);
 

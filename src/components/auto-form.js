@@ -46,15 +46,13 @@ class AutoForm extends Component {
 
   renderFormField(key, {xs = 12, ...props} = {}) {
     const {errors} = this.props.error || {};
-    const error = errors && errors[key];
     return (
       <Grid item key={key} xs={xs}>
         <FormField
           name={key}
+          errors={errors}
           label={sentenceCase(key)}
           defaultValue={get(this.props.initialData, key)}
-          error={Boolean(error)}
-          helperText={error && error.msg}
           {...props}
         />
       </Grid>
@@ -73,15 +71,12 @@ class AutoForm extends Component {
         <DialogContent>
           <Grid container>
             {this.props.fields.map(field => {
-              switch (typeof field) {
-                case 'string': {
-                  return this.renderFormField(field);
-                }
-                default:
-                  return React.isValidElement(field)
-                    ? field
-                    : this.renderFormField(...field);
+              if (typeof field === 'string') {
+                return this.renderFormField(field);
               }
+              return React.isValidElement(field)
+                ? field
+                : this.renderFormField(...field);
             })}
           </Grid>
         </DialogContent>
