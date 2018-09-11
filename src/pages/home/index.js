@@ -57,7 +57,7 @@ const Home = () => (
             <GridItem xs={4}>
               <img src={students} style={{width: '100%'}} />
             </GridItem>
-            <GridItem xs={8}>
+            <GridItem xs={8} style={{textAlign: 'center'}}>
               <Typography gutterBottom variant="display1">
                 For a politically-engaged future
               </Typography>
