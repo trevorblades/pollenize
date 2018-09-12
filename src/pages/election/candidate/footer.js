@@ -66,7 +66,9 @@ const Footer = props => (
   <Container>
     <InnerContainer centered>
       <Text gutterBottom>{props.localize('A project by')}</Text>
-      <StyledImpactCampusLogo />
+      <TargetBlankAnchor href="http://impactcampus.ca">
+        <StyledImpactCampusLogo />
+      </TargetBlankAnchor>
       <Text gutterBottom>{props.localize('In partnership with')}</Text>
       <Logos>
         <StyledAnchor href="https://civix.quebec" title="CIVIX-Québec">
