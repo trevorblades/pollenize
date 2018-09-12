@@ -13,7 +13,6 @@ import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {footerClassName} from '../../../components/footer';
 import {getLocalize} from '../../../selectors';
-import {size} from 'polished';
 
 const Container = styled.footer(footerClassName);
 const InnerContainer = styled(Section)({
@@ -27,32 +26,27 @@ const Text = withProps({
   variant: 'subheading'
 })(Typography);
 
-const logoClassName = css({
+const StyledImpactCampusLogo = styled(ImpactCampusLogo)({
   display: 'block',
-  fill: 'currentColor'
-});
-
-const StyledImpactCampusLogo = styled(ImpactCampusLogo)(logoClassName, {
   height: 100,
-  marginBottom: theme.spacing.unit * 3
+  marginBottom: theme.spacing.unit * 3,
+  fill: 'currentColor'
 });
 
 const Logos = styled.div({
   display: 'flex',
-  alignItems: 'center',
-  height: 48
+  alignItems: 'center'
+});
+
+const logoClassName = css({
+  fill: 'currentColor',
+  width: 120
 });
 
 const TargetBlankAnchor = defaultProps({
   target: '_blank',
   rel: 'noopener noreferrer'
 })('a');
-
-const StyledAnchor = styled(TargetBlankAnchor)({
-  maxWidth: 120,
-  maxHeight: 48,
-  svg: css(size('100%'), logoClassName)
-});
 
 const X = withProps({
   children: 'x'
@@ -66,22 +60,22 @@ const Footer = props => (
   <Container>
     <InnerContainer centered>
       <Text gutterBottom>{props.localize('A project by')}</Text>
-      <TargetBlankAnchor href="http://impactcampus.ca">
+      <TargetBlankAnchor href="http://impactcampus.ca" title="Impact Campus">
         <StyledImpactCampusLogo />
       </TargetBlankAnchor>
       <Text gutterBottom>{props.localize('In partnership with')}</Text>
       <Logos>
-        <StyledAnchor href="https://civix.quebec" title="CIVIX-Québec">
-          <CivixQuebecLogo />
-        </StyledAnchor>
+        <TargetBlankAnchor href="https://civix.quebec" title="CIVIX Québec">
+          <CivixQuebecLogo className={logoClassName} />
+        </TargetBlankAnchor>
         <X />
-        <TargetBlankAnchor href="https://pollenize.org">
+        <TargetBlankAnchor href="https://pollenize.org" title="Pollenize">
           <LogoWithWordmark height={32} />
         </TargetBlankAnchor>
         <X />
-        <StyledAnchor href="https://ulaval.ca" title="Université Laval">
-          <LavalLogo />
-        </StyledAnchor>
+        <TargetBlankAnchor href="https://ulaval.ca" title="Université Laval">
+          <LavalLogo className={logoClassName} />
+        </TargetBlankAnchor>
       </Logos>
     </InnerContainer>
   </Container>
