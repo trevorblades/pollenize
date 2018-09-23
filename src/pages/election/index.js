@@ -40,6 +40,13 @@ const StyledLink = styled(Link)({
   textDecoration: 'none'
 });
 
+const ElectionTitle = styled.div({
+  display: 'flex',
+  [theme.breakpoints.down('xs')]: {
+    display: 'none'
+  }
+});
+
 class Election extends Component {
   static propTypes = {
     candidates: PropTypes.array.isRequired,
@@ -103,10 +110,12 @@ class Election extends Component {
                     {...props}
                     renderHeader={title => (
                       <ElectionHeader basePath={this.props.match.url}>
-                        <StyledLink to={this.props.match.url}>
-                          {this.props.election.title}
-                        </StyledLink>
-                        <ChevronRightIcon />
+                        <ElectionTitle>
+                          <StyledLink to={this.props.match.url}>
+                            {this.props.election.title}
+                          </StyledLink>
+                          <ChevronRightIcon />
+                        </ElectionTitle>
                         {title}
                       </ElectionHeader>
                     )}
