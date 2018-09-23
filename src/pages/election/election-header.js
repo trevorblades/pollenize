@@ -1,15 +1,19 @@
+import AppsIcon from '@material-ui/icons/Apps';
 import ElectionDrawer from './election-drawer';
 import Header, {HEADER_LOGO_SIZE} from '../../components/header';
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import arrayToSentence from 'array-to-sentence';
+import compose from 'recompose/compose';
 import map from 'lodash/map';
 import styled from 'react-emotion';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
+import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getLocalize} from '../../selectors';
 import {size} from 'polished';
@@ -43,16 +47,21 @@ const Subtitle = withProps({variant: 'caption'})(
   })
 );
 
+const CssHidden = withProps({implementation: 'css'})(Hidden);
+
 const menuButtonSize = theme.spacing.unit * 6;
-const MenuButton = styled(IconButton)(size(menuButtonSize), {
-  margin: (HEADER_LOGO_SIZE - menuButtonSize) / 2
-});
+const MenuButton = withProps({color: 'inherit'})(
+  styled(IconButton)(size(menuButtonSize), {
+    margin: (HEADER_LOGO_SIZE - menuButtonSize) / 2
+  })
+);
 
 class ElectionHeader extends Component {
   static propTypes = {
     basePath: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     election: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired
   };
 
@@ -93,14 +102,25 @@ class ElectionHeader extends Component {
           </Title>
           {/* {this.renderSubtitle()} */}
         </TitleContainer>
-        <MenuButton color="inherit" onClick={this.onMenuClick}>
-          <MenuIcon />
-        </MenuButton>
-        <ElectionDrawer
-          basePath={this.props.basePath}
-          open={this.state.drawerOpen}
-          onClose={this.closeDrawer}
-        />
+        <CssHidden xsDown>
+          <MenuButton onClick={this.onMenuClick}>
+            <MenuIcon />
+          </MenuButton>
+          <ElectionDrawer
+            basePath={this.props.basePath}
+            open={this.state.drawerOpen}
+            onClose={this.closeDrawer}
+          />
+        </CssHidden>
+        <CssHidden smUp>
+          <MenuButton
+            disabled={this.props.basePath === this.props.location.pathname}
+            component={Link}
+            to={this.props.basePath}
+          >
+            <AppsIcon />
+          </MenuButton>
+        </CssHidden>
       </Header>
     );
   }
@@ -111,4 +131,7 @@ const mapStateToProps = state => ({
   localize: getLocalize(state)
 });
 
-export default connect(mapStateToProps)(ElectionHeader);
+export default compose(
+  withRouter,
+  connect(mapStateToProps)
+)(ElectionHeader);

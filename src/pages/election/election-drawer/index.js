@@ -96,6 +96,7 @@ class ElectionDrawer extends Component {
         classes={{paper: drawerClassName}}
         open={this.props.open}
         onClose={this.props.onClose}
+        ModalProps={{disablePortal: true}}
         anchor="right"
       >
         <List>
