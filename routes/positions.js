@@ -2,12 +2,12 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
 import prependHttp from 'prepend-http';
-import {Candidate, Position, Source, Message} from '../models';
-import {checkSchema} from 'express-validator/check';
-import {matchedData} from 'express-validator/filter';
-import {isInt, isArray} from '../util/schema';
-import {getMessageSchema, setMessage} from '../util/messages';
+import {Candidate, Message, Position, Source} from '../models';
 import {bulkCreateAndSet} from '../util/helpers';
+import {checkSchema} from 'express-validator/check';
+import {getMessageSchema, setMessage} from '../util/messages';
+import {isArray, isInt} from '../util/schema';
+import {matchedData} from 'express-validator/filter';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({

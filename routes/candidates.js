@@ -6,9 +6,9 @@ import youtubeRegex from 'youtube-regex';
 import {CANDIDATE_OPTIONS} from '../constants';
 import {Candidate, Position} from '../models';
 import {checkSchema} from 'express-validator/check';
-import {matchedData} from 'express-validator/filter';
-import {notEmptyString, exists, isInt, stringToArray} from '../util/schema';
+import {exists, isInt, notEmptyString, stringToArray} from '../util/schema';
 import {getMessageSchema, setMessages} from '../util/messages';
+import {matchedData} from 'express-validator/filter';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({

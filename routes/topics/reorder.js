@@ -1,10 +1,10 @@
 import createValidationMiddleware from '../../middleware/validation';
 import express from 'express';
 import filter from 'lodash/filter';
-import {Topic, Sequelize} from '../../models';
+import {Sequelize, Topic} from '../../models';
 import {checkSchema} from 'express-validator/check';
+import {isArray, isInt} from '../../util/schema';
 import {matchedData} from 'express-validator/filter';
-import {isInt, isArray} from '../../util/schema';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({

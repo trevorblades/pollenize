@@ -1,6 +1,6 @@
 import map from 'lodash/map';
-import {Strategy, ExtractJwt} from 'passport-jwt';
-import {User, Election} from '../models';
+import {Election, User} from '../models';
+import {ExtractJwt, Strategy} from 'passport-jwt';
 
 export const jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 export default new Strategy(

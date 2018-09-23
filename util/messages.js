@@ -1,12 +1,12 @@
 import {Message} from '../models';
 import {bulkCreateAndSet} from './helpers';
 import {
-  stringToArray,
-  stringToNotEmptyArray,
   isArray,
+  isInt,
   notEmptyArray,
   notEmptyString,
-  isInt
+  stringToArray,
+  stringToNotEmptyArray
 } from './schema';
 
 export function setMessage(instance, data, key) {

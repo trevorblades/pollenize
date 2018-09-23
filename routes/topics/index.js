@@ -1,13 +1,13 @@
 import createValidationMiddleware from '../../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../../middleware/jwt';
-import uploadMiddleware from '../../middleware/upload';
 import reorder from './reorder';
+import uploadMiddleware from '../../middleware/upload';
 import {Topic} from '../../models';
 import {checkSchema} from 'express-validator/check';
+import {getMessageSchema, setMessages} from '../../util/messages';
+import {isInt, notEmptyString} from '../../util/schema';
 import {matchedData} from 'express-validator/filter';
-import {notEmptyString, isInt} from '../../util/schema';
-import {setMessages, getMessageSchema} from '../../util/messages';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({

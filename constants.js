@@ -1,4 +1,4 @@
-import {Position, Message, Source} from './models';
+import {Message, Position, Source} from './models';
 
 export const CANDIDATE_OPTIONS = {
   include: [

@@ -2,15 +2,15 @@ import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
 import shuffle from 'lodash/shuffle';
+import {CANDIDATE_OPTIONS} from '../constants';
 import {
   Election,
   Language,
-  Topic,
   Organization,
   Sequelize,
+  Topic,
   sequelize
 } from '../models';
-import {CANDIDATE_OPTIONS} from '../constants';
 import {checkSchema} from 'express-validator/check';
 import {jwtFromRequest} from '../strategies/jwt';
 import {matchedData} from 'express-validator/filter';
