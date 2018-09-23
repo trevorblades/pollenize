@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import ReactGA from 'react-ga';
 import compose from 'recompose/compose';
-import {Switch, Route, withRouter} from 'react-router-dom';
+import {Route, Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {hot} from 'react-hot-loader';
 import {renew as renewUser} from '../actions/user';

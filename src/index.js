@@ -10,16 +10,16 @@ import styles from './styles';
 import theme from './theme';
 import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 import {JssProvider} from 'react-jss';
-import {Provider} from 'react-redux';
 import {
   MuiThemeProvider,
   createGenerateClassName,
   jssPreset
 } from '@material-ui/core/styles';
+import {Provider} from 'react-redux';
+import {applyMiddleware, createStore} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import {configureAnchors} from 'react-scrollable-anchor';
 import {create} from 'jss';
-import {createStore, applyMiddleware} from 'redux';
-import {composeWithDevTools} from 'redux-devtools-extension';
 import {install} from 'redux-loop';
 
 const history = createHistory({basename: PUBLIC_PATH});

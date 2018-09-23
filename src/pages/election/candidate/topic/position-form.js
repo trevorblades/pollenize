@@ -1,16 +1,16 @@
 import AutoForm from '../../../../components/auto-form';
+import FormField from '../../../../components/form-field';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import filter from 'lodash/filter';
 import map from 'lodash/map';
-import FormField from '../../../../components/form-field';
 import {connect} from 'react-redux';
+import {createMessageField, messagesFromEvent} from '../../../../util/messages';
 import {
-  save as savePosition,
   remove as removePosition,
-  reset as resetPosition
+  reset as resetPosition,
+  save as savePosition
 } from '../../../../actions/position';
-import {messagesFromEvent, createMessageField} from '../../../../util/messages';
 
 class PositionForm extends Component {
   static propTypes = {

@@ -1,14 +1,14 @@
 import api, {headers} from '../api';
+import {Cmd, loop} from 'redux-loop';
 import {
-  save,
-  success,
+  failure,
   remove,
   removed,
-  failure,
-  reset
+  reset,
+  save,
+  success
 } from '../actions/position';
 import {handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
 
 async function createPosition(body) {
   const response = await api.post('/positions', {body, headers});

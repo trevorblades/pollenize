@@ -1,20 +1,20 @@
 import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import TextField from '@material-ui/core/TextField';
+import mapProps from 'recompose/mapProps';
 import querystring from 'querystring';
 import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
-import mapProps from 'recompose/mapProps';
-import {FaTwitter, FaFacebookF, FaGooglePlusG, FaVk} from 'react-icons/fa';
-import {size} from 'polished';
+import {FaFacebookF, FaGooglePlusG, FaTwitter, FaVk} from 'react-icons/fa';
 import {connect} from 'react-redux';
 import {getLocalize, getMatchMessage} from '../../../../selectors';
+import {size} from 'polished';
 
 const buttonSpacing = theme.spacing.unit * 1.5;
 const ShareButtons = styled.div({

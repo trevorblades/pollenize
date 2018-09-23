@@ -1,8 +1,8 @@
 import store from 'store';
+import {Cmd, loop} from 'redux-loop';
 import {STARS_KEY} from '../constants';
-import {handleActions, combineActions} from 'redux-actions';
 import {add, remove, reset} from '../actions/stars';
-import {loop, Cmd} from 'redux-loop';
+import {combineActions, handleActions} from 'redux-actions';
 
 function persist(getState) {
   const {stars} = getState();

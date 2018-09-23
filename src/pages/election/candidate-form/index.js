@@ -1,5 +1,5 @@
-import ColorPicker from './color-picker';
 import AutoForm from '../../../components/auto-form';
+import ColorPicker from './color-picker';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Grid from '@material-ui/core/Grid';
@@ -15,14 +15,14 @@ import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import {DatePicker} from 'material-ui-pickers';
 import {connect} from 'react-redux';
+import {createMessageFields, messagesFromEvent} from '../../../util/messages';
 import {getNextSlug} from '../../../util';
-import {size} from 'polished';
 import {
-  save as saveCandidate,
   remove as removeCandidate,
-  reset as resetCandidate
+  reset as resetCandidate,
+  save as saveCandidate
 } from '../../../actions/candidate';
-import {messagesFromEvent, createMessageFields} from '../../../util/messages';
+import {size} from 'polished';
 
 const gridItemProps = {xs: 6};
 const GridItem = defaultProps({

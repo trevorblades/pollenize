@@ -1,7 +1,7 @@
 import api from '../api';
-import {load, success, failure} from '../actions/organizations';
+import {Cmd, loop} from 'redux-loop';
+import {failure, load, success} from '../actions/organizations';
 import {handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
 
 async function fetchOrganizations() {
   const response = await api.get('/organizations');

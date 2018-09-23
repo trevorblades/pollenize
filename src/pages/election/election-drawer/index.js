@@ -1,13 +1,13 @@
 import Avatar from '@material-ui/core/Avatar';
-import Drawer from '@material-ui/core/Drawer';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import Drawer from '@material-ui/core/Drawer';
 import EditIcon from '@material-ui/icons/Edit';
 import LanguagePicker from './language-picker';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import PrintIcon from '@material-ui/icons/Print';
 import PropTypes from 'prop-types';
@@ -24,16 +24,16 @@ import theme from '../../../theme';
 import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {
+  getCandidates,
   getLocalize,
   getMatchMessage,
-  getCandidates,
   getStarCounts
 } from '../../../selectors';
 import {getTitles} from '../../../util/election';
-import {setCompareMode, setEditMode} from '../../../actions/settings';
-import {transparentize, size} from 'polished';
-import {update as updateElection} from '../../../actions/election';
 import {reset as resetStars} from '../../../actions/stars';
+import {setCompareMode, setEditMode} from '../../../actions/settings';
+import {size, transparentize} from 'polished';
+import {update as updateElection} from '../../../actions/election';
 
 const drawerClassName = css({width: 320});
 const StyledListSubheader = styled(ListSubheader)({

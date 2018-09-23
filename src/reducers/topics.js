@@ -1,7 +1,7 @@
 import api, {headers} from '../api';
-import {reorder, success, failure} from '../actions/topics';
+import {Cmd, loop} from 'redux-loop';
+import {failure, reorder, success} from '../actions/topics';
 import {handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
 
 async function reorderTopics(topics) {
   const response = await api.post('/topics/reorder', {

@@ -1,9 +1,9 @@
 import api, {headers} from '../api';
 import store from 'store';
+import {Cmd, loop} from 'redux-loop';
 import {TOKEN_KEY} from '../constants';
-import {logIn, logOut, renew, create, success, failure} from '../actions/user';
+import {create, failure, logIn, logOut, renew, success} from '../actions/user';
 import {handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
 import {userFromToken} from '../util';
 
 async function authenticate(email, password) {

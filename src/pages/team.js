@@ -1,5 +1,5 @@
-import Helmet from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
+import Helmet from 'react-helmet';
 import React, {Fragment} from 'react';
 import Section from '../components/section';
 import Typography from '@material-ui/core/Typography';

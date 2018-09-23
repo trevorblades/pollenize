@@ -1,26 +1,26 @@
 import api, {headers} from '../api';
 import findIndex from 'lodash/findIndex';
 import reject from 'lodash/reject';
-import {combineActions, handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
-import {load, update, success, failure, reset} from '../actions/election';
-import {push} from 'react-router-redux';
+import {Cmd, loop} from 'redux-loop';
 import {
-  success as candidateSuccess,
-  removed as candidateRemoved
+  removed as candidateRemoved,
+  success as candidateSuccess
 } from '../actions/candidate';
+import {combineActions, handleActions} from 'redux-actions';
+import {failure, load, reset, success, update} from '../actions/election';
 import {
-  success as positionSuccess,
-  removed as positionRemoved
+  removed as positionRemoved,
+  success as positionSuccess
 } from '../actions/position';
-import {
-  success as topicSuccess,
-  removed as topicRemoved
-} from '../actions/topic';
+import {push} from 'react-router-redux';
 import {
   reorder as reorderTopics,
   success as topicsSuccess
 } from '../actions/topics';
+import {
+  removed as topicRemoved,
+  success as topicSuccess
+} from '../actions/topic';
 
 async function fetchElection(id) {
   const response = await api.get(`/elections/${id}`);

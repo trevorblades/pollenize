@@ -11,10 +11,10 @@ import theme from '../../theme';
 import {EMPTY_MESSAGE} from '../../constants';
 import {connect} from 'react-redux';
 import {
-  getMatchMessage,
-  getTopics,
   getCandidates,
-  getLocalize
+  getLocalize,
+  getMatchMessage,
+  getTopics
 } from '../../selectors';
 
 const StyledTableRow = styled(TableRow)({

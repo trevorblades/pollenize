@@ -5,10 +5,10 @@ import findIndex from 'lodash/findIndex';
 import flatMap from 'lodash/flatMap';
 import groupBy from 'lodash/groupBy';
 import keyBy from 'lodash/keyBy';
-import uniqBy from 'lodash/uniqBy';
 import messages from './messages';
-import {createSelector} from 'reselect';
+import uniqBy from 'lodash/uniqBy';
 import {STAR_ID_DELIMITER} from './constants';
+import {createSelector} from 'reselect';
 
 function keyByLanguage(collection, languages) {
   return keyBy(collection, item => languages[item.language_id].code);

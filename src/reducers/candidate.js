@@ -1,14 +1,14 @@
 import api from '../api';
+import {Cmd, loop} from 'redux-loop';
 import {
-  save,
-  success,
+  failure,
   remove,
   removed,
-  failure,
-  reset
+  reset,
+  save,
+  success
 } from '../actions/candidate';
 import {handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
 
 async function createCandidate(body) {
   const response = await api.post('/candidates', {body});

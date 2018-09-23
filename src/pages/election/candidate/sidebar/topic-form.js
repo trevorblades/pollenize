@@ -1,5 +1,5 @@
-import ButtonBase from '@material-ui/core/ButtonBase';
 import AutoForm from '../../../../components/auto-form';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import FormControl from '@material-ui/core/FormControl';
 import ImageButton from '../../../../components/image-button';
 import PropTypes from 'prop-types';
@@ -10,7 +10,7 @@ import reject from 'lodash/reject';
 import round from 'lodash/round';
 import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
-import {TOPIC_MAX_WIDTH, TOPIC_IMAGE_ASPECT_RATIO} from '../common';
+import {TOPIC_IMAGE_ASPECT_RATIO, TOPIC_MAX_WIDTH} from '../common';
 import {connect} from 'react-redux';
 import {
   createMessageFields,
@@ -18,9 +18,9 @@ import {
 } from '../../../../util/messages';
 import {getNextSlug} from '../../../../util';
 import {
-  save as saveTopic,
   remove as removeTopic,
-  reset as resetTopic
+  reset as resetTopic,
+  save as saveTopic
 } from '../../../../actions/topic';
 
 const ImageLabel = withProps({

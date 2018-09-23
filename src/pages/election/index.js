@@ -14,13 +14,13 @@ import map from 'lodash/map';
 import querystring from 'querystring';
 import styled from 'react-emotion';
 import theme from '../../theme';
-import {Link, Switch, Route} from 'react-router-dom';
+import {Link, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {getCandidates} from '../../selectors';
 import {
   load as loadElection,
   reset as resetElection
 } from '../../actions/election';
-import {getCandidates} from '../../selectors';
 
 const Loading = styled.div({
   display: 'flex',

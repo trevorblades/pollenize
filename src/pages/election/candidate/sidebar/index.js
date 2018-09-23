@@ -1,15 +1,15 @@
 import ButtonBase from '@material-ui/core/ButtonBase';
-import EditButton from '../../../../components/edit-button';
 import DialogTrigger from '../../../../components/dialog-trigger';
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import EditButton from '../../../../components/edit-button';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import TopicForm from './topic-form';
 import Typography from '@material-ui/core/Typography';
 import defaultProps from 'recompose/defaultProps';
+import mapProps from 'recompose/mapProps';
 import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
-import mapProps from 'recompose/mapProps';
 import withProps from 'recompose/withProps';
 import {
   SECTION_PADDING_SMALL,

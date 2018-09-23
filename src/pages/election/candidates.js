@@ -10,16 +10,16 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
+import defaultProps from 'recompose/defaultProps';
 import minBy from 'lodash/minBy';
 import styled, {css} from 'react-emotion';
 import theme from '../../theme';
-import defaultProps from 'recompose/defaultProps';
 import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {divisors} from 'number-theory';
 import {footerClassName} from '../../components/footer';
-import {getLocalize, getCandidates, getMatchMessage} from '../../selectors';
+import {getCandidates, getLocalize, getMatchMessage} from '../../selectors';
 import {getTitles} from '../../util/election';
 import {size} from 'polished';
 

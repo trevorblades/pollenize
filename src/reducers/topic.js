@@ -1,7 +1,7 @@
 import api from '../api';
-import {save, success, remove, removed, failure, reset} from '../actions/topic';
+import {Cmd, loop} from 'redux-loop';
+import {failure, remove, removed, reset, save, success} from '../actions/topic';
 import {handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
 
 async function createTopic(body) {
   const response = await api.post('/topics', {body});

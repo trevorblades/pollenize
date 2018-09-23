@@ -2,10 +2,10 @@ import Button from '@material-ui/core/Button';
 import React, {Component} from 'react';
 import Section from '../../components/section';
 import Typography from '@material-ui/core/Typography';
+import defaultProps from 'recompose/defaultProps';
 import noise from '../../assets/images/noise.png';
 import styled from 'react-emotion';
 import theme from '../../theme';
-import defaultProps from 'recompose/defaultProps';
 import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 

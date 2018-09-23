@@ -1,12 +1,12 @@
 import Elections from './elections';
-import Invitation from './invitation';
 import Footer from '../components/footer';
 import Header from '../components/header';
 import Home from './home';
+import Invitation from './invitation';
 import NotFound from './not-found';
 import React, {Fragment} from 'react';
 import Team from './team';
-import {Switch, Route} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 
 const Pages = () => (
   <Fragment>

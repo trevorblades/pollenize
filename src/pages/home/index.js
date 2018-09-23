@@ -8,8 +8,8 @@ import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../components/section';
 import TestimonialCarousel from './testimonial-carousel';
 import Typography from '@material-ui/core/Typography';
-import students from '../../assets/images/students.jpg';
 import scrollToTop from '../../hocs/scroll-to-top';
+import students from '../../assets/images/students.jpg';
 import theme from '../../theme';
 import withProps from 'recompose/withProps';
 

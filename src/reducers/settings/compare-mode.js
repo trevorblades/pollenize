@@ -1,5 +1,5 @@
 import {handleActions} from 'redux-actions';
-import {setCompareMode, setCompareIndex} from '../../actions/settings';
+import {setCompareIndex, setCompareMode} from '../../actions/settings';
 
 const defaultState = {
   active: false,

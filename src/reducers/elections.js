@@ -1,7 +1,7 @@
 import api from '../api';
+import {Cmd, loop} from 'redux-loop';
+import {failure, load, success} from '../actions/elections';
 import {handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
-import {load, success, failure} from '../actions/elections';
 
 async function fetchElections() {
   const response = await api.get('/elections');

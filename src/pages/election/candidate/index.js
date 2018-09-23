@@ -1,8 +1,8 @@
 import Avatar from '@material-ui/core/Avatar';
 import Bio from './bio';
 import CandidateForm from '../candidate-form';
-import EditIcon from '@material-ui/icons/Edit';
 import DialogTrigger from '../../../components/dialog-trigger';
+import EditIcon from '@material-ui/icons/Edit';
 import Footer from '../../../components/footer';
 import Footnotes from './footnotes';
 import Helmet from 'react-helmet';
@@ -17,11 +17,11 @@ import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
 import reject from 'lodash/reject';
 import styled from 'react-emotion';
-import withProps from 'recompose/withProps';
 import theme from '../../../theme';
+import withProps from 'recompose/withProps';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
-import {getCandidates, getTopics, getMatchMessage} from '../../../selectors';
+import {getCandidates, getMatchMessage, getTopics} from '../../../selectors';
 import {getTitles} from '../../../util/election';
 import {size} from 'polished';
 

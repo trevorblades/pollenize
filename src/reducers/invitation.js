@@ -1,7 +1,7 @@
 import api, {headers} from '../api';
-import {create, success, failure, reset} from '../actions/invitation';
+import {Cmd, loop} from 'redux-loop';
+import {create, failure, reset, success} from '../actions/invitation';
 import {handleActions} from 'redux-actions';
-import {loop, Cmd} from 'redux-loop';
 
 async function createInvitation(body) {
   const response = await api.post('/invitations', {body, headers});
