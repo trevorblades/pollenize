@@ -23,7 +23,7 @@ const Headline = styled(Typography)({
 
 const members = {
   'Trevor Blades':
-    'Trevor is a web developer and designer. He spends his days at Planet Labs working towards imaging the entire planet every day using a flock of tiny satellites.He drinks lots of coffee and loves playing Melee. He also created and maintains the addicting word game, Knoword.',
+    'Trevor is a web developer and designer. He spends his days at Planet Labs imaging the entire planet every day using a flock of tiny satellites. He drinks lots of coffee and loves playing Melee. He also created and maintains the addicting word game, Knoword.',
   'Marvin Sanchez':
     'As a designer at Prodigy, Marvin is currently on a mission to help kids around the world love math. He spent three years at Fanshawe College, obtaining both a diploma and post-graduate in Interactive Media. Marvin is better than you at video games and can play any Blink-182 song on his trusty air guitar.',
   'Miguel Barbosa':
@@ -39,7 +39,7 @@ const members = {
   'Lorena Perez':
     'Lorena is a University of Toronto Graduate, communications professional and an M.A. candidate in Strategic Public Relations at the University of Southern California. She is passionate about environmental issues and animal rights, and is currently writing her thesis about plastic pollution in the ocean.',
   'David Clement':
-    "David is an entrepreneur, non profit activist and political junkie. He has a Bachelor's degree in Political Science and a masters degree in International Relations from Wilfrid Laurier University.David previously worked as the research assistant to the Canada Research Chair in International Human Rights and is an unapologetic Taylor Swift fan."
+    "David is an entrepreneur, non profit activist and political junkie. He has a Bachelor's degree in Political Science and a masters degree in International Relations from Wilfrid Laurier University. David previously worked as the research assistant to the Canada Research Chair in International Human Rights and is an unapologetic Taylor Swift fan."
 };
 
 const title = 'Our team';
