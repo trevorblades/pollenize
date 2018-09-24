@@ -30,10 +30,14 @@ const Content = styled.div({
   position: 'relative'
 });
 
-const LargeButton = withProps({size: 'large'})(Button);
-const PrimaryButton = styled(LargeButton)({
-  marginRight: theme.spacing.unit * 1.5
-});
+const LargeButton = withProps({
+  component: Link,
+  size: 'large'
+})(
+  styled(Button)({
+    marginRight: theme.spacing.unit * 2
+  })
+);
 
 const StyledImage = withProps({src: noise})(
   styled.img({
@@ -60,17 +64,12 @@ class Home extends Component {
               We break down elections and provide voters with an organized,
               unbiased overview of each candidate&apos;s platform.
             </Text>
-            <PrimaryButton
-              component={Link}
-              color="primary"
-              variant="raised"
-              to="/elections"
-            >
+            <LargeButton color="primary" variant="raised" to="/elections">
               View elections
-            </PrimaryButton>
-            {/* <LargeButton color="inherit" variant="outlined">
-              Learn more
-            </LargeButton> */}
+            </LargeButton>
+            <LargeButton color="inherit" variant="outlined" to="/team">
+              Our team
+            </LargeButton>
             <StyledImage />
           </Content>
         </InnerContainer>
