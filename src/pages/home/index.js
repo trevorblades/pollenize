@@ -51,33 +51,30 @@ const Home = () => (
     </CenteredSection>
     <Divider />
     <ScrollableAnchor id="donate">
-      <Fragment>
-        <CenteredSection>
-          <GridContainer alignItems="center">
-            <GridItem xs={4}>
-              <img src={students} style={{width: '100%'}} />
-            </GridItem>
-            <GridItem xs={8} style={{textAlign: 'center'}}>
-              <Typography gutterBottom variant="display1">
-                For a politically-engaged future
-              </Typography>
-              <Typography paragraph variant="subheading">
-                Pollenize is a registered non-profit. We&apos;re an
-                all-volunteer team on a mission to make elections easier to
-                understand and encourage people to participate in democracy.
-              </Typography>
-              <Typography paragraph variant="subheading">
-                Your donation will help us spread the word about the tools that
-                we build, produce other projects, and engage the voting public
-                in other ways. If you like what we&apos;re doing, we&apos;d be
-                very grateful if you contributed any amount that you think is
-                fair.
-              </Typography>
-              <DonateButton />
-            </GridItem>
-          </GridContainer>
-        </CenteredSection>
-      </Fragment>
+      <CenteredSection>
+        <GridContainer alignItems="center">
+          <GridItem xs={4}>
+            <img src={students} style={{width: '100%'}} />
+          </GridItem>
+          <GridItem xs={8} style={{textAlign: 'center'}}>
+            <Typography gutterBottom variant="display1">
+              For a politically-engaged future
+            </Typography>
+            <Typography paragraph variant="subheading">
+              Pollenize is a registered non-profit. We&apos;re an all-volunteer
+              team on a mission to make elections easier to understand and
+              encourage people to participate in democracy.
+            </Typography>
+            <Typography paragraph variant="subheading">
+              Your donation will help us spread the word about the tools that we
+              build, produce other projects, and engage the voting public in
+              other ways. If you like what we&apos;re doing, we&apos;d be very
+              grateful if you contributed any amount that you think is fair.
+            </Typography>
+            <DonateButton />
+          </GridItem>
+        </GridContainer>
+      </CenteredSection>
     </ScrollableAnchor>
   </Fragment>
 );
