@@ -43,6 +43,9 @@ const Container = styled.aside({
   top: theme.mixins.toolbar.height,
   [theme.breakpoints.down(sectionBreakpoint)]: {
     marginTop: SECTION_PADDING_SMALLER - padding
+  },
+  [theme.breakpoints.down('sm')]: {
+    display: 'none'
   }
 });
 

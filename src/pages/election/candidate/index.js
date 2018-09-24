@@ -10,7 +10,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import Footer from '../../../components/footer';
 import Footnotes from './footnotes';
 import Helmet from 'react-helmet';
-import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
@@ -200,13 +199,11 @@ class Candidate extends Component {
           )}
         </Hero>
         <Container>
-          <Hidden implementation="css" smDown>
-            <Sidebar
-              activeTopicIndex={this.state.activeTopicIndex}
-              candidate={this.props.candidate}
-              election={this.props.election}
-            />
-          </Hidden>
+          <Sidebar
+            activeTopicIndex={this.state.activeTopicIndex}
+            candidate={this.props.candidate}
+            election={this.props.election}
+          />
           <InnerContainer innerRef={node => (this.innerContainer = node)}>
             <Bio
               candidate={this.props.candidate}
