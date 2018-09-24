@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
-import defaultProps from 'recompose/defaultProps';
 import styled, {css} from 'react-emotion';
 import theme from '../theme';
 import withProps from 'recompose/withProps';
@@ -13,7 +12,7 @@ const Container = styled.nav({
   marginLeft: 'auto'
 });
 
-const ItemBase = defaultProps({
+const ItemBase = withProps({
   color: 'inherit',
   variant: 'subheading',
   noWrap: true
@@ -32,13 +31,12 @@ const hover = css({
   }
 });
 
-const NavlessItem = defaultProps({component: Link})(styled(ItemBase)(hover));
+const NavlessItem = styled(ItemBase)(hover);
+const NavItem = styled(ItemBase)({
+  ':not(.active)': css({opacity: 0.5}, hover)
+});
+
 const ExactNavLink = withProps({exact: true})(NavLink);
-const NavItem = defaultProps({component: ExactNavLink})(
-  styled(ItemBase)({
-    ':not(.active)': css({opacity: 0.5}, hover)
-  })
-);
 
 class Navigation extends Component {
   static propTypes = {
@@ -67,10 +65,16 @@ class Navigation extends Component {
     return (
       <Container className={this.props.className}>
         {keys.map(key => {
-          const item = this.props.items[key];
-          const props = typeof item === 'string' ? {to: item} : item;
+          let props = this.props.items[key];
+          if (typeof props === 'string') {
+            props = {
+              component: this.props.withActive ? ExactNavLink : Link,
+              to: props
+            };
+          }
+
           return (
-            <Item key={key} {...props}>
+            <Item {...props} key={key}>
               {key}
             </Item>
           );

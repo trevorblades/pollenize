@@ -13,6 +13,7 @@ import {create as createUser} from '../../actions/user';
 const Fields = styled.div({marginBottom: theme.spacing.unit * 2});
 const DisabledField = withProps({disabled: true})(FormField);
 const PasswordField = withProps({type: 'password'})(FormField);
+
 const GridItem = withProps({
   item: true,
   xs: 4

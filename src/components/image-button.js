@@ -4,17 +4,14 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import styled from 'react-emotion';
 import theme from '../theme';
-import withProps from 'recompose/withProps';
 import {size} from 'polished';
 
-const Button = withProps({component: 'label'})(
-  styled(ButtonBase)({
-    color: theme.palette.grey[500],
-    backgroundColor: theme.palette.grey[100],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'
-  })
-);
+const Button = styled(ButtonBase)({
+  color: theme.palette.grey[500],
+  backgroundColor: theme.palette.grey[100],
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
+});
 
 const StyledImageIcon = styled(ImageIcon)({
   position: 'absolute',
@@ -23,11 +20,7 @@ const StyledImageIcon = styled(ImageIcon)({
   transform: 'translate(-50%, -50%)'
 });
 
-const FileInput = withProps({type: 'file'})(
-  styled.input({
-    display: 'none'
-  })
-);
+const StyledInput = styled.input({display: 'none'});
 
 class ImageButton extends Component {
   static propTypes = {
@@ -58,6 +51,7 @@ class ImageButton extends Component {
   render() {
     return (
       <Button
+        component="label"
         className={this.props.className}
         style={{
           backgroundImage: this.props.image && `url(${this.props.image})`
@@ -66,7 +60,7 @@ class ImageButton extends Component {
         {!this.props.image && (
           <StyledImageIcon style={size(this.props.iconSize)} />
         )}
-        <FileInput onChange={this.onChange} accept="image/*" />
+        <StyledInput type="file" onChange={this.onChange} accept="image/*" />
       </Button>
     );
   }

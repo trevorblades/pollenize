@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import RootRef from '@material-ui/core/RootRef';
 import Typography from '@material-ui/core/Typography';
-import defaultProps from 'recompose/defaultProps';
 import minBy from 'lodash/minBy';
 import styled, {css} from 'react-emotion';
 import theme from '../../theme';
@@ -25,7 +24,7 @@ import {size} from 'polished';
 
 const containerClassName = css({flexGrow: 1});
 const LinkButton = withProps({component: Link})(ButtonBase);
-const GridItem = defaultProps({item: true})(
+const GridItem = withProps({item: true})(
   styled(Grid)({
     display: 'flex',
     flexDirection: 'column',
@@ -50,19 +49,15 @@ const Title = withProps({
   align: 'center'
 })(Typography);
 
-const Headline = withProps({variant: 'display1'})(
-  styled(Title)({
-    marginBottom: theme.spacing.unit * 0.75
-  })
-);
+const Headline = styled(Title)({
+  marginBottom: theme.spacing.unit * 0.75
+});
 
-const CreateButton = withProps({variant: 'fab'})(
-  styled(Button)({
-    position: 'absolute',
-    bottom: theme.spacing.unit * 3,
-    right: theme.spacing.unit * 3
-  })
-);
+const CreateButton = styled(Button)({
+  position: 'absolute',
+  bottom: theme.spacing.unit * 3,
+  right: theme.spacing.unit * 3
+});
 
 class Candidates extends Component {
   static propTypes = {
@@ -134,7 +129,7 @@ class Candidates extends Component {
         {candidate.avatar && (
           <StyledAvatar alt={candidate.name} src={candidate.avatar} />
         )}
-        <Headline>{title}</Headline>
+        <Headline variant="display1">{title}</Headline>
         {subtitle && <Title variant="title">{subtitle}</Title>}
       </GridItem>
     );
@@ -172,7 +167,7 @@ class Candidates extends Component {
             tooltip={this.props.localize('Create a candidate')}
             tooltipProps={{placement: 'left'}}
           >
-            <CreateButton>
+            <CreateButton variant="fab">
               <AddIcon />
             </CreateButton>
           </DialogTrigger>

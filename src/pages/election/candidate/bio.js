@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import ReactMarkdown from 'react-markdown';
 import Section from '../../../components/section';
 import Typography from '@material-ui/core/Typography';
-import defaultProps from 'recompose/defaultProps';
 import differenceInYears from 'date-fns/differenceInYears';
 import getYouTubeId from 'get-youtube-id';
 import styled from 'react-emotion';
@@ -43,27 +42,16 @@ const Video = styled.div({
   position: 'relative'
 });
 
-const StyledIframe = withProps({
-  allowFullScreen: true,
-  allow: 'autoplay; encrypted-media',
-  frameBorder: 0
-})(
-  styled.iframe({
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0
-  })
-);
+const StyledIframe = styled.iframe({
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+  top: 0,
+  left: 0
+});
 
-const VideoCaption = withProps({variant: 'caption'})(
-  styled(Typography)({
-    marginTop: theme.spacing.unit
-  })
-);
-
-const Text = defaultProps({
+const VideoCaption = styled(Typography)({marginTop: theme.spacing.unit});
+const Text = withProps({
   component: 'p',
   variant: 'subheading'
 })(Typography);
@@ -89,10 +77,15 @@ class Bio extends Component {
           <VideoContainer>
             <Video>
               <StyledIframe
+                allowFullScreen
+                allow="autoplay; encrypted-media"
+                frameBorder={0}
                 src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0`}
               />
             </Video>
-            {caption && <VideoCaption>{caption.text}</VideoCaption>}
+            {caption && (
+              <VideoCaption variant="caption">{caption.text}</VideoCaption>
+            )}
           </VideoContainer>
         );
       }

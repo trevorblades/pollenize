@@ -11,19 +11,15 @@ import withProps from 'recompose/withProps';
 
 const Hero = styled.div({backgroundColor: color});
 const CenteredSection = withProps({centered: true})(Section);
+
 const StyledImage = styled.img({
   width: '100%',
   marginBottom: theme.spacing.unit * 3
 });
 
-const HeroText = withProps({
-  gutterBottom: true,
-  variant: 'headline'
-})(
-  styled(Typography)({
-    maxWidth: theme.breakpoints.values.sm
-  })
-);
+const Headline = styled(Typography)({
+  maxWidth: theme.breakpoints.values.sm
+});
 
 const members = {
   'Trevor Blades':
@@ -59,12 +55,12 @@ const Team = () => (
           {title}
         </Typography>
         <StyledImage src={team} />
-        <HeroText>
+        <Headline gutterBottom variant="headline">
           Pollenize is created by a collection of friends spread out across 6
           cities and 3 countries who are passionate about educating and creating
           beautiful, functional experiences. Read on to learn more about our
           crew.
-        </HeroText>
+        </Headline>
         <Typography variant="caption">
           Pictured (from left to right): Miguel, Ben, Matheson, Trevor, Marvin,
           and Joe

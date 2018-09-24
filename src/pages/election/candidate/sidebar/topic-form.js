@@ -9,7 +9,6 @@ import map from 'lodash/map';
 import reject from 'lodash/reject';
 import round from 'lodash/round';
 import styled from 'react-emotion';
-import withProps from 'recompose/withProps';
 import {TOPIC_IMAGE_ASPECT_RATIO, TOPIC_MAX_WIDTH} from '../common';
 import {connect} from 'react-redux';
 import {
@@ -23,15 +22,10 @@ import {
   save as saveTopic
 } from '../../../../actions/topic';
 
-const ImageLabel = withProps({
-  gutterBottom: true,
-  variant: 'caption'
-})(
-  styled(Typography)({
-    display: 'flex',
-    justifyContent: 'space-between'
-  })
-);
+const ImageLabel = styled(Typography)({
+  display: 'flex',
+  justifyContent: 'space-between'
+});
 
 const StyledImageButton = styled(ImageButton)({
   paddingTop: `${round((1 / TOPIC_IMAGE_ASPECT_RATIO) * 100, 3)}%`
@@ -115,7 +109,7 @@ class TopicForm extends Component {
           ...titles,
           ...descriptions,
           <FormControl fullWidth key="image" margin="dense">
-            <ImageLabel>
+            <ImageLabel gutterBottom variant="caption">
               Banner image ({TOPIC_MAX_WIDTH * 2} x{' '}
               {(TOPIC_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO) * 2} px)
               {image && (

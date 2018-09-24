@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import React, {Component} from 'react';
 import Section from '../../components/section';
 import Typography from '@material-ui/core/Typography';
-import defaultProps from 'recompose/defaultProps';
 import noise from '../../assets/images/noise.png';
 import styled from 'react-emotion';
 import theme from '../../theme';
@@ -16,23 +15,14 @@ const Container = styled.div({
   overflow: 'hidden'
 });
 
-const InnerContainer = withProps({centered: true})(
-  styled(Section)({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  })
-);
+const InnerContainer = styled(Section)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between'
+});
 
-const Text = defaultProps({color: 'inherit'})(Typography);
-const Headline = withProps({
-  gutterBottom: true,
-  variant: 'display3'
-})(
-  styled(Text)({
-    lineHeight: 1
-  })
-);
+const Text = withProps({color: 'inherit'})(Typography);
+const Headline = styled(Text)({lineHeight: 1});
 
 const Content = styled.div({
   maxWidth: theme.breakpoints.values.sm,
@@ -40,16 +30,10 @@ const Content = styled.div({
   position: 'relative'
 });
 
-const LargeButton = defaultProps({size: 'large'})(Button);
-const PrimaryButton = withProps({
-  component: Link,
-  color: 'primary',
-  variant: 'raised'
-})(
-  styled(LargeButton)({
-    marginRight: theme.spacing.unit * 1.5
-  })
-);
+const LargeButton = withProps({size: 'large'})(Button);
+const PrimaryButton = styled(LargeButton)({
+  marginRight: theme.spacing.unit * 1.5
+});
 
 const StyledImage = withProps({src: noise})(
   styled.img({
@@ -67,14 +51,23 @@ class Home extends Component {
   render() {
     return (
       <Container>
-        <InnerContainer>
+        <InnerContainer centered>
           <Content>
-            <Headline>Informing voters</Headline>
+            <Headline gutterBottom variant="display3">
+              Informing voters
+            </Headline>
             <Text paragraph variant="title">
               We break down elections and provide voters with an organized,
               unbiased overview of each candidate&apos;s platform.
             </Text>
-            <PrimaryButton to="/elections">View elections</PrimaryButton>
+            <PrimaryButton
+              component={Link}
+              color="primary"
+              variant="raised"
+              to="/elections"
+            >
+              View elections
+            </PrimaryButton>
             {/* <LargeButton color="inherit" variant="outlined">
               Learn more
             </LargeButton> */}

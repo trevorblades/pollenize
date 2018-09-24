@@ -25,29 +25,24 @@ const TitleContainer = styled.div({
   margin: '0 auto'
 });
 
-const Title = withProps({
-  color: 'inherit',
-  variant: 'subheading'
-})(
-  styled(Typography)({
-    display: 'flex',
-    alignItems: 'center',
-    fontWeight: theme.typography.fontWeightMedium
-  })
-);
+const Title = styled(Typography)({
+  display: 'flex',
+  alignItems: 'center',
+  fontWeight: theme.typography.fontWeightMedium
+});
 
 const Flag = styled.img({
   height: theme.spacing.unit * 2,
   marginRight: theme.spacing.unit
 });
 
-const Subtitle = withProps({variant: 'caption'})(
-  styled(Typography)({
-    color: theme.palette.grey[300]
-  })
-);
+const Subtitle = styled(Typography)({
+  color: theme.palette.grey[300]
+});
 
-const CssHidden = withProps({implementation: 'css'})(Hidden);
+const CssHidden = withProps({
+  implementation: 'css'
+})(Hidden);
 
 const menuButtonSize = theme.spacing.unit * 6;
 const MenuButton = withProps({color: 'inherit'})(
@@ -83,7 +78,7 @@ class ElectionHeader extends Component {
 
     const partners = map(this.props.election.partners, 'name');
     return (
-      <Subtitle>
+      <Subtitle variant="caption">
         {this.props.localize('In partnership with')}{' '}
         {arrayToSentence(partners, {
           lastSeparator: this.props.localize('and')
@@ -96,7 +91,7 @@ class ElectionHeader extends Component {
     return (
       <Header dark simple logoHref="/elections">
         <TitleContainer>
-          <Title>
+          <Title color="inherit" variant="subheading">
             <Flag src={this.props.election.flag} />
             {this.props.children}
           </Title>

@@ -6,23 +6,19 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Section from '../components/section';
 import Typography from '@material-ui/core/Typography';
-import defaultProps from 'recompose/defaultProps';
 import styled, {css} from 'react-emotion';
 import theme from '../theme';
-import withProps from 'recompose/withProps';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {load as loadElections} from '../actions/elections';
 
-const ElectionButton = withProps({component: Link})(
-  styled(ButtonBase)({
-    flexDirection: 'column',
-    width: '100%',
-    padding: theme.spacing.unit * 6,
-    color: theme.palette.grey[50],
-    backgroundColor: theme.palette.grey[900]
-  })
-);
+const ElectionButton = styled(ButtonBase)({
+  flexDirection: 'column',
+  width: '100%',
+  padding: theme.spacing.unit * 6,
+  color: theme.palette.grey[50],
+  backgroundColor: theme.palette.grey[900]
+});
 
 const Flag = styled.img({
   display: 'block',
@@ -31,18 +27,13 @@ const Flag = styled.img({
 });
 
 const height = theme.spacing.unit * 2.5;
-const Status = defaultProps({
-  color: 'inherit',
-  variant: 'caption'
-})(
-  styled(Typography)({
-    height,
-    padding: `0 ${theme.spacing.unit * 2}px`,
-    borderRadius: height / 2,
-    lineHeight: `${height}px`,
-    backgroundColor: theme.palette.grey[800]
-  })
-);
+const Status = styled(Typography)({
+  height,
+  padding: `0 ${theme.spacing.unit * 2}px`,
+  borderRadius: height / 2,
+  lineHeight: `${height}px`,
+  backgroundColor: theme.palette.grey[800]
+});
 
 const activeStatusClassName = css({
   backgroundColor: theme.palette.primary[500]
@@ -90,12 +81,19 @@ class Elections extends Component {
           const active = today.getTime() <= Date.parse(election.ends_at);
           return (
             <Grid item key={election.id} xs={12} sm={6} md={4} lg={3}>
-              <ElectionButton to={`/elections/${election.slug}`}>
+              <ElectionButton
+                component={Link}
+                to={`/elections/${election.slug}`}
+              >
                 <Flag src={election.flag} />
                 <Typography gutterBottom color="inherit" variant="title">
                   {election.title}
                 </Typography>
-                <Status className={active && activeStatusClassName}>
+                <Status
+                  color="inherit"
+                  variant="caption"
+                  className={active && activeStatusClassName}
+                >
                   {active ? 'Active' : 'Concluded'}
                 </Status>
               </ElectionButton>

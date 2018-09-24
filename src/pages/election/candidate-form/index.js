@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
-import defaultProps from 'recompose/defaultProps';
 import map from 'lodash/map';
 import reject from 'lodash/reject';
 import styled from 'react-emotion';
@@ -24,12 +23,7 @@ import {
 } from '../../../actions/candidate';
 import {size} from 'polished';
 
-const gridItemProps = {xs: 6};
-const GridItem = defaultProps({
-  ...gridItemProps,
-  item: true
-})(Grid);
-
+const GridItem = withProps({item: true})(Grid);
 const SmallGridItem = withProps({xs: 4})(GridItem);
 
 const AvatarButton = styled(ImageButton)(size(96), {
@@ -121,7 +115,7 @@ class CandidateForm extends Component {
         initialData={this.props.candidate}
         fields={[
           'name',
-          <GridItem key="date">
+          <GridItem key="date" xs={6}>
             <DatePicker
               fullWidth
               disableFuture
@@ -132,7 +126,7 @@ class CandidateForm extends Component {
               value={this.state.birthDate}
             />
           </GridItem>,
-          ['hometown', gridItemProps],
+          ['hometown', {xs: 6}],
           ...parties,
           ...bios,
           [

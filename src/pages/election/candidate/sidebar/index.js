@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import TopicForm from './topic-form';
 import Typography from '@material-ui/core/Typography';
-import defaultProps from 'recompose/defaultProps';
 import mapProps from 'recompose/mapProps';
 import styled, {css} from 'react-emotion';
 import theme from '../../../../theme';
@@ -49,14 +48,9 @@ const Container = styled.aside({
   }
 });
 
-const TopicsHeading = withProps({
-  gutterBottom: true,
-  variant: 'caption'
-})(
-  styled(Typography)({
-    marginTop: theme.spacing.unit * 2
-  })
-);
+const TopicsHeading = styled(Typography)({
+  marginTop: theme.spacing.unit * 2
+});
 
 const NotLastBottomMargin = styled.div({
   ':not(:last-child)': {
@@ -87,10 +81,7 @@ const SidebarTopic = SortableElement(
   }))
 );
 
-const SidebarItem = defaultProps({
-  component: 'a',
-  variant: 'subheading'
-})(
+const SidebarItem = withProps({variant: 'subheading'})(
   styled(Typography)({
     textDecoration: 'none',
     ':hover': {
@@ -99,10 +90,9 @@ const SidebarItem = defaultProps({
   })
 );
 
-const SidebarButton = defaultProps({component: ButtonBase})(SidebarItem);
-const AddTopicButton = styled(SidebarButton)({
-  color: theme.palette.text.secondary
-});
+const SidebarButton = withProps({
+  component: ButtonBase
+})(SidebarItem);
 
 const DragHandle = SortableHandle(
   styled.div({
@@ -159,7 +149,9 @@ class Sidebar extends Component {
             name: this.props.candidate.firstName
           })}
         </SidebarButton>
-        <TopicsHeading>{this.props.localize('Topics')}</TopicsHeading>
+        <TopicsHeading gutterBottom variant="caption">
+          {this.props.localize('Topics')}
+        </TopicsHeading>
         <SidebarTopics
           useDragHandle
           onSortStart={this.onSortStart}
@@ -176,7 +168,9 @@ class Sidebar extends Component {
                   !this.state.sorting && index === this.props.activeTopicIndex
                 }
               >
-                <SidebarItem href={`#${topic.slug}`}>{title.text}</SidebarItem>
+                <SidebarItem component="a" href={`#${topic.slug}`}>
+                  {title.text}
+                </SidebarItem>
                 {this.props.editMode && (
                   <Fragment>
                     <DragHandle>
@@ -202,9 +196,9 @@ class Sidebar extends Component {
               election_id: this.props.election.id
             }}
           >
-            <AddTopicButton>
+            <SidebarButton color="textSecondary">
               {this.props.localize('Add topic...')}
-            </AddTopicButton>
+            </SidebarButton>
           </TopicFormDialogTrigger>
         )}
       </Container>

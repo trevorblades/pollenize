@@ -5,7 +5,6 @@ import Section from '../../../components/section';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme from '../../../theme';
-import withProps from 'recompose/withProps';
 import {connect} from 'react-redux';
 import {footerClassName} from '../../../components/footer';
 import {getLocalize} from '../../../selectors';
@@ -27,16 +26,10 @@ const Sources = styled.ol({
   }
 });
 
-const Source = withProps({
-  color: 'inherit',
-  gutterBottom: true,
-  component: 'li'
-})(
-  styled(Typography)({
-    display: 'list-item',
-    wordBreak: 'break-word'
-  })
-);
+const Source = styled(Typography)({
+  display: 'list-item',
+  wordBreak: 'break-word'
+});
 
 const Footnotes = props => (
   <ScrollableAnchor id="sources">
@@ -47,7 +40,7 @@ const Footnotes = props => (
         </Typography>
         <Sources>
           {props.sources.map(source => (
-            <Source key={source.id}>
+            <Source key={source.id} color="inherit" gutterBottom component="li">
               <a href={source.url} rel="noopener noreferrer" target="_blank">
                 {source.url}
               </a>

@@ -8,10 +8,8 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import Section from '../section';
 import Typography from '@material-ui/core/Typography';
-import defaultProps from 'recompose/defaultProps';
 import styled, {css} from 'react-emotion';
 import theme from '../../theme';
-import withProps from 'recompose/withProps';
 import {FaFacebook, FaInstagram, FaTwitter, FaYoutube} from 'react-icons/fa';
 import {connect} from 'react-redux';
 import {logOut} from '../../actions/user';
@@ -23,13 +21,11 @@ export const footerClassName = css({
 });
 
 const Container = styled.footer(footerClassName, {marginTop: 'auto'});
-const InnerContainer = withProps({centered: true})(
-  styled(Section)({
-    display: 'flex',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap'
-  })
-);
+const InnerContainer = styled(Section)({
+  display: 'flex',
+  alignItems: 'flex-start',
+  flexWrap: 'wrap'
+});
 
 const breakpoint = theme.breakpoints.down('sm');
 const Colophon = styled.div({
@@ -64,10 +60,6 @@ const iconSize = theme.spacing.unit * 2.5;
 const iconClassName = css(baseIconClassName, size(iconSize), {
   margin: theme.spacing.unit / 4
 });
-const BlankTargetAnchor = defaultProps({
-  target: '_blank',
-  rel: 'noopener noreferrer'
-})(StyledAnchor);
 
 const NavigationContainer = styled.div({
   marginLeft: 'auto',
@@ -156,7 +148,7 @@ class Footer extends Component {
 
     return (
       <Container>
-        <InnerContainer>
+        <InnerContainer centered>
           <Colophon>
             <StyledLogo />
             <Typography gutterBottom color="inherit">
@@ -166,13 +158,15 @@ class Footer extends Component {
               {Object.keys(socialMediaAccounts).map(key => {
                 const {url, logo} = socialMediaAccounts[key];
                 return (
-                  <BlankTargetAnchor
+                  <StyledAnchor
                     key={key}
                     href={url}
                     title={`Pollenize on ${key}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {React.createElement(logo, {className: iconClassName})}
-                  </BlankTargetAnchor>
+                  </StyledAnchor>
                 );
               })}
               <StyledAnchor href={mailto}>

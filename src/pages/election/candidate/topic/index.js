@@ -36,7 +36,6 @@ const Banner = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   height: TOPIC_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO,
-  textAlign: 'center',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   [theme.breakpoints.down('xs')]: {
@@ -49,12 +48,8 @@ const Banner = styled.div({
   }
 });
 
-const Container = withProps({small: true})(Section);
 const InnerContainer = styled.div({display: 'flex'});
-const MainContent = styled.div({
-  flexGrow: 1
-});
-
+const MainContent = styled.div({flexGrow: 1});
 const Text = withProps({
   component: 'p',
   variant: 'subheading'
@@ -159,7 +154,7 @@ class Topic extends Component {
   renderTitle(gutterBottom) {
     const {message: title} = this.props.matchMessage(this.props.topic.titles);
     return (
-      <Title gutterBottom={gutterBottom} variant="display1">
+      <Title gutterBottom={gutterBottom} variant="display1" align="center">
         <span>{title.text}</span>
       </Title>
     );
@@ -286,7 +281,7 @@ class Topic extends Component {
           ) : (
             <Divider />
           )}
-          <Container>
+          <Section small>
             {!image && this.renderTitle(true)}
             <InnerContainer>
               <MainContent>
@@ -295,7 +290,7 @@ class Topic extends Component {
               </MainContent>
               {this.renderAlternateContent()}
             </InnerContainer>
-          </Container>
+          </Section>
           <ShareDialog
             open={this.state.shareDialogOpen}
             onClose={this.closeShareDialog}

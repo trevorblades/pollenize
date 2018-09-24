@@ -47,18 +47,16 @@ const compareOffset = compareButtonSize / -2;
 const compareOffsetTop = css({marginBottom: compareOffset});
 const compareOffsetBottom = css({marginTop: compareOffset});
 
-const Hero = withProps({small: true})(
-  styled(Section)({
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundBlendMode: 'multiply',
-    position: 'relative'
-  })
-);
+const Hero = styled(Section)({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  backgroundSize: 'contain',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundBlendMode: 'multiply',
+  position: 'relative'
+});
 
 const StyledAvatar = styled(Avatar)(size(120), {
   marginBottom: theme.spacing.unit * 2.5
@@ -69,28 +67,16 @@ const Title = withProps({
   align: 'center'
 })(Typography);
 
-const Headline = withProps({variant: 'display2'})(
-  styled(Title)({
-    marginBottom: theme.spacing.unit
-  })
-);
+const Headline = styled(Title)({marginBottom: theme.spacing.unit});
+const Subtitle = styled(Title)({
+  fontWeight: theme.typography.fontWeightMedium
+});
 
-const Subtitle = withProps({
-  gutterBottom: true,
-  variant: 'headline'
-})(
-  styled(Title)({
-    fontWeight: theme.typography.fontWeightMedium
-  })
-);
-
-const EditButton = withProps({color: 'inherit'})(
-  styled(IconButton)({
-    position: 'absolute',
-    bottom: theme.spacing.unit,
-    right: theme.spacing.unit
-  })
-);
+const EditButton = styled(IconButton)({
+  position: 'absolute',
+  bottom: theme.spacing.unit,
+  right: theme.spacing.unit
+});
 
 const Container = styled.div(centered, {
   display: 'flex',
@@ -169,6 +155,7 @@ class Candidate extends Component {
         </Helmet>
         {this.props.renderHeader(title)}
         <Hero
+          small
           style={{
             color: theme.palette.getContrastText(this.props.candidate.color),
             backgroundColor: this.props.candidate.color
@@ -180,8 +167,12 @@ class Candidate extends Component {
               src={this.props.candidate.avatar}
             />
           )}
-          <Headline>{title}</Headline>
-          {subtitle && <Subtitle>{subtitle}</Subtitle>}
+          <Headline variant="display2">{title}</Headline>
+          {subtitle && (
+            <Subtitle gutterBottom variant="headline">
+              {subtitle}
+            </Subtitle>
+          )}
           {this.props.editMode && (
             <DialogTrigger
               renderContent={closeDialog => (
@@ -192,7 +183,7 @@ class Candidate extends Component {
                 />
               )}
             >
-              <EditButton>
+              <EditButton color="inherit">
                 <EditIcon />
               </EditButton>
             </DialogTrigger>
