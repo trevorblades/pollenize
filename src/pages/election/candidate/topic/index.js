@@ -27,14 +27,23 @@ import {connect} from 'react-redux';
 import {getLocalize, getMatchMessage} from '../../../../selectors';
 import {size} from 'polished';
 
+const Title = styled(Typography)({
+  lineHeight: 'normal'
+});
+
 const Banner = styled.div({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   height: TOPIC_MAX_WIDTH / TOPIC_IMAGE_ASPECT_RATIO,
+  textAlign: 'center',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  h1: {
+  [theme.breakpoints.down('xs')]: {
+    height: 'auto',
+    padding: theme.spacing.unit * 6
+  },
+  [`${Title} span`]: {
     padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 2}px`,
     backgroundColor: theme.palette.common.white
   }
@@ -150,9 +159,9 @@ class Topic extends Component {
   renderTitle(gutterBottom) {
     const {message: title} = this.props.matchMessage(this.props.topic.titles);
     return (
-      <Typography gutterBottom={gutterBottom} variant="display1">
-        {title.text}
-      </Typography>
+      <Title gutterBottom={gutterBottom} variant="display1">
+        <span>{title.text}</span>
+      </Title>
     );
   }
 
