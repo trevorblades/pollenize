@@ -1,6 +1,7 @@
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import ChangeButton from './change-button';
+import DelayedTooltip from '../delayed-tooltip';
 import DialogTrigger from '../../../../components/dialog-trigger';
 import Divider from '@material-ui/core/Divider';
 import EditButton from '../../../../components/edit-button';
@@ -14,7 +15,6 @@ import Section from '../../../../components/section';
 import ShareDialog from './share-dialog';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import mapProps from 'recompose/mapProps';
 import styled from 'react-emotion';
@@ -115,11 +115,11 @@ const PositionFormDialogTrigger = mapProps(props => ({
   }))(PositionForm)
 }))(DialogTrigger);
 
-const DelayedTooltip = withProps({enterDelay: 500})(Tooltip);
-
 class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    canCompare: PropTypes.bool.isRequired,
+    className: PropTypes.string,
     comparates: PropTypes.array.isRequired,
     compareMode: PropTypes.bool.isRequired,
     compareIndex: PropTypes.number.isRequired,
@@ -205,7 +205,7 @@ class Topic extends Component {
           <Comparate>
             <ComparateAvatar src={comparate.avatar} />
             <ComparateName>{comparate.name}</ComparateName>
-            {this.props.comparates.length > 1 && (
+            {this.props.canCompare && (
               <ChangeButton comparates={this.props.comparates} />
             )}
           </Comparate>
@@ -278,7 +278,7 @@ class Topic extends Component {
     const positions = this.props.candidate.positions[this.props.topic.id] || [];
     return (
       <ScrollableAnchor id={slug}>
-        <div data-topic={slug}>
+        <div data-topic={slug} className={this.props.className}>
           {image ? (
             <Banner style={{backgroundImage: `url(${image})`}}>
               {this.renderTitle()}

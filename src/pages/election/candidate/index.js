@@ -1,6 +1,10 @@
 import Avatar from '@material-ui/core/Avatar';
 import Bio from './bio';
+import Button from '@material-ui/core/Button';
 import CandidateForm from '../candidate-form';
+import CloseIcon from '@material-ui/icons/Close';
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import DelayedTooltip from './delayed-tooltip';
 import DialogTrigger from '../../../components/dialog-trigger';
 import EditIcon from '@material-ui/icons/Edit';
 import Footer from '../../../components/footer';
@@ -12,18 +16,38 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Section, {getSectionPadding} from '../../../components/section';
 import Sidebar from './sidebar';
+import Tooltip from '@material-ui/core/Tooltip';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
 import reject from 'lodash/reject';
-import styled from 'react-emotion';
+import styled, {css} from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 import {centered} from '../../../styles';
 import {connect} from 'react-redux';
-import {getCandidates, getMatchMessage, getTopics} from '../../../selectors';
+import {
+  getCandidates,
+  getLocalize,
+  getMatchMessage,
+  getTopics
+} from '../../../selectors';
 import {getTitles} from '../../../util/election';
+import {setCompareMode} from '../../../actions/settings';
 import {size} from 'polished';
+
+const compareButtonSpacing = theme.spacing.unit * 3;
+const compareButtonSize = theme.spacing.unit * 7;
+const CompareButton = styled(Button)(size(compareButtonSize), {
+  marginLeft: `calc(100% - ${compareButtonSize + compareButtonSpacing}px)`,
+  backgroundColor: theme.palette.background.default,
+  position: 'sticky',
+  top: theme.mixins.toolbar.height + compareButtonSpacing
+});
+
+const compareOffset = compareButtonSize / -2;
+const compareOffsetTop = css({marginBottom: compareOffset});
+const compareOffsetBottom = css({marginTop: compareOffset});
 
 const Hero = withProps({small: true})(
   styled(Section)({
@@ -84,9 +108,12 @@ const InnerContainer = styled.div({
 class Candidate extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    compareMode: PropTypes.bool.isRequired,
     comparates: PropTypes.array.isRequired,
+    dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
     election: PropTypes.object.isRequired,
+    localize: PropTypes.func.isRequired,
     matchMessage: PropTypes.func.isRequired,
     renderHeader: PropTypes.func.isRequired,
     topics: PropTypes.array.isRequired
@@ -123,6 +150,9 @@ class Candidate extends Component {
     this.setState({activeTopicIndex});
   };
 
+  onCompareClick = () =>
+    this.props.dispatch(setCompareMode(!this.props.compareMode));
+
   render() {
     const {message: party} = this.props.matchMessage(
       this.props.candidate.parties
@@ -133,6 +163,7 @@ class Candidate extends Component {
       this.props.election.party_first
     );
 
+    const canCompare = this.props.comparates.length > 1;
     return (
       <Fragment>
         <Helmet>
@@ -178,11 +209,34 @@ class Candidate extends Component {
             />
           </Hidden>
           <InnerContainer innerRef={node => (this.innerContainer = node)}>
-            <Bio candidate={this.props.candidate} />
-            {this.props.topics.map(topic => (
+            <Bio
+              candidate={this.props.candidate}
+              className={canCompare ? compareOffsetTop : null}
+            />
+            {canCompare && (
+              <DelayedTooltip
+                placement="left"
+                title={this.props.localize(
+                  this.props.compareMode
+                    ? 'Exit compare mode'
+                    : 'Enter compare mode'
+                )}
+              >
+                <CompareButton variant="fab" onClick={this.onCompareClick}>
+                  {this.props.compareMode ? (
+                    <CloseIcon />
+                  ) : (
+                    <CompareArrowsIcon />
+                  )}
+                </CompareButton>
+              </DelayedTooltip>
+            )}
+            {this.props.topics.map((topic, index) => (
               <Topic
                 topic={topic}
                 key={topic.id}
+                canCompare={canCompare}
+                className={canCompare && !index ? compareOffsetBottom : null}
                 candidate={this.props.candidate}
                 comparates={this.props.comparates}
               />
@@ -201,9 +255,11 @@ const mapStateToProps = (state, ownProps) => {
   const predicate = ['slug', ownProps.match.params.id];
   return {
     candidate: find(candidates, predicate),
+    compareMode: state.settings.compareMode.active,
     comparates: reject(candidates, predicate),
     editMode: state.settings.editMode,
     election: state.election.data,
+    localize: getLocalize(state),
     matchMessage: getMatchMessage(state),
     topics: getTopics(state)
   };

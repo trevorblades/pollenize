@@ -60,6 +60,10 @@ export default {
     fr: 'Mode de comparaison',
     es: 'Modo de comparación'
   },
+  'Enter compare mode': {
+    fr: 'Entrer en mode comparaison',
+    es: 'Ingrese modo de comparación'
+  },
   Public: {
     fr: 'Publique',
     es: 'Público'

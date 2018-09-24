@@ -68,10 +68,11 @@ const Text = defaultProps({
   variant: 'subheading'
 })(Typography);
 
-const unknown = 'Unknown';
+const UNKNOWN = 'Unknown';
 class Bio extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
+    className: PropTypes.string,
     election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired,
     matchMessage: PropTypes.func.isRequired
@@ -103,7 +104,7 @@ class Bio extends Component {
   render() {
     const {message: bio} = this.props.matchMessage(this.props.candidate.bios);
     return (
-      <Section small>
+      <Section small className={this.props.className}>
         <Typography gutterBottom variant="display1">
           {this.props.localize('About {{name}}', {
             name: this.props.candidate.firstName
@@ -119,11 +120,11 @@ class Bio extends Component {
                       this.props.candidate.birth_date
                     )
                   })
-                : unknown}
+                : UNKNOWN}
             </Text>
             <Text gutterBottom={Boolean(bio)}>
               {this.props.localize('Hometown: {{name}}', {
-                name: this.props.candidate.hometown || unknown
+                name: this.props.candidate.hometown || UNKNOWN
               })}
             </Text>
             {bio && (
