@@ -16,7 +16,6 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Section, {getSectionPadding} from '../../../components/section';
 import Sidebar from './sidebar';
-import Tooltip from '@material-ui/core/Tooltip';
 import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
