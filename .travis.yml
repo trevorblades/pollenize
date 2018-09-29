@@ -5,8 +5,6 @@ cache:
   pip: true
   directories:
     - node_modules
-after_success:
-  - pip install awscli
 before_deploy:
   - npm run build
 deploy:
@@ -19,6 +17,7 @@ deploy:
   upload-dir: $TRAVIS_BRANCH
   skip_cleanup: true
 after_deploy:
+  - pip install --user awscli
   - aws configure set preview.cloudfront true
   - aws configure set preview.create-invalidation true
   - aws cloudfront create-invalidation --cli-input-json "{\"DistributionId\":\"$AWS_CLOUDFRONT_ID\",\"InvalidationBatch\":{\"Paths\":{\"Quantity\":2,\"Items\":[\"/index.html\",\"/*\"]},\"CallerReference\":\"$TRAVIS_BUILD_ID\"}}"
