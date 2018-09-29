@@ -1,3 +1,3 @@
 # client
 
-[![CircleCI](https://circleci.com/gh/pollenize/client.svg?style=shield)](https://circleci.com/gh/pollenize/client)
+[![Build Status](https://travis-ci.com/pollenize/client.svg?branch=master)](https://travis-ci.com/pollenize/client)
