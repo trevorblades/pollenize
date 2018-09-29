@@ -5,8 +5,9 @@ cache:
   pip: true
   directories:
     - node_modules
-before_deploy:
+after_success:
   - pip install awscli
+before_deploy:
   - npm run build
 deploy:
   provider: s3
