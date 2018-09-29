@@ -14,7 +14,6 @@ module.exports = {
   entry: ['@babel/polyfill', './index.js'],
   output: {
     publicPath,
-    path: path.resolve(__dirname, 'build'),
     filename: '[name].[hash].js'
   },
   devtool: 'source-map',
