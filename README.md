@@ -1,4 +1,4 @@
 # server
 
-[![CircleCI](https://circleci.com/gh/pollenize/server.svg?style=shield)](https://circleci.com/gh/pollenize/server)
+[![Build Status](https://travis-ci.com/pollenize/server.svg?branch=master)](https://travis-ci.com/pollenize/server)
 [![Heroku App Status](https://heroku-shields.herokuapp.com/pollenize)](https://pollenize.herokuapp.com)
