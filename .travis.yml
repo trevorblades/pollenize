@@ -5,6 +5,8 @@ cache:
   pip: true
   directories:
     - node_modules
+before_deploy:
+  - npm run build
 deploy:
   provider: s3
   region: us-west-2
