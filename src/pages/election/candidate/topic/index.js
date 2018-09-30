@@ -196,9 +196,6 @@ class Topic extends Component {
     }
 
     return positions.map(this.renderPosition);
-    // return this.state.more || this.props.editMode
-    //   ? positions.map(this.renderPosition)
-    //   : this.renderPosition(positions[0]);
   }
 
   renderAlternateContent() {
@@ -276,15 +273,6 @@ class Topic extends Component {
           <Action>{this.props.localize('Add a position')}</Action>
         </PositionFormDialogTrigger>
       );
-    } else if (positions.length > 1) {
-      // const count = positions.length - 1;
-      // actions.push(
-      //   <Action key="more" onClick={this.onMoreClick}>
-      //     {this.state.more
-      //       ? this.props.localize('Show less')
-      //       : this.props.localize('See more ({{count}})', {count})}
-      //   </Action>
-      // );
     }
 
     return actions.length ? <Actions>{actions}</Actions> : null;
