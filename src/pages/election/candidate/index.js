@@ -41,7 +41,7 @@ const CompareButton = styled(Button)(size(compareButtonSize), {
   backgroundColor: theme.palette.background.default,
   position: 'sticky',
   top: theme.mixins.toolbar.height + compareButtonSpacing,
-  zIndex: theme.zIndex.appBar
+  zIndex: theme.zIndex.mobileStepper
 });
 
 const compareOffset = compareButtonSize / -2;
