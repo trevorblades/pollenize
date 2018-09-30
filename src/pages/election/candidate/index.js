@@ -148,7 +148,7 @@ class Candidate extends Component {
       this.props.election.party_first
     );
 
-    const canCompare = this.props.comparates.length > 1;
+    const canCompare = this.props.comparates.length > 0;
     return (
       <Fragment>
         <Helmet>
