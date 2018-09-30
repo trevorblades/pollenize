@@ -16,6 +16,7 @@ deploy:
   local_dir: dist
   upload-dir: $TRAVIS_BRANCH
   skip_cleanup: true
+  all_branches: true
 after_deploy:
   - pip install --user awscli
   - aws configure set preview.cloudfront true
