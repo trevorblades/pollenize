@@ -42,9 +42,12 @@ const Banner = styled.div({
     height: 'auto',
     padding: theme.spacing.unit * 6
   },
-  [`${Title} span`]: {
-    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 2}px`,
-    backgroundColor: theme.palette.common.white
+  [Title]: {
+    textAlign: 'center',
+    span: {
+      padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 2}px`,
+      backgroundColor: theme.palette.common.white
+    }
   }
 });
 
@@ -154,7 +157,7 @@ class Topic extends Component {
   renderTitle(gutterBottom) {
     const {message: title} = this.props.matchMessage(this.props.topic.titles);
     return (
-      <Title gutterBottom={gutterBottom} variant="display1" align="center">
+      <Title gutterBottom={gutterBottom} variant="display1">
         <span>{title.text}</span>
       </Title>
     );
