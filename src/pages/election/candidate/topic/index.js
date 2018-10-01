@@ -116,7 +116,6 @@ const PositionFormDialogTrigger = mapProps(props => ({
 class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    canCompare: PropTypes.bool.isRequired,
     className: PropTypes.string,
     comparates: PropTypes.array.isRequired,
     compareMode: PropTypes.bool.isRequired,
@@ -203,7 +202,7 @@ class Topic extends Component {
           <Comparate>
             <ComparateAvatar src={comparate.avatar} />
             <ComparateName>{comparate.name}</ComparateName>
-            {this.props.canCompare && (
+            {this.props.comparates > 1 && (
               <ChangeButton comparates={this.props.comparates} />
             )}
           </Comparate>

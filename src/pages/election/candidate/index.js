@@ -223,7 +223,6 @@ class Candidate extends Component {
               <Topic
                 topic={topic}
                 key={topic.id}
-                canCompare={canCompare}
                 className={canCompare && !index ? compareOffsetBottom : null}
                 candidate={this.props.candidate}
                 comparates={this.props.comparates}
