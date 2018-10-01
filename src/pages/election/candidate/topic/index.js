@@ -122,6 +122,7 @@ class Topic extends Component {
     compareIndex: PropTypes.number.isRequired,
     dispatch: PropTypes.func.isRequired,
     editMode: PropTypes.bool.isRequired,
+    election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired,
     matchMessage: PropTypes.func.isRequired,
     stars: PropTypes.object.isRequired,
@@ -197,11 +198,18 @@ class Topic extends Component {
     if (this.props.compareMode) {
       const comparate = this.props.comparates[this.props.compareIndex];
       const positions = comparate.positions[this.props.topic.id] || [];
+
+      let title = comparate.name;
+      if (this.props.election.party_first) {
+        const {message: party} = this.props.matchMessage(comparate.parties);
+        title = party.text;
+      }
+
       return (
         <AlternateContent compare>
           <Comparate>
             <ComparateAvatar src={comparate.avatar} />
-            <ComparateName>{comparate.name}</ComparateName>
+            <ComparateName>{title}</ComparateName>
             {this.props.comparates > 1 && (
               <ChangeButton comparates={this.props.comparates} />
             )}
@@ -309,6 +317,7 @@ const mapStateToProps = state => ({
   compareMode: state.settings.compareMode.active,
   compareIndex: state.settings.compareMode.index,
   editMode: state.settings.editMode,
+  election: state.election.data,
   localize: getLocalize(state),
   matchMessage: getMatchMessage(state),
   stars: state.stars
