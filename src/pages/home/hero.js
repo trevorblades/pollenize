@@ -64,12 +64,22 @@ class Home extends Component {
               We break down elections and provide voters with an organized,
               unbiased overview of each candidate&apos;s platform.
             </Text>
-            <LargeButton color="primary" variant="raised" to="/elections">
+            <LargeButton
+              color="primary"
+              variant="raised"
+              to="/elections/toronto-2018"
+            >
+              View Toronto 2018
+            </LargeButton>
+            <LargeButton color="inherit" variant="outlined" to="/elections">
+              All elections
+            </LargeButton>
+            {/* <LargeButton color="primary" variant="raised" to="/elections">
               View elections
             </LargeButton>
             <LargeButton color="inherit" variant="outlined" to="/team">
               Our team
-            </LargeButton>
+            </LargeButton> */}
             <StyledImage />
           </Content>
         </InnerContainer>
