@@ -210,7 +210,7 @@ class Topic extends Component {
           <Comparate>
             <ComparateAvatar src={comparate.avatar} />
             <ComparateName>{title}</ComparateName>
-            {this.props.comparates > 1 && (
+            {this.props.comparates.length > 1 && (
               <ChangeButton comparates={this.props.comparates} />
             )}
           </Comparate>
