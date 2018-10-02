@@ -21,6 +21,11 @@ export default () =>
     [['html', 'body']]: {
       height: '100%'
     },
+    html: {
+      '@media print': {
+        fontSize: '10pt'
+      }
+    },
     '#root': {
       display: 'flex',
       flexDirection: 'column',

@@ -27,10 +27,6 @@ const StyledTableCell = styled(TableCell)({
   hyphens: 'auto'
 });
 
-const CandidateName = styled(TableCell)({
-  whiteSpace: 'nowrap'
-});
-
 class PrintableTable extends Component {
   static propTypes = {
     candidates: PropTypes.array.isRequired,
@@ -60,23 +56,23 @@ class PrintableTable extends Component {
         <TableHead>
           <TableRow>
             <TableCell />
-            {this.props.topics.map(topic => {
-              const {message: title} = this.props.matchMessage(topic.titles);
-              return <TableCell key={topic.id}>{title.text}</TableCell>;
-            })}
+            {this.props.candidates.map(candidate => (
+              <TableCell key={candidate.id}>{candidate.name}</TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {this.props.candidates.map(candidate => {
+          {this.props.topics.map(topic => {
+            const {message: title} = this.props.matchMessage(topic.titles);
             return (
-              <StyledTableRow key={candidate.id}>
-                <CandidateName>
-                  <Typography variant="body2">{candidate.name}</Typography>
-                </CandidateName>
-                {this.props.topics.map(topic => {
+              <StyledTableRow key={topic.id}>
+                <TableCell>
+                  <Typography color="textSecondary">{title.text}</Typography>
+                </TableCell>
+                {this.props.candidates.map(candidate => {
                   const positions = candidate.positions[topic.id];
                   return (
-                    <StyledTableCell key={topic.id}>
+                    <StyledTableCell key={candidate.id}>
                       {this.renderPositions(positions)}
                     </StyledTableCell>
                   );
