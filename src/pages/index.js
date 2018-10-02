@@ -6,7 +6,7 @@ import Invitation from './invitation';
 import NotFound from './not-found';
 import React, {Fragment} from 'react';
 import Team from './team';
-import {Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 
 const Pages = () => (
   <Fragment>
@@ -16,6 +16,8 @@ const Pages = () => (
       <Route exact path="/team" component={Team} />
       <Route exact path="/elections" component={Elections} />
       <Route exact path="/invitation" component={Invitation} />
+      <Redirect from="/canada" to="/elections/canada-2015" />
+      <Redirect from="/toronto" to="/elections/toronto-2018" />
       <Route render={NotFound} />
     </Switch>
     <Footer />
