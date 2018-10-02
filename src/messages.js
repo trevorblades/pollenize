@@ -33,6 +33,10 @@ export default {
     fr: 'Voir plus ({{count}})',
     es: 'Ver más ({{count}})'
   },
+  'Show more': {
+    fr: 'Montre plus',
+    es: 'Muestra más'
+  },
   'Show less': {
     fr: 'Montre moins',
     es: 'Muestra menos'
