@@ -10,6 +10,7 @@ export default (sequelize, DataTypes) => {
   Topic.associate = models => {
     Topic.belongsTo(models.Election);
     Topic.hasMany(models.Position);
+    Topic.hasMany(models.Source);
 
     createThroughAssociations(
       Topic,

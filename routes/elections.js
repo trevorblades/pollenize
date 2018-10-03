@@ -8,6 +8,7 @@ import {
   Language,
   Organization,
   Sequelize,
+  Source,
   Topic,
   sequelize
 } from '../models';
@@ -89,7 +90,7 @@ router
         Organization,
         {
           model: Topic,
-          include: ['titles', 'descriptions']
+          include: ['titles', 'descriptions', Source]
         }
       ],
       order: [[Topic, 'order']]
