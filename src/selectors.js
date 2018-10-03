@@ -18,12 +18,27 @@ function keyMultipleByLanguage(languages, ...collections) {
   return collections.map(collection => keyByLanguage(collection, languages));
 }
 
-const getElection = state => state.election.data;
-export const getTopics = createSelector(getElection, election => {
-  const languages = keyBy(election.languages, 'id');
-  return election.topics.map(topic => {
+function augmentWithIndex(sources) {
+  return source => ({
+    ...source,
+    index: findIndex(sources, ['url', source.url])
+  });
+}
+
+const getElection = createSelector(
+  state => state.election.data,
+  election =>
+    election && {
+      ...election,
+      languages: keyBy(election.languages, 'id'),
+      sources: uniqBy(flatMap(election.topics, 'sources'), 'url')
+    }
+);
+
+export const getTopics = createSelector(getElection, election =>
+  election.topics.map(topic => {
     const [titles, descriptions] = keyMultipleByLanguage(
-      languages,
+      election.languages,
       topic.titles,
       topic.descriptions
     );
@@ -31,10 +46,11 @@ export const getTopics = createSelector(getElection, election => {
     return {
       ...topic,
       titles,
-      descriptions
+      descriptions,
+      sources: topic.sources.map(augmentWithIndex(election.sources))
     };
-  });
-});
+  })
+);
 
 const getEditMode = state => state.settings.editMode;
 export const getCandidates = createSelector(
@@ -45,20 +61,21 @@ export const getCandidates = createSelector(
       return [];
     }
 
-    const languages = keyBy(election.languages, 'id');
     const filtered = editMode
       ? election.candidates
       : filter(election.candidates, 'active');
 
     return filtered.map(candidate => {
-      const sources = uniqBy(flatMap(candidate.positions, 'sources'), 'url');
       const [parties, bios, captions] = keyMultipleByLanguage(
-        languages,
+        election.languages,
         candidate.parties,
         candidate.bios,
         candidate.captions
       );
 
+      const sources = election.sources.concat(
+        uniqBy(flatMap(candidate.positions, 'sources'), 'url')
+      );
       return {
         ...candidate,
         sources,
@@ -69,11 +86,8 @@ export const getCandidates = createSelector(
         positions: groupBy(
           flatMap(candidate.positions, position => ({
             ...position,
-            messages: keyByLanguage(position.messages, languages),
-            sources: position.sources.map(source => ({
-              ...source,
-              index: findIndex(sources, ['url', source.url])
-            }))
+            messages: keyByLanguage(position.messages, election.languages),
+            sources: position.sources.map(augmentWithIndex(sources))
           })),
           'topic_id'
         )
@@ -104,8 +118,9 @@ export const getMatchMessage = createSelector(
       };
     }
 
-    for (let i = 0; i < languages.length; i++) {
-      const message = messages[languages[i].code];
+    const codes = Object.keys(languages).map(key => languages[key].code);
+    for (let i = 0; i < codes.length; i++) {
+      const message = messages[codes[i]];
       if (message) {
         return {message};
       }

@@ -13,6 +13,7 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import ScrollableAnchor from 'react-scrollable-anchor';
 import Section from '../../../../components/section';
 import ShareDialog from './share-dialog';
+import Source from './source';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import StarIcon from '@material-ui/icons/Star';
 import Typography from '@material-ui/core/Typography';
@@ -63,7 +64,6 @@ const TextInner = styled.span(props => ({
   color: props.needsTranslation && theme.palette.text.secondary
 }));
 
-const Superscript = styled.sup({lineHeight: 1});
 const StyledEditButton = styled(EditButton)({verticalAlign: 'top'});
 
 const AlternateContent = styled.div(props => {
@@ -169,9 +169,7 @@ class Topic extends Component {
         <TextInner needsTranslation={!match}>
           {message.text}
           {position.sources.map(source => (
-            <Superscript key={source.id}>
-              [<a href="#sources">{source.index + 1}</a>]
-            </Superscript>
+            <Source key={source.id} source={source} />
           ))}
         </TextInner>
         {this.props.editMode && (
@@ -223,7 +221,12 @@ class Topic extends Component {
     return (
       description && (
         <AlternateContent>
-          <Typography>{description.text}</Typography>
+          <Typography>
+            {description.text}
+            {this.props.topic.sources.map(source => (
+              <Source key={source.id} source={source} />
+            ))}
+          </Typography>
         </AlternateContent>
       )
     );

@@ -19,7 +19,7 @@ import Topic from './topic';
 import Typography from '@material-ui/core/Typography';
 import find from 'lodash/find';
 import reject from 'lodash/reject';
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
 import theme from '../../../theme';
 import withProps from 'recompose/withProps';
 import {centered} from '../../../styles';
