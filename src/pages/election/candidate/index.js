@@ -34,19 +34,25 @@ import {getTitles} from '../../../util/election';
 import {setCompareMode} from '../../../actions/settings';
 import {size} from 'polished';
 
+const compareButtonHeight = theme.spacing.unit * 7;
 const compareButtonSpacing = theme.spacing.unit * 3;
-const compareButtonSize = theme.spacing.unit * 7;
-const CompareButton = styled(Button)(size(compareButtonSize), {
-  marginLeft: `calc(100% - ${compareButtonSize + compareButtonSpacing}px)`,
-  backgroundColor: theme.palette.background.default,
+const CompareButtonContainer = styled.div({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  height: 0,
+  paddingRight: compareButtonSpacing,
   position: 'sticky',
-  top: theme.mixins.toolbar.height + compareButtonSpacing,
+  top:
+    theme.mixins.toolbar.height +
+    compareButtonSpacing +
+    compareButtonHeight / 2,
   zIndex: theme.zIndex.mobileStepper
 });
 
-const compareOffset = compareButtonSize / -2;
-const compareOffsetTop = css({marginBottom: compareOffset});
-const compareOffsetBottom = css({marginTop: compareOffset});
+const CompareButton = styled(Button)({
+  backgroundColor: theme.palette.background.default
+});
 
 const Hero = styled(Section)({
   display: 'flex',
@@ -71,6 +77,10 @@ const Title = withProps({
 const Headline = styled(Title)({marginBottom: theme.spacing.unit});
 const Subtitle = styled(Title)({
   fontWeight: theme.typography.fontWeightMedium
+});
+
+const StyledCompareArrowsIcon = styled(CompareArrowsIcon)({
+  marginRight: theme.spacing.unit
 });
 
 const EditButton = styled(IconButton)({
@@ -197,33 +207,37 @@ class Candidate extends Component {
             election={this.props.election}
           />
           <InnerContainer innerRef={node => (this.innerContainer = node)}>
-            <Bio
-              candidate={this.props.candidate}
-              className={canCompare ? compareOffsetTop : null}
-            />
+            <Bio candidate={this.props.candidate} />
             {canCompare && (
-              <DelayedTooltip
-                placement="left"
-                title={this.props.localize(
-                  this.props.compareMode
-                    ? 'Exit compare mode'
-                    : 'Enter compare mode'
-                )}
-              >
-                <CompareButton variant="fab" onClick={this.onCompareClick}>
-                  {this.props.compareMode ? (
-                    <CloseIcon />
-                  ) : (
-                    <CompareArrowsIcon />
+              <CompareButtonContainer>
+                <DelayedTooltip
+                  placement="left"
+                  title={this.props.localize(
+                    this.props.compareMode
+                      ? 'Exit compare mode'
+                      : 'Enter compare mode'
                   )}
-                </CompareButton>
-              </DelayedTooltip>
+                >
+                  <CompareButton
+                    variant={this.props.compareMode ? 'fab' : 'extendedFab'}
+                    onClick={this.onCompareClick}
+                  >
+                    {this.props.compareMode ? (
+                      <CloseIcon />
+                    ) : (
+                      <Fragment>
+                        <StyledCompareArrowsIcon />
+                        Compare
+                      </Fragment>
+                    )}
+                  </CompareButton>
+                </DelayedTooltip>
+              </CompareButtonContainer>
             )}
-            {this.props.topics.map((topic, index) => (
+            {this.props.topics.map(topic => (
               <Topic
                 topic={topic}
                 key={topic.id}
-                className={canCompare && !index ? compareOffsetBottom : null}
                 candidate={this.props.candidate}
                 comparates={this.props.comparates}
               />

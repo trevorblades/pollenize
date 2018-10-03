@@ -116,7 +116,6 @@ const PositionFormDialogTrigger = mapProps(props => ({
 class Topic extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    className: PropTypes.string,
     comparates: PropTypes.array.isRequired,
     compareMode: PropTypes.bool.isRequired,
     compareIndex: PropTypes.number.isRequired,
@@ -283,7 +282,7 @@ class Topic extends Component {
     const positions = this.props.candidate.positions[this.props.topic.id] || [];
     return (
       <ScrollableAnchor id={slug}>
-        <div data-topic={slug} className={this.props.className}>
+        <div data-topic={slug}>
           {image ? (
             <Banner style={{backgroundImage: `url(${image})`}}>
               {this.renderTitle()}

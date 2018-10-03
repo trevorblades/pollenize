@@ -60,7 +60,6 @@ const UNKNOWN = 'Unknown';
 class Bio extends Component {
   static propTypes = {
     candidate: PropTypes.object.isRequired,
-    className: PropTypes.string,
     election: PropTypes.object.isRequired,
     localize: PropTypes.func.isRequired,
     matchMessage: PropTypes.func.isRequired
@@ -97,7 +96,7 @@ class Bio extends Component {
   render() {
     const {message: bio} = this.props.matchMessage(this.props.candidate.bios);
     return (
-      <Section small className={this.props.className}>
+      <Section small>
         <Typography gutterBottom variant="display1">
           {this.props.localize('About {{name}}', {
             name: this.props.candidate.firstName
