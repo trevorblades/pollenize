@@ -104,16 +104,16 @@ class Bio extends Component {
         </Typography>
         <Content>
           <InnerContent>
-            <Text gutterBottom>
-              {this.props.candidate.birth_date
-                ? this.props.localize('{{age}} years old', {
-                    age: differenceInYears(
-                      this.props.election.ends_at,
-                      this.props.candidate.birth_date
-                    )
-                  })
-                : UNKNOWN}
-            </Text>
+            {this.props.candidate.birth_date && (
+              <Text gutterBottom>
+                {this.props.localize('{{age}} years old', {
+                  age: differenceInYears(
+                    this.props.election.ends_at,
+                    this.props.candidate.birth_date
+                  )
+                })}
+              </Text>
+            )}
             <Text gutterBottom={Boolean(bio)}>
               {this.props.localize('Hometown: {{name}}', {
                 name: this.props.candidate.hometown || UNKNOWN
