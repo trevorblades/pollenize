@@ -15,6 +15,7 @@ const validationMiddleware = createValidationMiddleware(
     slug: notEmptyString,
     name: notEmptyString,
     birth_date: {
+      optional: true,
       isISO8601: true
     },
     hometown: exists,
