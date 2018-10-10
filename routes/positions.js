@@ -1,24 +1,18 @@
 import createValidationMiddleware from '../middleware/validation';
 import express from 'express';
 import jwtMiddleware from '../middleware/jwt';
-import prependHttp from 'prepend-http';
 import {Candidate, Message, Position, Source} from '../models';
 import {bulkCreateAndSet} from '../util/helpers';
 import {checkSchema} from 'express-validator/check';
 import {getMessageSchema, setMessage} from '../util/messages';
-import {isArray, isInt} from '../util/schema';
+import {isArray, isInt, isUrl} from '../util/schema';
 import {matchedData} from 'express-validator/filter';
 
 const validationMiddleware = createValidationMiddleware(
   checkSchema({
     ...getMessageSchema('messages', true),
     sources: isArray,
-    'sources.*.url': {
-      customSanitizer: {
-        options: prependHttp
-      },
-      isURL: true
-    },
+    'sources.*.url': isUrl,
     candidate_id: isInt,
     topic_id: isInt
   })

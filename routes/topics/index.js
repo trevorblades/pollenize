@@ -4,9 +4,10 @@ import jwtMiddleware from '../../middleware/jwt';
 import reorder from './reorder';
 import uploadMiddleware from '../../middleware/upload';
 import {Source, Topic} from '../../models';
+import {bulkCreateAndSet} from '../../util/helpers';
 import {checkSchema} from 'express-validator/check';
 import {getMessageSchema, setMessages} from '../../util/messages';
-import {isInt, notEmptyString, stringToArray} from '../../util/schema';
+import {isInt, isUrl, notEmptyString, stringToArray} from '../../util/schema';
 import {matchedData} from 'express-validator/filter';
 
 const validationMiddleware = createValidationMiddleware(
@@ -15,6 +16,7 @@ const validationMiddleware = createValidationMiddleware(
     ...getMessageSchema('descriptions', false, true),
     slug: notEmptyString,
     sources: stringToArray,
+    'sources.*.url': isUrl,
     election_id: isInt,
     file: {
       optional: true,
@@ -77,7 +79,11 @@ router
     }
 
     await res.locals.topic.update(data);
-    await setMessages(res.locals.topic, data, ['titles', 'descriptions']);
+
+    await Promise.all([
+      setMessages(res.locals.topic, data, ['titles', 'descriptions']),
+      bulkCreateAndSet(res.locals.topic, data.sources, Source)
+    ]);
 
     next();
   })

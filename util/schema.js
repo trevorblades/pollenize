@@ -1,3 +1,5 @@
+import prependHttp from 'prepend-http';
+
 export const exists = {
   trim: true,
   exists: true
@@ -39,4 +41,11 @@ export const stringToArray = {
 export const stringToNotEmptyArray = {
   ...notEmptyArray,
   ...sanitizeJSON
+};
+
+export const isUrl = {
+  customSanitizer: {
+    options: prependHttp
+  },
+  isURL: true
 };
