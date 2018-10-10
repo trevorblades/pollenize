@@ -47,7 +47,8 @@ class CandidateForm extends Component {
     this.state = {
       active: props.candidate.active,
       avatar: null,
-      birthDate: new Date(props.candidate.birth_date || Date.now()),
+      birthDate:
+        props.candidate.birth_date && new Date(props.candidate.birth_date),
       color: props.candidate.color
     };
   }
@@ -85,10 +86,14 @@ class CandidateForm extends Component {
     formData.append('bios', bios);
     formData.append('captions', captions);
     formData.append('slug', slug);
-    formData.append('birth_date', this.state.birthDate.toISOString());
     formData.append('color', this.state.color);
     formData.append('active', this.state.active);
     formData.append('election_id', this.props.candidate.election_id);
+
+    if (this.state.birthDate) {
+      formData.append('birth_date', this.state.birthDate.toISOString());
+    }
+
     if (this.state.avatar) {
       formData.append('file', this.state.avatar.file);
     }
