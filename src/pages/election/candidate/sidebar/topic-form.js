@@ -106,6 +106,7 @@ class TopicForm extends Component {
       ['Description', 'descriptions', true]
     );
 
+    const source = this.props.topic.sources[0];
     return (
       <AutoForm
         noun="topic"
@@ -113,7 +114,7 @@ class TopicForm extends Component {
         fields={[
           ...titles,
           ...descriptions,
-          'source',
+          ['source', {defaultValue: source && source.url}],
           <FormControl fullWidth key="image" margin="dense">
             <ImageLabel gutterBottom variant="caption">
               Banner image ({TOPIC_MAX_WIDTH * 2} x{' '}
