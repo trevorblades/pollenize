@@ -3,7 +3,7 @@ import express from 'express';
 import jwtMiddleware from '../../middleware/jwt';
 import reorder from './reorder';
 import uploadMiddleware from '../../middleware/upload';
-import {Topic} from '../../models';
+import {Source, Topic} from '../../models';
 import {checkSchema} from 'express-validator/check';
 import {getMessageSchema, setMessages} from '../../util/messages';
 import {isInt, notEmptyString} from '../../util/schema';
@@ -39,7 +39,10 @@ router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
     data.image = req.file.data.link;
   }
 
-  const topic = await Topic.create(data, {include: ['titles', 'descriptions']});
+  data.sources = [];
+  const topic = await Topic.create(data, {
+    include: ['titles', 'descriptions', Source]
+  });
   res.send(topic);
 });
 
@@ -47,7 +50,7 @@ router
   .route('/:id')
   .all(async (req, res, next) => {
     res.locals.topic = await Topic.findById(req.params.id, {
-      include: ['titles', 'descriptions']
+      include: ['titles', 'descriptions', Source]
     });
 
     if (!res.locals.topic) {
