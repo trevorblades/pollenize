@@ -6,7 +6,7 @@ import uploadMiddleware from '../../middleware/upload';
 import {Source, Topic} from '../../models';
 import {checkSchema} from 'express-validator/check';
 import {getMessageSchema, setMessages} from '../../util/messages';
-import {isInt, notEmptyString} from '../../util/schema';
+import {isInt, notEmptyString, stringToArray} from '../../util/schema';
 import {matchedData} from 'express-validator/filter';
 
 const validationMiddleware = createValidationMiddleware(
@@ -14,6 +14,7 @@ const validationMiddleware = createValidationMiddleware(
     ...getMessageSchema('titles', true, true),
     ...getMessageSchema('descriptions', false, true),
     slug: notEmptyString,
+    sources: stringToArray,
     election_id: isInt,
     file: {
       optional: true,
@@ -39,7 +40,6 @@ router.post('/', uploadMiddleware, validationMiddleware, async (req, res) => {
     data.image = req.file.data.link;
   }
 
-  data.sources = [];
   const topic = await Topic.create(data, {
     include: ['titles', 'descriptions', Source]
   });
