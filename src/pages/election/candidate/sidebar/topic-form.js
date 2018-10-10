@@ -72,6 +72,11 @@ class TopicForm extends Component {
     const firstTitle = map(titles, 'text')[0];
     formData.append('slug', getNextSlug(firstTitle || '', slugs));
     formData.append('election_id', this.props.topic.election_id);
+    formData.append(
+      'sources',
+      JSON.stringify([{url: event.target.source.value}])
+    );
+
     if (this.state.image) {
       formData.append('file', this.state.image.file);
     }
@@ -108,6 +113,7 @@ class TopicForm extends Component {
         fields={[
           ...titles,
           ...descriptions,
+          'source',
           <FormControl fullWidth key="image" margin="dense">
             <ImageLabel gutterBottom variant="caption">
               Banner image ({TOPIC_MAX_WIDTH * 2} x{' '}
