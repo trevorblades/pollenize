@@ -74,9 +74,7 @@ class TopicForm extends Component {
     formData.append('election_id', this.props.topic.election_id);
 
     const url = event.target.source.value;
-    if (url) {
-      formData.append('sources', JSON.stringify([{url}]));
-    }
+    formData.append('sources', JSON.stringify(url ? [{url}] : []));
 
     if (this.state.image) {
       formData.append('file', this.state.image.file);
