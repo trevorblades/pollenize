@@ -1,7 +1,7 @@
 import createValidationMiddleware from '../../middleware/validation';
 import express from 'express';
 import filter from 'lodash/filter';
-import {Sequelize, Topic} from '../../models';
+import {Sequelize, Source, Topic} from '../../models';
 import {checkSchema} from 'express-validator/check';
 import {isArray, isInt} from '../../util/schema';
 import {matchedData} from 'express-validator/filter';
@@ -20,7 +20,7 @@ router.post('/', validationMiddleware, async (req, res) => {
   const electionIds = req.user.getDataValue('election_ids');
   const updates = data.topics.map(async ({id, order}) => {
     const topic = await Topic.findById(id, {
-      include: ['titles', 'descriptions'],
+      include: ['titles', 'descriptions', Source],
       where: {
         election_id: {
           [Sequelize.Op.in]: electionIds
