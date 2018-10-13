@@ -73,7 +73,10 @@ const AlternateContent = styled.div(props => {
     width: props.compare ? '50%' : 250,
     marginLeft: spacing,
     paddingLeft: spacing,
-    borderLeft: `1px solid ${theme.palette.grey[100]}`
+    borderLeft: `1px solid ${theme.palette.grey[100]}`,
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    }
   };
 });
 

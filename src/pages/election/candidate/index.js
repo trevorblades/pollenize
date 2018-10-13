@@ -47,7 +47,10 @@ const CompareButtonContainer = styled.div({
     theme.mixins.toolbar.height +
     compareButtonSpacing +
     compareButtonHeight / 2,
-  zIndex: theme.zIndex.mobileStepper
+  zIndex: theme.zIndex.mobileStepper,
+  [theme.breakpoints.down('xs')]: {
+    display: 'none'
+  }
 });
 
 const CompareButton = styled(Button)({
