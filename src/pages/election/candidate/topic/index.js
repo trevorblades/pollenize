@@ -64,7 +64,13 @@ const TextInner = styled.span(props => ({
   color: props.needsTranslation && theme.palette.text.secondary
 }));
 
-const StyledEditButton = styled(EditButton)({verticalAlign: 'top'});
+const PreWrap = styled.span({
+  whiteSpace: 'pre-wrap'
+});
+
+const StyledEditButton = styled(EditButton)({
+  verticalAlign: 'top'
+});
 
 const AlternateContent = styled.div(props => {
   const spacing = theme.spacing.unit * (props.compare ? 5 : 4);
@@ -170,7 +176,7 @@ class Topic extends Component {
     return (
       <Text paragraph={index < array.length - 1} key={position.id}>
         <TextInner needsTranslation={!match}>
-          {message.text}
+          <PreWrap>{message.text}</PreWrap>
           {position.sources.map(source => (
             <Source key={source.id} source={source} />
           ))}
@@ -225,7 +231,7 @@ class Topic extends Component {
       description && (
         <AlternateContent>
           <Typography>
-            {description.text}
+            <PreWrap>{description.text}</PreWrap>
             {this.props.topic.sources.map(source => (
               <Source key={source.id} source={source} />
             ))}
