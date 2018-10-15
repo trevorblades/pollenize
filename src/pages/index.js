@@ -18,6 +18,7 @@ const Pages = () => (
       <Route exact path="/invitation" component={Invitation} />
       <Redirect from="/canada" to="/elections/canada-2015" />
       <Redirect from="/toronto" to="/elections/toronto-2018" />
+      <Redirect from="/ottawa" to="/elections/ottawa-2018" />
       <Route render={NotFound} />
     </Switch>
     <Footer />
