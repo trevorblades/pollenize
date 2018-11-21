@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(
   cors({
-    origin: /^https?:\/\/(localhost(:\d{4})?|pollenize\.org|(pollenize|pollinise)\.impactcampus\.ca)$/,
+    origin: /^https?:\/\/(localhost(:\d{4})?|pollenize\.org|pollinise\.civix\.quebec)$/,
     methods: ['GET', 'POST', 'PUT', 'DELETE']
   })
 );
