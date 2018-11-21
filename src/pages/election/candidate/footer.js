@@ -39,6 +39,7 @@ const Logos = styled.div({
 });
 
 const logoClassName = css({
+  display: 'block',
   fill: 'currentColor',
   width: 120
 });
