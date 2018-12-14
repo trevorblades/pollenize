@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import filter from 'lodash/filter';
 import map from 'lodash/map';
 import {connect} from 'react-redux';
-import {createMessageField, messagesFromEvent} from '../../../../util/messages';
+import {createMessageField, messagesFromEvent} from '../../util';
 import {
   remove as removePosition,
   reset as resetPosition,

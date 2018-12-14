@@ -18,11 +18,10 @@ const Section = styled.div(props =>
 
 export function getSectionPadding(width, small) {
   const broken = width < theme.breakpoints.values[breakpoint];
-  return broken !== small
-    ? SECTION_PADDING_SMALL
-    : broken
-      ? SECTION_PADDING_SMALLER
-      : SECTION_PADDING;
+  if (broken !== small) {
+    return SECTION_PADDING_SMALL;
+  }
+  return broken ? SECTION_PADDING_SMALLER : SECTION_PADDING;
 }
 
 export default Section;

@@ -1,6 +1,5 @@
 import App from './components/app';
-import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils';
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import DateFnsUtils from '@date-io/date-fns';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
@@ -10,6 +9,7 @@ import styles from './styles';
 import theme from './theme';
 import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 import {JssProvider} from 'react-jss';
+import {MuiPickersUtilsProvider} from 'material-ui-pickers';
 import {
   MuiThemeProvider,
   createGenerateClassName,

@@ -29,7 +29,7 @@ import {
   getMatchMessage,
   getStarCounts
 } from '../../../selectors';
-import {getTitles} from '../../../util/election';
+import {getTitles} from '../util';
 import {reset as resetStars} from '../../../actions/stars';
 import {setCompareMode, setEditMode} from '../../../actions/settings';
 import {size, transparentize} from 'polished';

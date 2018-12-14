@@ -30,7 +30,7 @@ import {
   getMatchMessage,
   getTopics
 } from '../../../selectors';
-import {getTitles} from '../../../util/election';
+import {getTitles} from '../util';
 import {setCompareMode} from '../../../actions/settings';
 import {size} from 'polished';
 

@@ -14,8 +14,7 @@ import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import {DatePicker} from 'material-ui-pickers';
 import {connect} from 'react-redux';
-import {createMessageFields, messagesFromEvent} from '../../../util/messages';
-import {getNextSlug} from '../../../util';
+import {createMessageFields, getNextSlug, messagesFromEvent} from '../util';
 import {
   remove as removeCandidate,
   reset as resetCandidate,

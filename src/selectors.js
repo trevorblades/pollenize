@@ -35,21 +35,23 @@ const getElection = createSelector(
     }
 );
 
-export const getTopics = createSelector(getElection, election =>
-  election.topics.map(topic => {
-    const [titles, descriptions] = keyMultipleByLanguage(
-      election.languages,
-      topic.titles,
-      topic.descriptions
-    );
+export const getTopics = createSelector(
+  getElection,
+  election =>
+    election.topics.map(topic => {
+      const [titles, descriptions] = keyMultipleByLanguage(
+        election.languages,
+        topic.titles,
+        topic.descriptions
+      );
 
-    return {
-      ...topic,
-      titles,
-      descriptions,
-      sources: topic.sources.map(augmentWithIndex(election.sources))
-    };
-  })
+      return {
+        ...topic,
+        titles,
+        descriptions,
+        sources: topic.sources.map(augmentWithIndex(election.sources))
+      };
+    })
 );
 
 const getEditMode = state => state.settings.editMode;
@@ -131,7 +133,10 @@ export const getMatchMessage = createSelector(
 );
 
 const getStars = state => state.stars;
-export const getStarCounts = createSelector(getStars, stars => {
-  const keys = Object.keys(stars);
-  return countBy(keys, key => key.split(STAR_ID_DELIMITER)[0]);
-});
+export const getStarCounts = createSelector(
+  getStars,
+  stars => {
+    const keys = Object.keys(stars);
+    return countBy(keys, key => key.split(STAR_ID_DELIMITER)[0]);
+  }
+);

@@ -19,7 +19,7 @@ import {connect} from 'react-redux';
 import {divisors} from 'number-theory';
 import {footerClassName} from '../../components/footer';
 import {getCandidates, getLocalize, getMatchMessage} from '../../selectors';
-import {getTitles} from '../../util/election';
+import {getTitles} from './util';
 import {size} from 'polished';
 
 const containerClassName = css({flexGrow: 1});

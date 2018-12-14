@@ -11,11 +11,7 @@ import round from 'lodash/round';
 import styled from 'react-emotion';
 import {TOPIC_IMAGE_ASPECT_RATIO, TOPIC_MAX_WIDTH} from '../common';
 import {connect} from 'react-redux';
-import {
-  createMessageFields,
-  messagesFromEvent
-} from '../../../../util/messages';
-import {getNextSlug} from '../../../../util';
+import {createMessageFields, getNextSlug, messagesFromEvent} from '../../util';
 import {
   remove as removeTopic,
   reset as resetTopic,

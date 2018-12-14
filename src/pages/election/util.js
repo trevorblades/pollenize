@@ -1,5 +1,6 @@
 import ISO6391 from 'iso-639-1';
 import filter from 'lodash/filter';
+import slugify from 'limax';
 
 export function messagesFromEvent(
   event,
@@ -48,4 +49,26 @@ export function createMessageField(
 
 export function createMessageFields(languages, errors, ...fields) {
   return fields.map(field => createMessageField(languages, errors, ...field));
+}
+
+export function getTitles(name, party, reversed) {
+  const titles = filter([name, party && party.text]);
+  return titles.length > 1 && reversed ? titles.reverse() : titles;
+}
+
+export function getNextSlug(title, slugs) {
+  const nextSlug = slugify(title);
+  const pattern = new RegExp(`^${nextSlug}(\\d*)$`);
+  const matches = filter(slugs.map(slug => slug.match(pattern)));
+  if (!matches.length) {
+    return nextSlug;
+  }
+
+  const numbers = matches.map(match => Number(match[1]));
+  const maxNumber = Math.max(...numbers) + 1;
+  for (let i = 0; i <= maxNumber; i++) {
+    if (!numbers.includes(i)) {
+      return nextSlug + i;
+    }
+  }
 }
