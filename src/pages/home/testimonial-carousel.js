@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import Typography from '@material-ui/core/Typography';
 import city from '../../assets/images/city.jpg';
 import galloway from '../../assets/images/galloway.jpg';
-import justin from '../../assets/images/justin.jpg';
+// import justin from '../../assets/images/justin.jpg';
 import leena from '../../assets/images/leena.jpg';
 import styled from 'react-emotion';
 import theme from '../../theme';
