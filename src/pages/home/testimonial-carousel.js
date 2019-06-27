@@ -68,13 +68,13 @@ const StyledStepper = styled(MobileStepper)({
 });
 
 const testimonials = [
-  {
-    text:
-      'Pollenize is doing great work getting young people engaged & letting everyone know where the parties stand.',
-    source: 'Justin Trudeau',
-    title: 'Prime Minister of Canada',
-    avatar: justin
-  },
+  // {
+  //   text:
+  //     'Pollenize is doing great work getting young people engaged & letting everyone know where the parties stand.',
+  //   source: 'Justin Trudeau',
+  //   title: 'Prime Minister of Canada',
+  //   avatar: justin
+  // },
   {
     text:
       "You'd be forgiven if you can't remember where each [candidate] stands on the big issues. Pollenize is a site that is trying to make it easier for voters.",
