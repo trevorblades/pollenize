@@ -37,9 +37,7 @@ const members = {
   'Sean Tanner':
     'Sean was born in Vancouver Canada and studied at Capilano University to become a Graphic Designer and Illustrator. Once out in the real world he spent the next 6 years working at Spring Advertising. He now lives in Melbourne Australia, freelancing, and spending as much time as possible relaxing, traveling and taking photos.',
   'Lorena Perez':
-    'Lorena is a University of Toronto Graduate, communications professional and an M.A. candidate in Strategic Public Relations at the University of Southern California. She is passionate about environmental issues and animal rights, and is currently writing her thesis about plastic pollution in the ocean.',
-  'David Clement':
-    "David is an entrepreneur, non profit activist and political junkie. He has a Bachelor's degree in Political Science and a masters degree in International Relations from Wilfrid Laurier University. David previously worked as the research assistant to the Canada Research Chair in International Human Rights and is an unapologetic Taylor Swift fan."
+    'Lorena is a University of Toronto Graduate, communications professional and an M.A. candidate in Strategic Public Relations at the University of Southern California. She is passionate about environmental issues and animal rights, and is currently writing her thesis about plastic pollution in the ocean.'
 };
 
 const title = 'Our team';
