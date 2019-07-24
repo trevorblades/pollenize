@@ -1,5 +1,4 @@
 import Sequelize from 'sequelize';
-import jwt from 'jsonwebtoken';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL);
 
@@ -30,11 +29,3 @@ export const User = sequelize.define('user', {
   name: Sequelize.STRING,
   password: Sequelize.STRING
 });
-
-User.prototype.toJWT = function(expiresIn = '7 days') {
-  const {id, email, name} = this.get();
-  return jwt.sign({email, name}, process.env.TOKEN_SECRET, {
-    expiresIn,
-    subject: id.toString()
-  });
-};
