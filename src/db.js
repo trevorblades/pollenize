@@ -14,6 +14,10 @@ export const Election = sequelize.define('election', {
 const Candidate = sequelize.define('candidate', {
   slug: Sequelize.STRING,
   name: Sequelize.STRING,
+  partyEn: Sequelize.STRING,
+  partyFr: Sequelize.STRING,
+  bioEn: Sequelize.TEXT,
+  bioFr: Sequelize.TEXT,
   birthDate: Sequelize.DATE,
   hometown: Sequelize.STRING,
   portrait: Sequelize.STRING,
@@ -29,3 +33,34 @@ export const User = sequelize.define('user', {
   name: Sequelize.STRING,
   password: Sequelize.STRING
 });
+
+const Topic = sequelize.define('topic', {
+  slug: Sequelize.STRING,
+  titleEn: Sequelize.STRING,
+  titleFr: Sequelize.STRING,
+  descriptionEn: Sequelize.TEXT,
+  descriptionFr: Sequelize.TEXT,
+  image: Sequelize.STRING,
+  order: Sequelize.INTEGER
+});
+
+Topic.belongsTo(Election);
+Election.hasMany(Topic);
+
+const Stance = sequelize.define('stance', {
+  textEn: Sequelize.TEXT,
+  textFr: Sequelize.TEXT
+});
+
+Stance.belongsTo(Candidate);
+Candidate.hasMany(Stance);
+
+Stance.belongsTo(Topic);
+Topic.hasMany(Stance);
+
+const Source = sequelize.define('source', {
+  url: Sequelize.STRING
+});
+
+Source.belongsTo(Stance);
+Stance.hasMany(Source);

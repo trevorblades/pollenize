@@ -3,12 +3,12 @@
     "node": "11"
   },
   "scripts": {
-    "pretest": "eslint ./",
+    "pretest": "eslint src/*",
     "test": "echo \"Error: no test specified\" && exit 0",
     "start": "nodemon -r dotenv/config -r esm src/index.js"
   },
   "devDependencies": {
-    "@trevorblades/eslint-config": "^6.22.2",
+    "@trevorblades/eslint-config": "^7.0.0",
     "dotenv": "^8.0.0",
     "eslint": "^6.1.0",
     "nodemon": "^1.19.1"
