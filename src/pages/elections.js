@@ -14,7 +14,7 @@ export default function Elections(props) {
     <Layout>
       <Typography variant="h2">Elections</Typography>
       <Button component={Link} to="/">
-        Back to home
+        Back to homes
       </Button>
       <StyledSection>
         {props.data.pollenize.elections.map(election => (
