@@ -6,15 +6,21 @@ import {Link} from 'gatsby';
 import {cover} from 'polished';
 import {styled} from '@material-ui/styles';
 
-const heroStyles = {
-  backgroundImage: `url(${logo})`,
-  backgroundSize: 800,
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'left'
-};
+function heroStyles(property) {
+  return ({theme}) => ({
+    [`${property}Image`]: `url(${logo})`,
+    [`${property}Size`]: 960,
+    [`${property}Repeat`]: 'no-repeat',
+    [`${property}Position`]: 'left',
+    [theme.breakpoints.down('sm')]: {
+      [`${property}Size`]: 800,
+      [`${property}Position`]: 'center'
+    }
+  });
+}
 
 const heroPaddingX = 8;
-const Hero = styled(Box)(heroStyles);
+const Hero = styled(Box)(heroStyles('background'));
 
 const ContentWrapper = styled('div')({
   position: 'relative'
@@ -22,11 +28,9 @@ const ContentWrapper = styled('div')({
 
 const Mask = styled('div')(({theme}) => ({
   ...cover(),
-  color: 'white',
-  maskImage: heroStyles.backgroundImage,
-  maskSize: heroStyles.backgroundSize,
-  maskRepeat: heroStyles.backgroundRepeat,
+  ...heroStyles('mask')({theme}),
   maskPosition: `-${theme.spacing(heroPaddingX)}px 50%`,
+  color: 'white',
   pointerEvents: 'none',
   userSelect: 'none'
 }));
@@ -51,13 +55,18 @@ export default function Index() {
     <Layout>
       <AppBar elevation={0} color="inherit" position="sticky">
         <Toolbar>
-          <Box width="100%" maxWidth={1400} mx="auto">
+          <Box width={1} maxWidth={1400} mx="auto">
             <Logo height={36} />
           </Box>
         </Toolbar>
       </AppBar>
       <Hero maxWidth={1400} mx="auto" px={heroPaddingX} py={12}>
-        <Box width="50%">
+        <Box
+          width={{
+            sm: 1,
+            md: 1 / 2
+          }}
+        >
           <ContentWrapper>
             <Content />
             <Mask aria-hidden="true">
