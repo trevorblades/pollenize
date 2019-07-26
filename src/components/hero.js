@@ -5,10 +5,11 @@ import {Link} from 'gatsby';
 import {cover, size} from 'polished';
 import {styled, useTheme} from '@material-ui/styles';
 
-const Wrapper = styled('div')({
+const Wrapper = styled('div')(({theme}) => ({
+  backgroundColor: theme.palette.grey[200],
   overflow: 'hidden',
   position: 'relative'
-});
+}));
 
 const paddingX = 8;
 const StyledLogo = styled(Logo)(({theme}) => {
@@ -85,6 +86,7 @@ export default function Hero() {
               variant="extended"
               component={Link}
               to="/elections/canada-2019"
+              color="secondary"
             >
               View election guide
             </Fab>

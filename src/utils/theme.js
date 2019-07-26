@@ -1,4 +1,4 @@
-import {createMuiTheme} from '@material-ui/core';
+import {colors, createMuiTheme} from '@material-ui/core';
 
 const headingStyles = {
   fontFamily: ["'Helvetica Neue'", 'Helvetica', 'sans-serif'].toString(),
@@ -6,6 +6,10 @@ const headingStyles = {
 };
 
 const theme = createMuiTheme({
+  palette: {
+    primary: colors.blue,
+    secondary: colors.red
+  },
   typography: {
     fontFamily: ["'Roboto Mono'", 'monospace'].toString(),
     h1: headingStyles,
@@ -19,6 +23,9 @@ const theme = createMuiTheme({
       fontWeight: 500,
       letterSpacing: 2
     }
+  },
+  shape: {
+    borderRadius: 6
   }
 });
 
