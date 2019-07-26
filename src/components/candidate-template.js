@@ -1,14 +1,32 @@
+import ElectionMenu from './election-menu';
+import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {Avatar} from '@material-ui/core';
 import {graphql} from 'gatsby';
+import {styled} from '@material-ui/styles';
+
+const StyledAvatar = styled(Avatar)(({theme}) => ({
+  marginRight: theme.spacing(2)
+}));
 
 export default function CandidateTemplate(props) {
-  const {name, partyEn} = props.data.pollenize.candidate;
+  const {
+    name,
+    partyEn,
+    bioEn,
+    portrait,
+    election
+  } = props.data.pollenize.candidate;
   return (
     <Layout>
-      <div>{name}</div>
+      <HeaderBase link={`/elections/${election.slug}`} title={name}>
+        <StyledAvatar src={portrait} />
+        <ElectionMenu />
+      </HeaderBase>
       <div>{partyEn}</div>
+      <div>{bioEn}</div>
     </Layout>
   );
 }
@@ -22,11 +40,15 @@ export const pageQuery = graphql`
     pollenize {
       candidate(id: $id) {
         name
+        portrait
         partyEn
         partyFr
         bioEn
         bioFr
         birthDate
+        election {
+          slug
+        }
       }
     }
   }

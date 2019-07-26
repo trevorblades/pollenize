@@ -1,23 +1,9 @@
+import HeaderBase from './header-base';
 import React from 'react';
-import {AppBar, Box, Button, Typography} from '@material-ui/core';
+import {Button, Typography} from '@material-ui/core';
 import {FaChevronRight} from 'react-icons/fa';
 import {Link} from 'gatsby';
-import {ReactComponent as Logo} from '../assets/logo.svg';
-import {makeStyles, styled, useTheme} from '@material-ui/styles';
-
-const paddingX = 3;
-const StyledTypography = styled(Typography)({
-  marginLeft: 14,
-  fontSize: 27,
-  letterSpacing: -0.5
-});
-
-const StyledLink = styled(Link)({
-  display: 'flex',
-  alignItems: 'center',
-  color: 'inherit',
-  textDecoration: 'none'
-});
+import {makeStyles} from '@material-ui/styles';
 
 const useStyles = makeStyles(theme => ({
   menuItem: {
@@ -28,53 +14,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Header() {
+function MenuItem(props) {
   const {menuItem} = useStyles();
-  const {breakpoints, spacing, palette} = useTheme();
   return (
-    <AppBar elevation={0} color="inherit" position="sticky">
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        width={1}
-        height={64}
-        px={paddingX}
-        maxWidth={breakpoints.values.lg - (64 - spacing(paddingX)) * 2}
-        mx="auto"
-      >
-        <StyledLink to="/">
-          <Logo height={36} fill={palette.text.primary} />
-          <StyledTypography variant="h3">Pollenize</StyledTypography>
-        </StyledLink>
-        <Box display="flex" alignItems="center">
-          <Typography
-            className={menuItem}
-            component={Link}
-            color="textPrimary"
-            to="/team"
-          >
-            Team
-          </Typography>
-          <Typography
-            className={menuItem}
-            component="a"
-            color="textPrimary"
-            href="https://medium.com/pollenize"
-          >
-            Blog
-          </Typography>
-          <Button
-            component={Link}
-            to="/elections"
-            variant="outlined"
-            color="primary"
-          >
-            Elections
-            <FaChevronRight style={{marginLeft: 8}} />
-          </Button>
-        </Box>
-      </Box>
-    </AppBar>
+    <Typography
+      component={Link}
+      className={menuItem}
+      color="textPrimary"
+      {...props}
+    />
+  );
+}
+
+export default function Header() {
+  return (
+    <HeaderBase title="Pollenize">
+      <MenuItem to="/elections">Elections</MenuItem>
+      <MenuItem to="/team">Team</MenuItem>
+      <MenuItem component="a" href="https://medium.com/pollenize">
+        Blog
+      </MenuItem>
+      <Button component={Link} to="/elections/canada-2019" variant="outlined">
+        Canada 2019
+        <FaChevronRight style={{marginLeft: 8}} />
+      </Button>
+    </HeaderBase>
   );
 }

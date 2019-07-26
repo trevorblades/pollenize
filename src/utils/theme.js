@@ -22,6 +22,9 @@ const theme = createMuiTheme({
       fontSize: '0.875rem',
       fontWeight: 500,
       letterSpacing: 2
+    },
+    button: {
+      fontWeight: 500
     }
   },
   shape: {
