@@ -1,13 +1,8 @@
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Button, Typography} from '@material-ui/core';
+import {Box, Button, Typography} from '@material-ui/core';
 import {Link, graphql} from 'gatsby';
-import {styled} from '@material-ui/styles';
-
-const StyledSection = styled('section')({
-  padding: 40
-});
 
 export default function Elections(props) {
   return (
@@ -16,7 +11,7 @@ export default function Elections(props) {
       <Button component={Link} to="/">
         Back to homes
       </Button>
-      <StyledSection>
+      <Box padding={5}>
         {props.data.pollenize.elections.map(election => (
           <div key={election.id}>
             <Typography variant="subtitle1">{election.title}</Typography>
@@ -24,7 +19,7 @@ export default function Elections(props) {
             <Link to={`/elections/${election.slug}`}>Go to Election</Link>
           </div>
         ))}
-      </StyledSection>
+      </Box>
     </Layout>
   );
 }
