@@ -7,7 +7,7 @@ import {styled, useTheme} from '@material-ui/styles';
 
 const Title = styled(Typography)({
   marginLeft: 14,
-  fontSize: 26,
+  fontSize: 24,
   lineHeight: 1,
   letterSpacing: -0.5
 });
@@ -35,7 +35,7 @@ export default function HeaderBase(props) {
         mx="auto"
       >
         <StyledLink to={props.link}>
-          <Logo height={36} fill={palette.text.primary} />
+          <Logo height={34} fill={palette.text.primary} />
           <Title variant="h3">{props.title}</Title>
         </StyledLink>
         <Box display="flex" alignItems="center">

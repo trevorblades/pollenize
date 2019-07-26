@@ -4,6 +4,7 @@ import Layout from './layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Avatar, ButtonBase, Grid, Typography} from '@material-ui/core';
+import {Helmet} from 'react-helmet';
 import {Link, graphql} from 'gatsby';
 import {cover, size} from 'polished';
 import {makeStyles, styled, useTheme} from '@material-ui/styles';
@@ -35,6 +36,9 @@ export default function ElectionTemplate(props) {
   const {slug, title, candidates} = props.data.pollenize.election;
   return (
     <Layout>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <Wrapper>
         <HeaderBase link="/elections" title={title}>
           <ElectionMenu />

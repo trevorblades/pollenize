@@ -4,10 +4,13 @@ import Layout from './layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Avatar} from '@material-ui/core';
+import {Helmet} from 'react-helmet';
 import {graphql} from 'gatsby';
+import {size} from 'polished';
 import {styled} from '@material-ui/styles';
 
 const StyledAvatar = styled(Avatar)(({theme}) => ({
+  ...size(160),
   marginRight: theme.spacing(2)
 }));
 
@@ -21,10 +24,13 @@ export default function CandidateTemplate(props) {
   } = props.data.pollenize.candidate;
   return (
     <Layout>
+      <Helmet>
+        <title>{name}</title>
+      </Helmet>
       <HeaderBase link={`/elections/${election.slug}`} title={name}>
-        <StyledAvatar src={portrait} />
         <ElectionMenu />
       </HeaderBase>
+      <StyledAvatar src={portrait} />
       <div>{partyEn}</div>
       <div>{bioEn}</div>
     </Layout>

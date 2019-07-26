@@ -3,6 +3,7 @@ import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Box, Card, Grid, Typography} from '@material-ui/core';
+import {Helmet} from 'react-helmet';
 import {Link, graphql} from 'gatsby';
 import {useTheme} from '@material-ui/styles';
 
@@ -10,6 +11,9 @@ export default function Elections(props) {
   const {breakpoints} = useTheme();
   return (
     <Layout>
+      <Helmet>
+        <title>Elections</title>
+      </Helmet>
       <Header />
       <Box width={1} maxWidth={breakpoints.values.lg} p={8} mx="auto">
         <Typography gutterBottom variant="h2">
