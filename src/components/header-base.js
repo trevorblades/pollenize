@@ -5,13 +5,6 @@ import {Link} from 'gatsby';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {styled, useTheme} from '@material-ui/styles';
 
-const Title = styled(Typography)({
-  marginLeft: 14,
-  fontSize: 24,
-  lineHeight: 1,
-  letterSpacing: -0.5
-});
-
 const StyledLink = styled(Link)({
   display: 'flex',
   alignItems: 'center',
@@ -36,7 +29,14 @@ export default function HeaderBase(props) {
       >
         <StyledLink to={props.link}>
           <Logo height={34} fill={palette.text.primary} />
-          <Title variant="h3">{props.title}</Title>
+          <Typography
+            variant="h5"
+            style={{
+              marginLeft: 14
+            }}
+          >
+            {props.title}
+          </Typography>
         </StyledLink>
         <Box display="flex" alignItems="center">
           {props.children}

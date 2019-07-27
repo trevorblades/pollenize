@@ -27,7 +27,10 @@ export default function CandidateTemplate(props) {
       <Helmet>
         <title>{name}</title>
       </Helmet>
-      <HeaderBase link={`/elections/${election.slug}`} title={name}>
+      <HeaderBase
+        link={`/elections/${election.slug}`}
+        title={election.partyFirst ? partyEn : name}
+      >
         <ElectionMenu />
       </HeaderBase>
       <StyledAvatar src={portrait} />
@@ -54,6 +57,7 @@ export const pageQuery = graphql`
         birthDate
         election {
           slug
+          partyFirst
         }
       }
     }

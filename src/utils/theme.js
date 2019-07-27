@@ -15,6 +15,8 @@ const theme = createMuiTheme({
     h1: headingStyles,
     h2: headingStyles,
     h3: headingStyles,
+    h4: headingStyles,
+    h5: headingStyles,
     h6: {
       fontWeight: 400
     },

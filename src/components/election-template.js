@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 export default function ElectionTemplate(props) {
   const {button, avatar} = useStyles();
   const {palette} = useTheme();
-  const {slug, title, candidates} = props.data.pollenize.election;
+  const {slug, title, partyFirst, candidates} = props.data.pollenize.election;
   return (
     <Layout>
       <Helmet>
@@ -45,7 +45,16 @@ export default function ElectionTemplate(props) {
         </HeaderBase>
         <StyledGrid container>
           {candidates.map(candidate => (
-            <Grid item xs={4} key={candidate.id}>
+            <Grid
+              item
+              xs={
+                12 /
+                (candidates.length > 3
+                  ? Math.ceil(candidates.length / 2)
+                  : candidates.length)
+              }
+              key={candidate.id}
+            >
               <ButtonBase
                 className={button}
                 component={Link}
@@ -56,7 +65,12 @@ export default function ElectionTemplate(props) {
                 }}
               >
                 <Avatar className={avatar} src={candidate.portrait} />
-                <Typography variant="subtitle1">{candidate.name}</Typography>
+                <Typography variant="h5">
+                  {partyFirst ? candidate.partyEn : candidate.name}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {partyFirst ? candidate.name : candidate.partyEn}
+                </Typography>
               </ButtonBase>
             </Grid>
           ))}
@@ -76,6 +90,7 @@ export const pageQuery = graphql`
       election(id: $id) {
         slug
         title
+        partyFirst
         candidates {
           id
           slug
