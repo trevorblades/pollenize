@@ -7,6 +7,10 @@ export const typeDef = gql`
     election(id: ID!): Election
   }
 
+  extend type Candidate {
+    election: Election
+  }
+
   type Election {
     id: ID
     slug: String
@@ -28,12 +32,12 @@ export const resolvers = {
       });
     },
     election(parent, args) {
-      return Election.findOne({
-        where: {
-          id: args.id,
-          public: true
-        }
-      });
+      return Election.findByPk(args.id);
+    }
+  },
+  Candidate: {
+    election(parent) {
+      return parent.getElection();
     }
   }
 };

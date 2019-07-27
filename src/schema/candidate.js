@@ -1,6 +1,11 @@
+import {Candidate} from '../db';
 import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`
+  extend type Query {
+    candidate(id: ID!): Candidate
+  }
+
   extend type Election {
     candidates: [Candidate]
   }
@@ -9,6 +14,10 @@ export const typeDef = gql`
     id: ID
     slug: String
     name: String
+    partyEn: String
+    partyFr: String
+    bioEn: String
+    bioFr: String
     birthDate: String
     hometown: String
     portrait: String
@@ -18,6 +27,11 @@ export const typeDef = gql`
 `;
 
 export const resolvers = {
+  Query: {
+    candidate(parent, args) {
+      return Candidate.findByPk(args.id);
+    }
+  },
   Election: {
     candidates(parent) {
       return parent.getCandidates({

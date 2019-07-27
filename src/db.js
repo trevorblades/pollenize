@@ -11,7 +11,7 @@ export const Election = sequelize.define('election', {
   endsAt: Sequelize.DATE
 });
 
-const Candidate = sequelize.define('candidate', {
+export const Candidate = sequelize.define('candidate', {
   slug: Sequelize.STRING,
   name: Sequelize.STRING,
   partyEn: Sequelize.STRING,
