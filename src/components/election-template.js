@@ -8,7 +8,7 @@ import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../utils/language';
 import {Link, graphql} from 'gatsby';
 import {cover, size} from 'polished';
-import {getParty} from '../utils';
+import {localize} from '../utils';
 import {makeStyles, styled, useTheme} from '@material-ui/styles';
 
 const Wrapper = styled('div')({
@@ -48,7 +48,12 @@ export default function ElectionTemplate(props) {
         </HeaderBase>
         <StyledGrid container>
           {candidates.map(candidate => {
-            const party = getParty(candidate, language);
+            const party = localize(
+              candidate.partyEn,
+              candidate.partyFr,
+              language
+            );
+
             const [title, subtitle] = partyFirst
               ? [party, candidate.name]
               : [candidate.name, party];
