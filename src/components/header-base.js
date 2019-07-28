@@ -12,6 +12,8 @@ const StyledLink = styled(Link)({
   textDecoration: 'none'
 });
 
+export const HEADER_HEIGHT = 64;
+
 export default function HeaderBase(props) {
   const {breakpoints, spacing, palette} = useTheme();
   const paddingX = 3;
@@ -22,7 +24,7 @@ export default function HeaderBase(props) {
         alignItems="center"
         justifyContent="space-between"
         width={1}
-        height={64}
+        height={HEADER_HEIGHT}
         px={paddingX}
         maxWidth={breakpoints.values.lg - (64 - spacing(paddingX)) * 2}
         mx="auto"

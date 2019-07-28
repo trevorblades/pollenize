@@ -10,6 +10,7 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-material-ui',
     'gatsby-plugin-svgr',
+    'gatsby-plugin-lodash',
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
