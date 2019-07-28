@@ -2,11 +2,13 @@ import ElectionMenu from './election-menu';
 import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useContext} from 'react';
 import {Avatar, ButtonBase, Grid, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
+import {LanguageContext} from '../utils/language';
 import {Link, graphql} from 'gatsby';
 import {cover, size} from 'polished';
+import {getParty} from '../utils';
 import {makeStyles, styled, useTheme} from '@material-ui/styles';
 
 const Wrapper = styled('div')({
@@ -33,6 +35,7 @@ const useStyles = makeStyles(theme => ({
 export default function ElectionTemplate(props) {
   const {button, avatar} = useStyles();
   const {palette} = useTheme();
+  const [language] = useContext(LanguageContext);
   const {slug, title, partyFirst, candidates} = props.data.pollenize.election;
   return (
     <Layout>
@@ -44,36 +47,39 @@ export default function ElectionTemplate(props) {
           <ElectionMenu />
         </HeaderBase>
         <StyledGrid container>
-          {candidates.map(candidate => (
-            <Grid
-              item
-              xs={
-                12 /
-                (candidates.length > 3
-                  ? Math.ceil(candidates.length / 2)
-                  : candidates.length)
-              }
-              key={candidate.id}
-            >
-              <ButtonBase
-                className={button}
-                component={Link}
-                to={`/elections/${slug}/${candidate.slug}`}
-                style={{
-                  backgroundColor: candidate.color,
-                  color: palette.getContrastText(candidate.color)
-                }}
+          {candidates.map(candidate => {
+            const party = getParty(candidate, language);
+            const [title, subtitle] = partyFirst
+              ? [party, candidate.name]
+              : [candidate.name, party];
+
+            return (
+              <Grid
+                item
+                xs={
+                  12 /
+                  (candidates.length > 3
+                    ? Math.ceil(candidates.length / 2)
+                    : candidates.length)
+                }
+                key={candidate.id}
               >
-                <Avatar className={avatar} src={candidate.portrait} />
-                <Typography variant="h5">
-                  {partyFirst ? candidate.partyEn : candidate.name}
-                </Typography>
-                <Typography variant="subtitle2">
-                  {partyFirst ? candidate.name : candidate.partyEn}
-                </Typography>
-              </ButtonBase>
-            </Grid>
-          ))}
+                <ButtonBase
+                  className={button}
+                  component={Link}
+                  to={`/elections/${slug}/${candidate.slug}`}
+                  style={{
+                    backgroundColor: candidate.color,
+                    color: palette.getContrastText(candidate.color)
+                  }}
+                >
+                  <Avatar className={avatar} src={candidate.portrait} />
+                  <Typography variant="h5">{title}</Typography>
+                  <Typography variant="subtitle2">{subtitle}</Typography>
+                </ButtonBase>
+              </Grid>
+            );
+          })}
         </StyledGrid>
       </Wrapper>
     </Layout>
