@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../../utils/language';
+import {PageAnchor} from '../common';
 import {differenceInYears} from 'date-fns';
 import {graphql} from 'gatsby';
 import {groupBy} from 'lodash';
@@ -118,7 +119,8 @@ export default function CandidateTemplate(props) {
             </Box>
           </Grid>
           <Grid item xs={9}>
-            <Box id="about" py={7} pr={8}>
+            <PageAnchor name="about" />
+            <Box py={7} pr={8}>
               <Typography gutterBottom variant="h4">
                 {aboutTitle}
               </Typography>

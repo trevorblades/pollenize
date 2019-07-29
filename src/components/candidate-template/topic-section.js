@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
-import React, {useContext, useState} from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 import {Box, Button, Divider, IconButton, Typography} from '@material-ui/core';
 import {FaRegStar} from 'react-icons/fa';
 import {LanguageContext} from '../../utils/language';
+import {PageAnchor} from '../common';
 import {localize} from '../../utils';
 
 export default function TopicSection(props) {
@@ -14,7 +15,8 @@ export default function TopicSection(props) {
   }
 
   return (
-    <div id={props.topic.slug}>
+    <Fragment>
+      <PageAnchor name={props.topic.slug} />
       {props.topic.image ? (
         <Box
           py={15}
@@ -44,6 +46,7 @@ export default function TopicSection(props) {
             {localize(stance.textEn, stance.textFr, language)}
           </Typography>
         ))}
+        {/* TODO: wire up stars */}
         <IconButton
           color="inherit"
           style={{
@@ -57,12 +60,12 @@ export default function TopicSection(props) {
           <Button onClick={handleMoreClick}>
             {expanded
               ? localize('Show less', 'Montre moins', language)
-              : `${localize('See more', 'Voir plus', language)} (${props.stances
-                  .length - 1})`}
+              : `${localize('Show more', 'Montre plus', language)} (${props
+                  .stances.length - 1})`}
           </Button>
         )}
       </Box>
-    </div>
+    </Fragment>
   );
 }
 
