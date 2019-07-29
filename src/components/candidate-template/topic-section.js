@@ -41,28 +41,40 @@ export default function TopicSection(props) {
             {props.topic.titleEn}
           </Typography>
         )}
-        {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
-          <Typography key={stance.id} paragraph>
-            {localize(stance.textEn, stance.textFr, language)}
+        {props.stances ? (
+          <Fragment>
+            {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
+              <Typography key={stance.id} paragraph>
+                {localize(stance.textEn, stance.textFr, language)}
+              </Typography>
+            ))}
+            {/* TODO: wire up stars */}
+            <IconButton
+              color="inherit"
+              style={{
+                marginLeft: -8,
+                marginRight: 8
+              }}
+            >
+              <FaRegStar />
+            </IconButton>
+            {props.stances.length > 1 && (
+              <Button onClick={handleMoreClick}>
+                {expanded
+                  ? localize('Show less', 'Montre moins', language)
+                  : `${localize('Show more', 'Montre plus', language)} (${props
+                      .stances.length - 1})`}
+              </Button>
+            )}
+          </Fragment>
+        ) : (
+          <Typography paragraph>
+            {localize(
+              'No official stance has been taken on this topic.',
+              "Aucune position officielle n'a été prise sur ce sujet.",
+              language
+            )}
           </Typography>
-        ))}
-        {/* TODO: wire up stars */}
-        <IconButton
-          color="inherit"
-          style={{
-            marginLeft: -8,
-            marginRight: 8
-          }}
-        >
-          <FaRegStar />
-        </IconButton>
-        {props.stances.length > 1 && (
-          <Button onClick={handleMoreClick}>
-            {expanded
-              ? localize('Show less', 'Montre moins', language)
-              : `${localize('Show more', 'Montre plus', language)} (${props
-                  .stances.length - 1})`}
-          </Button>
         )}
       </Box>
     </Fragment>
@@ -71,5 +83,5 @@ export default function TopicSection(props) {
 
 TopicSection.propTypes = {
   topic: PropTypes.object.isRequired,
-  stances: PropTypes.array.isRequired
+  stances: PropTypes.array
 };
