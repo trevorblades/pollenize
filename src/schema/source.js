@@ -6,6 +6,7 @@ export const typeDef = gql`
   }
 
   type Source {
+    id: ID
     url: String
   }
 `;

@@ -10,6 +10,7 @@ export const typeDef = gql`
   }
 
   type Stance {
+    id: ID
     textEn: String
     textFr: String
     topicId: ID
