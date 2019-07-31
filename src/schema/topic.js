@@ -20,7 +20,9 @@ export const typeDef = gql`
 export const resolvers = {
   Election: {
     topics(parent) {
-      return parent.getTopics();
+      return parent.getTopics({
+        order: ['order']
+      });
     }
   }
 };

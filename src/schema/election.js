@@ -28,7 +28,8 @@ export const resolvers = {
       return Election.findAll({
         where: {
           public: true
-        }
+        },
+        order: [['endsAt', 'desc']]
       });
     },
     election(parent, args) {
