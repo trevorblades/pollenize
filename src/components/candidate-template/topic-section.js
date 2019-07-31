@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, {Fragment, useContext, useState} from 'react';
 import {Box, Button, Divider, IconButton, Typography} from '@material-ui/core';
+import {ContentBox, PageAnchor} from '../common';
 import {FaRegStar} from 'react-icons/fa';
 import {LanguageContext} from '../../utils/language';
-import {PageAnchor} from '../common';
 import {localize} from '../../utils';
 
 export default function TopicSection(props) {
@@ -19,7 +19,10 @@ export default function TopicSection(props) {
       <PageAnchor name={props.topic.slug} />
       {props.topic.image ? (
         <Box
-          py={15}
+          py={{
+            xs: 12,
+            lg: 15
+          }}
           display="flex"
           justifyContent="center"
           style={{
@@ -35,7 +38,7 @@ export default function TopicSection(props) {
       ) : (
         <Divider />
       )}
-      <Box py={7} pr={8}>
+      <ContentBox>
         {!props.topic.image && (
           <Typography gutterBottom variant="h4">
             {props.topic.titleEn}
@@ -76,7 +79,7 @@ export default function TopicSection(props) {
             )}
           </Typography>
         )}
-      </Box>
+      </ContentBox>
     </Fragment>
   );
 }

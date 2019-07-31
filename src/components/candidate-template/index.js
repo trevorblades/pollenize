@@ -12,9 +12,9 @@ import {
   Link as MuiLink,
   Typography
 } from '@material-ui/core';
+import {ContentBox, PageAnchor} from '../common';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../../utils/language';
-import {PageAnchor} from '../common';
 import {differenceInYears} from 'date-fns';
 import {graphql} from 'gatsby';
 import {groupBy} from 'lodash';
@@ -24,7 +24,11 @@ import {styled, useTheme} from '@material-ui/styles';
 
 const StyledAvatar = styled(Avatar)(({theme}) => ({
   ...size(160),
-  marginBottom: theme.spacing(3)
+  marginBottom: theme.spacing(3),
+  [theme.breakpoints.down('sm')]: {
+    ...size(120),
+    marginBottom: theme.spacing(2)
+  }
 }));
 
 function SidebarLink(props) {
@@ -50,10 +54,11 @@ export default function CandidateTemplate(props) {
     stances
   } = props.data.pollenize.candidate;
 
-  const {palette, breakpoints} = useTheme();
+  const {palette, breakpoints, spacing} = useTheme();
   const [language] = useContext(LanguageContext);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
 
+  const maxWidth = breakpoints.values.lg;
   const [title, subtitle] = election.partyFirst ? [party, name] : [name, party];
   const party = localize(partyEn, partyFr, language);
   const bio = localize(bioEn, bioFr, language);
@@ -82,10 +87,10 @@ export default function CandidateTemplate(props) {
         }}
       >
         <Box
-          maxWidth={breakpoints.values.lg}
-          mx="auto"
-          px={8}
-          py={5}
+          p={{
+            xs: 4,
+            md: 5
+          }}
           display="flex"
           flexDirection="column"
           alignItems="center"
@@ -95,19 +100,35 @@ export default function CandidateTemplate(props) {
           <Typography variant="h6">{subtitle}</Typography>
         </Box>
       </div>
-      <Box maxWidth={breakpoints.values.lg} mx="auto">
+      <Box
+        maxWidth={{
+          md: maxWidth - spacing(6),
+          lg: maxWidth
+        }}
+        mx="auto"
+      >
         <Grid container>
-          <Grid item xs={3}>
+          <Grid item xs={12} md={4} lg={3}>
             <Box
               component="aside"
               position="sticky"
-              mt={5}
+              display={{
+                xs: 'none',
+                md: 'block'
+              }}
+              mt={{
+                md: 3,
+                lg: 5
+              }}
               py={2}
-              pl={8}
+              pl={{
+                md: 5,
+                lg: 8
+              }}
               pr={3}
               top={HEADER_HEIGHT}
             >
-              <Typography paragraph variant="overline">
+              <Typography paragraph variant="overline" noWrap>
                 Table of contents
               </Typography>
               <SidebarLink href="#about">{aboutTitle}</SidebarLink>
@@ -118,9 +139,9 @@ export default function CandidateTemplate(props) {
               ))}
             </Box>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} md={8} lg={9}>
             <PageAnchor name="about" />
-            <Box py={7} pr={8}>
+            <ContentBox>
               <Typography gutterBottom variant="h4">
                 {aboutTitle}
               </Typography>
@@ -140,7 +161,7 @@ export default function CandidateTemplate(props) {
                   dangerouslySetInnerHTML={{__html: snarkdown(bio)}}
                 />
               )}
-            </Box>
+            </ContentBox>
             {election.topics.map(topic => (
               <TopicSection
                 key={topic.id}
