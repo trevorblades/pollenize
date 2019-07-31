@@ -107,8 +107,8 @@ export default function CandidateTemplate(props) {
       >
         <Box
           p={{
-            xs: 4,
-            md: 6
+            xs: 5,
+            md: 7
           }}
           display="flex"
           flexDirection="column"
@@ -167,13 +167,13 @@ export default function CandidateTemplate(props) {
                 {aboutTitle}
               </Typography>
               {birthDate && (
-                <Typography paragraph>
+                <Typography gutterBottom>
                   {differenceInYears(Date.now(), Number(birthDate))}{' '}
                   {localize('years old', 'ans', language)}
                 </Typography>
               )}
               {hometown && (
-                <Typography paragraph>
+                <Typography gutterBottom>
                   {localize('Hometown', 'Ville natale', language)}: {hometown}
                 </Typography>
               )}
