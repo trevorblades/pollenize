@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, {useContext, useMemo} from 'react';
 import TopicSection from './topic-section';
 import snarkdown from 'snarkdown';
+import useLocalStorage from 'react-use/lib/useLocalStorage';
 import {
   Avatar,
   Box,
@@ -16,9 +17,9 @@ import {ContentBox, PageAnchor} from '../common';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../../utils/language';
 import {differenceInYears} from 'date-fns';
+import {getCandidateTitles, localize} from '../../utils';
 import {graphql} from 'gatsby';
 import {groupBy} from 'lodash';
-import {localize} from '../../utils';
 import {size} from 'polished';
 import {styled, useTheme} from '@material-ui/styles';
 
@@ -41,6 +42,7 @@ function SidebarLink(props) {
 
 export default function CandidateTemplate(props) {
   const {
+    id: candidateId,
     name,
     partyEn,
     partyFr,
@@ -57,10 +59,30 @@ export default function CandidateTemplate(props) {
   const {palette, breakpoints, spacing} = useTheme();
   const [language] = useContext(LanguageContext);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
+  const [stars, setStars] = useLocalStorage('stars', {});
+  const candidateStars = stars[candidateId] || [];
+
+  function handleStarClick(topicId) {
+    setStars(prevStars => {
+      const prevCandidateStars = prevStars[candidateId];
+      return {
+        ...prevStars,
+        [candidateId]: prevCandidateStars
+          ? prevCandidateStars.includes(topicId)
+            ? prevCandidateStars.filter(id => id !== topicId)
+            : [...prevCandidateStars, topicId]
+          : [topicId]
+      };
+    });
+  }
+
+  const [title, subtitle] = getCandidateTitles(
+    {name, partyEn, partyFr},
+    election.partyFirst,
+    language
+  );
 
   const maxWidth = breakpoints.values.lg;
-  const [title, subtitle] = election.partyFirst ? [party, name] : [name, party];
-  const party = localize(partyEn, partyFr, language);
   const bio = localize(bioEn, bioFr, language);
   const [firstName] = name.split(' ');
   const aboutTitle = `${localize(
@@ -74,10 +96,7 @@ export default function CandidateTemplate(props) {
       <Helmet>
         <title>{name}</title>
       </Helmet>
-      <HeaderBase
-        link={`/elections/${election.slug}`}
-        title={election.partyFirst ? party : name}
-      >
+      <HeaderBase link={`/elections/${election.slug}`} title={title}>
         <ElectionMenu />
       </HeaderBase>
       <div
@@ -89,15 +108,17 @@ export default function CandidateTemplate(props) {
         <Box
           p={{
             xs: 4,
-            md: 5
+            md: 6
           }}
           display="flex"
           flexDirection="column"
           alignItems="center"
         >
           <StyledAvatar src={portrait} />
-          <Typography variant="h4">{title}</Typography>
-          <Typography variant="h6">{subtitle}</Typography>
+          <Typography variant="h3" style={{marginBottom: 8}}>
+            {title}
+          </Typography>
+          {subtitle && <Typography variant="h6">{subtitle}</Typography>}
         </Box>
       </div>
       <Box
@@ -167,6 +188,8 @@ export default function CandidateTemplate(props) {
                 key={topic.id}
                 topic={topic}
                 stances={stancesByTopic[topic.id]}
+                starred={candidateStars.includes(topic.id)}
+                onStarClick={() => handleStarClick(topic.id)}
               />
             ))}
           </Grid>
@@ -184,6 +207,7 @@ export const pageQuery = graphql`
   query CandidateQuery($id: ID!) {
     pollenize {
       candidate(id: $id) {
+        id
         name
         portrait
         partyEn

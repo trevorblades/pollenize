@@ -80,7 +80,7 @@ export default function ElectionTemplate(props) {
                 >
                   <Avatar className={avatar} src={candidate.portrait} />
                   <Typography variant="h5">{title}</Typography>
-                  <Typography variant="subtitle2">{subtitle}</Typography>
+                  <Typography variant="subtitle1">{subtitle}</Typography>
                 </ButtonBase>
               </Grid>
             );

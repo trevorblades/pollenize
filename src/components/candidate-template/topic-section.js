@@ -1,18 +1,15 @@
 import PropTypes from 'prop-types';
-import React, {Fragment, useContext, useState} from 'react';
+import React, {Fragment, useContext} from 'react';
+import useToggle from 'react-use/lib/useToggle';
 import {Box, Button, Divider, IconButton, Typography} from '@material-ui/core';
 import {ContentBox, PageAnchor} from '../common';
-import {FaRegStar} from 'react-icons/fa';
+import {FaRegStar, FaStar} from 'react-icons/fa';
 import {LanguageContext} from '../../utils/language';
 import {localize} from '../../utils';
 
 export default function TopicSection(props) {
   const [language] = useContext(LanguageContext);
-  const [expanded, setExpanded] = useState(false);
-
-  function handleMoreClick() {
-    setExpanded(prevExpanded => !prevExpanded);
-  }
+  const [expanded, toggleExpanded] = useToggle(false);
 
   return (
     <Fragment>
@@ -51,18 +48,18 @@ export default function TopicSection(props) {
                 {localize(stance.textEn, stance.textFr, language)}
               </Typography>
             ))}
-            {/* TODO: wire up stars */}
             <IconButton
+              onClick={props.onStarClick}
               color="inherit"
               style={{
                 marginLeft: -8,
                 marginRight: 8
               }}
             >
-              <FaRegStar />
+              {props.starred ? <FaStar /> : <FaRegStar />}
             </IconButton>
             {props.stances.length > 1 && (
-              <Button onClick={handleMoreClick}>
+              <Button onClick={toggleExpanded}>
                 {expanded
                   ? localize('Show less', 'Montre moins', language)
                   : `${localize('Show more', 'Montre plus', language)} (${props
@@ -86,5 +83,7 @@ export default function TopicSection(props) {
 
 TopicSection.propTypes = {
   topic: PropTypes.object.isRequired,
+  onStarClick: PropTypes.func.isRequired,
+  starred: PropTypes.bool.isRequired,
   stances: PropTypes.array
 };
