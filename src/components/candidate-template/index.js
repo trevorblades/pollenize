@@ -97,7 +97,12 @@ export default function CandidateTemplate(props) {
         <title>{name}</title>
       </Helmet>
       <HeaderBase link={`/elections/${election.slug}`} title={title}>
-        <ElectionMenu />
+        <ElectionMenu
+          title={election.title}
+          slug={election.slug}
+          candidates={election.candidates}
+          language={language}
+        />
       </HeaderBase>
       <div
         style={{
@@ -229,6 +234,7 @@ export const pageQuery = graphql`
         }
         election {
           slug
+          title
           partyFirst
           topics {
             id
@@ -238,6 +244,14 @@ export const pageQuery = graphql`
             titleFr
             descriptionEn
             descriptionFr
+          }
+          candidates {
+            id
+            name
+            slug
+            partyEn
+            partyFr
+            portrait
           }
         }
       }

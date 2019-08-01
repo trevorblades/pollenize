@@ -46,7 +46,12 @@ export default function ElectionTemplate(props) {
       </Helmet>
       <Wrapper>
         <HeaderBase link="/elections" title={title}>
-          <ElectionMenu />
+          <ElectionMenu
+            title={title}
+            slug={slug}
+            candidates={candidates}
+            language={language}
+          />
         </HeaderBase>
         <StyledGrid container>
           {candidates.map(candidate => {
