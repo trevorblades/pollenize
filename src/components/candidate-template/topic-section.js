@@ -10,7 +10,7 @@ import {localize} from '../../utils';
 export default function TopicSection(props) {
   const [language] = useContext(LanguageContext);
   const [expanded, toggleExpanded] = useToggle(false);
-
+  const title = localize(props.topic.titleEn, props.topic.titleFr, language);
   return (
     <Fragment>
       <PageAnchor name={props.topic.slug} />
@@ -29,7 +29,7 @@ export default function TopicSection(props) {
           }}
         >
           <Box bgcolor="background.paper" py={1} px={2}>
-            <Typography variant="h4">{props.topic.titleEn}</Typography>
+            <Typography variant="h4">{title}</Typography>
           </Box>
         </Box>
       ) : (
@@ -38,7 +38,7 @@ export default function TopicSection(props) {
       <ContentBox>
         {!props.topic.image && (
           <Typography gutterBottom variant="h4">
-            {props.topic.titleEn}
+            {title}
           </Typography>
         )}
         {props.stances ? (

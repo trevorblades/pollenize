@@ -155,7 +155,7 @@ export default function CandidateTemplate(props) {
               <SidebarLink href="#about">{aboutTitle}</SidebarLink>
               {election.topics.map(topic => (
                 <SidebarLink key={topic.id} href={`#${topic.slug}`}>
-                  {topic.titleEn}
+                  {localize(topic.titleEn, topic.titleFr, language)}
                 </SidebarLink>
               ))}
             </Box>
