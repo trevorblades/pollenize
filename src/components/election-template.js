@@ -24,7 +24,9 @@ const StyledGrid = styled(Grid)({
 const useStyles = makeStyles(theme => ({
   button: {
     ...size('100%'),
-    flexDirection: 'column'
+    flexDirection: 'column',
+    padding: theme.spacing(3),
+    textAlign: 'center'
   },
   avatar: {
     ...size(96),
