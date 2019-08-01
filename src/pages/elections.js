@@ -33,7 +33,7 @@ export default function Elections(props) {
         <Grid container spacing={3}>
           {props.data.pollenize.elections.map(election => {
             const endsAt = new Date(Number(election.endsAt));
-            const isActive = endsAt > Date.now() - 1000 * 60 * 60 * 24 * 365;
+            const isActive = endsAt > Date.now();
             return (
               <Grid item xs={3} key={election.id}>
                 <StyledCard elevation={0}>
