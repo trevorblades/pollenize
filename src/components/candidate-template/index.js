@@ -2,7 +2,7 @@ import ElectionMenu from '../election-menu';
 import HeaderBase, {HEADER_HEIGHT} from '../header-base';
 import Layout from '../layout';
 import PropTypes from 'prop-types';
-import React, {useContext, useMemo} from 'react';
+import React, {Fragment, useContext, useMemo, useState} from 'react';
 import TopicSection from './topic-section';
 import snarkdown from 'snarkdown';
 import {
@@ -68,6 +68,7 @@ export default function CandidateTemplate(props) {
     stances
   } = props.data.pollenize.candidate;
 
+  const [sourceIndex, setSourceIndex] = useState(null);
   const {palette, breakpoints, spacing} = useTheme();
   const [language] = useContext(LanguageContext);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
@@ -83,6 +84,10 @@ export default function CandidateTemplate(props) {
 
   function handleStarClick(topicId) {
     toggleStar(candidateId, topicId);
+  }
+
+  function handleSourceClick(event) {
+    setSourceIndex(event.target.textContent - 1);
   }
 
   const [title, subtitle] = getCandidateTitles(
@@ -209,6 +214,7 @@ export default function CandidateTemplate(props) {
                 sources={sources}
                 starred={candidateStars.includes(topic.id)}
                 onStarClick={() => handleStarClick(topic.id)}
+                onSourceClick={handleSourceClick}
               />
             ))}
           </Grid>
@@ -232,23 +238,25 @@ export default function CandidateTemplate(props) {
             Sources
           </Typography>
           <StyledList>
-            {sources.map(source => (
-              <Typography
-                gutterBottom
-                key={source}
-                color="textSecondary"
-                component="li"
-                variant="body2"
-              >
-                <MuiLink
-                  color="inherit"
-                  href={source}
-                  target="_blank"
-                  rel="noopener noreferrer"
+            {sources.map((source, index) => (
+              <Fragment key={source}>
+                <PageAnchor name={`source-${index + 1}`} />
+                <Typography
+                  gutterBottom
+                  color={sourceIndex === index ? 'primary' : 'textSecondary'}
+                  component="li"
+                  variant="body2"
                 >
-                  {source}
-                </MuiLink>
-              </Typography>
+                  <MuiLink
+                    color="inherit"
+                    href={source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {source}
+                  </MuiLink>
+                </Typography>
+              </Fragment>
             ))}
           </StyledList>
         </Box>

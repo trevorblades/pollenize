@@ -54,15 +54,22 @@ export default function TopicSection(props) {
             {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
               <Typography key={stance.id} paragraph>
                 {localize(stance.textEn, stance.textFr, language)}
-                {stance.sources.map(source => (
-                  <sup key={source.id}>
-                    [
-                    <MuiLink color="inherit" href="#sources">
-                      {props.sources.indexOf(source.url)}
-                    </MuiLink>
-                    ]
-                  </sup>
-                ))}
+                {stance.sources.map(source => {
+                  const number = props.sources.indexOf(source.url) + 1;
+                  return (
+                    <sup key={source.id}>
+                      [
+                      <MuiLink
+                        color="inherit"
+                        href={`#source-${number}`}
+                        onClick={props.onSourceClick}
+                      >
+                        {number}
+                      </MuiLink>
+                      ]
+                    </sup>
+                  );
+                })}
               </Typography>
             ))}
             <IconButton
@@ -103,5 +110,6 @@ TopicSection.propTypes = {
   onStarClick: PropTypes.func.isRequired,
   starred: PropTypes.bool.isRequired,
   sources: PropTypes.array.isRequired,
+  onSourceClick: PropTypes.func.isRequired,
   stances: PropTypes.array
 };
