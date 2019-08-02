@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import React, {useContext, useMemo} from 'react';
 import TopicSection from './topic-section';
 import snarkdown from 'snarkdown';
-import useLocalStorage from 'react-use/lib/useLocalStorage';
 import {
   Avatar,
   Box,
@@ -16,6 +15,7 @@ import {
 import {ContentBox, PageAnchor} from '../common';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../../utils/language';
+import {StarsContext} from '../../utils/stars';
 import {differenceInYears} from 'date-fns';
 import {getCandidateTitles, localize} from '../../utils';
 import {graphql} from 'gatsby';
@@ -59,21 +59,11 @@ export default function CandidateTemplate(props) {
   const {palette, breakpoints, spacing} = useTheme();
   const [language] = useContext(LanguageContext);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
-  const [stars, setStars] = useLocalStorage('stars', {});
+  const {stars, toggleStar} = useContext(StarsContext);
   const candidateStars = stars[candidateId] || [];
 
   function handleStarClick(topicId) {
-    setStars(prevStars => {
-      const prevCandidateStars = prevStars[candidateId];
-      return {
-        ...prevStars,
-        [candidateId]: prevCandidateStars
-          ? prevCandidateStars.includes(topicId)
-            ? prevCandidateStars.filter(id => id !== topicId)
-            : [...prevCandidateStars, topicId]
-          : [topicId]
-      };
-    });
+    toggleStar(candidateId, topicId);
   }
 
   const [title, subtitle] = getCandidateTitles(

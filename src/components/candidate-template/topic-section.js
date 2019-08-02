@@ -22,6 +22,7 @@ export default function TopicSection(props) {
           }}
           display="flex"
           justifyContent="center"
+          bgcolor="grey.200"
           style={{
             backgroundImage: `url(${props.topic.image})`,
             backgroundSize: 'cover',
