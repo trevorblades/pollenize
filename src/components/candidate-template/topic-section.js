@@ -1,7 +1,14 @@
 import PropTypes from 'prop-types';
 import React, {Fragment, useContext} from 'react';
 import useToggle from 'react-use/lib/useToggle';
-import {Box, Button, Divider, IconButton, Typography} from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Link as MuiLink,
+  Typography
+} from '@material-ui/core';
 import {ContentBox, PageAnchor} from '../common';
 import {FaRegStar, FaStar} from 'react-icons/fa';
 import {LanguageContext} from '../../utils/language';
@@ -47,6 +54,15 @@ export default function TopicSection(props) {
             {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
               <Typography key={stance.id} paragraph>
                 {localize(stance.textEn, stance.textFr, language)}
+                {stance.sources.map(source => (
+                  <sup key={source.id}>
+                    [
+                    <MuiLink color="inherit" href="#sources">
+                      {props.sources.indexOf(source.url)}
+                    </MuiLink>
+                    ]
+                  </sup>
+                ))}
               </Typography>
             ))}
             <IconButton
@@ -86,5 +102,6 @@ TopicSection.propTypes = {
   topic: PropTypes.object.isRequired,
   onStarClick: PropTypes.func.isRequired,
   starred: PropTypes.bool.isRequired,
+  sources: PropTypes.array.isRequired,
   stances: PropTypes.array
 };

@@ -17,9 +17,9 @@ import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../../utils/language';
 import {StarsContext} from '../../utils/stars';
 import {differenceInYears} from 'date-fns';
+import {flatMap, groupBy, uniq} from 'lodash';
 import {getCandidateTitles, localize} from '../../utils';
 import {graphql} from 'gatsby';
-import {groupBy} from 'lodash';
 import {size} from 'polished';
 import {styled, useTheme} from '@material-ui/styles';
 
@@ -29,6 +29,18 @@ const StyledAvatar = styled(Avatar)(({theme}) => ({
   [theme.breakpoints.down('sm')]: {
     ...size(120),
     marginBottom: theme.spacing(2)
+  }
+}));
+
+const StyledList = styled('ol')(({theme}) => ({
+  columnCount: 3,
+  columnGap: theme.spacing(5),
+  wordBreak: 'break-word',
+  [theme.breakpoints.down('md')]: {
+    columnCount: 2
+  },
+  [theme.breakpoints.down('sm')]: {
+    columnCount: 1
   }
 }));
 
@@ -59,6 +71,13 @@ export default function CandidateTemplate(props) {
   const {palette, breakpoints, spacing} = useTheme();
   const [language] = useContext(LanguageContext);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
+  const sources = useMemo(
+    () =>
+      uniq(
+        flatMap(stances, stance => stance.sources.map(source => source.url))
+      ),
+    [stances]
+  );
   const {stars, toggleStar} = useContext(StarsContext);
   const candidateStars = stars[candidateId] || [];
 
@@ -136,12 +155,16 @@ export default function CandidateTemplate(props) {
                 md: 3,
                 lg: 5
               }}
-              py={2}
+              pt={2}
               pl={{
                 md: 5,
                 lg: 8
               }}
               pr={3}
+              pb={{
+                md: 4,
+                lg: 6
+              }}
               top={HEADER_HEIGHT}
             >
               <Typography paragraph variant="overline" noWrap>
@@ -183,12 +206,52 @@ export default function CandidateTemplate(props) {
                 key={topic.id}
                 topic={topic}
                 stances={stancesByTopic[topic.id]}
+                sources={sources}
                 starred={candidateStars.includes(topic.id)}
                 onStarClick={() => handleStarClick(topic.id)}
               />
             ))}
           </Grid>
         </Grid>
+      </Box>
+      <PageAnchor name="sources" />
+      <Box bgcolor="grey.200" component="footer">
+        <Box
+          maxWidth={breakpoints.values.lg}
+          mx="auto"
+          px={{
+            xs: 5,
+            lg: 8
+          }}
+          py={{
+            xs: 7,
+            lg: 10
+          }}
+        >
+          <Typography gutterBottom variant="h4" color="textSecondary">
+            Sources
+          </Typography>
+          <StyledList>
+            {sources.map(source => (
+              <Typography
+                gutterBottom
+                key={source}
+                color="textSecondary"
+                component="li"
+                variant="body2"
+              >
+                <MuiLink
+                  color="inherit"
+                  href={source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {source}
+                </MuiLink>
+              </Typography>
+            ))}
+          </StyledList>
+        </Box>
       </Box>
     </Layout>
   );
