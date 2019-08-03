@@ -12,10 +12,12 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
+  Tooltip,
   Typography
 } from '@material-ui/core';
-import {FaBars, FaRegStar, FaStar} from 'react-icons/fa';
+import {FaBars, FaStar, FaStarHalfAlt} from 'react-icons/fa';
 import {Link} from 'gatsby';
+import {MdTranslate} from 'react-icons/md';
 import {StarsContext} from '../../utils/stars';
 import {localize} from '../../utils';
 import {makeStyles} from '@material-ui/styles';
@@ -66,7 +68,21 @@ export default function ElectionMenu(props) {
 
   return (
     <Fragment>
-      <LanguageMenu />
+      <LanguageMenu
+        renderButton={openMenu => (
+          <Tooltip
+            title={localize(
+              'Change language',
+              'Changer de langue',
+              props.language
+            )}
+          >
+            <IconButton color="inherit" onClick={openMenu}>
+              <MdTranslate size={24} />
+            </IconButton>
+          </Tooltip>
+        )}
+      />
       <IconButton onClick={openDrawer} color="inherit">
         <FaBars size={24} />
       </IconButton>
@@ -122,7 +138,7 @@ export default function ElectionMenu(props) {
             onClick={handleResetClick}
           >
             <ListItemIcon>
-              {totalStarCount ? <FaStar size={20} /> : <FaRegStar size={20} />}
+              <FaStarHalfAlt size={20} />
             </ListItemIcon>
             <ListItemText>
               {localize(
@@ -132,6 +148,22 @@ export default function ElectionMenu(props) {
               )}
             </ListItemText>
           </ListItem>
+          <LanguageMenu
+            renderButton={openMenu => (
+              <ListItem button onClick={openMenu}>
+                <ListItemIcon>
+                  <MdTranslate size={24} />
+                </ListItemIcon>
+                <ListItemText>
+                  {localize(
+                    'Language: English',
+                    'Langue: Français',
+                    props.language
+                  )}
+                </ListItemText>
+              </ListItem>
+            )}
+          />
         </List>
       </Drawer>
     </Fragment>

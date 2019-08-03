@@ -1,9 +1,9 @@
+import PropTypes from 'prop-types';
 import React, {Fragment, useContext, useState} from 'react';
-import {IconButton, Menu, MenuItem, Tooltip} from '@material-ui/core';
 import {LanguageContext, languages} from '../../utils/language';
-import {MdTranslate} from 'react-icons/md';
+import {Menu, MenuItem} from '@material-ui/core';
 
-export default function LanguageMenu() {
+export default function LanguageMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [language, setLanguage] = useContext(LanguageContext);
 
@@ -17,13 +17,7 @@ export default function LanguageMenu() {
 
   return (
     <Fragment>
-      <Tooltip
-        title={language === 'en' ? 'Change language' : 'Changer de langue'}
-      >
-        <IconButton color="inherit" onClick={openMenu}>
-          <MdTranslate size={24} />
-        </IconButton>
-      </Tooltip>
+      {props.renderButton(openMenu)}
       <Menu onClose={closeMenu} anchorEl={anchorEl} open={Boolean(anchorEl)}>
         {Object.entries(languages).map(([code, name]) => (
           <MenuItem
@@ -41,3 +35,7 @@ export default function LanguageMenu() {
     </Fragment>
   );
 }
+
+LanguageMenu.propTypes = {
+  renderButton: PropTypes.func.isRequired
+};
