@@ -55,9 +55,11 @@ export default function TopicsTemplate(props) {
         textAlign="center"
         bgcolor="grey.200"
       >
-        <Typography variant="h3">
-          {localize('Topic explorer', 'Explorateur de sujet', language)}
-        </Typography>
+        <Box mb={1}>
+          <Typography variant="h3">
+            {localize('Topic explorer', 'Explorateur de sujet', language)}
+          </Typography>
+        </Box>
       </Box>
       <PageWrapper
         sidebar={<TableOfContents language={language} topics={topics} />}

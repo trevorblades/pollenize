@@ -120,9 +120,9 @@ export default function CandidateTemplate(props) {
           alignItems="center"
         >
           <StyledAvatar src={portrait} />
-          <Typography variant="h3" style={{marginBottom: 8}}>
-            {title}
-          </Typography>
+          <Box mb={1}>
+            <Typography variant="h3">{title}</Typography>
+          </Box>
           {subtitle && <Typography variant="h6">{subtitle}</Typography>}
         </Box>
       </div>
