@@ -25,7 +25,7 @@ import {
 import {Link} from 'gatsby';
 import {MdTranslate} from 'react-icons/md';
 import {StarsContext} from '../../utils/stars';
-import {localize} from '../../utils';
+import {getCandidateTitles, localize} from '../../utils';
 import {makeStyles} from '@material-ui/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -102,6 +102,12 @@ export default function ElectionMenu(props) {
           <ListSubheader>{props.title}</ListSubheader>
           {props.candidates.map(candidate => {
             const candidateStars = stars[candidate.id] || [];
+            const [title, subtitle] = getCandidateTitles(
+              candidate,
+              props.partyFirst,
+              props.language
+            );
+
             return (
               <ListItem
                 button
@@ -113,16 +119,12 @@ export default function ElectionMenu(props) {
                   <Avatar src={candidate.portrait} />
                 </ListItemAvatar>
                 <ListItemText
-                  secondary={localize(
-                    candidate.partyEn,
-                    candidate.partyFr,
-                    props.language
-                  )}
+                  secondary={subtitle}
                   secondaryTypographyProps={{
                     noWrap: true
                   }}
                 >
-                  {candidate.name}
+                  {title}
                 </ListItemText>
                 <ListItemSecondaryAction className={secondaryAction}>
                   <Typography variant="body2">
@@ -176,7 +178,11 @@ export default function ElectionMenu(props) {
             </ListItemIcon>
             <ListItemText>View table</ListItemText>
           </ListItem>
-          <ListItem button>
+          <ListItem
+            button
+            component={Link}
+            to={`/elections/${props.slug}/topics`}
+          >
             <ListItemIcon>
               <FaRegComments size={24} />
             </ListItemIcon>
@@ -192,5 +198,6 @@ ElectionMenu.propTypes = {
   title: PropTypes.string.isRequired,
   slug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
+  partyFirst: PropTypes.bool.isRequired,
   language: PropTypes.string.isRequired
 };

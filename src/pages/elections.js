@@ -12,13 +12,16 @@ import {
 } from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {Link, graphql} from 'gatsby';
-import {styled, useTheme} from '@material-ui/styles';
+import {makeStyles, useTheme} from '@material-ui/styles';
 
-const StyledCard = styled(Card)(({theme}) => ({
-  backgroundColor: theme.palette.grey[200]
+const useStyles = makeStyles(theme => ({
+  card: {
+    backgroundColor: theme.palette.grey[200]
+  }
 }));
 
 export default function Elections(props) {
+  const {card} = useStyles();
   const {breakpoints, spacing} = useTheme();
   return (
     <Layout>
@@ -36,7 +39,7 @@ export default function Elections(props) {
             const isActive = endsAt > Date.now();
             return (
               <Grid item xs={3} key={election.id}>
-                <StyledCard elevation={0}>
+                <Card className={card} elevation={0}>
                   <CardActionArea
                     component={Link}
                     to={`/elections/${election.slug}`}
@@ -65,7 +68,7 @@ export default function Elections(props) {
                       />
                     </Box>
                   </CardActionArea>
-                </StyledCard>
+                </Card>
               </Grid>
             );
           })}

@@ -1,18 +1,13 @@
 import ElectionMenu from '../election-menu';
-import HeaderBase, {HEADER_HEIGHT} from '../header-base';
+import HeaderBase from '../header-base';
 import Layout from '../layout';
 import PropTypes from 'prop-types';
 import React, {Fragment, useContext, useMemo, useState} from 'react';
+import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
 import snarkdown from 'snarkdown';
-import {
-  Avatar,
-  Box,
-  Grid,
-  Link as MuiLink,
-  Typography
-} from '@material-ui/core';
-import {ContentBox, PageAnchor} from '../common';
+import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
+import {ContentWrapper, PageAnchor, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../../utils/language';
 import {StarsContext} from '../../utils/stars';
@@ -44,14 +39,6 @@ const StyledList = styled('ol')(({theme}) => ({
   }
 }));
 
-function SidebarLink(props) {
-  return (
-    <Typography paragraph variant="body2">
-      <MuiLink {...props} color="inherit" />
-    </Typography>
-  );
-}
-
 export default function CandidateTemplate(props) {
   const {
     id: candidateId,
@@ -69,7 +56,7 @@ export default function CandidateTemplate(props) {
   } = props.data.pollenize.candidate;
 
   const [sourceIndex, setSourceIndex] = useState(null);
-  const {palette, breakpoints, spacing} = useTheme();
+  const {palette, breakpoints} = useTheme();
   const [language] = useContext(LanguageContext);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const sources = useMemo(
@@ -96,7 +83,6 @@ export default function CandidateTemplate(props) {
     language
   );
 
-  const maxWidth = breakpoints.values.lg;
   const bio = localize(bioEn, bioFr, language);
   const [firstName] = name.split(' ');
   const aboutTitle = `${localize(
@@ -115,6 +101,7 @@ export default function CandidateTemplate(props) {
           title={election.title}
           slug={election.slug}
           candidates={election.candidates}
+          partyFirst={election.partyFirst}
           language={language}
         />
       </HeaderBase>
@@ -140,86 +127,45 @@ export default function CandidateTemplate(props) {
           {subtitle && <Typography variant="h6">{subtitle}</Typography>}
         </Box>
       </div>
-      <Box
-        maxWidth={{
-          md: maxWidth - spacing(6),
-          lg: maxWidth
-        }}
-        mx="auto"
+      <PageWrapper
+        sidebar={
+          <TableOfContents language={language} topics={election.topics}>
+            <SidebarLink href="#about">{aboutTitle}</SidebarLink>
+          </TableOfContents>
+        }
       >
-        <Grid container>
-          <Grid item xs={12} md={4} lg={3}>
-            <Box
-              component="aside"
-              position="sticky"
-              display={{
-                xs: 'none',
-                md: 'block'
-              }}
-              mt={{
-                md: 3,
-                lg: 5
-              }}
-              pt={2}
-              pl={{
-                md: 5,
-                lg: 8
-              }}
-              pr={3}
-              pb={{
-                md: 4,
-                lg: 6
-              }}
-              top={HEADER_HEIGHT}
-            >
-              <Typography paragraph variant="overline" noWrap>
-                Table of contents
-              </Typography>
-              <SidebarLink href="#about">{aboutTitle}</SidebarLink>
-              {election.topics.map(topic => (
-                <SidebarLink key={topic.id} href={`#${topic.slug}`}>
-                  {localize(topic.titleEn, topic.titleFr, language)}
-                </SidebarLink>
-              ))}
-            </Box>
-          </Grid>
-          <Grid item xs={12} md={8} lg={9}>
-            <PageAnchor name="about" />
-            <ContentBox>
-              <Typography gutterBottom variant="h4">
-                {aboutTitle}
-              </Typography>
-              {birthDate && (
-                <Typography gutterBottom>
-                  {differenceInYears(Date.now(), Number(birthDate))}{' '}
-                  {localize('years old', 'ans', language)}
-                </Typography>
-              )}
-              {hometown && (
-                <Typography gutterBottom>
-                  {localize('Hometown', 'Ville natale', language)}: {hometown}
-                </Typography>
-              )}
-              {bio && (
-                <Typography
-                  dangerouslySetInnerHTML={{__html: snarkdown(bio)}}
-                />
-              )}
-            </ContentBox>
-            {election.topics.map(topic => (
-              <TopicSection
-                key={topic.id}
-                topic={topic}
-                stances={stancesByTopic[topic.id]}
-                sources={sources}
-                starred={candidateStars.includes(topic.id)}
-                onStarClick={() => handleStarClick(topic.id)}
-                onSourceClick={handleSourceClick}
-              />
-            ))}
-          </Grid>
-        </Grid>
-      </Box>
+        <PageAnchor name="about" />
+        <ContentWrapper>
+          <Typography gutterBottom variant="h4">
+            {aboutTitle}
+          </Typography>
+          {birthDate && (
+            <Typography gutterBottom>
+              {differenceInYears(Date.now(), Number(birthDate))}{' '}
+              {localize('years old', 'ans', language)}
+            </Typography>
+          )}
+          {hometown && (
+            <Typography gutterBottom>
+              {localize('Hometown', 'Ville natale', language)}: {hometown}
+            </Typography>
+          )}
+          {bio && (
+            <Typography dangerouslySetInnerHTML={{__html: snarkdown(bio)}} />
+          )}
+        </ContentWrapper>
+        {election.topics.map(topic => (
+          <TopicSection
+            key={topic.id}
+            topic={topic}
+            stances={stancesByTopic[topic.id]}
+            sources={sources}
+            starred={candidateStars.includes(topic.id)}
+            onStarClick={() => handleStarClick(topic.id)}
+            onSourceClick={handleSourceClick}
+          />
+        ))}
+      </PageWrapper>
       <PageAnchor name="sources" />
       <Box bgcolor="grey.200" component="footer">
         <Box

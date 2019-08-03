@@ -9,7 +9,7 @@ import {
   Link as MuiLink,
   Typography
 } from '@material-ui/core';
-import {ContentBox, PageAnchor} from '../common';
+import {ContentWrapper, PageAnchor} from '../common';
 import {FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
 import {LanguageContext} from '../../utils/language';
@@ -44,7 +44,7 @@ export default function TopicSection(props) {
       ) : (
         <Divider />
       )}
-      <ContentBox>
+      <ContentWrapper>
         {!props.topic.image && (
           <Typography gutterBottom variant="h4">
             {title}
@@ -109,7 +109,7 @@ export default function TopicSection(props) {
             )}
           </Typography>
         )}
-      </ContentBox>
+      </ContentWrapper>
     </Fragment>
   );
 }

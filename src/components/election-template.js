@@ -50,6 +50,7 @@ export default function ElectionTemplate(props) {
             title={title}
             slug={slug}
             candidates={candidates}
+            partyFirst={partyFirst}
             language={language}
           />
         </HeaderBase>
