@@ -15,7 +15,7 @@ import {
   Tooltip,
   Typography
 } from '@material-ui/core';
-import {FaBars, FaStar, FaStarHalfAlt} from 'react-icons/fa';
+import {FaBars, FaRegComments, FaStar, FaStarHalfAlt} from 'react-icons/fa';
 import {Link} from 'gatsby';
 import {MdTranslate} from 'react-icons/md';
 import {StarsContext} from '../../utils/stars';
@@ -138,7 +138,7 @@ export default function ElectionMenu(props) {
             onClick={handleResetClick}
           >
             <ListItemIcon>
-              <FaStarHalfAlt size={20} />
+              <FaStarHalfAlt size={24} />
             </ListItemIcon>
             <ListItemText>
               {localize(
@@ -164,6 +164,12 @@ export default function ElectionMenu(props) {
               </ListItem>
             )}
           />
+          <ListItem button>
+            <ListItemIcon>
+              <FaRegComments size={24} />
+            </ListItemIcon>
+            <ListItemText>Topics-first mode</ListItemText>
+          </ListItem>
         </List>
       </Drawer>
     </Fragment>

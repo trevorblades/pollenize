@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import {ContentBox, PageAnchor} from '../common';
 import {FaRegStar, FaStar} from 'react-icons/fa';
+import {FiLink} from 'react-icons/fi';
 import {LanguageContext} from '../../utils/language';
 import {localize} from '../../utils';
 
@@ -81,6 +82,14 @@ export default function TopicSection(props) {
               }}
             >
               {props.starred ? <FaStar /> : <FaRegStar />}
+            </IconButton>
+            <IconButton
+              component="a"
+              href={`#${props.topic.slug}`}
+              style={{marginRight: 8}}
+              color="inherit"
+            >
+              <FiLink />
             </IconButton>
             {props.stances.length > 1 && (
               <Button onClick={toggleExpanded}>
