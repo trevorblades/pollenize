@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 import TopicWrapper from '../topic-wrapper';
 import useToggle from 'react-use/lib/useToggle';
 import {
@@ -10,17 +10,19 @@ import {
 } from '@material-ui/core';
 import {FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
+import {LanguageContext} from '../../utils/language';
 import {localize} from '../../utils';
 
 export default function TopicSection(props) {
+  const [language] = useContext(LanguageContext);
   const [expanded, toggleExpanded] = useToggle(false);
   return (
-    <TopicWrapper topic={props.topic} language={props.language}>
+    <TopicWrapper topic={props.topic} language={language}>
       {props.stances ? (
         <Fragment>
           {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
             <Typography key={stance.id} paragraph>
-              {localize(stance.textEn, stance.textFr, props.language)}
+              {localize(stance.textEn, stance.textFr, language)}
               {stance.sources.map(source => {
                 const number = props.sources.indexOf(source.url) + 1;
                 return (
@@ -60,12 +62,9 @@ export default function TopicSection(props) {
           {props.stances.length > 1 && (
             <Button onClick={toggleExpanded}>
               {expanded
-                ? localize('Show less', 'Montre moins', props.language)
-                : `${localize(
-                    'Show more',
-                    'Montre plus',
-                    props.language
-                  )} (${props.stances.length - 1})`}
+                ? localize('Show less', 'Montre moins', language)
+                : `${localize('Show more', 'Montre plus', language)} (${props
+                    .stances.length - 1})`}
             </Button>
           )}
         </Fragment>
@@ -74,7 +73,7 @@ export default function TopicSection(props) {
           {localize(
             'No official stance has been taken on this topic.',
             "Aucune position officielle n'a été prise sur ce sujet.",
-            props.language
+            language
           )}
         </Typography>
       )}
@@ -88,6 +87,5 @@ TopicSection.propTypes = {
   starred: PropTypes.bool.isRequired,
   sources: PropTypes.array.isRequired,
   onSourceClick: PropTypes.func.isRequired,
-  language: PropTypes.string.isRequired,
   stances: PropTypes.array
 };

@@ -1,3 +1,4 @@
+import ElectionMenu from './election-menu';
 import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
@@ -5,9 +6,9 @@ import React, {useContext} from 'react';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
 import {Avatar, Box, Typography} from '@material-ui/core';
-import {ContentWrapper, PageWrapper} from './common';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../utils/language';
+import {PageWrapper} from './common';
 import {graphql} from 'gatsby';
 import {localize} from '../utils';
 import {styled} from '@material-ui/styles';
@@ -24,7 +25,13 @@ const Triangle = styled(Box)(({theme}) =>
 );
 
 export default function TopicsTemplate(props) {
-  const {title, slug, topics} = props.data.pollenize.election;
+  const {
+    title,
+    slug,
+    topics,
+    candidates,
+    partyFirst
+  } = props.data.pollenize.election;
   const [language] = useContext(LanguageContext);
   return (
     <Layout>
@@ -32,36 +39,57 @@ export default function TopicsTemplate(props) {
         <title>{title}</title>
       </Helmet>
       <HeaderBase link={`/elections/${slug}`} title={title}>
-        nav
+        <ElectionMenu
+          title={title}
+          slug={slug}
+          candidates={candidates}
+          partyFirst={partyFirst}
+          topicExplorerActive
+        />
       </HeaderBase>
+      <Box
+        p={{
+          xs: 5,
+          md: 7
+        }}
+        textAlign="center"
+        bgcolor="grey.200"
+      >
+        <Typography variant="h3">
+          {localize('Topic explorer', 'Explorateur de sujet', language)}
+        </Typography>
+      </Box>
       <PageWrapper
         sidebar={<TableOfContents language={language} topics={topics} />}
       >
-        <ContentWrapper>
-          <Typography gutterBottom variant="h3">
-            Topic explorer
-          </Typography>
-        </ContentWrapper>
-        {topics.map(topic => {
+        {topics.map((topic, index) => {
           const description = localize(
             topic.descriptionEn,
             topic.descriptionFr,
             language
           );
           return (
-            <TopicWrapper key={topic.id} topic={topic} language={language}>
+            <TopicWrapper
+              disableDivider={!index}
+              key={topic.id}
+              topic={topic}
+              language={language}
+            >
               {description && <Typography paragraph>{description}</Typography>}
               {topic.stances.map((stance, index) => {
                 const isOdd = Boolean(index % 2);
                 return (
                   <Box
                     key={stance.id}
-                    maxWidth={0.75}
+                    maxWidth={{
+                      xs: 1,
+                      sm: 0.75
+                    }}
                     display="flex"
                     alignItems="flex-end"
                     flexDirection={isOdd ? 'row-reverse' : 'row'}
                     ml={isOdd ? 'auto' : 0}
-                    mt={index || description ? 4 : 0}
+                    mt={index || description || !topic.image ? 4 : 0}
                   >
                     <Avatar src={stance.candidate.portrait} />
                     <Box
@@ -130,6 +158,14 @@ export const pageQuery = graphql`
               portrait
             }
           }
+        }
+        candidates {
+          id
+          name
+          slug
+          partyEn
+          partyFr
+          portrait
         }
       }
     }

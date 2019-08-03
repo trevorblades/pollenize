@@ -102,7 +102,6 @@ export default function CandidateTemplate(props) {
           slug={election.slug}
           candidates={election.candidates}
           partyFirst={election.partyFirst}
-          language={language}
         />
       </HeaderBase>
       <div

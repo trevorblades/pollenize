@@ -33,7 +33,7 @@ export default function TopicWrapper(props) {
           </Box>
         </Box>
       ) : (
-        <Divider />
+        !props.disableDivider && <Divider />
       )}
       <ContentWrapper>
         {!props.topic.image && (
@@ -50,5 +50,6 @@ export default function TopicWrapper(props) {
 TopicWrapper.propTypes = {
   topic: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  language: PropTypes.string.isRequired
+  language: PropTypes.string.isRequired,
+  disableDivider: PropTypes.bool
 };

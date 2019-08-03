@@ -51,7 +51,6 @@ export default function ElectionTemplate(props) {
             slug={slug}
             candidates={candidates}
             partyFirst={partyFirst}
-            language={language}
           />
         </HeaderBase>
         <StyledGrid container>

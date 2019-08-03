@@ -8,20 +8,15 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
   Tooltip,
   Typography
 } from '@material-ui/core';
-import {
-  FaBars,
-  FaRegComments,
-  FaStar,
-  FaStarHalfAlt,
-  FaTable
-} from 'react-icons/fa';
+import {FaRegComments, FaStar} from 'react-icons/fa';
+import {FiMenu} from 'react-icons/fi';
+import {LanguageContext} from '../../utils/language';
 import {Link} from 'gatsby';
 import {MdTranslate} from 'react-icons/md';
 import {StarsContext} from '../../utils/stars';
@@ -50,6 +45,7 @@ export default function ElectionMenu(props) {
   const {paper, list, secondaryAction, starIcon} = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const {stars, resetStars} = useContext(StarsContext);
+  const [language] = useContext(LanguageContext);
 
   const totalStarCount = useMemo(
     () =>
@@ -74,23 +70,30 @@ export default function ElectionMenu(props) {
 
   return (
     <Fragment>
+      <Tooltip
+        title={localize('Topic explorer', 'Explorateur de sujet', language)}
+      >
+        <IconButton
+          component={Link}
+          to={`/elections/${props.slug}/topics`}
+          color={props.topicExplorerActive ? 'primary' : 'inherit'}
+        >
+          <FaRegComments />
+        </IconButton>
+      </Tooltip>
       <LanguageMenu
         renderButton={openMenu => (
           <Tooltip
-            title={localize(
-              'Change language',
-              'Changer de langue',
-              props.language
-            )}
+            title={localize('Change language', 'Changer de langue', language)}
           >
             <IconButton color="inherit" onClick={openMenu}>
-              <MdTranslate size={24} />
+              <MdTranslate />
             </IconButton>
           </Tooltip>
         )}
       />
       <IconButton onClick={openDrawer} color="inherit">
-        <FaBars size={24} />
+        <FiMenu />
       </IconButton>
       <Drawer
         classes={{paper}}
@@ -105,7 +108,7 @@ export default function ElectionMenu(props) {
             const [title, subtitle] = getCandidateTitles(
               candidate,
               props.partyFirst,
-              props.language
+              language
             );
 
             return (
@@ -118,14 +121,7 @@ export default function ElectionMenu(props) {
                 <ListItemAvatar>
                   <Avatar src={candidate.portrait} />
                 </ListItemAvatar>
-                <ListItemText
-                  secondary={subtitle}
-                  secondaryTypographyProps={{
-                    noWrap: true
-                  }}
-                >
-                  {title}
-                </ListItemText>
+                <ListItemText secondary={subtitle}>{title}</ListItemText>
                 <ListItemSecondaryAction className={secondaryAction}>
                   <Typography variant="body2">
                     {candidateStars.length}
@@ -138,55 +134,28 @@ export default function ElectionMenu(props) {
         </List>
         <List className={list}>
           <ListSubheader>
-            {localize('More options', "Plus d'options", props.language)}
+            {localize('More options', "Plus d'options", language)}
           </ListSubheader>
           <ListItem
             button
             disabled={!totalStarCount}
             onClick={handleResetClick}
           >
-            <ListItemIcon>
-              <FaStarHalfAlt size={22} style={{margin: 1}} />
-            </ListItemIcon>
             <ListItemText>
-              {localize(
-                'Reset stars',
-                'Réinitialiser les étoiles',
-                props.language
-              )}
+              {localize('Reset stars', 'Réinitialiser les étoiles', language)}
             </ListItemText>
           </ListItem>
           <LanguageMenu
             renderButton={openMenu => (
               <ListItem button onClick={openMenu}>
-                <ListItemIcon>
-                  <MdTranslate size={24} />
-                </ListItemIcon>
                 <ListItemText>
-                  {localize(
-                    'Language: English',
-                    'Langue: Français',
-                    props.language
-                  )}
+                  {localize('Language: English', 'Langue: Français', language)}
                 </ListItemText>
               </ListItem>
             )}
           />
           <ListItem button>
-            <ListItemIcon>
-              <FaTable size={20} style={{margin: 2}} />
-            </ListItemIcon>
-            <ListItemText>View table</ListItemText>
-          </ListItem>
-          <ListItem
-            button
-            component={Link}
-            to={`/elections/${props.slug}/topics`}
-          >
-            <ListItemIcon>
-              <FaRegComments size={24} />
-            </ListItemIcon>
-            <ListItemText>Topics-first mode</ListItemText>
+            <ListItemText>View as table</ListItemText>
           </ListItem>
         </List>
       </Drawer>
@@ -199,5 +168,5 @@ ElectionMenu.propTypes = {
   slug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
-  language: PropTypes.string.isRequired
+  topicExplorerActive: PropTypes.bool
 };
