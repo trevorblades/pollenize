@@ -1,116 +1,84 @@
 import PropTypes from 'prop-types';
-import React, {Fragment, useContext} from 'react';
+import React, {Fragment} from 'react';
+import TopicWrapper from '../topic-wrapper';
 import useToggle from 'react-use/lib/useToggle';
 import {
-  Box,
   Button,
-  Divider,
   IconButton,
   Link as MuiLink,
   Typography
 } from '@material-ui/core';
-import {ContentWrapper, PageAnchor} from '../common';
 import {FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
-import {LanguageContext} from '../../utils/language';
 import {localize} from '../../utils';
 
 export default function TopicSection(props) {
-  const [language] = useContext(LanguageContext);
   const [expanded, toggleExpanded] = useToggle(false);
-  const title = localize(props.topic.titleEn, props.topic.titleFr, language);
   return (
-    <Fragment>
-      <PageAnchor name={props.topic.slug} />
-      {props.topic.image ? (
-        <Box
-          py={{
-            xs: 12,
-            lg: 15
-          }}
-          display="flex"
-          justifyContent="center"
-          bgcolor="grey.200"
-          style={{
-            backgroundImage: `url(${props.topic.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          <Box bgcolor="background.paper" py={1} px={2}>
-            <Typography variant="h4">{title}</Typography>
-          </Box>
-        </Box>
+    <TopicWrapper topic={props.topic} language={props.language}>
+      {props.stances ? (
+        <Fragment>
+          {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
+            <Typography key={stance.id} paragraph>
+              {localize(stance.textEn, stance.textFr, props.language)}
+              {stance.sources.map(source => {
+                const number = props.sources.indexOf(source.url) + 1;
+                return (
+                  <sup key={source.id}>
+                    [
+                    <MuiLink
+                      color="inherit"
+                      href={`#source-${number}`}
+                      onClick={props.onSourceClick}
+                    >
+                      {number}
+                    </MuiLink>
+                    ]
+                  </sup>
+                );
+              })}
+            </Typography>
+          ))}
+          <IconButton
+            onClick={props.onStarClick}
+            color="inherit"
+            style={{
+              marginLeft: -8,
+              marginRight: 8
+            }}
+          >
+            {props.starred ? <FaStar /> : <FaRegStar />}
+          </IconButton>
+          <IconButton
+            component="a"
+            href={`#${props.topic.slug}`}
+            style={{marginRight: 8}}
+            color="inherit"
+          >
+            <FiLink />
+          </IconButton>
+          {props.stances.length > 1 && (
+            <Button onClick={toggleExpanded}>
+              {expanded
+                ? localize('Show less', 'Montre moins', props.language)
+                : `${localize(
+                    'Show more',
+                    'Montre plus',
+                    props.language
+                  )} (${props.stances.length - 1})`}
+            </Button>
+          )}
+        </Fragment>
       ) : (
-        <Divider />
+        <Typography paragraph>
+          {localize(
+            'No official stance has been taken on this topic.',
+            "Aucune position officielle n'a été prise sur ce sujet.",
+            props.language
+          )}
+        </Typography>
       )}
-      <ContentWrapper>
-        {!props.topic.image && (
-          <Typography gutterBottom variant="h4">
-            {title}
-          </Typography>
-        )}
-        {props.stances ? (
-          <Fragment>
-            {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
-              <Typography key={stance.id} paragraph>
-                {localize(stance.textEn, stance.textFr, language)}
-                {stance.sources.map(source => {
-                  const number = props.sources.indexOf(source.url) + 1;
-                  return (
-                    <sup key={source.id}>
-                      [
-                      <MuiLink
-                        color="inherit"
-                        href={`#source-${number}`}
-                        onClick={props.onSourceClick}
-                      >
-                        {number}
-                      </MuiLink>
-                      ]
-                    </sup>
-                  );
-                })}
-              </Typography>
-            ))}
-            <IconButton
-              onClick={props.onStarClick}
-              color="inherit"
-              style={{
-                marginLeft: -8,
-                marginRight: 8
-              }}
-            >
-              {props.starred ? <FaStar /> : <FaRegStar />}
-            </IconButton>
-            <IconButton
-              component="a"
-              href={`#${props.topic.slug}`}
-              style={{marginRight: 8}}
-              color="inherit"
-            >
-              <FiLink />
-            </IconButton>
-            {props.stances.length > 1 && (
-              <Button onClick={toggleExpanded}>
-                {expanded
-                  ? localize('Show less', 'Montre moins', language)
-                  : `${localize('Show more', 'Montre plus', language)} (${props
-                      .stances.length - 1})`}
-              </Button>
-            )}
-          </Fragment>
-        ) : (
-          <Typography paragraph>
-            {localize(
-              'No official stance has been taken on this topic.',
-              "Aucune position officielle n'a été prise sur ce sujet.",
-              language
-            )}
-          </Typography>
-        )}
-      </ContentWrapper>
-    </Fragment>
+    </TopicWrapper>
   );
 }
 
@@ -120,5 +88,6 @@ TopicSection.propTypes = {
   starred: PropTypes.bool.isRequired,
   sources: PropTypes.array.isRequired,
   onSourceClick: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
   stances: PropTypes.array
 };

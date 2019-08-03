@@ -163,6 +163,7 @@ export default function CandidateTemplate(props) {
             starred={candidateStars.includes(topic.id)}
             onStarClick={() => handleStarClick(topic.id)}
             onSourceClick={handleSourceClick}
+            language={language}
           />
         ))}
       </PageWrapper>
