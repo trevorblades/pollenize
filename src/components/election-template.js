@@ -3,7 +3,7 @@ import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
-import {Avatar, ButtonBase, Grid, Typography} from '@material-ui/core';
+import {Avatar, CardActionArea, Grid, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../utils/language';
 import {Link, graphql} from 'gatsby';
@@ -23,8 +23,9 @@ const StyledGrid = styled(Grid)({
 
 const useStyles = makeStyles(theme => ({
   button: {
-    ...size('100%'),
+    display: 'flex',
     flexDirection: 'column',
+    height: '100%',
     padding: theme.spacing(3),
     textAlign: 'center'
   },
@@ -76,7 +77,7 @@ export default function ElectionTemplate(props) {
                 }
                 key={candidate.id}
               >
-                <ButtonBase
+                <CardActionArea
                   className={button}
                   component={Link}
                   to={`/elections/${slug}/${candidate.slug}`}
@@ -88,7 +89,7 @@ export default function ElectionTemplate(props) {
                   <Avatar className={avatar} src={candidate.portrait} />
                   <Typography variant="h5">{title}</Typography>
                   <Typography variant="subtitle1">{subtitle}</Typography>
-                </ButtonBase>
+                </CardActionArea>
               </Grid>
             );
           })}

@@ -71,7 +71,7 @@ export default function ElectionMenu(props) {
   return (
     <Fragment>
       <Tooltip
-        title={localize('Topic explorer', 'Explorateur de sujet', language)}
+        title={localize('Topic explorer', 'Explorateur de sujets', language)}
       >
         <IconButton
           component={Link}

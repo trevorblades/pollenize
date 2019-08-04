@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
-import {Avatar, Box, Typography} from '@material-ui/core';
+import {Avatar, Box, CardActionArea, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../utils/language';
+import {Link, graphql} from 'gatsby';
 import {PageHeader, PageWrapper} from './common';
-import {graphql} from 'gatsby';
 import {localize} from '../utils';
-import {styled} from '@material-ui/styles';
+import {makeStyles, styled} from '@material-ui/styles';
 import {triangle} from 'polished';
 
 const triangleWidth = 24;
@@ -24,6 +24,13 @@ const Triangle = styled(Box)(({theme}) =>
   })
 );
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    borderRadius: theme.shape.borderRadius,
+    overflow: 'hidden'
+  }
+}));
+
 export default function TopicsTemplate(props) {
   const {
     title,
@@ -33,6 +40,7 @@ export default function TopicsTemplate(props) {
     partyFirst
   } = props.data.pollenize.election;
   const [language] = useContext(LanguageContext);
+  const {button} = useStyles();
   return (
     <Layout>
       <Helmet>
@@ -48,7 +56,7 @@ export default function TopicsTemplate(props) {
         />
       </HeaderBase>
       <PageHeader
-        title={localize('Topic explorer', 'Explorateur de sujet', language)}
+        title={localize('Topic explorer', 'Explorateur de sujets', language)}
         bgcolor="grey.200"
       />
       <PageWrapper
@@ -99,14 +107,20 @@ export default function TopicsTemplate(props) {
                           [isOdd ? 'right' : 'left']: triangleWidth / -2
                         }}
                       />
-                      <Box p={2}>
-                        <Typography gutterBottom>
-                          {localize(stance.textEn, stance.textFr, language)}
-                        </Typography>
-                        <Typography variant="caption" color="textSecondary">
-                          {stance.candidate.name}
-                        </Typography>
-                      </Box>
+                      <CardActionArea
+                        className={button}
+                        component={Link}
+                        to={`/elections/${slug}/${stance.candidate.slug}#${topic.slug}`}
+                      >
+                        <Box p={2}>
+                          <Typography gutterBottom>
+                            {localize(stance.textEn, stance.textFr, language)}
+                          </Typography>
+                          <Typography variant="caption" color="textSecondary">
+                            {stance.candidate.name}
+                          </Typography>
+                        </Box>
+                      </CardActionArea>
                     </Box>
                   </Box>
                 );
