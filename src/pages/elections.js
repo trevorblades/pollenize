@@ -38,7 +38,7 @@ export default function Elections(props) {
             const endsAt = new Date(Number(election.endsAt));
             const isActive = endsAt > Date.now();
             return (
-              <Grid item xs={3} key={election.id}>
+              <Grid item xs={12} sm={6} md={4} lg={3} key={election.id}>
                 <Card className={card} elevation={0}>
                   <CardActionArea
                     component={Link}

@@ -69,7 +69,9 @@ export default function ElectionTemplate(props) {
             return (
               <Grid
                 item
-                xs={
+                xs={12}
+                sm={6}
+                md={
                   12 /
                   (candidates.length > 3
                     ? Math.ceil(candidates.length / 2)
