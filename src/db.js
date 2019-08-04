@@ -47,7 +47,7 @@ const Topic = sequelize.define('topic', {
 Topic.belongsTo(Election);
 Election.hasMany(Topic);
 
-const Stance = sequelize.define('stance', {
+export const Stance = sequelize.define('stance', {
   textEn: Sequelize.TEXT,
   textFr: Sequelize.TEXT
 });

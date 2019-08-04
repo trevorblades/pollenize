@@ -1,3 +1,4 @@
+import {Stance, sequelize} from '../db';
 import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`
@@ -17,15 +18,23 @@ export const typeDef = gql`
   }
 `;
 
-function stances(parent) {
-  return parent.getStances();
-}
-
 export const resolvers = {
   Topic: {
-    stances
+    stances(parent) {
+      return parent.getStances({
+        attributes: [
+          // hack to return one stance per candidate
+          // see https://github.com/sequelize/sequelize/issues/5475#issuecomment-343691692
+          // TODO: make this consistent with the first stance chosen in the candidate pages
+          sequelize.literal('distinct on("candidateId") 1'),
+          ...Object.keys(Stance.rawAttributes)
+        ]
+      });
+    }
   },
   Candidate: {
-    stances
+    stances(parent) {
+      return parent.getStances();
+    }
   }
 };

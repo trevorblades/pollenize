@@ -10,6 +10,10 @@ export const typeDef = gql`
     candidates: [Candidate]
   }
 
+  extend type Stance {
+    candidate: Candidate
+  }
+
   type Candidate {
     id: ID
     slug: String
@@ -39,6 +43,11 @@ export const resolvers = {
           active: true
         }
       });
+    }
+  },
+  Stance: {
+    candidate(parent) {
+      return parent.getCandidate();
     }
   }
 };
