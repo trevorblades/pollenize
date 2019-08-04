@@ -8,7 +8,7 @@ import TopicWrapper from './topic-wrapper';
 import {Avatar, Box, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../utils/language';
-import {PageWrapper} from './common';
+import {PageHeader, PageWrapper} from './common';
 import {graphql} from 'gatsby';
 import {localize} from '../utils';
 import {styled} from '@material-ui/styles';
@@ -47,20 +47,10 @@ export default function TopicsTemplate(props) {
           topicExplorerActive
         />
       </HeaderBase>
-      <Box
-        p={{
-          xs: 5,
-          md: 7
-        }}
-        textAlign="center"
+      <PageHeader
+        title={localize('Topic explorer', 'Explorateur de sujet', language)}
         bgcolor="grey.200"
-      >
-        <Box mb={1}>
-          <Typography variant="h3">
-            {localize('Topic explorer', 'Explorateur de sujet', language)}
-          </Typography>
-        </Box>
-      </Box>
+      />
       <PageWrapper
         sidebar={<TableOfContents language={language} topics={topics} />}
       >

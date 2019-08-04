@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Grid} from '@material-ui/core';
+import {Box, Grid, Typography} from '@material-ui/core';
 import {HEADER_HEIGHT} from './header-base';
 import {styled, useTheme} from '@material-ui/styles';
 
@@ -61,4 +61,29 @@ export function PageWrapper(props) {
 PageWrapper.propTypes = {
   sidebar: PropTypes.node.isRequired,
   children: PropTypes.node.isRequired
+};
+
+export function PageHeader({children, title, subtitle, ...props}) {
+  return (
+    <Box
+      p={{
+        xs: 5,
+        md: 7
+      }}
+      textAlign="center"
+      {...props}
+    >
+      {children}
+      <Box mb={1}>
+        <Typography variant="h3">{title}</Typography>
+      </Box>
+      {subtitle && <Typography variant="h6">{subtitle}</Typography>}
+    </Box>
+  );
+}
+
+PageHeader.propTypes = {
+  children: PropTypes.node,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string
 };

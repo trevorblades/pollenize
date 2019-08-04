@@ -7,7 +7,7 @@ import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
 import snarkdown from 'snarkdown';
 import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
-import {ContentWrapper, PageAnchor, PageWrapper} from '../common';
+import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../../utils/language';
 import {StarsContext} from '../../utils/stars';
@@ -20,6 +20,7 @@ import {styled, useTheme} from '@material-ui/styles';
 
 const StyledAvatar = styled(Avatar)(({theme}) => ({
   ...size(160),
+  margin: '0 auto',
   marginBottom: theme.spacing(3),
   [theme.breakpoints.down('sm')]: {
     ...size(120),
@@ -104,28 +105,14 @@ export default function CandidateTemplate(props) {
           partyFirst={election.partyFirst}
         />
       </HeaderBase>
-      <div
-        style={{
-          backgroundColor: color,
-          color: palette.getContrastText(color)
-        }}
+      <PageHeader
+        title={title}
+        subtitle={subtitle}
+        bgcolor={color}
+        color={palette.getContrastText(color)}
       >
-        <Box
-          p={{
-            xs: 5,
-            md: 7
-          }}
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <StyledAvatar src={portrait} />
-          <Box mb={1}>
-            <Typography variant="h3">{title}</Typography>
-          </Box>
-          {subtitle && <Typography variant="h6">{subtitle}</Typography>}
-        </Box>
-      </div>
+        <StyledAvatar src={portrait} />
+      </PageHeader>
       <PageWrapper
         sidebar={
           <TableOfContents language={language} topics={election.topics}>
