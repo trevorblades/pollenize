@@ -2,14 +2,13 @@ import ElectionMenu from './election-menu';
 import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React from 'react';
 import {Avatar, CardActionArea, Grid, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
-import {LanguageContext} from '../utils/language';
 import {Link, graphql} from 'gatsby';
 import {cover, size} from 'polished';
-import {localize} from '../utils';
 import {makeStyles, styled, useTheme} from '@material-ui/styles';
+import {useLanguage} from '../utils/language';
 
 const Wrapper = styled('div')({
   ...cover(),
@@ -38,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 export default function ElectionTemplate(props) {
   const {button, avatar} = useStyles();
   const {palette} = useTheme();
-  const [language] = useContext(LanguageContext);
+  const {localize} = useLanguage();
   const {slug, title, partyFirst, candidates} = props.data.pollenize.election;
   return (
     <Layout>
@@ -56,11 +55,7 @@ export default function ElectionTemplate(props) {
         </HeaderBase>
         <StyledGrid container>
           {candidates.map(candidate => {
-            const party = localize(
-              candidate.partyEn,
-              candidate.partyFr,
-              language
-            );
+            const party = localize(candidate.partyEn, candidate.partyFr);
 
             const [title, subtitle] = partyFirst
               ? [party, candidate.name]

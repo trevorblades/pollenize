@@ -2,17 +2,17 @@ import ElectionMenu from './election-menu';
 import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React from 'react';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
 import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
-import {LanguageContext} from '../utils/language';
 import {Link, graphql} from 'gatsby';
 import {PageHeader, PageWrapper} from './common';
-import {getCandidateTitles, localize} from '../utils';
+import {getCandidateTitles} from '../utils';
 import {styled} from '@material-ui/styles';
 import {triangle} from 'polished';
+import {useLanguage} from '../utils/language';
 
 const triangleWidth = 24;
 const Triangle = styled(Box)(({theme}) =>
@@ -32,7 +32,7 @@ export default function TopicsTemplate(props) {
     candidates,
     partyFirst
   } = props.data.pollenize.election;
-  const [language] = useContext(LanguageContext);
+  const {localize} = useLanguage();
   return (
     <Layout>
       <Helmet>
@@ -48,30 +48,21 @@ export default function TopicsTemplate(props) {
         />
       </HeaderBase>
       <PageHeader
-        title={localize('Topic explorer', 'Explorateur de sujets', language)}
+        title={localize('Topic explorer', 'Explorateur de sujets')}
         subtitle={localize(
           "View candidates' main stances organized by topic",
-          'Voir les positions principales des candidats organisées par sujet',
-          language
+          'Voir les positions principales des candidats organisées par sujet'
         )}
         bgcolor="grey.200"
       />
-      <PageWrapper
-        sidebar={<TableOfContents language={language} topics={topics} />}
-      >
+      <PageWrapper sidebar={<TableOfContents topics={topics} />}>
         {topics.map((topic, index) => {
           const description = localize(
             topic.descriptionEn,
-            topic.descriptionFr,
-            language
+            topic.descriptionFr
           );
           return (
-            <TopicWrapper
-              disableDivider={!index}
-              key={topic.id}
-              topic={topic}
-              language={language}
-            >
+            <TopicWrapper disableDivider={!index} key={topic.id} topic={topic}>
               {description && <Typography paragraph>{description}</Typography>}
               {topic.stances.map((stance, index) => {
                 const isOdd = Boolean(index % 2);
@@ -79,7 +70,7 @@ export default function TopicsTemplate(props) {
                 const [title] = getCandidateTitles(
                   stance.candidate,
                   partyFirst,
-                  language
+                  localize
                 );
 
                 return (
@@ -117,7 +108,7 @@ export default function TopicsTemplate(props) {
                       />
                       <Box p={2}>
                         <Typography gutterBottom>
-                          {localize(stance.textEn, stance.textFr, language)}
+                          {localize(stance.textEn, stance.textFr)}
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
                           <MuiLink

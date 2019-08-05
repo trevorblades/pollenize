@@ -1,6 +1,6 @@
 import LanguageMenu from './language-menu';
 import PropTypes from 'prop-types';
-import React, {Fragment, useContext, useMemo, useState} from 'react';
+import React, {Fragment, useMemo, useState} from 'react';
 import {
   Avatar,
   Drawer,
@@ -16,12 +16,12 @@ import {
 } from '@material-ui/core';
 import {FaRegComments, FaStar} from 'react-icons/fa';
 import {FiMenu} from 'react-icons/fi';
-import {LanguageContext} from '../../utils/language';
 import {Link} from 'gatsby';
 import {MdTranslate} from 'react-icons/md';
-import {StarsContext} from '../../utils/stars';
-import {getCandidateTitles, localize} from '../../utils';
+import {getCandidateTitles} from '../../utils';
 import {makeStyles} from '@material-ui/styles';
+import {useLanguage} from '../../utils/language';
+import {useStars} from '../../utils/stars';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,8 +44,8 @@ const useStyles = makeStyles(theme => ({
 export default function ElectionMenu(props) {
   const {paper, list, secondaryAction, starIcon} = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const {stars, resetStars} = useContext(StarsContext);
-  const [language] = useContext(LanguageContext);
+  const {localize} = useLanguage();
+  const {stars, resetStars} = useStars();
 
   const totalStarCount = useMemo(
     () =>
@@ -70,9 +70,7 @@ export default function ElectionMenu(props) {
 
   return (
     <Fragment>
-      <Tooltip
-        title={localize('Topic explorer', 'Explorateur de sujets', language)}
-      >
+      <Tooltip title={localize('Topic explorer', 'Explorateur de sujets')}>
         <IconButton
           component={Link}
           to={`/elections/${props.slug}/topics`}
@@ -83,9 +81,7 @@ export default function ElectionMenu(props) {
       </Tooltip>
       <LanguageMenu
         renderButton={openMenu => (
-          <Tooltip
-            title={localize('Change language', 'Changer de langue', language)}
-          >
+          <Tooltip title={localize('Change language', 'Changer de langue')}>
             <IconButton color="inherit" onClick={openMenu}>
               <MdTranslate />
             </IconButton>
@@ -108,7 +104,7 @@ export default function ElectionMenu(props) {
             const [title, subtitle] = getCandidateTitles(
               candidate,
               props.partyFirst,
-              language
+              localize
             );
 
             return (
@@ -134,7 +130,7 @@ export default function ElectionMenu(props) {
         </List>
         <List className={list}>
           <ListSubheader>
-            {localize('More options', "Plus d'options", language)}
+            {localize('More options', "Plus d'options")}
           </ListSubheader>
           <ListItem
             button
@@ -142,14 +138,14 @@ export default function ElectionMenu(props) {
             onClick={handleResetClick}
           >
             <ListItemText>
-              {localize('Reset stars', 'Réinitialiser les étoiles', language)}
+              {localize('Reset stars', 'Réinitialiser les étoiles')}
             </ListItemText>
           </ListItem>
           <LanguageMenu
             renderButton={openMenu => (
               <ListItem button onClick={openMenu}>
                 <ListItemText>
-                  {localize('Language: English', 'Langue: Français', language)}
+                  {localize('Language: English', 'Langue: Français')}
                 </ListItemText>
               </ListItem>
             )}

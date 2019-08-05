@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
-import React, {useContext} from 'react';
+import React from 'react';
 import {Box, Link as MuiLink, Typography} from '@material-ui/core';
 import {HEADER_HEIGHT} from './header-base';
-import {LanguageContext} from '../utils/language';
-import {localize} from '../utils';
+import {useLanguage} from '../utils/language';
 
 export function SidebarLink(props) {
   return (
@@ -14,7 +13,7 @@ export function SidebarLink(props) {
 }
 
 export default function TableOfContents(props) {
-  const [language] = useContext(LanguageContext);
+  const {localize} = useLanguage();
   return (
     <Box
       component="aside"
@@ -40,12 +39,12 @@ export default function TableOfContents(props) {
       }}
     >
       <Typography paragraph variant="overline" noWrap>
-        {localize('Table of contents', 'Table des matières', language)}
+        {localize('Table of contents', 'Table des matières')}
       </Typography>
       {props.children}
       {props.topics.map(topic => (
         <SidebarLink key={topic.id} href={`#${topic.slug}`}>
-          {localize(topic.titleEn, topic.titleFr, language)}
+          {localize(topic.titleEn, topic.titleFr)}
         </SidebarLink>
       ))}
     </Box>

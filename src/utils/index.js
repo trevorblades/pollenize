@@ -1,14 +1,10 @@
-export function localize(en, fr, language) {
-  return language === 'en' ? en || fr : fr || en;
-}
-
 export function getCandidateTitles(
   {name, partyEn, partyFr},
   partyFirst,
-  language
+  localize
 ) {
   if (partyEn || partyFr) {
-    const party = localize(partyEn, partyFr, language);
+    const party = localize(partyEn, partyFr);
     return partyFirst ? [party, name] : [name, party];
   }
 

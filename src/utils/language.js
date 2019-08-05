@@ -1,17 +1,28 @@
 import PropTypes from 'prop-types';
-import React, {createContext, useState} from 'react';
+import React, {createContext, useContext, useState} from 'react';
 
 export const languages = {
   en: 'English',
   fr: 'Français'
 };
 
-export const LanguageContext = createContext();
+const LanguageContext = createContext();
+export function useLanguage() {
+  return useContext(LanguageContext);
+}
 
 export function LanguageProvider(props) {
-  const languageState = useState('en');
+  const [language, setLanguage] = useState('en');
   return (
-    <LanguageContext.Provider value={languageState}>
+    <LanguageContext.Provider
+      value={{
+        language,
+        setLanguage,
+        localize(en, fr) {
+          return language === 'en' ? en || fr : fr || en;
+        }
+      }}
+    >
       {props.children}
     </LanguageContext.Provider>
   );

@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import React, {Fragment, useContext, useState} from 'react';
-import {LanguageContext, languages} from '../../utils/language';
+import React, {Fragment, useState} from 'react';
 import {Menu, MenuItem} from '@material-ui/core';
+import {languages, useLanguage} from '../../utils/language';
 
 export default function LanguageMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [language, setLanguage] = useContext(LanguageContext);
+  const {language, setLanguage} = useLanguage();
 
   function openMenu(event) {
     setAnchorEl(event.currentTarget);

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {Fragment, useContext} from 'react';
+import React, {Fragment} from 'react';
 import TopicWrapper from '../topic-wrapper';
 import useToggle from 'react-use/lib/useToggle';
 import {
@@ -10,20 +10,19 @@ import {
 } from '@material-ui/core';
 import {FaRegComments, FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
-import {LanguageContext} from '../../utils/language';
 import {Link} from 'gatsby';
-import {localize} from '../../utils';
+import {useLanguage} from '../../utils/language';
 
 export default function TopicSection(props) {
-  const [language] = useContext(LanguageContext);
+  const {localize} = useLanguage();
   const [expanded, toggleExpanded] = useToggle(false);
   return (
-    <TopicWrapper topic={props.topic} language={language}>
+    <TopicWrapper topic={props.topic}>
       {props.stances ? (
         <Fragment>
           {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
             <Typography key={stance.id} paragraph>
-              {localize(stance.textEn, stance.textFr, language)}
+              {localize(stance.textEn, stance.textFr)}
               {stance.sources.map(source => {
                 const number = props.sources.indexOf(source.url) + 1;
                 return (
@@ -68,9 +67,9 @@ export default function TopicSection(props) {
           {props.stances.length > 1 && (
             <Button onClick={toggleExpanded} style={{marginLeft: 8}}>
               {expanded
-                ? localize('Show less', 'Montre moins', language)
-                : `${localize('Show more', 'Montre plus', language)} (${props
-                    .stances.length - 1})`}
+                ? localize('Show less', 'Montre moins')
+                : `${localize('Show more', 'Montre plus')} (${props.stances
+                    .length - 1})`}
             </Button>
           )}
         </Fragment>
@@ -78,8 +77,7 @@ export default function TopicSection(props) {
         <Typography paragraph>
           {localize(
             'No official stance has been taken on this topic.',
-            "Aucune position officielle n'a été prise sur ce sujet.",
-            language
+            "Aucune position officielle n'a été prise sur ce sujet."
           )}
         </Typography>
       )}

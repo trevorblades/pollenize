@@ -2,14 +2,11 @@ import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import {Box, Divider, Typography} from '@material-ui/core';
 import {ContentWrapper, PageAnchor} from './common';
-import {localize} from '../utils';
+import {useLanguage} from '../utils/language';
 
 export default function TopicWrapper(props) {
-  const title = localize(
-    props.topic.titleEn,
-    props.topic.titleFr,
-    props.language
-  );
+  const {localize} = useLanguage();
+  const title = localize(props.topic.titleEn, props.topic.titleFr);
   return (
     <Fragment>
       <PageAnchor name={props.topic.slug} />
@@ -50,6 +47,5 @@ export default function TopicWrapper(props) {
 TopicWrapper.propTypes = {
   topic: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
-  language: PropTypes.string.isRequired,
   disableDivider: PropTypes.bool
 };

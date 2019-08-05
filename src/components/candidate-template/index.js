@@ -2,21 +2,21 @@ import ElectionMenu from '../election-menu';
 import HeaderBase from '../header-base';
 import Layout from '../layout';
 import PropTypes from 'prop-types';
-import React, {Fragment, useContext, useMemo, useState} from 'react';
+import React, {Fragment, useMemo, useState} from 'react';
 import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
 import snarkdown from 'snarkdown';
 import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
-import {LanguageContext} from '../../utils/language';
-import {StarsContext} from '../../utils/stars';
 import {differenceInYears} from 'date-fns';
 import {flatMap, groupBy, uniq} from 'lodash';
-import {getCandidateTitles, localize} from '../../utils';
+import {getCandidateTitles} from '../../utils';
 import {graphql} from 'gatsby';
 import {size} from 'polished';
 import {styled, useTheme} from '@material-ui/styles';
+import {useLanguage} from '../../utils/language';
+import {useStars} from '../../utils/stars';
 
 const StyledAvatar = styled(Avatar)(({theme}) => ({
   ...size(160),
@@ -58,7 +58,7 @@ export default function CandidateTemplate(props) {
 
   const [sourceIndex, setSourceIndex] = useState(null);
   const {palette, breakpoints} = useTheme();
-  const [language] = useContext(LanguageContext);
+  const {localize} = useLanguage();
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const sources = useMemo(
     () =>
@@ -67,7 +67,7 @@ export default function CandidateTemplate(props) {
       ),
     [stances]
   );
-  const {stars, toggleStar} = useContext(StarsContext);
+  const {stars, toggleStar} = useStars();
   const candidateStars = stars[candidateId] || [];
 
   function handleStarClick(topicId) {
@@ -81,16 +81,12 @@ export default function CandidateTemplate(props) {
   const [title, subtitle] = getCandidateTitles(
     {name, partyEn, partyFr},
     election.partyFirst,
-    language
+    localize
   );
 
-  const bio = localize(bioEn, bioFr, language);
+  const bio = localize(bioEn, bioFr);
   const [firstName] = name.split(' ');
-  const aboutTitle = `${localize(
-    'About',
-    'À propos de',
-    language
-  )} ${firstName}`;
+  const aboutTitle = `${localize('About', 'À propos de')} ${firstName}`;
 
   return (
     <Layout>
@@ -115,7 +111,7 @@ export default function CandidateTemplate(props) {
       </PageHeader>
       <PageWrapper
         sidebar={
-          <TableOfContents language={language} topics={election.topics}>
+          <TableOfContents topics={election.topics}>
             <SidebarLink href="#about">{aboutTitle}</SidebarLink>
           </TableOfContents>
         }
@@ -128,12 +124,12 @@ export default function CandidateTemplate(props) {
           {birthDate && (
             <Typography gutterBottom>
               {differenceInYears(Date.now(), Number(birthDate))}{' '}
-              {localize('years old', 'ans', language)}
+              {localize('years old', 'ans')}
             </Typography>
           )}
           {hometown && (
             <Typography gutterBottom>
-              {localize('Hometown', 'Ville natale', language)}: {hometown}
+              {localize('Hometown', 'Ville natale')}: {hometown}
             </Typography>
           )}
           {bio && (
@@ -150,7 +146,6 @@ export default function CandidateTemplate(props) {
             starred={candidateStars.includes(topic.id)}
             onStarClick={() => handleStarClick(topic.id)}
             onSourceClick={handleSourceClick}
-            language={language}
           />
         ))}
       </PageWrapper>
