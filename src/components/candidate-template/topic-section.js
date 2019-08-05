@@ -8,9 +8,10 @@ import {
   Link as MuiLink,
   Typography
 } from '@material-ui/core';
-import {FaRegStar, FaStar} from 'react-icons/fa';
+import {FaRegComments, FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
 import {LanguageContext} from '../../utils/language';
+import {Link} from 'gatsby';
 import {localize} from '../../utils';
 
 export default function TopicSection(props) {
@@ -45,8 +46,7 @@ export default function TopicSection(props) {
             onClick={props.onStarClick}
             color="inherit"
             style={{
-              marginLeft: -8,
-              marginRight: 8
+              marginLeft: -8
             }}
           >
             {props.starred ? <FaStar /> : <FaRegStar />}
@@ -54,13 +54,19 @@ export default function TopicSection(props) {
           <IconButton
             component="a"
             href={`#${props.topic.slug}`}
-            style={{marginRight: 8}}
             color="inherit"
           >
             <FiLink />
           </IconButton>
+          <IconButton
+            component={Link}
+            to={`/elections/${props.electionSlug}/topics#${props.topic.slug}`}
+            color="inherit"
+          >
+            <FaRegComments />
+          </IconButton>
           {props.stances.length > 1 && (
-            <Button onClick={toggleExpanded}>
+            <Button onClick={toggleExpanded} style={{marginLeft: 8}}>
               {expanded
                 ? localize('Show less', 'Montre moins', language)
                 : `${localize('Show more', 'Montre plus', language)} (${props
@@ -83,6 +89,7 @@ export default function TopicSection(props) {
 
 TopicSection.propTypes = {
   topic: PropTypes.object.isRequired,
+  electionSlug: PropTypes.string.isRequired,
   onStarClick: PropTypes.func.isRequired,
   starred: PropTypes.bool.isRequired,
   sources: PropTypes.array.isRequired,

@@ -144,6 +144,7 @@ export default function CandidateTemplate(props) {
           <TopicSection
             key={topic.id}
             topic={topic}
+            electionSlug={election.slug}
             stances={stancesByTopic[topic.id]}
             sources={sources}
             starred={candidateStars.includes(topic.id)}

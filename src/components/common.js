@@ -74,9 +74,9 @@ export function PageHeader({children, title, subtitle, ...props}) {
       {...props}
     >
       {children}
-      <Box mb={1}>
-        <Typography variant="h3">{title}</Typography>
-      </Box>
+      <Typography paragraph variant="h3">
+        {title}
+      </Typography>
       {subtitle && <Typography variant="h6">{subtitle}</Typography>}
     </Box>
   );

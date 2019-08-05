@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import React, {useContext} from 'react';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
-import {Avatar, Box, CardActionArea, Typography} from '@material-ui/core';
+import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {LanguageContext} from '../utils/language';
 import {Link, graphql} from 'gatsby';
 import {PageHeader, PageWrapper} from './common';
-import {localize} from '../utils';
-import {makeStyles, styled} from '@material-ui/styles';
+import {getCandidateTitles, localize} from '../utils';
+import {styled} from '@material-ui/styles';
 import {triangle} from 'polished';
 
 const triangleWidth = 24;
@@ -24,13 +24,6 @@ const Triangle = styled(Box)(({theme}) =>
   })
 );
 
-const useStyles = makeStyles(theme => ({
-  button: {
-    borderRadius: theme.shape.borderRadius,
-    overflow: 'hidden'
-  }
-}));
-
 export default function TopicsTemplate(props) {
   const {
     title,
@@ -40,7 +33,6 @@ export default function TopicsTemplate(props) {
     partyFirst
   } = props.data.pollenize.election;
   const [language] = useContext(LanguageContext);
-  const {button} = useStyles();
   return (
     <Layout>
       <Helmet>
@@ -57,6 +49,11 @@ export default function TopicsTemplate(props) {
       </HeaderBase>
       <PageHeader
         title={localize('Topic explorer', 'Explorateur de sujets', language)}
+        subtitle={localize(
+          "View candidates' main stances organized by topic",
+          'Voir les positions principales des candidats organisées par sujet',
+          language
+        )}
         bgcolor="grey.200"
       />
       <PageWrapper
@@ -78,6 +75,13 @@ export default function TopicsTemplate(props) {
               {description && <Typography paragraph>{description}</Typography>}
               {topic.stances.map((stance, index) => {
                 const isOdd = Boolean(index % 2);
+                const pathToCandidate = `/elections/${slug}/${stance.candidate.slug}#${topic.slug}`;
+                const [title] = getCandidateTitles(
+                  stance.candidate,
+                  partyFirst,
+                  language
+                );
+
                 return (
                   <Box
                     key={stance.id}
@@ -91,7 +95,11 @@ export default function TopicsTemplate(props) {
                     ml={isOdd ? 'auto' : 0}
                     mt={index || description || !topic.image ? 4 : 0}
                   >
-                    <Avatar src={stance.candidate.portrait} />
+                    <Avatar
+                      component={Link}
+                      src={stance.candidate.portrait}
+                      to={pathToCandidate}
+                    />
                     <Box
                       bgcolor="grey.200"
                       borderRadius="borderRadius"
@@ -107,20 +115,20 @@ export default function TopicsTemplate(props) {
                           [isOdd ? 'right' : 'left']: triangleWidth / -2
                         }}
                       />
-                      <CardActionArea
-                        className={button}
-                        component={Link}
-                        to={`/elections/${slug}/${stance.candidate.slug}#${topic.slug}`}
-                      >
-                        <Box p={2}>
-                          <Typography gutterBottom>
-                            {localize(stance.textEn, stance.textFr, language)}
-                          </Typography>
-                          <Typography variant="caption" color="textSecondary">
-                            {stance.candidate.name}
-                          </Typography>
-                        </Box>
-                      </CardActionArea>
+                      <Box p={2}>
+                        <Typography gutterBottom>
+                          {localize(stance.textEn, stance.textFr, language)}
+                        </Typography>
+                        <Typography variant="caption" color="textSecondary">
+                          <MuiLink
+                            color="inherit"
+                            component={Link}
+                            to={pathToCandidate}
+                          >
+                            {title}
+                          </MuiLink>
+                        </Typography>
+                      </Box>
                     </Box>
                   </Box>
                 );
