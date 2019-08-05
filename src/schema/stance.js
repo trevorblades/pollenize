@@ -28,13 +28,16 @@ export const resolvers = {
           // TODO: make this consistent with the first stance chosen in the candidate pages
           sequelize.literal('distinct on("candidateId") 1'),
           ...Object.keys(Stance.rawAttributes)
-        ]
+        ],
+        order: ['candidateId', 'id']
       });
     }
   },
   Candidate: {
     stances(parent) {
-      return parent.getStances();
+      return parent.getStances({
+        order: ['id']
+      });
     }
   }
 };
