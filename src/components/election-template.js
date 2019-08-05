@@ -48,9 +48,10 @@ export default function ElectionTemplate(props) {
         <HeaderBase link="/elections" title={title}>
           <ElectionMenu
             title={title}
-            slug={slug}
+            electionSlug={slug}
             candidates={candidates}
             partyFirst={partyFirst}
+            candidateGridActive
           />
         </HeaderBase>
         <StyledGrid container>

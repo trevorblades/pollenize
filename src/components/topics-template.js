@@ -41,7 +41,7 @@ export default function TopicsTemplate(props) {
       <HeaderBase link={`/elections/${slug}`} title={title}>
         <ElectionMenu
           title={title}
-          slug={slug}
+          electionSlug={slug}
           candidates={candidates}
           partyFirst={partyFirst}
           topicExplorerActive
