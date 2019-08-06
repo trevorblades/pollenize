@@ -3,7 +3,8 @@ import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import team from '../assets/images/team.jpg';
-import {Box, Grid, Typography} from '@material-ui/core';
+import {Box, Grid, Link as MuiLink, Typography} from '@material-ui/core';
+import {FaTwitter} from 'react-icons/fa';
 import {SectionWrapper} from '../components/common';
 
 function TeamMember(props) {
@@ -12,6 +13,20 @@ function TeamMember(props) {
       <Typography gutterBottom variant="h4">
         {props.name}
       </Typography>
+      {props.twitter && (
+        <Box mb={1} display="flex" alignItems="center">
+          <FaTwitter size={16} style={{marginRight: 8}} />
+          <MuiLink
+            href={`https://twitter.com/${props.twitter}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            color="inherit"
+            variant="subtitle2"
+          >
+            @{props.twitter}
+          </MuiLink>
+        </Box>
+      )}
       <Typography>{props.bio}</Typography>
     </Grid>
   );
@@ -19,6 +34,7 @@ function TeamMember(props) {
 
 TeamMember.propTypes = {
   name: PropTypes.string.isRequired,
+  twitter: PropTypes.string,
   bio: PropTypes.string.isRequired
 };
 
@@ -69,22 +85,27 @@ export default function Team() {
         <Grid container spacing={5}>
           <TeamMember
             name="Trevor Blades"
-            bio="Trevor is a web developer based in Burnaby, BC. He web-develops all sorts of stuff and enjoys working on open source projects."
+            twitter="trevorblades"
+            bio="Trevor is a web developer based in Burnaby, BC. He web-develops everything from word games to productivity tools, and enjoys working on open source projects."
           />
           <TeamMember
             name="Miguel Barbosa"
-            bio="Miguel is a film director, editor and producer. He creates music videos, documentaries and commercials."
+            twitter="yeahfilms"
+            bio="Miguel is an award-winning film director, editor and producer. He creates music videos, documentaries and commercials."
           />
           <TeamMember
             name="Marvin Sanchez"
+            twitter="marvinsanchez"
             bio="As a designer at Prodigy, Marvin is currently on a mission to help kids around the world love math. Marvin is better than you at video games and can play any Blink-182 song on his trusty air guitar."
           />
           <TeamMember
             name="Matheson Murray"
+            twitter="mathesonmurray"
             bio="Matheson is a graduate of Carleton University's faculty of Journalism and Communications and Sheridan College's New Media Journalism program. He worked as a Legislative Assistant on Parliament Hill in University and is now a freelance producer and filmmaker based in Toronto."
           />
           <TeamMember
             name="Ben Miller"
+            twitter="mastermill"
             bio="Ben did his bachelors degree at the University of Victoria in Environmental Sciences and Business, and is now finishing his masters at Copenhagen Business School in the Organizational Innovation and Entrepreneurship Program, where he started the improvisation business training program. Ben has a lot of interests, one of those include riding vast distances on 4 person bikes."
           />
           <TeamMember
@@ -93,6 +114,7 @@ export default function Team() {
           />
           <TeamMember
             name="Sean Tanner"
+            twitter="shontanner"
             bio="Sean was born in Vancouver Canada and studied at Capilano University to become a Graphic Designer and Illustrator. Once out in the real world he spent the next 6 years working at Spring Advertising. He now lives in Melbourne Australia, freelancing, and spending as much time as possible relaxing, traveling and taking photos."
           />
         </Grid>

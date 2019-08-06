@@ -16,21 +16,18 @@ const useStyles = makeStyles(theme => ({
 
 function MenuItem(props) {
   const {menuItem} = useStyles();
-  return (
-    <Typography
-      component={Link}
-      className={menuItem}
-      color="textPrimary"
-      {...props}
-    />
-  );
+  return <Typography className={menuItem} color="textPrimary" {...props} />;
 }
 
 export default function Header() {
   return (
     <HeaderBase title="Pollenize">
-      <MenuItem to="/elections">Elections</MenuItem>
-      <MenuItem to="/team">Team</MenuItem>
+      <MenuItem component={Link} to="/elections">
+        Elections
+      </MenuItem>
+      <MenuItem component={Link} to="/team">
+        Team
+      </MenuItem>
       <MenuItem component="a" href="https://medium.com/pollenize">
         Blog
       </MenuItem>
