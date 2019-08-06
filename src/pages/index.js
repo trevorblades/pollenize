@@ -2,16 +2,15 @@ import Header from '../components/header';
 import Hero from '../components/hero';
 import Layout from '../components/layout';
 import React from 'react';
-import {Box, Typography} from '@material-ui/core';
-import {useTheme} from '@material-ui/styles';
+import {SectionWrapper} from '../components/common';
+import {Typography} from '@material-ui/core';
 
 export default function Index() {
-  const {breakpoints} = useTheme();
   return (
     <Layout>
       <Header />
       <Hero />
-      <Box maxWidth={breakpoints.values.lg} px={8} py={10} mx="auto">
+      <SectionWrapper py={10}>
         <Typography gutterBottom variant="h3">
           Informing voters
         </Typography>
@@ -28,7 +27,7 @@ export default function Index() {
           noise and bring you the most clear, to-the-point information about
           topics that really matter.
         </Typography>
-      </Box>
+      </SectionWrapper>
     </Layout>
   );
 }

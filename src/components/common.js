@@ -10,6 +10,11 @@ export const PageAnchor = styled('a')({
   marginTop: -HEADER_HEIGHT
 });
 
+export function SectionWrapper(props) {
+  const {breakpoints} = useTheme();
+  return <Box maxWidth={breakpoints.values.lg} mx="auto" p={8} {...props} />;
+}
+
 const contentWrapperPaddingRightXs = 5;
 const contentWrapperPaddingRightLg = 8;
 const contentWrapperPaddingDelta =

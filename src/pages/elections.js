@@ -12,24 +12,27 @@ import {
 } from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {Link, graphql} from 'gatsby';
-import {makeStyles, useTheme} from '@material-ui/styles';
+import {SectionWrapper} from '../components/common';
+import {makeStyles} from '@material-ui/styles';
 
 const useStyles = makeStyles(theme => ({
   card: {
     backgroundColor: theme.palette.grey[200]
+  },
+  flag: {
+    marginBottom: theme.spacing(2)
   }
 }));
 
 export default function Elections(props) {
-  const {card} = useStyles();
-  const {breakpoints, spacing} = useTheme();
+  const {card, flag} = useStyles();
   return (
     <Layout>
       <Helmet>
         <title>Elections</title>
       </Helmet>
       <Header />
-      <Box width={1} maxWidth={breakpoints.values.lg} p={8} mx="auto">
+      <SectionWrapper>
         <Typography gutterBottom variant="h2">
           Elections
         </Typography>
@@ -50,11 +53,7 @@ export default function Elections(props) {
                       alignItems="center"
                       p={4}
                     >
-                      <img
-                        height={32}
-                        src={election.flag}
-                        style={{marginBottom: spacing(2)}}
-                      />
+                      <img height={32} src={election.flag} className={flag} />
                       <Typography gutterBottom variant="h5" noWrap>
                         {election.title}
                       </Typography>
@@ -73,7 +72,7 @@ export default function Elections(props) {
             );
           })}
         </Grid>
-      </Box>
+      </SectionWrapper>
     </Layout>
   );
 }
