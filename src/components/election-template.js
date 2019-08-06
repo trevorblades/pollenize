@@ -38,7 +38,14 @@ export default function ElectionTemplate(props) {
   const {button, avatar} = useStyles();
   const {palette} = useTheme();
   const {localize} = useLanguage();
-  const {slug, title, partyFirst, candidates} = props.data.pollenize.election;
+  const {
+    slug,
+    title,
+    introEn,
+    introFr,
+    partyFirst,
+    candidates
+  } = props.data.pollenize.election;
   return (
     <Layout>
       <Helmet>
@@ -51,6 +58,7 @@ export default function ElectionTemplate(props) {
             electionSlug={slug}
             candidates={candidates}
             partyFirst={partyFirst}
+            intro={localize(introEn, introFr)}
             candidateGridActive
           />
         </HeaderBase>
@@ -107,6 +115,8 @@ export const pageQuery = graphql`
       election(id: $id) {
         slug
         title
+        introEn
+        introFr
         partyFirst
         candidates {
           id

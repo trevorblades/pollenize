@@ -53,12 +53,12 @@ export default function Team() {
               md: 2 / 3
             }}
           >
-            <Typography gutterBottom variant="h6">
+            <Typography paragraph variant="h6">
               Pollenize is created by a group of friends across canada who are
               passionate about educating and creating enjoyable, functional
               experiences. Continue reading to learn more about our crew...
             </Typography>
-            <Typography variant="caption" color="textSecondary">
+            <Typography display="block" variant="caption" color="textSecondary">
               Pictured (from left to right): Miguel, Ben, Matheson, Trevor,
               Marvin, and Joe
             </Typography>

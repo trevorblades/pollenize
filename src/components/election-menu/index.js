@@ -1,4 +1,5 @@
 import DrawerContent from './drawer-content';
+import IntroDialog from './intro-dialog';
 import LanguageMenu from './language-menu';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
@@ -32,6 +33,16 @@ export default function ElectionMenu(props) {
   const electionPath = `/elections/${props.electionSlug}`;
   return (
     <Fragment>
+      {props.intro && (
+        <IntroDialog
+          electionSlug={props.electionSlug}
+          title={localize(
+            `Welcome to Pollenize ${props.title}`,
+            `Bienvenue à Pollenize ${props.title}`
+          )}
+          text={props.intro}
+        />
+      )}
       <Tooltip title={localize('Candidate grid', 'Grille de candidats')}>
         <IconButton
           component={Link}
@@ -84,6 +95,7 @@ ElectionMenu.propTypes = {
   electionSlug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
+  intro: PropTypes.string.isRequired,
   topicExplorerActive: PropTypes.bool,
   candidateGridActive: PropTypes.bool
 };

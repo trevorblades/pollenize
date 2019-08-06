@@ -96,7 +96,7 @@ export default function DrawerContent(props) {
           renderButton={openMenu => (
             <ListItem button onClick={openMenu}>
               <ListItemText>
-                {localize('Language: English', 'Langue: Français')}
+                {localize('Language: {lang}', 'Langue: {lang}')}
               </ListItemText>
             </ListItem>
           )}

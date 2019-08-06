@@ -19,7 +19,8 @@ export function LanguageProvider(props) {
         language,
         setLanguage,
         localize(en, fr) {
-          return language === 'en' ? en || fr : fr || en;
+          const localized = language === 'en' ? en || fr : fr || en;
+          return localized && localized.replace(/{lang}/, languages[language]);
         }
       }}
     >
