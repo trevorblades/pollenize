@@ -2,7 +2,6 @@ import DrawerContent from './drawer-content';
 import LanguageMenu from './language-menu';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
-import useLocalStorage from 'react-use/lib/useLocalStorage';
 import {
   Button,
   Dialog,
@@ -22,6 +21,7 @@ import {Link} from 'gatsby';
 import {MdTranslate} from 'react-icons/md';
 import {languages, useLanguage} from '../../utils/language';
 import {makeStyles} from '@material-ui/styles';
+import {useLocalStorage} from 'react-use';
 
 const useStyles = makeStyles({
   paper: {

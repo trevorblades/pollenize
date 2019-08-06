@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import TopicWrapper from '../topic-wrapper';
-import useToggle from 'react-use/lib/useToggle';
 import {
   Button,
   IconButton,
@@ -12,6 +11,7 @@ import {FaRegComments, FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
 import {Link} from 'gatsby';
 import {useLanguage} from '../../utils/language';
+import {useToggle} from 'react-use';
 
 export default function TopicSection(props) {
   const {localize} = useLanguage();

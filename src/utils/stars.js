@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {createContext, useContext} from 'react';
-import useLocalStorage from 'react-use/lib/useLocalStorage';
+import {useLocalStorage} from 'react-use';
 
 const StarsContext = createContext();
 export function useStars() {
