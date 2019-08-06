@@ -104,6 +104,11 @@ export default function DrawerContent(props) {
         <ListItem button>
           <ListItemText>View as table</ListItemText>
         </ListItem>
+        {props.onIntroClick && (
+          <ListItem button onClick={props.onIntroClick}>
+            <ListItemText>Open intro dialog</ListItemText>
+          </ListItem>
+        )}
       </StyledList>
     </Fragment>
   );
@@ -113,5 +118,6 @@ DrawerContent.propTypes = {
   title: PropTypes.string.isRequired,
   electionSlug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
-  partyFirst: PropTypes.bool.isRequired
+  partyFirst: PropTypes.bool.isRequired,
+  onIntroClick: PropTypes.func
 };

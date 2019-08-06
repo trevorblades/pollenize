@@ -1,15 +1,27 @@
 import DrawerContent from './drawer-content';
-import IntroDialog from './intro-dialog';
 import LanguageMenu from './language-menu';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
-import {Drawer, IconButton, Tooltip} from '@material-ui/core';
+import useLocalStorage from 'react-use/lib/useLocalStorage';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Drawer,
+  Hidden,
+  IconButton,
+  Tooltip,
+  Typography
+} from '@material-ui/core';
 import {FaRegComments, FaThLarge} from 'react-icons/fa';
-import {FiMenu} from 'react-icons/fi';
+import {FiInfo, FiMenu} from 'react-icons/fi';
 import {Link} from 'gatsby';
 import {MdTranslate} from 'react-icons/md';
+import {languages, useLanguage} from '../../utils/language';
 import {makeStyles} from '@material-ui/styles';
-import {useLanguage} from '../../utils/language';
 
 const useStyles = makeStyles({
   paper: {
@@ -20,7 +32,9 @@ const useStyles = makeStyles({
 export default function ElectionMenu(props) {
   const {paper} = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const {localize} = useLanguage();
+  const [introState, setIntroState] = useLocalStorage('intro', {});
+  const [dialogOpen, setDialogOpen] = useState(!introState[props.electionSlug]);
+  const {localize, language, setLanguage} = useLanguage();
 
   function openDrawer() {
     setDrawerOpen(true);
@@ -30,18 +44,30 @@ export default function ElectionMenu(props) {
     setDrawerOpen(false);
   }
 
+  function openDialog() {
+    setDialogOpen(true);
+  }
+
+  function closeDialog() {
+    if (!introState[props.electionSlug]) {
+      setIntroState(prevState => ({
+        ...prevState,
+        [props.electionSlug]: true
+      }));
+    }
+
+    setDialogOpen(false);
+  }
+
   const electionPath = `/elections/${props.electionSlug}`;
   return (
     <Fragment>
       {props.intro && (
-        <IntroDialog
-          electionSlug={props.electionSlug}
-          title={localize(
-            `Welcome to Pollenize ${props.title}`,
-            `Bienvenue à Pollenize ${props.title}`
-          )}
-          text={props.intro}
-        />
+        <Hidden only="xs" implementation="css">
+          <IconButton color="inherit" onClick={openDialog}>
+            <FiInfo />
+          </IconButton>
+        </Hidden>
       )}
       <Tooltip title={localize('Candidate grid', 'Grille de candidats')}>
         <IconButton
@@ -61,15 +87,17 @@ export default function ElectionMenu(props) {
           <FaRegComments />
         </IconButton>
       </Tooltip>
-      <LanguageMenu
-        renderButton={openMenu => (
-          <Tooltip title={localize('Change language', 'Changer de langue')}>
-            <IconButton color="inherit" onClick={openMenu}>
-              <MdTranslate />
-            </IconButton>
-          </Tooltip>
-        )}
-      />
+      <Hidden only="xs" implementation="css">
+        <LanguageMenu
+          renderButton={openMenu => (
+            <Tooltip title={localize('Change language', 'Changer de langue')}>
+              <IconButton color="inherit" onClick={openMenu}>
+                <MdTranslate />
+              </IconButton>
+            </Tooltip>
+          )}
+        />
+      </Hidden>
       <IconButton onClick={openDrawer} color="inherit">
         <FiMenu />
       </IconButton>
@@ -84,8 +112,49 @@ export default function ElectionMenu(props) {
           electionSlug={props.electionSlug}
           title={props.title}
           partyFirst={props.partyFirst}
+          onIntroClick={props.intro && openDialog}
         />
       </Drawer>
+      {props.intro && (
+        <Dialog fullWidth open={dialogOpen} onClose={closeDialog}>
+          <DialogTitle disableTypography>
+            <Typography variant="h5">
+              {localize(
+                `Welcome to Pollenize ${props.title}`,
+                `Bienvenue à Pollenize ${props.title}`
+              )}
+            </Typography>
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>{props.intro}</DialogContentText>
+            <Typography
+              gutterBottom
+              display="block"
+              color="textSecondary"
+              variant="caption"
+            >
+              Select a language to continue:
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            {Object.entries(languages).map(([key, value]) => (
+              <Button
+                fullWidth
+                variant="outlined"
+                size="large"
+                key={key}
+                color={language === key ? 'primary' : 'default'}
+                onClick={() => {
+                  setLanguage(key);
+                  closeDialog();
+                }}
+              >
+                {value}
+              </Button>
+            ))}
+          </DialogActions>
+        </Dialog>
+      )}
     </Fragment>
   );
 }
