@@ -16,8 +16,10 @@ export const typeDef = gql`
     slug: String
     title: String
     flag: String
-    public: Boolean
+    introEn: String
+    introFr: String
     partyFirst: Boolean
+    public: Boolean
     endsAt: String
   }
 `;

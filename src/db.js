@@ -6,8 +6,10 @@ export const Election = sequelize.define('election', {
   slug: Sequelize.STRING,
   title: Sequelize.STRING,
   flag: Sequelize.STRING,
-  public: Sequelize.BOOLEAN,
+  introEn: Sequelize.TEXT,
+  introFr: Sequelize.TEXT,
   partyFirst: Sequelize.BOOLEAN,
+  public: Sequelize.BOOLEAN,
   endsAt: Sequelize.DATE
 });
 
