@@ -95,7 +95,7 @@ ElectionMenu.propTypes = {
   electionSlug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
-  intro: PropTypes.string.isRequired,
+  intro: PropTypes.string,
   topicExplorerActive: PropTypes.bool,
   candidateGridActive: PropTypes.bool
 };

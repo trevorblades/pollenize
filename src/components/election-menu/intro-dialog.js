@@ -39,8 +39,8 @@ export default function IntroDialog(props) {
       <IconButton color="inherit" onClick={openDialog}>
         <FiInfo />
       </IconButton>
-      <Dialog open={dialogOpen} onClose={closeDialog}>
-        <DialogTitle fullWidth disableTypography>
+      <Dialog fullWidth open={dialogOpen} onClose={closeDialog}>
+        <DialogTitle disableTypography>
           <Typography variant="h5">{props.title}</Typography>
         </DialogTitle>
         <DialogContent>

@@ -30,6 +30,8 @@ export default function TopicsTemplate(props) {
     slug,
     topics,
     candidates,
+    introEn,
+    introFr,
     partyFirst
   } = props.data.pollenize.election;
   const {localize} = useLanguage();
@@ -44,6 +46,7 @@ export default function TopicsTemplate(props) {
           electionSlug={slug}
           candidates={candidates}
           partyFirst={partyFirst}
+          intro={localize(introEn, introFr)}
           topicExplorerActive
         />
       </HeaderBase>
@@ -142,6 +145,8 @@ export const pageQuery = graphql`
       election(id: $id) {
         slug
         title
+        introEn
+        introFr
         partyFirst
         topics {
           id

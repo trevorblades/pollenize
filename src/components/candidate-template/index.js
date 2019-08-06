@@ -99,6 +99,7 @@ export default function CandidateTemplate(props) {
           electionSlug={election.slug}
           candidates={election.candidates}
           partyFirst={election.partyFirst}
+          intro={localize(election.introEn, election.introFr)}
         />
       </HeaderBase>
       <PageHeader
@@ -225,6 +226,8 @@ export const pageQuery = graphql`
         election {
           slug
           title
+          introEn
+          introFr
           partyFirst
           topics {
             id
