@@ -118,12 +118,10 @@ export default function ElectionMenu(props) {
       {props.intro && (
         <Dialog fullWidth open={dialogOpen} onClose={closeDialog}>
           <DialogTitle disableTypography>
-            <Typography variant="h5">
-              {localize(
-                `Welcome to Pollenize ${props.title}`,
-                `Bienvenue à Pollenize ${props.title}`
-              )}
+            <Typography variant="overline">
+              {localize('Welcome to', 'Bienvenue à')}
             </Typography>
+            <Typography variant="h4">Pollenize {props.title}</Typography>
           </DialogTitle>
           <DialogContent>
             <DialogContentText>{props.intro}</DialogContentText>
