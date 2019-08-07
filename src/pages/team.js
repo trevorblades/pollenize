@@ -1,9 +1,16 @@
+import Footer from '../components/footer';
 import Header from '../components/header';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import team from '../assets/images/team.jpg';
-import {Box, Grid, Link as MuiLink, Typography} from '@material-ui/core';
+import {
+  Box,
+  Divider,
+  Grid,
+  Link as MuiLink,
+  Typography
+} from '@material-ui/core';
 import {FaTwitter} from 'react-icons/fa';
 import {SectionWrapper} from '../components/common';
 
@@ -119,6 +126,8 @@ export default function Team() {
           />
         </Grid>
       </SectionWrapper>
+      <Divider />
+      <Footer />
     </Layout>
   );
 }

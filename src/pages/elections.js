@@ -1,3 +1,4 @@
+import Footer from '../components/footer';
 import Header from '../components/header';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
@@ -7,6 +8,7 @@ import {
   Card,
   CardActionArea,
   Chip,
+  Divider,
   Grid,
   Typography
 } from '@material-ui/core';
@@ -73,6 +75,8 @@ export default function Elections(props) {
           })}
         </Grid>
       </SectionWrapper>
+      <Divider />
+      <Footer />
     </Layout>
   );
 }
