@@ -1,11 +1,27 @@
+const {createFilePath} = require('gatsby-source-filesystem');
+
+const BlogPostTemplate = require.resolve('./src/components/blog-post-template');
 const ElectionTemplate = require.resolve('./src/components/election-template');
 const TopicsTemplate = require.resolve('./src/components/topics-template');
 const CandidateTemplate = require.resolve(
   './src/components/candidate-template'
 );
 
+exports.onCreateNode = async ({node, actions, getNode}) => {
+  if (node.internal.type === 'MarkdownRemark') {
+    actions.createNodeField({
+      node,
+      name: 'slug',
+      value: createFilePath({
+        node,
+        getNode
+      })
+    });
+  }
+};
+
 exports.createPages = async ({actions, graphql}) => {
-  const {data} = await graphql(`
+  const electionResults = await graphql(`
     {
       pollenize {
         elections {
@@ -20,7 +36,8 @@ exports.createPages = async ({actions, graphql}) => {
     }
   `);
 
-  for (const {id, slug, candidates} of data.pollenize.elections) {
+  const {elections} = electionResults.data.pollenize;
+  for (const {id, slug, candidates} of elections) {
     const path = `/elections/${slug}`;
     actions.createPage({
       path,
@@ -47,5 +64,29 @@ exports.createPages = async ({actions, graphql}) => {
         }
       });
     }
+  }
+
+  const blogResults = await graphql(`
+    {
+      allMarkdownRemark {
+        nodes {
+          id
+          fields {
+            slug
+          }
+        }
+      }
+    }
+  `);
+
+  const {nodes} = blogResults.data.allMarkdownRemark;
+  for (const node of nodes) {
+    actions.createPage({
+      path: '/blog' + node.fields.slug,
+      component: BlogPostTemplate,
+      context: {
+        id: node.id
+      }
+    });
   }
 };

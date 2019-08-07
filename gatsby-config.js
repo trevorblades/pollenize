@@ -30,6 +30,26 @@ module.exports = {
         fieldName: 'pollenize',
         url: process.env.GATSBY_API_URL
       }
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: 'src/posts',
+        name: 'posts'
+      }
+    },
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [
+          {
+            resolve: 'gatsby-remark-copy-linked-files',
+            options: {
+              ignoreFileExtensions: []
+            }
+          }
+        ]
+      }
     }
   ]
 };
