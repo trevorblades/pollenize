@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import React, {Fragment, useMemo, useState} from 'react';
 import {Box, Link as MuiLink, Typography} from '@material-ui/core';
-import {Colophon} from './footer';
+import {FooterContent} from './footer';
 import {PageAnchor} from './common';
 import {styled, useTheme} from '@material-ui/styles';
 import {uniq} from 'lodash';
 
 const StyledList = styled('ol')(({theme}) => ({
-  marginBottom: theme.spacing(4),
+  marginBottom: theme.spacing(8),
   columnCount: 3,
   columnGap: theme.spacing(5),
   wordBreak: 'break-word',
   [theme.breakpoints.down('md')]: {
+    marginBottom: theme.spacing(5),
     columnCount: 2
   },
   [theme.breakpoints.down('sm')]: {
@@ -80,9 +81,7 @@ export default function Sources(props) {
               </Fragment>
             ))}
           </StyledList>
-          <Typography>
-            <Colophon />
-          </Typography>
+          <FooterContent />
         </Box>
       </Box>
     </Fragment>
