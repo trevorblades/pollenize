@@ -2,7 +2,9 @@ import ElectionMenu from './election-menu';
 import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useMemo} from 'react';
+import Sources, {useSources} from './sources';
+import StanceText from './stance-text';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
 import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
@@ -34,7 +36,13 @@ export default function TopicsTemplate(props) {
     introFr,
     partyFirst
   } = props.data.pollenize.election;
+
   const {localize} = useLanguage();
+  const stances = useMemo(() => topics.flatMap(topic => topic.stances), [
+    topics
+  ]);
+
+  const {sources, activeSource, handleSourceClick} = useSources(stances);
   return (
     <Layout>
       <Helmet>
@@ -111,7 +119,11 @@ export default function TopicsTemplate(props) {
                       />
                       <Box p={2}>
                         <Typography gutterBottom>
-                          {localize(stance.textEn, stance.textFr)}
+                          <StanceText
+                            stance={stance}
+                            sources={sources}
+                            onSourceClick={handleSourceClick}
+                          />
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
                           <MuiLink
@@ -131,7 +143,7 @@ export default function TopicsTemplate(props) {
           );
         })}
       </PageWrapper>
-      {/* TODO: add sources & colophon */}
+      <Sources sources={sources} activeIndex={activeSource} />
     </Layout>
   );
 }
@@ -161,6 +173,10 @@ export const pageQuery = graphql`
             id
             textEn
             textFr
+            sources {
+              id
+              url
+            }
             candidate {
               slug
               name

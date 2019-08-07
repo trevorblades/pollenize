@@ -1,12 +1,8 @@
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
+import StanceText from '../stance-text';
 import TopicWrapper from '../topic-wrapper';
-import {
-  Button,
-  IconButton,
-  Link as MuiLink,
-  Typography
-} from '@material-ui/core';
+import {Button, IconButton, Typography} from '@material-ui/core';
 import {FaRegComments, FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
 import {Link} from 'gatsby';
@@ -22,23 +18,11 @@ export default function TopicSection(props) {
         <Fragment>
           {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
             <Typography key={stance.id} paragraph>
-              {localize(stance.textEn, stance.textFr)}
-              {stance.sources.map(source => {
-                const number = props.sources.indexOf(source.url) + 1;
-                return (
-                  <sup key={source.id}>
-                    [
-                    <MuiLink
-                      color="inherit"
-                      href={`#source-${number}`}
-                      onClick={props.onSourceClick}
-                    >
-                      {number}
-                    </MuiLink>
-                    ]
-                  </sup>
-                );
-              })}
+              <StanceText
+                stance={stance}
+                sources={props.sources}
+                onSourceClick={props.onSourceClick}
+              />
             </Typography>
           ))}
           <IconButton

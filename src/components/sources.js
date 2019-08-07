@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
+import React, {Fragment, useMemo, useState} from 'react';
 import {Box, Link as MuiLink, Typography} from '@material-ui/core';
 import {Colophon} from './footer';
 import {PageAnchor} from './common';
 import {styled, useTheme} from '@material-ui/styles';
+import {uniq} from 'lodash';
 
 const StyledList = styled('ol')(({theme}) => ({
   marginBottom: theme.spacing(4),
@@ -17,6 +18,23 @@ const StyledList = styled('ol')(({theme}) => ({
     columnCount: 1
   }
 }));
+
+export function useSources(stances) {
+  const [activeSource, setActiveSource] = useState(null);
+  const sources = useMemo(
+    () =>
+      uniq(stances.flatMap(stance => stance.sources.map(source => source.url))),
+    [stances]
+  );
+
+  return {
+    sources,
+    activeSource,
+    handleSourceClick(event) {
+      setActiveSource(event.target.textContent - 1);
+    }
+  };
+}
 
 export default function Sources(props) {
   const {breakpoints} = useTheme();

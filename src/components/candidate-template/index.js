@@ -2,8 +2,8 @@ import ElectionMenu from '../election-menu';
 import HeaderBase from '../header-base';
 import Layout from '../layout';
 import PropTypes from 'prop-types';
-import React, {useMemo, useState} from 'react';
-import Sources from '../sources';
+import React, {useMemo} from 'react';
+import Sources, {useSources} from '../sources';
 import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
 import snarkdown from 'snarkdown';
@@ -11,9 +11,9 @@ import {Avatar, Typography} from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
 import {differenceInYears} from 'date-fns';
-import {flatMap, groupBy, uniq} from 'lodash';
 import {getCandidateTitles} from '../../utils';
 import {graphql} from 'gatsby';
+import {groupBy} from 'lodash';
 import {size} from 'polished';
 import {styled, useTheme} from '@material-ui/styles';
 import {useLanguage} from '../../utils/language';
@@ -47,24 +47,13 @@ export default function CandidateTemplate(props) {
 
   const {palette} = useTheme();
   const {localize} = useLanguage();
-  const [activeSource, setActiveSource] = useState(null);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
-  const sources = useMemo(
-    () =>
-      uniq(
-        flatMap(stances, stance => stance.sources.map(source => source.url))
-      ),
-    [stances]
-  );
+  const {sources, activeSource, handleSourceClick} = useSources(stances);
   const {stars, toggleStar} = useStars();
   const candidateStars = stars[candidateId] || [];
 
   function handleStarClick(topicId) {
     toggleStar(candidateId, topicId);
-  }
-
-  function handleSourceClick(event) {
-    setActiveSource(event.target.textContent - 1);
   }
 
   const [title, subtitle] = getCandidateTitles(
