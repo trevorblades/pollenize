@@ -3,13 +3,15 @@ import LanguageMenu from './language-menu';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
 import {
+  Box,
   Button,
+  CardActionArea,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Drawer,
+  Grid,
   Hidden,
   IconButton,
   Tooltip,
@@ -18,19 +20,28 @@ import {
 import {FaRegComments, FaThLarge} from 'react-icons/fa';
 import {FiInfo, FiMenu} from 'react-icons/fi';
 import {Link} from 'gatsby';
-import {MdTranslate} from 'react-icons/md';
+import {MdCheck, MdTranslate} from 'react-icons/md';
 import {languages, useLanguage} from '../../utils/language';
 import {makeStyles} from '@material-ui/styles';
+import {upperFirst} from 'lodash';
 import {useLocalStorage} from 'react-use';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   paper: {
-    width: 350
+    width: 350,
+    [theme.breakpoints.only('xs')]: {
+      width: 300
+    }
+  },
+  languageButton: {
+    padding: theme.spacing(2),
+    border: '1px solid currentColor',
+    borderRadius: theme.shape.borderRadius
   }
-});
+}));
 
 export default function ElectionMenu(props) {
-  const {paper} = useStyles();
+  const {paper, languageButton} = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [introState, setIntroState] = useLocalStorage('intro', {});
   const [dialogOpen, setDialogOpen] = useState(!introState[props.electionSlug]);
@@ -124,32 +135,48 @@ export default function ElectionMenu(props) {
             <Typography variant="h4">Pollenize {props.title}</Typography>
           </DialogTitle>
           <DialogContent>
-            <DialogContentText>{props.intro}</DialogContentText>
+            <Typography paragraph>{props.intro}</Typography>
             <Typography
-              gutterBottom
+              paragraph
               display="block"
               color="textSecondary"
-              variant="caption"
+              variant="body2"
             >
-              Select a language to continue:
+              {localize(
+                'Select your preferred language',
+                'Sélectionnez votre langue préférée'
+              )}
+              :
             </Typography>
+            <Grid container spacing={2}>
+              {Object.entries(languages).map(([key, value]) => (
+                <Grid item xs={6} key={key}>
+                  <Box color={key === language ? 'primary.main' : 'inherit'}>
+                    <CardActionArea
+                      className={languageButton}
+                      onClick={() => {
+                        setLanguage(key);
+                      }}
+                    >
+                      <Typography variant="h5">{upperFirst(key)}</Typography>
+                      <Typography>{value}</Typography>
+                    </CardActionArea>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
           </DialogContent>
           <DialogActions>
-            {Object.entries(languages).map(([key, value]) => (
-              <Button
-                fullWidth
-                variant="outlined"
-                size="large"
-                key={key}
-                color={language === key ? 'primary' : 'default'}
-                onClick={() => {
-                  setLanguage(key);
-                  closeDialog();
+            <Button size="large" onClick={closeDialog}>
+              <MdCheck
+                size={24}
+                style={{
+                  marginLeft: -8,
+                  marginRight: 8
                 }}
-              >
-                {value}
-              </Button>
-            ))}
+              />
+              Done
+            </Button>
           </DialogActions>
         </Dialog>
       )}

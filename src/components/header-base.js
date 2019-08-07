@@ -9,7 +9,12 @@ const StyledLink = styled(Link)({
   display: 'flex',
   alignItems: 'center',
   color: 'inherit',
-  textDecoration: 'none'
+  textDecoration: 'none',
+  overflow: 'hidden'
+});
+
+const StyledLogo = styled(Logo)({
+  flexShrink: 0
 });
 
 export const HEADER_HEIGHT = 64;
@@ -25,13 +30,17 @@ export default function HeaderBase(props) {
         justifyContent="space-between"
         width={1}
         height={HEADER_HEIGHT}
-        px={paddingX}
+        px={{
+          xs: 2,
+          sm: paddingX
+        }}
         maxWidth={breakpoints.values.lg - (64 - spacing(paddingX)) * 2}
         mx="auto"
       >
         <StyledLink to={props.link}>
-          <Logo height={34} fill={palette.text.primary} />
+          <StyledLogo height={34} fill={palette.text.primary} />
           <Typography
+            noWrap
             variant="h5"
             style={{
               marginLeft: 14
@@ -40,7 +49,7 @@ export default function HeaderBase(props) {
             {props.title}
           </Typography>
         </StyledLink>
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" flexShrink={0}>
           {props.children}
         </Box>
       </Box>
