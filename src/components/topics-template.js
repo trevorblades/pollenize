@@ -131,6 +131,7 @@ export default function TopicsTemplate(props) {
           );
         })}
       </PageWrapper>
+      {/* TODO: add sources & colophon */}
     </Layout>
   );
 }

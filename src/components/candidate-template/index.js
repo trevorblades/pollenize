@@ -2,11 +2,12 @@ import ElectionMenu from '../election-menu';
 import HeaderBase from '../header-base';
 import Layout from '../layout';
 import PropTypes from 'prop-types';
-import React, {Fragment, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
+import Sources from '../sources';
 import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
 import snarkdown from 'snarkdown';
-import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
+import {Avatar, Typography} from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
 import {differenceInYears} from 'date-fns';
@@ -28,18 +29,6 @@ const StyledAvatar = styled(Avatar)(({theme}) => ({
   }
 }));
 
-const StyledList = styled('ol')(({theme}) => ({
-  columnCount: 3,
-  columnGap: theme.spacing(5),
-  wordBreak: 'break-word',
-  [theme.breakpoints.down('md')]: {
-    columnCount: 2
-  },
-  [theme.breakpoints.down('sm')]: {
-    columnCount: 1
-  }
-}));
-
 export default function CandidateTemplate(props) {
   const {
     id: candidateId,
@@ -56,9 +45,9 @@ export default function CandidateTemplate(props) {
     stances
   } = props.data.pollenize.candidate;
 
-  const [sourceIndex, setSourceIndex] = useState(null);
-  const {palette, breakpoints} = useTheme();
+  const {palette} = useTheme();
   const {localize} = useLanguage();
+  const [activeSource, setActiveSource] = useState(null);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const sources = useMemo(
     () =>
@@ -75,7 +64,7 @@ export default function CandidateTemplate(props) {
   }
 
   function handleSourceClick(event) {
-    setSourceIndex(event.target.textContent - 1);
+    setActiveSource(event.target.textContent - 1);
   }
 
   const [title, subtitle] = getCandidateTitles(
@@ -150,47 +139,7 @@ export default function CandidateTemplate(props) {
           />
         ))}
       </PageWrapper>
-      <PageAnchor name="sources" />
-      <Box bgcolor="grey.200" component="footer">
-        <Box
-          maxWidth={breakpoints.values.lg}
-          mx="auto"
-          px={{
-            xs: 5,
-            lg: 8
-          }}
-          py={{
-            xs: 7,
-            lg: 10
-          }}
-        >
-          <Typography gutterBottom variant="h4" color="textSecondary">
-            Sources
-          </Typography>
-          <StyledList>
-            {sources.map((source, index) => (
-              <Fragment key={source}>
-                <PageAnchor name={`source-${index + 1}`} />
-                <Typography
-                  gutterBottom
-                  color={sourceIndex === index ? 'primary' : 'textSecondary'}
-                  component="li"
-                  variant="body2"
-                >
-                  <MuiLink
-                    color="inherit"
-                    href={source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {source}
-                  </MuiLink>
-                </Typography>
-              </Fragment>
-            ))}
-          </StyledList>
-        </Box>
-      </Box>
+      <Sources sources={sources} activeIndex={activeSource} />
     </Layout>
   );
 }
