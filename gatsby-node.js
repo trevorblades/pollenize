@@ -3,6 +3,7 @@ const {createFilePath} = require('gatsby-source-filesystem');
 const BlogPostTemplate = require.resolve('./src/components/blog-post-template');
 const ElectionTemplate = require.resolve('./src/components/election-template');
 const TopicsTemplate = require.resolve('./src/components/topics-template');
+const TableTemplate = require.resolve('./src/components/table-template');
 const CandidateTemplate = require.resolve(
   './src/components/candidate-template'
 );
@@ -50,6 +51,14 @@ exports.createPages = async ({actions, graphql}) => {
     actions.createPage({
       path: `${path}/topics`,
       component: TopicsTemplate,
+      context: {
+        id
+      }
+    });
+
+    actions.createPage({
+      path: `${path}/table`,
+      component: TableTemplate,
       context: {
         id
       }

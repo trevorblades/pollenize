@@ -10,6 +10,7 @@ import {
   Link as MuiLink,
   Typography
 } from '@material-ui/core';
+import {Helmet} from 'react-helmet';
 import {Link, graphql} from 'gatsby';
 import {SectionWrapper} from '../components/common';
 import {size} from 'polished';
@@ -24,6 +25,9 @@ export default function Blog(props) {
   const {nodes} = props.data.allMarkdownRemark;
   return (
     <Layout>
+      <Helmet>
+        <title>Blog</title>
+      </Helmet>
       <Header />
       <SectionWrapper>
         <Typography variant="h2">Blog</Typography>

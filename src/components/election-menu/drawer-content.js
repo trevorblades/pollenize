@@ -101,7 +101,11 @@ export default function DrawerContent(props) {
             </ListItem>
           )}
         />
-        <ListItem button>
+        <ListItem
+          button
+          component={Link}
+          to={`/elections/${props.electionSlug}/table`}
+        >
           <ListItemText>View as table</ListItemText>
         </ListItem>
         {props.onIntroClick && (
