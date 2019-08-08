@@ -20,7 +20,14 @@ import {withProps} from 'recompose';
 const renderAst = new rehypeReact({
   createElement: React.createElement,
   components: {
-    p: withProps({paragraph: true})(Typography)
+    h1: withProps({variant: 'h3', paragraph: true})(Typography),
+    h2: withProps({variant: 'h4', paragraph: true})(Typography),
+    h3: withProps({variant: 'h5', paragraph: true})(Typography),
+    h4: withProps({variant: 'h6', paragraph: true})(Typography),
+    h5: withProps({variant: 'subtitle1', paragraph: true})(Typography),
+    h6: withProps({variant: 'subtitle2', paragraph: true})(Typography),
+    p: withProps({paragraph: true})(Typography),
+    li: withProps({component: 'li', gutterBottom: true})(Typography)
   }
 }).Compiler;
 
@@ -34,8 +41,13 @@ export default function BlogPostTemplate(props) {
       </Helmet>
       <Header />
       <SectionWrapper>
-        <Typography variant="overline">
-          <MuiLink component={Link} to="/blog" color="inherit">
+        <Box display="flex">
+          <MuiLink
+            component={Link}
+            to="/blog"
+            color="inherit"
+            variant="overline"
+          >
             <Box display="flex" alignItems="center">
               <MdChevronLeft
                 size={20}
@@ -47,7 +59,7 @@ export default function BlogPostTemplate(props) {
               All posts
             </Box>
           </MuiLink>
-        </Typography>
+        </Box>
         <Typography gutterBottom variant="h2">
           {title}
         </Typography>

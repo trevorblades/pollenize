@@ -38,7 +38,7 @@ export default function Blog(props) {
             const {date, title, author, authorImage} = node.frontmatter;
             return (
               <Box key={node.id} mt={4}>
-                <Typography variant="h4">
+                <Typography variant="h5">
                   <MuiLink
                     color="inherit"
                     component={Link}

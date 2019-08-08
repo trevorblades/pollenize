@@ -9,7 +9,7 @@ imageCredit: Mallory Benedict
 
 The Buzz is a a roundtable discussion showcasing the perspectives of writers with varying political backgrounds. Today's topic will be centered around the question, "Is there a Republican civil war happening?"
 
-### About the writers
+## About the writers
 
 <span style="color:blue">&rarr;</span> Rob grew up in Southern California. He's currently a student at Harvard Law School, following a year working at a civil rights firm in New York City.
 
