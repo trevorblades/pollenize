@@ -88,7 +88,7 @@ Elections.propTypes = {
 export const pageQuery = graphql`
   {
     pollenize {
-      elections {
+      elections(filter: {public: true}) {
         id
         slug
         title
