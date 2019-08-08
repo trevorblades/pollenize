@@ -1,6 +1,10 @@
 ---
 title: Finding Truth in a Sea of Spin
+date: 2015-10-08
 author: Shannon Moore
+authorImage: shannon.jpg
+image: spin.jpg
+imageCredit: Kirt Edblom
 ---
 
 When I first heard the term "Spin Cycle", I immediately thought of my washing machine.

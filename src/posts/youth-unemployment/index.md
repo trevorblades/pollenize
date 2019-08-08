@@ -1,6 +1,10 @@
 ---
 title: Youth Unemployment
+date: 2015-09-05
 author: Sasha Szlafarski
+authorImage: sasha.jpg
+image: cake.jpg
+imageCredit: David Goehring
 ---
 
 If you're reading this, there's a good chance you were born sometime between 1980 and 2000. If that's true, then there's also a good chance that you went through high school being told that the path to a successful life is as follows: study hard, go to university, get a degree, get a job, the end.

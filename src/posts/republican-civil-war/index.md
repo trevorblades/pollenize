@@ -1,6 +1,10 @@
 ---
 title: Republican Civil War
+date: 2016-03-21
 author: The Buzz
+authorImage: the-buzz.jpg
+image: balloons.jpg
+imageCredit: Mallory Benedict
 ---
 
 The Buzz is a a roundtable discussion showcasing the perspectives of writers with varying political backgrounds. Today's topic will be centered around the question, "Is there a Republican civil war happening?"

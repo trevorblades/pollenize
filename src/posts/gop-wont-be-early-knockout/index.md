@@ -1,6 +1,10 @@
 ---
-title: GOP Fight Won't Be an Early Knockout
+title: The GOP Fight Won’t Be An Early Knockout
+date: 2016-02-08
 author: Jeremy Wertz
+authorImage: jeremy.jpg
+image: elephants.jpg
+imageCredit: Greg Willis
 ---
 
 This election season will provide more than the usual number of debates, campaign speeches, and SNL skits. Despite the spotlight shining firmly on the unusually high number of candidates, this uptick in politicking is largely thanks to a change in rules by the Republican Party designed to foster a longer primary season.

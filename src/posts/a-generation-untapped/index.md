@@ -1,6 +1,10 @@
 ---
 title: A Generation Untapped
+date: 2015-08-10
 author: Alex Biro
+authorImage: alex.jpg
+image: ice-cream.jpg
+imageCredit: Jacob Morris
 ---
 
 Somewhere between the plethora of poorly narrated commercials and the miserably photoshopped Facebook attack ads, you may have noticed that we’re in the middle of what can (all-in-all) be considered an unnecessarily long election.

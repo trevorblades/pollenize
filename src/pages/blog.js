@@ -3,9 +3,22 @@ import Header from '../components/header';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Divider, Link as MuiLink, Typography} from '@material-ui/core';
+import {
+  Avatar,
+  Box,
+  Divider,
+  Link as MuiLink,
+  Typography
+} from '@material-ui/core';
 import {Link, graphql} from 'gatsby';
 import {SectionWrapper} from '../components/common';
+import {size} from 'polished';
+import {styled} from '@material-ui/styles';
+
+const StyledAvatar = styled(Avatar)(({theme}) => ({
+  ...size(28),
+  marginRight: theme.spacing(1.5)
+}));
 
 export default function Blog(props) {
   const {nodes} = props.data.allMarkdownRemark;
@@ -13,9 +26,7 @@ export default function Blog(props) {
     <Layout>
       <Header />
       <SectionWrapper>
-        <Typography gutterBottom variant="h2">
-          Pollenize blog
-        </Typography>
+        <Typography variant="h2">Blog</Typography>
         <Box
           width={{
             xs: 1,
@@ -23,10 +34,10 @@ export default function Blog(props) {
             lg: 2 / 3
           }}
         >
-          {nodes.map((node, index) => {
-            const {title, author} = node.frontmatter;
+          {nodes.map(node => {
+            const {date, title, author, authorImage} = node.frontmatter;
             return (
-              <Box key={node.id} mt={index ? 4 : 0}>
+              <Box key={node.id} mt={4}>
                 <Typography variant="h4">
                   <MuiLink
                     color="inherit"
@@ -36,9 +47,12 @@ export default function Blog(props) {
                     {title}
                   </MuiLink>
                 </Typography>
-                <Typography gutterBottom variant="subtitle1">
-                  {author}
-                </Typography>
+                <Box display="flex" alignItems="center" my={1}>
+                  <StyledAvatar src={authorImage.publicURL} />
+                  <Typography variant="subtitle1">
+                    {author} &bull; {new Date(date).toLocaleDateString()}
+                  </Typography>
+                </Box>
                 <Typography variant="body2">{node.excerpt}</Typography>
               </Box>
             );
@@ -57,15 +71,19 @@ Blog.propTypes = {
 
 export const pageQuery = graphql`
   query BlogQuery {
-    allMarkdownRemark {
+    allMarkdownRemark(sort: {order: DESC, fields: frontmatter___date}) {
       nodes {
         id
         fields {
           slug
         }
         frontmatter {
+          date
           title
           author
+          authorImage {
+            publicURL
+          }
         }
         excerpt
       }

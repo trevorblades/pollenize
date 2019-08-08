@@ -1,6 +1,10 @@
 ---
 title: Be a Voter
+date: 2015-09-12
 author: Morgan Baskin
+authorImage: morgan.jpg
+image: bench.jpg
+imageCredit: Zoë Gemelli
 ---
 
 I ran for mayor in the 2014 municipal election in Toronto because I was angry; angry that young people were not being listened to, yet had to live with the consequences of other people's decisions. I wanted to smash down the doors and make us, millennials, louder than anyone else. I wanted to debunk the myth that we don't care, and show the political world that we needed to be listened to; that policies aimed at us needed to be written. That our votes needed to be courted. There is a myth going around about young people, which goes a little like this: "Young people don't vote because they don't care, therefore they don't matter."

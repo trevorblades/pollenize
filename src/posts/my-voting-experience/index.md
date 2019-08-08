@@ -1,6 +1,10 @@
 ---
 title: My Voting Experience
+date: 2015-08-30
 author: Jacob Morris
+authorImage: jacob.jpg
+image: jacob-wide.jpg
+imageCredit: Paige Foskett
 ---
 
 There's an electricity on voting day. As you walk up to your polling station, it's easy to feel a part of something: a community comprised of your neighbours; a citizen who is taking action to cast a vote for someone to represent you, and a part of Canada's future.

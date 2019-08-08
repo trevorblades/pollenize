@@ -1,6 +1,10 @@
 ---
 title: The Myth of Disengaged Youth
+date: 2015-09-26
 author: Nicole Powell
+authorImage: nicole.jpg
+image: classroom.jpg
+imageCredit: David Schott
 ---
 
 I remember the moment I lost control. It is something that every teacher fears.
