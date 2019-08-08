@@ -11,7 +11,6 @@ module.exports = {
     'gatsby-plugin-material-ui',
     'gatsby-plugin-svgr',
     'gatsby-plugin-lodash',
-    'gatsby-transformer-remark',
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
@@ -38,6 +37,7 @@ module.exports = {
         path: 'src/posts',
         name: 'posts'
       }
-    }
+    },
+    'gatsby-transformer-remark'
   ]
 };

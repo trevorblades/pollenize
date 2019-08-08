@@ -65,11 +65,9 @@ export default function BlogPostTemplate(props) {
         </Typography>
         <Box display="flex" alignItems="center" mb={3}>
           <Avatar src={authorImage.publicURL} style={{marginRight: 16}} />
-          <div>
-            <Typography variant="h6">
-              {author} &bull; {new Date(date).toLocaleDateString()}
-            </Typography>
-          </div>
+          <Typography variant="h6">
+            {author} &bull; {new Date(date).toLocaleDateString()}
+          </Typography>
         </Box>
         <Box mb={4}>
           <img src={image.publicURL} width="100%" />
