@@ -28,7 +28,7 @@ module.exports = {
       options: {
         typeName: 'Pollenize',
         fieldName: 'pollenize',
-        url: process.env.GATSBY_API_URL
+        url: `${process.env.GATSBY_API_URL}/graphql`
       }
     },
     {

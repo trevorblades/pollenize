@@ -15,9 +15,26 @@ import {HEADER_HEIGHT} from '../components/header-base';
 import {Helmet} from 'react-helmet';
 
 export default function Admin() {
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(event.target.email.value);
+
+    try {
+      const {email, password} = event.target;
+      const response = await fetch(`${process.env.GATSBY_API_URL}/auth`, {
+        headers: new Headers({
+          Authorization: `Basic ${btoa(`${email.value}:${password.value}`)}`
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const token = await response.text();
+      console.log(token);
+    } catch (error) {
+      // handle error
+    }
   }
 
   return (
@@ -33,7 +50,7 @@ export default function Admin() {
         justifyContent="center"
         height={`calc(100vh - ${HEADER_HEIGHT}px)`}
       >
-        <Box width={480}>
+        <Box width={500}>
           <Card raised>
             <form onSubmit={handleSubmit}>
               <DialogTitle disableTypography>
@@ -43,20 +60,24 @@ export default function Admin() {
               <DialogContent>
                 <TextField
                   fullWidth
-                  margin="dense"
+                  autoFocus
+                  autoComplete="off"
+                  margin="normal"
                   label="Email address"
                   name="email"
+                  variant="outlined"
                 />
                 <TextField
                   fullWidth
-                  margin="dense"
+                  margin="normal"
                   label="Password"
                   type="password"
                   name="password"
+                  variant="outlined"
                 />
               </DialogContent>
               <DialogActions>
-                <Button type="submit" variant="outlined" color="primary">
+                <Button size="large" type="submit">
                   Log in
                 </Button>
               </DialogActions>
