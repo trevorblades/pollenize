@@ -67,11 +67,8 @@ export function FooterContent() {
             Facebook
           </FooterLink>
         </NavGroup>
-        <NavGroup title="Support">
+        <NavGroup title="Other">
           <FooterLink href="mailto:info@pollenize.org">Contact us</FooterLink>
-          <FooterLink href="mailto:press@pollenize.org">
-            Press inquiries
-          </FooterLink>
           <FooterLink href="https://github.com/pollenize">
             Source code
           </FooterLink>
