@@ -3,8 +3,12 @@ import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`
   extend type Query {
-    elections: [Election]
+    elections(filter: FilterInput): [Election]
     election(id: ID!): Election
+  }
+
+  input FilterInput {
+    public: Boolean
   }
 
   extend type Candidate {
@@ -26,11 +30,9 @@ export const typeDef = gql`
 
 export const resolvers = {
   Query: {
-    elections() {
+    elections(parent, args) {
       return Election.findAll({
-        where: {
-          public: true
-        },
+        where: args.filter,
         order: [['endsAt', 'desc']]
       });
     },
