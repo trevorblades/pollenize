@@ -1,5 +1,5 @@
 ---
-title: Wait... there's more than two presidential candidates?
+title: Wait… There’s More Than Two Presidential Candidates?
 date: 2016-10-28
 author: Ben Miller
 authorImage: ben.jpg

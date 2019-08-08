@@ -1,5 +1,5 @@
 ---
-title: The GOP Fight Won’t Be An Early Knockout
+title: The GOP Fight Won’t Be an Early Knockout
 date: 2016-02-08
 author: Jeremy Wertz
 authorImage: jeremy.jpg
