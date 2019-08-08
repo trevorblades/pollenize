@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React, {createContext, useContext, useState} from 'react';
+import React, {createContext, useContext} from 'react';
+import {useLocalStorage} from 'react-use';
 
 export const languages = {
   en: 'English',
@@ -12,7 +13,7 @@ export function useLanguage() {
 }
 
 export function LanguageProvider(props) {
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useLocalStorage('language', 'en');
   return (
     <LanguageContext.Provider
       value={{
