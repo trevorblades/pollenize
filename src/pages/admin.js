@@ -1,4 +1,5 @@
 import EditorTable from '../components/editor-table';
+import Header from '../components/header';
 import HeaderBase from '../components/header-base';
 import Layout from '../components/layout';
 import LoginForm from '../components/login-form';
@@ -8,7 +9,7 @@ import {Helmet} from 'react-helmet';
 import {useUser} from '../utils/user';
 
 export default function Admin() {
-  const {user, logOut} = useUser();
+  const {user, setToken, logOut} = useUser();
   return (
     <Layout>
       <Helmet>
@@ -29,7 +30,10 @@ export default function Admin() {
             <EditorTable />
           </Fragment>
         ) : (
-          <LoginForm />
+          <Fragment>
+            <Header />
+            <LoginForm setToken={setToken} />
+          </Fragment>
         )}
       </NoSsr>
     </Layout>

@@ -63,8 +63,8 @@ export default function ElectionTable(props) {
           <Box
             p={1}
             borderColor="divider"
-            borderBottom={1}
-            borderRight={1}
+            borderBottom={rowIndex < rowCount - 1 ? 1 : 0}
+            borderRight={columnIndex < columnCount - 1 ? 1 : 0}
             style={style}
           >
             <Typography
