@@ -59,10 +59,11 @@ export default function HeaderBase(props) {
 
 HeaderBase.propTypes = {
   link: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   children: PropTypes.node.isRequired
 };
 
 HeaderBase.defaultProps = {
-  link: '/'
+  link: '/',
+  title: 'Pollenize'
 };

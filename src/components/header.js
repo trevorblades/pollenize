@@ -26,7 +26,7 @@ function MenuItem(props) {
 
 export default function Header() {
   return (
-    <HeaderBase title="Pollenize">
+    <HeaderBase>
       <MenuItem to="/elections">Elections</MenuItem>
       <MenuItem to="/team">Team</MenuItem>
       <MenuItem to="/blog">Blog</MenuItem>
