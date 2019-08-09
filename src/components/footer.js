@@ -29,7 +29,7 @@ function FooterLink(props) {
 }
 
 export function FooterContent() {
-  const {token, logOut} = useUser();
+  const {user, logOut} = useUser();
   return (
     <Fragment>
       <Grid container spacing={4} justify="space-between">
@@ -74,7 +74,7 @@ export function FooterContent() {
           <FooterLink href="https://github.com/pollenize">
             Source code
           </FooterLink>
-          {token && <FooterLink onClick={logOut}>Log out</FooterLink>}
+          {user && <FooterLink onClick={logOut}>Log out</FooterLink>}
         </NavGroup>
       </Grid>
     </Fragment>
