@@ -31,6 +31,7 @@
     "react-helmet": "^5.2.1",
     "react-icons": "^3.7.0",
     "react-use": "^10.3.0",
+    "react-virtualized": "^9.21.1",
     "recompose": "^0.30.0",
     "rehype-react": "^4.0.1",
     "snarkdown": "^1.2.2"

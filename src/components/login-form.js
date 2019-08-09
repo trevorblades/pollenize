@@ -11,7 +11,7 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import {FullScreenWrapper} from './common';
+import {HEADER_HEIGHT} from './header-base';
 import {useUser} from '../utils/user';
 
 export default function LoginForm() {
@@ -47,10 +47,11 @@ export default function LoginForm() {
   return (
     <Fragment>
       <Header />
-      <FullScreenWrapper
+      <Box
         display="flex"
         alignItems="center"
         justifyContent="center"
+        height={`calc(100vh - ${HEADER_HEIGHT}px)`}
       >
         <Box width={500}>
           <Card raised>
@@ -94,7 +95,7 @@ export default function LoginForm() {
             </form>
           </Card>
         </Box>
-      </FullScreenWrapper>
+      </Box>
     </Fragment>
   );
 }
