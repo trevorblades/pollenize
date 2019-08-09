@@ -3,26 +3,23 @@ import React from 'react';
 import {Button, Link as MuiLink} from '@material-ui/core';
 import {FaChevronRight} from 'react-icons/fa';
 import {Link} from 'gatsby';
-import {makeStyles} from '@material-ui/styles';
+import {compose, mapProps} from 'recompose';
+import {withStyles} from '@material-ui/styles';
 
-const useStyles = makeStyles(theme => ({
-  menuItem: {
-    marginRight: theme.spacing(3)
-  }
-}));
-
-function MenuItem(props) {
-  const {menuItem} = useStyles();
-  return (
-    <MuiLink
-      component={Link}
-      className={menuItem}
-      variant="body1"
-      color="inherit"
-      {...props}
-    />
-  );
-}
+const MenuItem = compose(
+  withStyles(theme => ({
+    menuItem: {
+      marginRight: theme.spacing(3)
+    }
+  })),
+  mapProps(({classes, ...props}) => ({
+    component: Link,
+    className: classes.menuItem,
+    variant: 'body1',
+    color: 'inherit',
+    ...props
+  }))
+)(MuiLink);
 
 export default function Header() {
   return (

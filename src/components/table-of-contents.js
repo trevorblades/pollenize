@@ -7,7 +7,7 @@ import {useLanguage} from '../utils/language';
 export function SidebarLink(props) {
   return (
     <Typography paragraph variant="body2">
-      <MuiLink {...props} color="inherit" />
+      <MuiLink color="inherit" {...props} />
     </Typography>
   );
 }

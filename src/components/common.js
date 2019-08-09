@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Box, Grid, Typography} from '@material-ui/core';
 import {HEADER_HEIGHT} from './header-base';
-import {styled, useTheme} from '@material-ui/styles';
+import {compose, mapProps, withProps} from 'recompose';
+import {styled, useTheme, withTheme} from '@material-ui/styles';
 
 export const PageAnchor = styled('a')({
   display: 'block',
@@ -10,35 +11,35 @@ export const PageAnchor = styled('a')({
   marginTop: -HEADER_HEIGHT
 });
 
-export function SectionWrapper(props) {
-  const {breakpoints} = useTheme();
-  return <Box maxWidth={breakpoints.values.lg} mx="auto" p={8} {...props} />;
-}
+export const SectionWrapper = compose(
+  withTheme,
+  mapProps(({theme, ...props}) => ({
+    maxWidth: theme.breakpoints.values.lg,
+    mx: 'auto',
+    p: 8,
+    ...props
+  }))
+)(Box);
 
 const contentWrapperPaddingRightXs = 5;
 const contentWrapperPaddingRightLg = 8;
 const contentWrapperPaddingDelta =
   contentWrapperPaddingRightLg - contentWrapperPaddingRightXs;
 
-export function ContentWrapper(props) {
-  return (
-    <Box
-      py={{
-        xs: 5,
-        lg: 7
-      }}
-      pr={{
-        xs: contentWrapperPaddingRightXs,
-        lg: contentWrapperPaddingRightLg
-      }}
-      pl={{
-        xs: 5,
-        md: 0
-      }}
-      {...props}
-    />
-  );
-}
+export const ContentWrapper = withProps({
+  py: {
+    xs: 5,
+    lg: 7
+  },
+  pr: {
+    xs: contentWrapperPaddingRightXs,
+    lg: contentWrapperPaddingRightLg
+  },
+  pl: {
+    xs: 5,
+    md: 0
+  }
+})(Box);
 
 export function PageWrapper(props) {
   const {breakpoints, spacing} = useTheme();

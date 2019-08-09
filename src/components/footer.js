@@ -5,6 +5,7 @@ import {Link} from 'gatsby';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {SectionWrapper} from './common';
 import {useUser} from '../utils/user';
+import {withProps} from 'recompose';
 
 function NavGroup(props) {
   return (
@@ -24,9 +25,10 @@ NavGroup.propTypes = {
   title: PropTypes.string.isRequired
 };
 
-function FooterLink(props) {
-  return <MuiLink gutterBottom color="inherit" {...props} />;
-}
+const FooterLink = withProps({
+  gutterBottom: true,
+  color: 'inherit'
+})(MuiLink);
 
 export function FooterContent() {
   const {user, logOut} = useUser();
