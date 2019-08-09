@@ -108,7 +108,7 @@ export default function Team() {
           <TeamMember
             name="Matheson Murray"
             twitter="mathesonmurray"
-            bio="Matheson is a graduate of Carleton University's faculty of Journalism and Communications and Sheridan College's New Media Journalism program. He worked as a Legislative Assistant on Parliament Hill in University and is now a freelance producer and filmmaker based in Toronto."
+            bio="Matheson is a top ten finisher in the 2005 Halton Region Cross Country meet and a producer working in advertising."
           />
           <TeamMember
             name="Ben Miller"
