@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
-import {Menu, MenuItem} from '@material-ui/core';
-import {languages, useLanguage} from '../../utils/language';
+import {IconButton, Menu, MenuItem, Tooltip} from '@material-ui/core';
+import {MdTranslate} from 'react-icons/md';
+import {languages, useLanguage} from '../utils/language';
 
-export default function LanguageMenu(props) {
+export function LanguageMenuBase(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const {language, setLanguage} = useLanguage();
 
@@ -36,6 +37,21 @@ export default function LanguageMenu(props) {
   );
 }
 
-LanguageMenu.propTypes = {
+LanguageMenuBase.propTypes = {
   renderButton: PropTypes.func.isRequired
 };
+
+export default function LanguageButton() {
+  const {localize} = useLanguage();
+  return (
+    <LanguageMenuBase
+      renderButton={openMenu => (
+        <Tooltip title={localize('Change language', 'Changer de langue')}>
+          <IconButton color="inherit" onClick={openMenu}>
+            <MdTranslate />
+          </IconButton>
+        </Tooltip>
+      )}
+    />
+  );
+}

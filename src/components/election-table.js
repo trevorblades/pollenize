@@ -3,7 +3,9 @@ import React, {Fragment} from 'react';
 import {Box, CardActionArea, Typography} from '@material-ui/core';
 import {CellMeasurer, CellMeasurerCache, MultiGrid} from 'react-virtualized';
 import {HEADER_HEIGHT} from './header-base';
+import {getCandidateTitles} from '../utils';
 import {makeStyles} from '@material-ui/styles';
+import {useLanguage} from '../utils/language';
 import {useWindowSize} from 'react-use';
 
 const cache = new CellMeasurerCache({
@@ -19,6 +21,7 @@ const useStyles = makeStyles({
 
 export default function ElectionTable(props) {
   const {grid} = useStyles();
+  const {localize} = useLanguage();
   const {width, height} = useWindowSize();
 
   const rowCount = props.election.topics.length + 1;
@@ -42,7 +45,7 @@ export default function ElectionTable(props) {
             rowIndex={rowIndex}
           >
             <Box
-              p={1}
+              p={isBody ? 1 : 2}
               borderColor="divider"
               borderBottom={rowIndex < rowCount - 1 ? 1 : 0}
               borderRight={columnIndex < columnCount - 1 ? 1 : 0}
@@ -55,7 +58,7 @@ export default function ElectionTable(props) {
                     <CardActionArea key={stance.id}>
                       <Box p={1}>
                         <Typography variant="body2">
-                          {stance.textEn}
+                          {localize(stance.textEn, stance.textFr)}
                           {!stance.sources.length && (
                             <Fragment>
                               {' '}
@@ -69,8 +72,14 @@ export default function ElectionTable(props) {
                     </CardActionArea>
                   ))
               ) : (
-                <Typography variant="subtitle2">
-                  {columnIndex ? candidate.name : topic && topic.titleEn}
+                <Typography variant="subtitle1">
+                  {columnIndex
+                    ? getCandidateTitles(
+                        candidate,
+                        props.election.partyFirst,
+                        localize
+                      )[0]
+                    : topic && localize(topic.titleEn, topic.titleFr)}
                 </Typography>
               )}
             </Box>

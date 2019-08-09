@@ -1,5 +1,5 @@
 import DrawerContent from './drawer-content';
-import LanguageMenu from './language-menu';
+import LanguageMenu from '../language-menu';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
 import {
@@ -20,7 +20,7 @@ import {
 import {FaRegComments, FaThLarge} from 'react-icons/fa';
 import {FiInfo, FiMenu} from 'react-icons/fi';
 import {Link} from 'gatsby';
-import {MdCheck, MdTranslate} from 'react-icons/md';
+import {MdCheck} from 'react-icons/md';
 import {languages, useLanguage} from '../../utils/language';
 import {makeStyles} from '@material-ui/styles';
 import {upperFirst} from 'lodash';
@@ -99,15 +99,7 @@ export default function ElectionMenu(props) {
         </IconButton>
       </Tooltip>
       <Hidden only="xs" implementation="css">
-        <LanguageMenu
-          renderButton={openMenu => (
-            <Tooltip title={localize('Change language', 'Changer de langue')}>
-              <IconButton color="inherit" onClick={openMenu}>
-                <MdTranslate />
-              </IconButton>
-            </Tooltip>
-          )}
-        />
+        <LanguageMenu />
       </Hidden>
       <IconButton onClick={openDrawer} color="inherit">
         <FiMenu />

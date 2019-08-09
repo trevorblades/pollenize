@@ -1,10 +1,11 @@
 import EditorTable from '../components/editor-table';
 import Header from '../components/header';
 import HeaderBase from '../components/header-base';
+import LanguageMenu from '../components/language-menu';
 import Layout from '../components/layout';
 import LoginForm from '../components/login-form';
 import React, {Fragment} from 'react';
-import {Button, NoSsr, Typography} from '@material-ui/core';
+import {Button, NoSsr} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {useUser} from '../utils/user';
 
@@ -20,10 +21,12 @@ export default function Admin() {
         {user ? (
           <Fragment>
             <HeaderBase title="Admin">
-              <Typography variant="body2" style={{marginRight: 16}}>
-                Hi {user.name.slice(0, user.name.indexOf(' '))} 👋
-              </Typography>
-              <Button onClick={logOut} variant="contained" color="primary">
+              <LanguageMenu />
+              <Button
+                onClick={logOut}
+                variant="outlined"
+                style={{marginLeft: 8}}
+              >
                 Log out
               </Button>
             </HeaderBase>

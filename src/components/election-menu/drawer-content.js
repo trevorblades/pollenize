@@ -1,4 +1,3 @@
-import LanguageMenu from './language-menu';
 import PropTypes from 'prop-types';
 import React, {Fragment, useMemo} from 'react';
 import {
@@ -12,6 +11,7 @@ import {
   Typography
 } from '@material-ui/core';
 import {FaStar} from 'react-icons/fa';
+import {LanguageMenuBase} from '../language-menu';
 import {Link} from 'gatsby';
 import {getCandidateTitles} from '../../utils';
 import {makeStyles, styled} from '@material-ui/styles';
@@ -92,7 +92,7 @@ export default function DrawerContent(props) {
             {localize('Reset stars', 'Réinitialiser les étoiles')}
           </ListItemText>
         </ListItem>
-        <LanguageMenu
+        <LanguageMenuBase
           renderButton={openMenu => (
             <ListItem button onClick={openMenu}>
               <ListItemText>

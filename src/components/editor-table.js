@@ -7,6 +7,7 @@ import {useQuery} from '@apollo/react-hooks';
 const GET_ELECTION = gql`
   query GetElection($id: ID!) {
     election(id: $id) {
+      partyFirst
       candidates {
         name
         hometown
