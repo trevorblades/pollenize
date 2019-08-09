@@ -11,6 +11,10 @@ export const PageAnchor = styled('a')({
   marginTop: -HEADER_HEIGHT
 });
 
+export const FullScreenWrapper = withProps({
+  height: `calc(100vh - ${HEADER_HEIGHT}px)`
+})(Box);
+
 export const SectionWrapper = compose(
   withTheme,
   mapProps(({theme, ...props}) => ({

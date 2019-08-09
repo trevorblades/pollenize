@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import Header from './header';
+import React, {Fragment, useState} from 'react';
 import {
   Box,
   Button,
@@ -11,9 +11,11 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import {HEADER_HEIGHT} from './header-base';
+import {FullScreenWrapper} from './common';
+import {useUser} from '../utils/user';
 
-export default function LoginForm(props) {
+export default function LoginForm() {
+  const {setToken} = useUser();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +37,7 @@ export default function LoginForm(props) {
       }
 
       const token = await response.text();
-      props.setToken(token);
+      setToken(token);
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -43,58 +45,56 @@ export default function LoginForm(props) {
   }
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      height={`calc(100vh - ${HEADER_HEIGHT}px)`}
-    >
-      <Box width={500}>
-        <Card raised>
-          <form onSubmit={handleSubmit}>
-            <DialogTitle disableTypography>
-              <Typography variant="overline">Admins only</Typography>
-              <Typography variant="h4">Auth required</Typography>
-            </DialogTitle>
-            <DialogContent>
-              {error && (
-                <DialogContentText color="error">
-                  {error.message}
-                </DialogContentText>
-              )}
-              <TextField
-                fullWidth
-                autoFocus
-                required
-                autoComplete="off"
-                margin="normal"
-                label="Email address"
-                type="email"
-                name="email"
-                variant="outlined"
-              />
-              <TextField
-                fullWidth
-                required
-                margin="normal"
-                label="Password"
-                type="password"
-                name="password"
-                variant="outlined"
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button disabled={loading} size="large" type="submit">
-                Log in
-              </Button>
-            </DialogActions>
-          </form>
-        </Card>
-      </Box>
-    </Box>
+    <Fragment>
+      <Header />
+      <FullScreenWrapper
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Box width={500}>
+          <Card raised>
+            <form onSubmit={handleSubmit}>
+              <DialogTitle disableTypography>
+                <Typography variant="overline">Admins only</Typography>
+                <Typography variant="h4">Auth required</Typography>
+              </DialogTitle>
+              <DialogContent>
+                {error && (
+                  <DialogContentText color="error">
+                    {error.message}
+                  </DialogContentText>
+                )}
+                <TextField
+                  fullWidth
+                  autoFocus
+                  required
+                  autoComplete="off"
+                  margin="normal"
+                  label="Email address"
+                  type="email"
+                  name="email"
+                  variant="outlined"
+                />
+                <TextField
+                  fullWidth
+                  required
+                  margin="normal"
+                  label="Password"
+                  type="password"
+                  name="password"
+                  variant="outlined"
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button disabled={loading} size="large" type="submit">
+                  Log in
+                </Button>
+              </DialogActions>
+            </form>
+          </Card>
+        </Box>
+      </FullScreenWrapper>
+    </Fragment>
   );
 }
-
-LoginForm.propTypes = {
-  setToken: PropTypes.func.isRequired
-};

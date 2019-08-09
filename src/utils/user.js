@@ -4,6 +4,7 @@ import decode from 'jwt-decode';
 import {useLocalStorage} from 'react-use';
 
 const UserContext = createContext();
+
 export function useUser() {
   return useContext(UserContext);
 }
@@ -24,7 +25,7 @@ export function UserProvider(props) {
         user,
         setToken,
         logOut() {
-          setToken(null);
+          setToken('');
         }
       }}
     >

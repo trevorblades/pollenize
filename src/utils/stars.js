@@ -3,6 +3,7 @@ import React, {createContext, useContext} from 'react';
 import {useLocalStorage} from 'react-use';
 
 const StarsContext = createContext();
+
 export function useStars() {
   return useContext(StarsContext);
 }

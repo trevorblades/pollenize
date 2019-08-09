@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, {createContext, useContext} from 'react';
 import {useLocalStorage} from 'react-use';
 
+const LanguageContext = createContext();
 export const languages = {
   en: 'English',
   fr: 'Français'
 };
 
-const LanguageContext = createContext();
 export function useLanguage() {
   return useContext(LanguageContext);
 }
