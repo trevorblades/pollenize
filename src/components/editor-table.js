@@ -20,6 +20,10 @@ const GET_ELECTION = gql`
           textEn
           textFr
           topicId
+          sources {
+            id
+            url
+          }
         }
       }
       topics {

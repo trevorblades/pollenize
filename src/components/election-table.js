@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Box, CardActionArea, Typography} from '@material-ui/core';
 import {CellMeasurer, CellMeasurerCache, MultiGrid} from 'react-virtualized';
 import {HEADER_HEIGHT} from './header-base';
@@ -54,7 +54,17 @@ export default function ElectionTable(props) {
                   .map(stance => (
                     <CardActionArea key={stance.id}>
                       <Box p={1}>
-                        <Typography variant="body2">{stance.textEn}</Typography>
+                        <Typography variant="body2">
+                          {stance.textEn}
+                          {!stance.sources.length && (
+                            <Fragment>
+                              {' '}
+                              <Box component="span" color="error.main">
+                                [needs source]
+                              </Box>
+                            </Fragment>
+                          )}
+                        </Typography>
                       </Box>
                     </CardActionArea>
                   ))
