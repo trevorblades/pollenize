@@ -6,7 +6,6 @@ import {Button, IconButton, Typography} from '@material-ui/core';
 import {FaRegComments, FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
 import {Link} from 'gatsby';
-import {NO_OFFICIAL_STANCE} from '../../utils';
 import {useLanguage} from '../../utils/language';
 import {useToggle} from 'react-use';
 
@@ -59,7 +58,12 @@ export default function TopicSection(props) {
           )}
         </Fragment>
       ) : (
-        <Typography paragraph>{localize(...NO_OFFICIAL_STANCE)}</Typography>
+        <Typography paragraph>
+          {localize(
+            'No official stance has been taken on this topic.',
+            "Aucune position officielle n'a été prise sur ce sujet."
+          )}
+        </Typography>
       )}
     </TopicWrapper>
   );

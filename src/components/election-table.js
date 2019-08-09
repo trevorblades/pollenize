@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Typography} from '@material-ui/core';
+import {Box, CardActionArea, Typography} from '@material-ui/core';
 import {CellMeasurer, CellMeasurerCache, MultiGrid} from 'react-virtualized';
 import {HEADER_HEIGHT} from './header-base';
-import {NO_OFFICIAL_STANCE} from '../utils';
 import {makeStyles} from '@material-ui/styles';
 import {useWindowSize} from 'react-use';
 
@@ -18,28 +17,6 @@ const useStyles = makeStyles({
   }
 });
 
-function renderCellContent(election, columnIndex, rowIndex) {
-  const topic = election.topics[rowIndex - 1];
-  if (!columnIndex) {
-    if (!rowIndex) {
-      return '';
-    }
-
-    return topic.titleEn;
-  }
-
-  const candidate = election.candidates[columnIndex - 1];
-  if (!rowIndex) {
-    return candidate.name;
-  }
-
-  const [stance] = candidate.stances.filter(
-    stance => stance.topicId === topic.id
-  );
-
-  return stance ? stance.textEn : NO_OFFICIAL_STANCE[0];
-}
-
 export default function ElectionTable(props) {
   const {grid} = useStyles();
   const {width, height} = useWindowSize();
@@ -52,30 +29,45 @@ export default function ElectionTable(props) {
       classNameTopRightGrid={grid}
       classNameBottomLeftGrid={grid}
       classNameBottomRightGrid={grid}
-      cellRenderer={({rowIndex, columnIndex, key, style, parent}) => (
-        <CellMeasurer
-          cache={cache}
-          columnIndex={columnIndex}
-          key={key}
-          parent={parent}
-          rowIndex={rowIndex}
-        >
-          <Box
-            p={1}
-            borderColor="divider"
-            borderBottom={rowIndex < rowCount - 1 ? 1 : 0}
-            borderRight={columnIndex < columnCount - 1 ? 1 : 0}
-            style={style}
+      cellRenderer={({rowIndex, columnIndex, key, style, parent}) => {
+        const isBody = rowIndex && columnIndex;
+        const topic = props.election.topics[rowIndex - 1];
+        const candidate = props.election.candidates[columnIndex - 1];
+        return (
+          <CellMeasurer
+            cache={cache}
+            columnIndex={columnIndex}
+            key={key}
+            parent={parent}
+            rowIndex={rowIndex}
           >
-            <Typography
-              variant={rowIndex && columnIndex ? 'body2' : 'subtitle2'}
+            <Box
+              p={1}
+              borderColor="divider"
+              borderBottom={rowIndex < rowCount - 1 ? 1 : 0}
+              borderRight={columnIndex < columnCount - 1 ? 1 : 0}
+              style={style}
             >
-              {renderCellContent(props.election, columnIndex, rowIndex)}
-            </Typography>
-          </Box>
-        </CellMeasurer>
-      )}
-      columnWidth={({index}) => (index ? 300 : 200)}
+              {isBody ? (
+                candidate.stances
+                  .filter(stance => stance.topicId === topic.id)
+                  .map(stance => (
+                    <CardActionArea key={stance.id}>
+                      <Box p={1}>
+                        <Typography variant="body2">{stance.textEn}</Typography>
+                      </Box>
+                    </CardActionArea>
+                  ))
+              ) : (
+                <Typography variant="subtitle2">
+                  {columnIndex ? candidate.name : topic && topic.titleEn}
+                </Typography>
+              )}
+            </Box>
+          </CellMeasurer>
+        );
+      }}
+      columnWidth={({index}) => (index ? 400 : 200)}
       columnCount={columnCount}
       fixedColumnCount={1}
       rowHeight={cache.rowHeight}

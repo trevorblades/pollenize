@@ -16,6 +16,7 @@ const GET_ELECTION = gql`
         bioEn
         bioFr
         stances {
+          id
           textEn
           textFr
           topicId
