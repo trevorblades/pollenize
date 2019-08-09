@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import theme from '../utils/theme';
+import theme from './theme';
 import {CssBaseline} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {ThemeProvider} from '@material-ui/styles';
