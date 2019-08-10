@@ -106,7 +106,7 @@ export default function CandidateForm(props) {
   return (
     <form onSubmit={handleSubmit}>
       <DialogTitle disableTypography>
-        <Typography variant="overline">Editing</Typography>
+        <Typography variant="overline">Editing candidate</Typography>
         <Typography variant="h4">{props.title}</Typography>
       </DialogTitle>
       <DialogContent>

@@ -2,12 +2,12 @@ import CandidateForm from './candidate-form';
 import ElectionTable from '../election-table';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
+import TopicForm from './topic-form';
 import {
   Box,
   Button,
   CardActionArea,
   Dialog,
-  DialogTitle,
   Typography
 } from '@material-ui/core';
 import {CANDIDATE_FRAGMENT} from '../../utils/queries';
@@ -135,13 +135,7 @@ export default function EditorTable(props) {
         const title = localize(topic.titleEn, topic.titleFr);
         return (
           <HeaderButton title={title} {...boxProps}>
-            {() => (
-              <form>
-                <DialogTitle disableTypography>
-                  <Typography variant="h5">{title}</Typography>
-                </DialogTitle>
-              </form>
-            )}
+            {closeDialog => <TopicForm title={title} onClose={closeDialog} />}
           </HeaderButton>
         );
       }}
