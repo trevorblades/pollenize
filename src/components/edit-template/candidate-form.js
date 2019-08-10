@@ -124,7 +124,10 @@ export default function CandidateForm(props) {
             >
               Primary color
             </Typography>
-            <input type="color" defaultValue={props.candidate.color} />
+            <input
+              type="color"
+              defaultValue={props.candidate.color || '#ffffff'}
+            />
             <Typography display="inline" style={{marginLeft: 8}}>
               Select a color
             </Typography>

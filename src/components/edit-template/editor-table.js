@@ -10,7 +10,7 @@ import {
   Dialog,
   Typography
 } from '@material-ui/core';
-import {CANDIDATE_FRAGMENT, TOPIC_FRAGMENT} from '../../utils/queries';
+import {ELECTION_FRAGMENT} from '../../utils/queries';
 import {FaPlus} from 'react-icons/fa';
 import {getCandidateTitles} from '../../utils';
 import {gql} from 'apollo-boost';
@@ -20,27 +20,10 @@ import {useQuery} from '@apollo/react-hooks';
 const GET_ELECTION = gql`
   query GetElection($id: ID!) {
     election(id: $id) {
-      partyFirst
-      candidates {
-        ...CandidateFragment
-        stances {
-          id
-          textEn
-          textFr
-          topicId
-          sources {
-            id
-            url
-          }
-        }
-      }
-      topics {
-        ...TopicFragment
-      }
+      ...ElectionFragment
     }
   }
-  ${CANDIDATE_FRAGMENT}
-  ${TOPIC_FRAGMENT}
+  ${ELECTION_FRAGMENT}
 `;
 
 function HeaderButton({title, children, ...props}) {

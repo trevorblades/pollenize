@@ -1,5 +1,25 @@
 import gql from 'graphql-tag';
 
+const SOURCE_FRAGMENT = gql`
+  fragment SourceFragment on Source {
+    id
+    url
+  }
+`;
+
+export const STANCE_FRAGMENT = gql`
+  fragment StanceFragment on Stance {
+    id
+    textEn
+    textFr
+    topicId
+    sources {
+      ...SourceFragment
+    }
+  }
+  ${SOURCE_FRAGMENT}
+`;
+
 export const CANDIDATE_FRAGMENT = gql`
   fragment CandidateFragment on Candidate {
     id
@@ -13,7 +33,11 @@ export const CANDIDATE_FRAGMENT = gql`
     bioEn
     bioFr
     active
+    stances {
+      ...StanceFragment
+    }
   }
+  ${STANCE_FRAGMENT}
 `;
 
 export const TOPIC_FRAGMENT = gql`
@@ -24,4 +48,18 @@ export const TOPIC_FRAGMENT = gql`
     descriptionEn
     descriptionFr
   }
+`;
+
+export const ELECTION_FRAGMENT = gql`
+  fragment ElectionFragment on Election {
+    partyFirst
+    candidates {
+      ...CandidateFragment
+    }
+    topics {
+      ...TopicFragment
+    }
+  }
+  ${CANDIDATE_FRAGMENT}
+  ${TOPIC_FRAGMENT}
 `;
