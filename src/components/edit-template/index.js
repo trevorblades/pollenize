@@ -75,7 +75,7 @@ export const pageQuery = graphql`
         slug
         title
         partyFirst
-        candidates {
+        candidates(active: true) {
           id
           slug
           name

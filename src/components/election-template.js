@@ -119,7 +119,7 @@ export const pageQuery = graphql`
         introEn
         introFr
         partyFirst
-        candidates {
+        candidates(active: true) {
           id
           slug
           name

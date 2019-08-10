@@ -177,7 +177,7 @@ export const pageQuery = graphql`
             descriptionEn
             descriptionFr
           }
-          candidates {
+          candidates(active: true) {
             id
             name
             slug

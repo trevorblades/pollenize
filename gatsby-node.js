@@ -29,7 +29,7 @@ exports.createPages = async ({actions, graphql}) => {
         elections {
           id
           slug
-          candidates {
+          candidates(active: true) {
             id
             slug
           }

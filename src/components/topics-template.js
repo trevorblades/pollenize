@@ -187,7 +187,7 @@ export const pageQuery = graphql`
             }
           }
         }
-        candidates {
+        candidates(active: true) {
           id
           name
           slug

@@ -24,7 +24,12 @@ import {useMutation} from '@apollo/react-hooks';
 const useStyles = makeStyles({
   avatarRoot: {
     ...size(160),
-    cursor: 'pointer'
+    '&:not([disabled])': {
+      cursor: 'pointer'
+    },
+    '&[disabled]': {
+      pointerEvents: 'none'
+    }
   }
 });
 
@@ -110,6 +115,9 @@ export default function CandidateForm(props) {
         setUploading(false);
         return;
       }
+
+      setUploadError(null);
+      setUploading(false);
     }
 
     updateCandidate({variables});
@@ -134,6 +142,7 @@ export default function CandidateForm(props) {
           </DialogContentText>
         )}
         <Avatar
+          disabled={disabled}
           component="label"
           htmlFor="file"
           classes={{root: avatarRoot}}
@@ -141,7 +150,6 @@ export default function CandidateForm(props) {
         />
         <input
           hidden
-          disabled={disabled}
           type="file"
           id="file"
           accept="image/*"

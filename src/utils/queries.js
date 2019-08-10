@@ -47,6 +47,8 @@ export const TOPIC_FRAGMENT = gql`
     titleFr
     descriptionEn
     descriptionFr
+    image
+    order
   }
 `;
 
