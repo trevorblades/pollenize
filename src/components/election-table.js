@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
-import {Box, CardActionArea, Typography} from '@material-ui/core';
+import React from 'react';
+import {Box} from '@material-ui/core';
 import {CellMeasurer, CellMeasurerCache, MultiGrid} from 'react-virtualized';
 import {HEADER_HEIGHT} from './header-base';
-import {getCandidateTitles} from '../utils';
 import {makeStyles} from '@material-ui/styles';
-import {useLanguage} from '../utils/language';
 import {useWindowSize} from 'react-use';
 
 const cache = new CellMeasurerCache({
@@ -19,9 +17,10 @@ const useStyles = makeStyles({
   }
 });
 
+export function ElectionTableCell() {}
+
 export default function ElectionTable(props) {
   const {grid} = useStyles();
-  const {localize} = useLanguage();
   const {width, height} = useWindowSize();
 
   const rowCount = props.election.topics.length + 1;
@@ -36,6 +35,13 @@ export default function ElectionTable(props) {
         const isBody = rowIndex && columnIndex;
         const topic = props.election.topics[rowIndex - 1];
         const candidate = props.election.candidates[columnIndex - 1];
+        const boxProps = {
+          borderColor: 'divider',
+          borderBottom: rowIndex < rowCount - 1 ? 1 : 0,
+          borderRight: columnIndex < columnCount - 1 ? 1 : 0,
+          style
+        };
+
         return (
           <CellMeasurer
             cache={cache}
@@ -44,45 +50,18 @@ export default function ElectionTable(props) {
             parent={parent}
             rowIndex={rowIndex}
           >
-            <Box
-              p={isBody ? 1 : 2}
-              borderColor="divider"
-              borderBottom={rowIndex < rowCount - 1 ? 1 : 0}
-              borderRight={columnIndex < columnCount - 1 ? 1 : 0}
-              style={style}
-            >
-              {isBody ? (
-                candidate.stances
-                  .filter(stance => stance.topicId === topic.id)
-                  .map(stance => (
-                    <CardActionArea key={stance.id}>
-                      <Box p={1}>
-                        <Typography variant="body2">
-                          {localize(stance.textEn, stance.textFr)}
-                          {!stance.sources.length && (
-                            <Fragment>
-                              {' '}
-                              <Box component="span" color="error.main">
-                                [needs source]
-                              </Box>
-                            </Fragment>
-                          )}
-                        </Typography>
-                      </Box>
-                    </CardActionArea>
-                  ))
-              ) : (
-                <Typography variant="subtitle1">
-                  {columnIndex
-                    ? getCandidateTitles(
-                        candidate,
-                        props.election.partyFirst,
-                        localize
-                      )[0]
-                    : topic && localize(topic.titleEn, topic.titleFr)}
-                </Typography>
-              )}
-            </Box>
+            {isBody ? (
+              props.renderStances(
+                candidate.stances.filter(stance => stance.topicId === topic.id),
+                boxProps
+              )
+            ) : columnIndex ? (
+              props.renderCandidate(candidate, boxProps)
+            ) : topic ? (
+              props.renderTopic(topic, boxProps)
+            ) : (
+              <Box {...boxProps} />
+            )}
           </CellMeasurer>
         );
       }}
@@ -99,5 +78,8 @@ export default function ElectionTable(props) {
 }
 
 ElectionTable.propTypes = {
-  election: PropTypes.object.isRequired
+  election: PropTypes.object.isRequired,
+  renderStances: PropTypes.func.isRequired,
+  renderCandidate: PropTypes.func.isRequired,
+  renderTopic: PropTypes.func.isRequired
 };
