@@ -36,7 +36,7 @@ export const User = sequelize.define('user', {
   password: Sequelize.STRING
 });
 
-const Topic = sequelize.define('topic', {
+export const Topic = sequelize.define('topic', {
   slug: Sequelize.STRING,
   titleEn: Sequelize.STRING,
   titleFr: Sequelize.STRING,
