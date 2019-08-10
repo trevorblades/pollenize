@@ -15,6 +15,7 @@ import {LanguageMenuBase} from '../language-menu';
 import {Link} from 'gatsby';
 import {getCandidateTitles} from '../../utils';
 import {makeStyles, styled} from '@material-ui/styles';
+import {useKey, useToggle} from 'react-use';
 import {useLanguage} from '../../utils/language';
 import {useStars} from '../../utils/stars';
 
@@ -35,9 +36,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function DrawerContent(props) {
-  const {secondaryAction, starIcon} = useStyles();
   const {localize} = useLanguage();
   const {stars, resetStars} = useStars();
+  const {secondaryAction, starIcon} = useStyles();
+  const [editShown, toggleEditShown] = useToggle(false);
 
   const totalStarCount = useMemo(
     () =>
@@ -47,6 +49,8 @@ export default function DrawerContent(props) {
       }, 0),
     [props.candidates, stars]
   );
+
+  useKey('A', toggleEditShown);
 
   function handleResetClick() {
     resetStars(props.candidates);
@@ -106,11 +110,29 @@ export default function DrawerContent(props) {
           component={Link}
           to={`/elections/${props.electionSlug}/table`}
         >
-          <ListItemText>View as table</ListItemText>
+          <ListItemText>
+            {localize('View as table', 'Voir comme table')}
+          </ListItemText>
         </ListItem>
         {props.onIntroClick && (
           <ListItem button onClick={props.onIntroClick}>
-            <ListItemText>Open intro dialog</ListItemText>
+            <ListItemText>
+              {localize(
+                'Open intro dialog',
+                "Ouvrir le dialogue d'introduction"
+              )}
+            </ListItemText>
+          </ListItem>
+        )}
+        {editShown && (
+          <ListItem
+            button
+            component={Link}
+            to={`/elections/${props.electionSlug}/edit`}
+          >
+            <ListItemText>
+              {localize('Edit election', "Modifier l'élection")}
+            </ListItemText>
           </ListItem>
         )}
       </StyledList>

@@ -4,7 +4,6 @@ import Layout from './layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {graphql} from 'gatsby';
-import {useLanguage} from '../utils/language';
 
 export default function TableTemplate(props) {
   const {
@@ -15,7 +14,6 @@ export default function TableTemplate(props) {
     introEn,
     introFr
   } = props.data.pollenize.election;
-  const {localize} = useLanguage();
   return (
     <Layout>
       <HeaderBase link={`/elections/${slug}`} title={title}>
@@ -24,7 +22,8 @@ export default function TableTemplate(props) {
           electionSlug={slug}
           candidates={candidates}
           partyFirst={partyFirst}
-          intro={localize(introEn, introFr)}
+          introEn={introEn}
+          introFr={introFr}
         />
       </HeaderBase>
       Table goes here :P

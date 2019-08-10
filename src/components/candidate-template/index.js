@@ -77,7 +77,8 @@ export default function CandidateTemplate(props) {
           electionSlug={election.slug}
           candidates={election.candidates}
           partyFirst={election.partyFirst}
-          intro={localize(election.introEn, election.introFr)}
+          introEn={election.introEn}
+          introFr={election.introFr}
         />
       </HeaderBase>
       <PageHeader

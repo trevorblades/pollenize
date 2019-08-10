@@ -70,10 +70,11 @@ export default function ElectionMenu(props) {
     setDialogOpen(false);
   }
 
+  const intro = localize(props.introEn, props.introFr);
   const electionPath = `/elections/${props.electionSlug}`;
   return (
     <Fragment>
-      {props.intro && (
+      {intro && (
         <Hidden only="xs" implementation="css">
           <IconButton color="inherit" onClick={openDialog}>
             <FiInfo />
@@ -84,7 +85,7 @@ export default function ElectionMenu(props) {
         <IconButton
           component={Link}
           to={electionPath}
-          color={props.candidateGridActive ? 'primary' : 'inherit'}
+          color={props.active === 'grid' ? 'primary' : 'inherit'}
         >
           <FaThLarge style={{margin: 2}} size={20} />
         </IconButton>
@@ -93,7 +94,7 @@ export default function ElectionMenu(props) {
         <IconButton
           component={Link}
           to={`${electionPath}/topics`}
-          color={props.topicExplorerActive ? 'primary' : 'inherit'}
+          color={props.active === 'topics' ? 'primary' : 'inherit'}
         >
           <FaRegComments />
         </IconButton>
@@ -115,10 +116,10 @@ export default function ElectionMenu(props) {
           electionSlug={props.electionSlug}
           title={props.title}
           partyFirst={props.partyFirst}
-          onIntroClick={props.intro && openDialog}
+          onIntroClick={intro && openDialog}
         />
       </Drawer>
-      {props.intro && (
+      {intro && (
         <Dialog fullWidth open={dialogOpen} onClose={closeDialog}>
           <DialogTitle disableTypography>
             <Typography variant="overline">
@@ -127,7 +128,7 @@ export default function ElectionMenu(props) {
             <Typography variant="h4">Pollenize {props.title}</Typography>
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph>{props.intro}</Typography>
+            <Typography paragraph>{intro}</Typography>
             <Typography
               paragraph
               display="block"
@@ -181,7 +182,7 @@ ElectionMenu.propTypes = {
   electionSlug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
-  intro: PropTypes.string,
-  topicExplorerActive: PropTypes.bool,
-  candidateGridActive: PropTypes.bool
+  introEn: PropTypes.string,
+  introFr: PropTypes.string,
+  active: PropTypes.string
 };

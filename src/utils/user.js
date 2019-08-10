@@ -13,20 +13,19 @@ export function UserProvider(props) {
   const [token, setToken] = useLocalStorage('token');
 
   let user;
-  try {
-    user = decode(token);
-  } catch (error) {
-    // let errors pass
+  if (token) {
+    try {
+      user = decode(token);
+    } catch (error) {
+      // let errors pass
+    }
   }
 
   return (
     <UserContext.Provider
       value={{
         user,
-        setToken,
-        logOut() {
-          setToken('');
-        }
+        setToken
       }}
     >
       {props.children}

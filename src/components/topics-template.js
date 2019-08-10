@@ -54,8 +54,9 @@ export default function TopicsTemplate(props) {
           electionSlug={slug}
           candidates={candidates}
           partyFirst={partyFirst}
-          intro={localize(introEn, introFr)}
-          topicExplorerActive
+          introEn={introEn}
+          introFr={introFr}
+          active="topics"
         />
       </HeaderBase>
       <PageHeader

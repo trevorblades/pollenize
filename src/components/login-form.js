@@ -49,7 +49,7 @@ export default function LoginForm(props) {
       justifyContent="center"
       height={`calc(100vh - ${HEADER_HEIGHT}px)`}
     >
-      <Box width={500}>
+      <Box maxWidth={500} mx={3}>
         <Card raised>
           <form onSubmit={handleSubmit}>
             <DialogTitle disableTypography>

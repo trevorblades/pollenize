@@ -1,12 +1,13 @@
 const {createFilePath} = require('gatsby-source-filesystem');
 
 const BlogPostTemplate = require.resolve('./src/components/blog-post-template');
-const ElectionTemplate = require.resolve('./src/components/election-template');
-const TopicsTemplate = require.resolve('./src/components/topics-template');
-const TableTemplate = require.resolve('./src/components/table-template');
 const CandidateTemplate = require.resolve(
   './src/components/candidate-template'
 );
+const EditTemplate = require.resolve('./src/components/edit-template');
+const ElectionTemplate = require.resolve('./src/components/election-template');
+const TableTemplate = require.resolve('./src/components/table-template');
+const TopicsTemplate = require.resolve('./src/components/topics-template');
 
 exports.onCreateNode = async ({node, actions, getNode}) => {
   if (node.internal.type === 'MarkdownRemark') {
@@ -40,28 +41,30 @@ exports.createPages = async ({actions, graphql}) => {
   const {elections} = electionResults.data.pollenize;
   for (const {id, slug, candidates} of elections) {
     const path = `/elections/${slug}`;
+    const context = {id};
+
     actions.createPage({
       path,
       component: ElectionTemplate,
-      context: {
-        id
-      }
+      context
     });
 
     actions.createPage({
       path: `${path}/topics`,
       component: TopicsTemplate,
-      context: {
-        id
-      }
+      context
     });
 
     actions.createPage({
       path: `${path}/table`,
       component: TableTemplate,
-      context: {
-        id
-      }
+      context
+    });
+
+    actions.createPage({
+      path: `${path}/edit`,
+      component: EditTemplate,
+      context
     });
 
     for (const {id, slug} of candidates) {

@@ -58,8 +58,9 @@ export default function ElectionTemplate(props) {
             electionSlug={slug}
             candidates={candidates}
             partyFirst={partyFirst}
-            intro={localize(introEn, introFr)}
-            candidateGridActive
+            introEn={introEn}
+            introFr={introFr}
+            active="grid"
           />
         </HeaderBase>
         <StyledGrid container>

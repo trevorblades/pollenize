@@ -1,4 +1,5 @@
-import ElectionTable from './election-table';
+import ElectionTable from '../election-table';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Typography} from '@material-ui/core';
 import {gql} from 'apollo-boost';
@@ -38,10 +39,10 @@ const GET_ELECTION = gql`
   }
 `;
 
-export default function EditorTable() {
+export default function EditorTable(props) {
   const {data, loading, error} = useQuery(GET_ELECTION, {
     variables: {
-      id: 1
+      id: props.id
     }
   });
 
@@ -55,3 +56,7 @@ export default function EditorTable() {
 
   return <ElectionTable election={data.election} />;
 }
+
+EditorTable.propTypes = {
+  id: PropTypes.string.isRequired
+};
