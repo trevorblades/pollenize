@@ -15,3 +15,13 @@ export const CANDIDATE_FRAGMENT = gql`
     active
   }
 `;
+
+export const TOPIC_FRAGMENT = gql`
+  fragment TopicFragment on Topic {
+    id
+    titleEn
+    titleFr
+    descriptionEn
+    descriptionFr
+  }
+`;

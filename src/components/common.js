@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Grid, Typography} from '@material-ui/core';
+import {Box, Grid, TextField, Typography} from '@material-ui/core';
 import {HEADER_HEIGHT} from './header-base';
 import {compose, mapProps, withProps} from 'recompose';
 import {styled, useTheme, withTheme} from '@material-ui/styles';
@@ -10,6 +10,11 @@ export const PageAnchor = styled('a')({
   height: HEADER_HEIGHT,
   marginTop: -HEADER_HEIGHT
 });
+
+export const FormField = withProps({
+  fullWidth: true,
+  margin: 'normal'
+})(TextField);
 
 export const SectionWrapper = compose(
   withTheme,

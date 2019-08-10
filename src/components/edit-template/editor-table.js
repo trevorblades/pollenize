@@ -10,7 +10,7 @@ import {
   Dialog,
   Typography
 } from '@material-ui/core';
-import {CANDIDATE_FRAGMENT} from '../../utils/queries';
+import {CANDIDATE_FRAGMENT, TOPIC_FRAGMENT} from '../../utils/queries';
 import {FaPlus} from 'react-icons/fa';
 import {getCandidateTitles} from '../../utils';
 import {gql} from 'apollo-boost';
@@ -35,15 +35,12 @@ const GET_ELECTION = gql`
         }
       }
       topics {
-        id
-        titleEn
-        titleFr
-        descriptionEn
-        descriptionFr
+        ...TopicFragment
       }
     }
   }
   ${CANDIDATE_FRAGMENT}
+  ${TOPIC_FRAGMENT}
 `;
 
 function HeaderButton({title, children, ...props}) {
@@ -135,7 +132,9 @@ export default function EditorTable(props) {
         const title = localize(topic.titleEn, topic.titleFr);
         return (
           <HeaderButton title={title} {...boxProps}>
-            {closeDialog => <TopicForm title={title} onClose={closeDialog} />}
+            {closeDialog => (
+              <TopicForm title={title} topic={topic} onClose={closeDialog} />
+            )}
           </HeaderButton>
         );
       }}

@@ -11,20 +11,14 @@ import {
   DialogTitle,
   FormControlLabel,
   Switch,
-  TextField,
   Typography
 } from '@material-ui/core';
 import {CANDIDATE_FRAGMENT} from '../../utils/queries';
+import {FormField} from '../common';
 import {format} from 'date-fns/esm';
 import {makeStyles} from '@material-ui/styles';
 import {size} from 'polished';
 import {useMutation} from '@apollo/react-hooks';
-import {withProps} from 'recompose';
-
-const FormField = withProps({
-  fullWidth: true,
-  margin: 'normal'
-})(TextField);
 
 const useStyles = makeStyles({
   avatarRoot: {
