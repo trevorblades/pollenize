@@ -97,16 +97,11 @@ export default function EditorTable(props) {
         <Box p={1} {...boxProps}>
           {stances.map(stance => (
             <Box component={CardActionArea} key={stance.id} p={1}>
-              <Typography variant="body2">
+              <Typography
+                variant="body2"
+                color={stance.sources.length ? 'inherit' : 'textSecondary'}
+              >
                 {localize(stance.textEn, stance.textFr)}
-                {!stance.sources.length && (
-                  <Fragment>
-                    {' '}
-                    <Box component="span" color="error.main">
-                      [needs source]
-                    </Box>
-                  </Fragment>
-                )}
               </Typography>
             </Box>
           ))}
