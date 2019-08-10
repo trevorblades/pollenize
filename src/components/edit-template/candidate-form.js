@@ -71,6 +71,17 @@ export default function CandidateForm(props) {
             </Typography>
           </label>
         </Box>
+        <FormControlLabel
+          control={
+            <Switch
+              color="primary"
+              name="active"
+              checked={active}
+              onChange={handleActiveChange}
+            />
+          }
+          label={`Status: ${active ? 'Active' : 'Inactive'}`}
+        />
         <FormField
           required
           label="Name"
@@ -116,19 +127,12 @@ export default function CandidateForm(props) {
           name="bioFr"
           defaultValue={props.candidate.bioFr}
         />
-        <FormControlLabel
-          control={
-            <Switch
-              name="active"
-              checked={active}
-              onChange={handleActiveChange}
-            />
-          }
-          label={active ? 'Active' : 'Inactive'}
-        />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Cancel</Button>
+        <Button type="submit" color="primary">
+          Save changes
+        </Button>
       </DialogActions>
     </form>
   );
