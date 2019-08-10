@@ -12,6 +12,8 @@ export const typeDef = gql`
       name: String
       partyEn: String
       partyFr: String
+      color: String
+      portrait: String
       birthDate: String
       hometown: String
       bioEn: String
@@ -21,7 +23,7 @@ export const typeDef = gql`
   }
 
   extend type Election {
-    candidates: [Candidate]
+    candidates(active: Boolean): [Candidate]
   }
 
   extend type Stance {
@@ -34,12 +36,12 @@ export const typeDef = gql`
     name: String
     partyEn: String
     partyFr: String
-    bioEn: String
-    bioFr: String
+    color: String
+    portrait: String
     birthDate: String
     hometown: String
-    portrait: String
-    color: String
+    bioEn: String
+    bioFr: String
     active: Boolean
   }
 `;
@@ -65,11 +67,9 @@ export const resolvers = {
     }
   },
   Election: {
-    candidates(parent) {
+    candidates(parent, args) {
       return parent.getCandidates({
-        where: {
-          active: true
-        }
+        where: args.active ? {active: args.active} : null
       });
     }
   },

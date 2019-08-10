@@ -9,6 +9,8 @@ export const typeDef = gql`
       titleFr: String
       descriptionEn: String
       descriptionFr: String
+      image: String
+      order: Int
     ): Topic
   }
 
@@ -46,7 +48,7 @@ export const resolvers = {
   Election: {
     topics(parent) {
       return parent.getTopics({
-        order: ['order']
+        order: [['order', 'desc']]
       });
     }
   }
