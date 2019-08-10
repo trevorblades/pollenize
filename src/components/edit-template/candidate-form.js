@@ -18,6 +18,7 @@ import {FormField} from '../common';
 import {format} from 'date-fns/esm';
 import {makeStyles} from '@material-ui/styles';
 import {size} from 'polished';
+import {uploadImage, useFileHandler} from '../../utils';
 import {useMutation} from '@apollo/react-hooks';
 
 const useStyles = makeStyles({
@@ -33,6 +34,8 @@ const UPDATE_CANDIDATE = gql`
     $name: String
     $partyEn: String
     $partyFr: String
+    $color: String
+    $portrait: String
     $birthDate: String
     $hometown: String
     $bioEn: String
@@ -44,6 +47,8 @@ const UPDATE_CANDIDATE = gql`
       name: $name
       partyEn: $partyEn
       partyFr: $partyFr
+      color: $color
+      portrait: $portrait
       birthDate: $birthDate
       hometown: $hometown
       bioEn: $bioEn
@@ -58,6 +63,9 @@ const UPDATE_CANDIDATE = gql`
 
 export default function CandidateForm(props) {
   const {avatarRoot} = useStyles();
+  const [dataUrl, handleFileChange] = useFileHandler(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
   const [active, setActive] = useState(props.candidate.active);
   const [updateCandidate, {loading, error}] = useMutation(UPDATE_CANDIDATE, {
     onCompleted: props.onClose,
@@ -67,10 +75,11 @@ export default function CandidateForm(props) {
     }
   });
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const {
+      file,
       name,
       partyEn,
       partyFr,
@@ -80,23 +89,38 @@ export default function CandidateForm(props) {
       bioFr
     } = event.target;
 
-    updateCandidate({
-      variables: {
-        name: name.value,
-        partyEn: partyEn.value,
-        partyFr: partyFr.value,
-        birthDate: birthDate.value,
-        hometown: hometown.value,
-        bioEn: bioEn.value,
-        bioFr: bioFr.value
+    const variables = {
+      name: name.value,
+      partyEn: partyEn.value,
+      partyFr: partyFr.value,
+      birthDate: birthDate.value || null,
+      hometown: hometown.value,
+      bioEn: bioEn.value,
+      bioFr: bioFr.value,
+      active
+    };
+
+    if (file.files.length) {
+      setUploading(true);
+
+      try {
+        variables.portrait = await uploadImage(file.files[0]);
+      } catch (error) {
+        setUploadError(error);
+        setUploading(false);
+        return;
       }
-    });
+    }
+
+    updateCandidate({variables});
   }
 
   function handleActiveChange(event) {
     setActive(event.target.checked);
   }
 
+  const disabled = uploading || loading;
+  const anyError = uploadError || error;
   return (
     <form onSubmit={handleSubmit}>
       <DialogTitle disableTypography>
@@ -104,16 +128,25 @@ export default function CandidateForm(props) {
         <Typography variant="h4">{props.title}</Typography>
       </DialogTitle>
       <DialogContent>
-        {error && (
-          <DialogContentText color="error">{error.message}</DialogContentText>
+        {anyError && (
+          <DialogContentText color="error">
+            {anyError.message}
+          </DialogContentText>
         )}
         <Avatar
           component="label"
           htmlFor="file"
           classes={{root: avatarRoot}}
-          src={props.candidate.portrait}
+          src={dataUrl || props.candidate.portrait}
         />
-        <input hidden type="file" id="file" />
+        <input
+          hidden
+          disabled={disabled}
+          type="file"
+          id="file"
+          accept="image/*"
+          onChange={handleFileChange}
+        />
         <Box mt={2} mb={1}>
           <label>
             <Typography
@@ -126,6 +159,7 @@ export default function CandidateForm(props) {
             </Typography>
             <input
               type="color"
+              disabled={disabled}
               defaultValue={props.candidate.color || '#ffffff'}
             />
             <Typography display="inline" style={{marginLeft: 8}}>
@@ -148,22 +182,26 @@ export default function CandidateForm(props) {
           required
           label="Name"
           name="name"
+          disabled={disabled}
           defaultValue={props.candidate.name}
         />
         <FormField
           label="Party (EN)"
           name="partyEn"
+          disabled={disabled}
           defaultValue={props.candidate.partyEn}
         />
         <FormField
           label="Parti (FR)"
           name="partyFr"
+          disabled={disabled}
           defaultValue={props.candidate.partyFr}
         />
         <FormField
           label="Birth date"
           name="birthDate"
           type="date"
+          disabled={disabled}
           InputLabelProps={{
             shrink: true
           }}
@@ -175,24 +213,27 @@ export default function CandidateForm(props) {
         <FormField
           label="Hometown"
           name="hometown"
+          disabled={disabled}
           defaultValue={props.candidate.hometown}
         />
         <FormField
           multiline
           label="Bio (EN)"
           name="bioEn"
+          disabled={disabled}
           defaultValue={props.candidate.bioEn}
         />
         <FormField
           multiline
           label="La biographie (FR)"
           name="bioFr"
+          disabled={disabled}
           defaultValue={props.candidate.bioFr}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Cancel</Button>
-        <Button type="submit" color="primary" disabled={loading}>
+        <Button type="submit" color="primary" disabled={disabled}>
           Save changes
         </Button>
       </DialogActions>
