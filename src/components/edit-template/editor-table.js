@@ -1,7 +1,16 @@
+import CandidateForm from './candidate-form';
 import ElectionTable from '../election-table';
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
-import {Box, CardActionArea, Typography} from '@material-ui/core';
+import React, {Fragment, useState} from 'react';
+import {
+  Box,
+  Button,
+  CardActionArea,
+  Dialog,
+  DialogTitle,
+  Typography
+} from '@material-ui/core';
+import {FaPlus} from 'react-icons/fa';
 import {getCandidateTitles} from '../../utils';
 import {gql} from 'apollo-boost';
 import {useLanguage} from '../../utils/language';
@@ -13,12 +22,15 @@ const GET_ELECTION = gql`
       partyFirst
       candidates {
         name
-        hometown
-        birthDate
+        color
+        portrait
         partyEn
         partyFr
+        hometown
+        birthDate
         bioEn
         bioFr
+        active
         stances {
           id
           textEn
@@ -40,6 +52,34 @@ const GET_ELECTION = gql`
     }
   }
 `;
+
+function HeaderButton({title, children, ...props}) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  function openDialog() {
+    setDialogOpen(true);
+  }
+
+  function closeDialog() {
+    setDialogOpen(false);
+  }
+
+  return (
+    <Fragment>
+      <Box onClick={openDialog} component={CardActionArea} p={2} {...props}>
+        <Typography variant="subtitle1">{title}</Typography>
+      </Box>
+      <Dialog fullWidth scroll="body" open={dialogOpen} onClose={closeDialog}>
+        {children(closeDialog)}
+      </Dialog>
+    </Fragment>
+  );
+}
+
+HeaderButton.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.func.isRequired
+};
 
 export default function EditorTable(props) {
   const {localize} = useLanguage();
@@ -63,22 +103,26 @@ export default function EditorTable(props) {
       renderStances={(stances, boxProps) => (
         <Box p={1} {...boxProps}>
           {stances.map(stance => (
-            <CardActionArea key={stance.id}>
-              <Box p={1}>
-                <Typography variant="body2">
-                  {localize(stance.textEn, stance.textFr)}
-                  {!stance.sources.length && (
-                    <Fragment>
-                      {' '}
-                      <Box component="span" color="error.main">
-                        [needs source]
-                      </Box>
-                    </Fragment>
-                  )}
-                </Typography>
-              </Box>
-            </CardActionArea>
+            <Box component={CardActionArea} key={stance.id} p={1}>
+              <Typography variant="body2">
+                {localize(stance.textEn, stance.textFr)}
+                {!stance.sources.length && (
+                  <Fragment>
+                    {' '}
+                    <Box component="span" color="error.main">
+                      [needs source]
+                    </Box>
+                  </Fragment>
+                )}
+              </Typography>
+            </Box>
           ))}
+          <Box my={1}>
+            <Button>
+              <FaPlus style={{marginRight: 8}} />
+              {localize('Stance', 'Position')}
+            </Button>
+          </Box>
         </Box>
       )}
       renderCandidate={(candidate, boxProps) => {
@@ -88,18 +132,31 @@ export default function EditorTable(props) {
           localize
         );
         return (
-          <Box component={CardActionArea} p={2} {...boxProps}>
-            <Typography variant="subtitle1">{title}</Typography>
-          </Box>
+          <HeaderButton title={title} {...boxProps}>
+            {closeDialog => (
+              <CandidateForm
+                title={title}
+                candidate={candidate}
+                onClose={closeDialog}
+              />
+            )}
+          </HeaderButton>
         );
       }}
-      renderTopic={(topic, boxProps) => (
-        <Box component={CardActionArea} p={2} {...boxProps}>
-          <Typography variant="subtitle1">
-            {localize(topic.titleEn, topic.titleFr)}
-          </Typography>
-        </Box>
-      )}
+      renderTopic={(topic, boxProps) => {
+        const title = localize(topic.titleEn, topic.titleFr);
+        return (
+          <HeaderButton title={title} {...boxProps}>
+            {() => (
+              <form>
+                <DialogTitle disableTypography>
+                  <Typography variant="h5">{title}</Typography>
+                </DialogTitle>
+              </form>
+            )}
+          </HeaderButton>
+        );
+      }}
     />
   );
 }
