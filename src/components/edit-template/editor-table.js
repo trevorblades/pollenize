@@ -10,6 +10,7 @@ import {
   DialogTitle,
   Typography
 } from '@material-ui/core';
+import {CANDIDATE_FRAGMENT} from '../../utils/queries';
 import {FaPlus} from 'react-icons/fa';
 import {getCandidateTitles} from '../../utils';
 import {gql} from 'apollo-boost';
@@ -21,16 +22,7 @@ const GET_ELECTION = gql`
     election(id: $id) {
       partyFirst
       candidates {
-        name
-        color
-        portrait
-        partyEn
-        partyFr
-        hometown
-        birthDate
-        bioEn
-        bioFr
-        active
+        ...CandidateFragment
         stances {
           id
           textEn
@@ -51,6 +43,7 @@ const GET_ELECTION = gql`
       }
     }
   }
+  ${CANDIDATE_FRAGMENT}
 `;
 
 function HeaderButton({title, children, ...props}) {

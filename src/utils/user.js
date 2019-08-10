@@ -10,7 +10,7 @@ export function useUser() {
 }
 
 export function UserProvider(props) {
-  const [token, setToken] = useLocalStorage('token');
+  const [token, setToken] = useLocalStorage('token', null, true);
 
   let user;
   if (token) {
