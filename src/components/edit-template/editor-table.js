@@ -1,15 +1,11 @@
 import CandidateForm from './candidate-form';
+import DialogButton from './dialog-button';
 import ElectionTable from '../election-table';
 import PropTypes from 'prop-types';
-import React, {Fragment, useState} from 'react';
+import React from 'react';
+import StanceForm from './stance-form';
 import TopicForm from './topic-form';
-import {
-  Box,
-  Button,
-  CardActionArea,
-  Dialog,
-  Typography
-} from '@material-ui/core';
+import {Box, Button, CardActionArea, Typography} from '@material-ui/core';
 import {ELECTION_FRAGMENT} from '../../utils/queries';
 import {FaPlus} from 'react-icons/fa';
 import {getCandidateTitles} from '../../utils';
@@ -27,25 +23,16 @@ const GET_ELECTION = gql`
 `;
 
 function HeaderButton({title, children, ...props}) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  function openDialog() {
-    setDialogOpen(true);
-  }
-
-  function closeDialog() {
-    setDialogOpen(false);
-  }
-
   return (
-    <Fragment>
-      <Box onClick={openDialog} component={CardActionArea} p={2} {...props}>
-        <Typography variant="subtitle1">{title}</Typography>
-      </Box>
-      <Dialog fullWidth scroll="body" open={dialogOpen} onClose={closeDialog}>
-        {children(closeDialog)}
-      </Dialog>
-    </Fragment>
+    <DialogButton
+      renderButton={openDialog => (
+        <Box onClick={openDialog} component={CardActionArea} p={2} {...props}>
+          <Typography variant="subtitle1">{title}</Typography>
+        </Box>
+      )}
+    >
+      {children}
+    </DialogButton>
   );
 }
 
@@ -73,17 +60,30 @@ export default function EditorTable(props) {
   return (
     <ElectionTable
       election={data.election}
-      renderStances={(stances, boxProps) => (
+      renderStances={({stances, candidate, topic, boxProps}) => (
         <Box p={1} {...boxProps}>
           {stances.map(stance => (
-            <Box component={CardActionArea} key={stance.id} p={1}>
-              <Typography
-                variant="body2"
-                color={stance.sources.length ? 'inherit' : 'textSecondary'}
-              >
-                {localize(stance.textEn, stance.textFr)}
-              </Typography>
-            </Box>
+            <DialogButton
+              key={stance.id}
+              renderButton={openDialog => (
+                <Box onClick={openDialog} component={CardActionArea} p={1}>
+                  <Typography
+                    variant="body2"
+                    color={stance.sources.length ? 'inherit' : 'textSecondary'}
+                  >
+                    {localize(stance.textEn, stance.textFr)}
+                  </Typography>
+                </Box>
+              )}
+            >
+              {closeDialog => (
+                <StanceForm
+                  title={`${candidate.name}/${topic.titleEn}`}
+                  stance={stance}
+                  onClose={closeDialog}
+                />
+              )}
+            </DialogButton>
           ))}
           <Box my={1}>
             <Button>
@@ -93,7 +93,7 @@ export default function EditorTable(props) {
           </Box>
         </Box>
       )}
-      renderCandidate={(candidate, boxProps) => {
+      renderCandidate={({candidate, boxProps}) => {
         const [title] = getCandidateTitles(
           candidate,
           data.election.partyFirst,
@@ -111,7 +111,7 @@ export default function EditorTable(props) {
           </HeaderButton>
         );
       }}
-      renderTopic={(topic, boxProps) => {
+      renderTopic={({topic, boxProps}) => {
         const title = localize(topic.titleEn, topic.titleFr);
         return (
           <HeaderButton title={title} {...boxProps}>

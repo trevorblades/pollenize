@@ -42,6 +42,12 @@ export default function ElectionTable(props) {
           style
         };
 
+        const options = {
+          candidate,
+          topic,
+          boxProps
+        };
+
         return (
           <CellMeasurer
             cache={cache}
@@ -51,14 +57,16 @@ export default function ElectionTable(props) {
             rowIndex={rowIndex}
           >
             {isBody ? (
-              props.renderStances(
-                candidate.stances.filter(stance => stance.topicId === topic.id),
-                boxProps
-              )
+              props.renderStances({
+                ...options,
+                stances: candidate.stances.filter(
+                  stance => stance.topicId === topic.id
+                )
+              })
             ) : columnIndex ? (
-              props.renderCandidate(candidate, boxProps)
+              props.renderCandidate(options)
             ) : topic ? (
-              props.renderTopic(topic, boxProps)
+              props.renderTopic(options)
             ) : (
               <Box {...boxProps} />
             )}
