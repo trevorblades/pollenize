@@ -3,6 +3,13 @@ import {Source, Stance, sequelize} from '../db';
 
 export const typeDef = gql`
   extend type Mutation {
+    createStance(
+      topicId: ID!
+      candidateId: ID!
+      textEn: String
+      textFr: String
+      sources: [SourceInput]
+    ): Stance
     updateStance(
       id: ID!
       textEn: String
@@ -34,6 +41,15 @@ export const typeDef = gql`
 
 export const resolvers = {
   Mutation: {
+    createStance(parent, args, {user}) {
+      if (!user) {
+        throw new AuthenticationError('Unauthorized');
+      }
+
+      return Stance.create(args, {
+        include: [Source]
+      });
+    },
     async updateStance(parent, {id, sources, ...args}, {user}) {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
