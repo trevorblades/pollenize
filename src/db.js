@@ -60,7 +60,7 @@ Candidate.hasMany(Stance);
 Stance.belongsTo(Topic);
 Topic.hasMany(Stance);
 
-const Source = sequelize.define('source', {
+export const Source = sequelize.define('source', {
   url: Sequelize.STRING
 });
 

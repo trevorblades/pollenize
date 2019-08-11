@@ -1,7 +1,21 @@
-import {Stance, sequelize} from '../db';
-import {gql} from 'apollo-server-express';
+import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
+import {Source, Stance, sequelize} from '../db';
 
 export const typeDef = gql`
+  extend type Mutation {
+    updateStance(
+      id: ID!
+      textEn: String
+      textFr: String
+      sources: [SourceInput]
+    ): Stance
+  }
+
+  input SourceInput {
+    id: ID
+    url: String!
+  }
+
   extend type Topic {
     stances: [Stance]
   }
@@ -19,6 +33,35 @@ export const typeDef = gql`
 `;
 
 export const resolvers = {
+  Mutation: {
+    async updateStance(parent, {id, sources, ...args}, {user}) {
+      if (!user) {
+        throw new AuthenticationError('Unauthorized');
+      }
+
+      const stance = await Stance.findByPk(id);
+      if (!stance) {
+        throw new UserInputError('Stance not found');
+      }
+
+      const oldSources = await Promise.all(
+        sources
+          .filter(source => source.id)
+          .map(async ({id, url}) => {
+            const source = await Source.findByPk(id);
+            return source.update({url});
+          })
+      );
+
+      const newSources = await Source.bulkCreate(
+        sources.filter(source => !source.id),
+        {returning: true}
+      );
+
+      await stance.setSources([...oldSources, ...newSources]);
+      return stance.update(args);
+    }
+  },
   Topic: {
     stances(parent) {
       return parent.getStances({
