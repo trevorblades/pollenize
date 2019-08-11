@@ -124,6 +124,7 @@ export default function StanceForm(props) {
         </form>
       </DialogContent>
       <DialogActions>
+        {props.children}
         <Button onClick={props.onClose}>Cancel</Button>
         <Button disabled={props.loading} color="primary" onClick={submitForm}>
           {props.buttonText}
@@ -134,6 +135,7 @@ export default function StanceForm(props) {
 }
 
 StanceForm.propTypes = {
+  children: PropTypes.node,
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   stance: PropTypes.object.isRequired,

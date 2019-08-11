@@ -68,6 +68,7 @@ export default function EditorTable(props) {
             >
               {closeDialog => (
                 <UpdateStanceForm
+                  electionId={data.election.id}
                   stance={stance}
                   candidate={candidate}
                   topic={topic}
