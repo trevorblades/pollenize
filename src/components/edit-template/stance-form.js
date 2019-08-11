@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, {Fragment, useRef, useState} from 'react';
-import gql from 'graphql-tag';
 import {
   Button,
   DialogActions,
@@ -12,24 +11,8 @@ import {
   Typography
 } from '@material-ui/core';
 import {FormField} from '../common';
-import {MdCheck, MdClose} from 'react-icons/md';
-import {STANCE_FRAGMENT} from '../../utils/queries';
-import {useMutation} from '@apollo/react-hooks';
+import {MdClose, MdKeyboardReturn} from 'react-icons/md';
 import {withProps} from 'recompose';
-
-const UPDATE_STANCE = gql`
-  mutation UpdateStance(
-    $id: ID!
-    $textEn: String
-    $textFr: String
-    $sources: [SourceInput]
-  ) {
-    updateStance(id: $id, textEn: $textEn, textFr: $textFr, sources: $sources) {
-      ...StanceFragment
-    }
-  }
-  ${STANCE_FRAGMENT}
-`;
 
 const SourceField = withProps({
   margin: 'dense',
@@ -40,21 +23,15 @@ const SourceField = withProps({
 export default function StanceForm(props) {
   const form = useRef(null);
   const [sources, setSources] = useState(props.stance.sources);
-  const [updateStance, {loading, error}] = useMutation(UPDATE_STANCE, {
-    onCompleted: props.onClose,
-    variables: {
-      id: props.stance.id
-    }
-  });
 
   function submitForm() {
     const {textEn, textFr} = form.current;
-    updateStance({
+    props.mutation({
       variables: {
         textEn: textEn.value,
         textFr: textFr.value,
         sources: sources.map(source => ({
-          id: source.new ? null : source.id,
+          id: source.new ? undefined : source.id,
           url: source.url
         }))
       }
@@ -83,14 +60,14 @@ export default function StanceForm(props) {
   return (
     <Fragment>
       <DialogTitle disableTypography>
-        <Typography variant="overline">Editing stance</Typography>
-        <Typography variant="h4">{props.title}</Typography>
+        <Typography variant="overline">{props.title}</Typography>
+        <Typography variant="h4">{`${props.candidate.name}/${props.topic.titleEn}`}</Typography>
       </DialogTitle>
       <DialogContent>
         <form ref={form}>
-          {error && (
+          {props.error && (
             <Typography gutterBottom color="error">
-              {error.message}
+              {props.error.message}
             </Typography>
           )}
           <FormField
@@ -98,14 +75,14 @@ export default function StanceForm(props) {
             label="Text (EN)"
             name="textEn"
             defaultValue={props.stance.textEn}
-            disabled={loading}
+            disabled={props.loading}
           />
           <FormField
             multiline
             label="Texte (FR)"
             name="textFr"
             defaultValue={props.stance.textFr}
-            disabled={loading}
+            disabled={props.loading}
           />
           <Typography variant="h6" style={{marginTop: 16}}>
             Sources
@@ -114,7 +91,7 @@ export default function StanceForm(props) {
             <SourceField
               defaultValue={source.url}
               key={source.id}
-              disabled={loading}
+              disabled={props.loading}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -132,13 +109,13 @@ export default function StanceForm(props) {
             required
             name="source"
             autoComplete="off"
-            disabled={loading}
+            disabled={props.loading}
             placeholder={`Add ${sources.length ? 'another' : 'a'} source`}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton type="submit" color="inherit">
-                    <MdCheck />
+                  <IconButton type="submit">
+                    <MdKeyboardReturn />
                   </IconButton>
                 </InputAdornment>
               )
@@ -148,8 +125,8 @@ export default function StanceForm(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onClose}>Cancel</Button>
-        <Button disabled={loading} color="primary" onClick={submitForm}>
-          Save changes
+        <Button disabled={props.loading} color="primary" onClick={submitForm}>
+          {props.buttonText}
         </Button>
       </DialogActions>
     </Fragment>
@@ -159,5 +136,11 @@ export default function StanceForm(props) {
 StanceForm.propTypes = {
   title: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
-  stance: PropTypes.object.isRequired
+  stance: PropTypes.object.isRequired,
+  candidate: PropTypes.object.isRequired,
+  topic: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
+  mutation: PropTypes.func.isRequired,
+  buttonText: PropTypes.string.isRequired
 };

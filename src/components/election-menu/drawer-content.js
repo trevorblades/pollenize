@@ -39,7 +39,7 @@ export default function DrawerContent(props) {
   const {localize} = useLanguage();
   const {stars, resetStars} = useStars();
   const {secondaryAction, starIcon} = useStyles();
-  const [editShown, toggleEditShown] = useToggle(false);
+  const [adminShown, toggleAdminShown] = useToggle(false);
 
   const totalStarCount = useMemo(
     () =>
@@ -50,7 +50,7 @@ export default function DrawerContent(props) {
     [props.candidates, stars]
   );
 
-  useKey('A', toggleEditShown);
+  useKey('A', toggleAdminShown);
 
   function handleResetClick() {
     resetStars(props.candidates);
@@ -124,7 +124,12 @@ export default function DrawerContent(props) {
             </ListItemText>
           </ListItem>
         )}
-        {editShown && (
+      </StyledList>
+      {adminShown && (
+        <List>
+          <ListSubheader>
+            {localize('Admin options', "options d'administration")}
+          </ListSubheader>
           <ListItem
             button
             component={Link}
@@ -134,8 +139,8 @@ export default function DrawerContent(props) {
               {localize('Edit election', "Modifier l'élection")}
             </ListItemText>
           </ListItem>
-        )}
-      </StyledList>
+        </List>
+      )}
     </Fragment>
   );
 }

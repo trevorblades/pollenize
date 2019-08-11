@@ -1,26 +1,16 @@
 import CandidateForm from './candidate-form';
+import CreateStanceForm from './create-stance-form';
 import DialogButton from './dialog-button';
 import ElectionTable from '../election-table';
 import PropTypes from 'prop-types';
 import React from 'react';
-import StanceForm from './stance-form';
 import TopicForm from './topic-form';
-import {Box, Button, CardActionArea, Typography} from '@material-ui/core';
-import {ELECTION_FRAGMENT} from '../../utils/queries';
-import {FaPlus} from 'react-icons/fa';
+import UpdateStanceForm from './update-stance-form';
+import {Box, CardActionArea, Chip, Typography} from '@material-ui/core';
+import {GET_ELECTION} from '../../utils/queries';
 import {getCandidateTitles} from '../../utils';
-import {gql} from 'apollo-boost';
 import {useLanguage} from '../../utils/language';
 import {useQuery} from '@apollo/react-hooks';
-
-const GET_ELECTION = gql`
-  query GetElection($id: ID!) {
-    election(id: $id) {
-      ...ElectionFragment
-    }
-  }
-  ${ELECTION_FRAGMENT}
-`;
 
 function HeaderButton({title, children, ...props}) {
   return (
@@ -77,19 +67,34 @@ export default function EditorTable(props) {
               )}
             >
               {closeDialog => (
-                <StanceForm
-                  title={`${candidate.name}/${topic.titleEn}`}
+                <UpdateStanceForm
                   stance={stance}
+                  candidate={candidate}
+                  topic={topic}
                   onClose={closeDialog}
                 />
               )}
             </DialogButton>
           ))}
           <Box my={1}>
-            <Button>
-              <FaPlus style={{marginRight: 8}} />
-              {localize('Stance', 'Position')}
-            </Button>
+            <DialogButton
+              renderButton={openDialog => (
+                <Chip
+                  onClick={openDialog}
+                  label={localize('Add stance', 'Ajouter la position')}
+                  size="small"
+                />
+              )}
+            >
+              {closeDialog => (
+                <CreateStanceForm
+                  electionId={data.election.id}
+                  candidate={candidate}
+                  topic={topic}
+                  onClose={closeDialog}
+                />
+              )}
+            </DialogButton>
           </Box>
         </Box>
       )}

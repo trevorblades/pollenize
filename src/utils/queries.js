@@ -52,8 +52,9 @@ export const TOPIC_FRAGMENT = gql`
   }
 `;
 
-export const ELECTION_FRAGMENT = gql`
+const ELECTION_FRAGMENT = gql`
   fragment ElectionFragment on Election {
+    id
     partyFirst
     candidates {
       ...CandidateFragment
@@ -64,4 +65,13 @@ export const ELECTION_FRAGMENT = gql`
   }
   ${CANDIDATE_FRAGMENT}
   ${TOPIC_FRAGMENT}
+`;
+
+export const GET_ELECTION = gql`
+  query GetElection($id: ID!) {
+    election(id: $id) {
+      ...ElectionFragment
+    }
+  }
+  ${ELECTION_FRAGMENT}
 `;
