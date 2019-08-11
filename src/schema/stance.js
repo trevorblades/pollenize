@@ -16,6 +16,7 @@ export const typeDef = gql`
       textFr: String
       sources: [SourceInput]
     ): Stance
+    deleteStance(id: ID!): ID
   }
 
   input SourceInput {
@@ -76,6 +77,19 @@ export const resolvers = {
 
       await stance.setSources([...oldSources, ...newSources]);
       return stance.update(args);
+    },
+    async deleteStance(parent, args, {user}) {
+      if (!user) {
+        throw new AuthenticationError('Unauthorized');
+      }
+
+      const stance = await Stance.findByPk(args.id);
+      if (!stance) {
+        throw new UserInputError('Stance not found');
+      }
+
+      await stance.destroy();
+      return stance.id;
     }
   },
   Topic: {
