@@ -41,7 +41,7 @@ export function FooterContent() {
             </Typography>
           </Box>
           <Typography variant="body2">
-            &copy; {new Date().getFullYear()} Really Awesome Doings
+            &copy; {new Date().getFullYear()} Pollenize
           </Typography>
         </Grid>
         <NavGroup title="Quick links">
