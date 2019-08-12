@@ -11,7 +11,7 @@ const theme = createMuiTheme({
     secondary: colors.red
   },
   typography: {
-    fontFamily: ["'Roboto Mono'", 'Menlo', 'monospace'].toString(),
+    fontFamily: ["'Fira Mono'", 'Menlo', 'monospace'].toString(),
     h1: headingStyles,
     h2: headingStyles,
     h3: headingStyles,

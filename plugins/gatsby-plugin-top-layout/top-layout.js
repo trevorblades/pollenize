@@ -11,7 +11,7 @@ export default function TopLayout(props) {
       <Helmet>
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,500,700&display=swap"
+          href="https://fonts.googleapis.com/css?family=Fira+Mono:400,500,700&display=swap"
         />
       </Helmet>
       <ThemeProvider theme={theme}>
