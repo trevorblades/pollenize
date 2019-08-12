@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import clouds from '../assets/images/clouds.jpg';
 import {Box, Grid, Typography} from '@material-ui/core';
+import {Helmet} from 'react-helmet';
 import {SectionWrapper} from '../components/common';
 import {styled} from '@material-ui/styles';
 
@@ -37,6 +38,9 @@ Quote.propTypes = {
 export default function Index() {
   return (
     <Layout>
+      <Helmet>
+        <title>Informing voters</title>
+      </Helmet>
       <Header />
       <Hero />
       <SectionWrapper py={10}>

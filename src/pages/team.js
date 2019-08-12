@@ -12,6 +12,7 @@ import {
   Typography
 } from '@material-ui/core';
 import {FaInstagram, FaTwitter} from 'react-icons/fa';
+import {Helmet} from 'react-helmet';
 import {SectionWrapper} from '../components/common';
 import {makeStyles} from '@material-ui/styles';
 import {size} from 'polished';
@@ -67,6 +68,9 @@ TeamMember.defaultProps = {
 export default function Team() {
   return (
     <Layout>
+      <Helmet>
+        <title>Our team</title>
+      </Helmet>
       <Header />
       <Box
         bgcolor="darkgrey"

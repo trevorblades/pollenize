@@ -56,6 +56,7 @@ export default function Password() {
   return (
     <Layout>
       <Helmet>
+        <title>Set password</title>
         <meta name="robots" content="noindex" />
       </Helmet>
       <Header />
