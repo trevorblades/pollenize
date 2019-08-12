@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {
-  Box,
   Button,
-  Card,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -11,7 +9,7 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import {HEADER_HEIGHT} from './header-base';
+import {FormCard} from './common';
 
 export default function LoginForm(props) {
   const [error, setError] = useState(null);
@@ -43,55 +41,44 @@ export default function LoginForm(props) {
   }
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      height={`calc(100vh - ${HEADER_HEIGHT}px)`}
-    >
-      <Box maxWidth={500} mx={3}>
-        <Card raised>
-          <form onSubmit={handleSubmit}>
-            <DialogTitle disableTypography>
-              <Typography variant="overline">Admins only</Typography>
-              <Typography variant="h4">Auth required</Typography>
-            </DialogTitle>
-            <DialogContent>
-              {error && (
-                <DialogContentText color="error">
-                  {error.message}
-                </DialogContentText>
-              )}
-              <TextField
-                fullWidth
-                autoFocus
-                required
-                autoComplete="off"
-                margin="normal"
-                label="Email address"
-                type="email"
-                name="email"
-                variant="outlined"
-              />
-              <TextField
-                fullWidth
-                required
-                margin="normal"
-                label="Password"
-                type="password"
-                name="password"
-                variant="outlined"
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button disabled={loading} size="large" type="submit">
-                Log in
-              </Button>
-            </DialogActions>
-          </form>
-        </Card>
-      </Box>
-    </Box>
+    <FormCard>
+      <form onSubmit={handleSubmit}>
+        <DialogTitle disableTypography>
+          <Typography variant="overline">Admins only</Typography>
+          <Typography variant="h4">Auth required</Typography>
+        </DialogTitle>
+        <DialogContent>
+          {error && (
+            <DialogContentText color="error">{error.message}</DialogContentText>
+          )}
+          <TextField
+            fullWidth
+            autoFocus
+            required
+            autoComplete="off"
+            margin="normal"
+            label="Email address"
+            type="email"
+            name="email"
+            variant="outlined"
+          />
+          <TextField
+            fullWidth
+            required
+            margin="normal"
+            label="Password"
+            type="password"
+            name="password"
+            variant="outlined"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button disabled={loading} size="large" type="submit">
+            Log in
+          </Button>
+        </DialogActions>
+      </form>
+    </FormCard>
   );
 }
 

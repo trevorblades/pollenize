@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Grid, TextField, Typography} from '@material-ui/core';
+import {Box, Card, Grid, TextField, Typography} from '@material-ui/core';
 import {HEADER_HEIGHT} from './header-base';
 import {compose, mapProps, withProps} from 'recompose';
 import {styled, useTheme, withTheme} from '@material-ui/styles';
@@ -97,4 +97,23 @@ PageHeader.propTypes = {
   children: PropTypes.node,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string
+};
+
+export function FormCard(props) {
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      height={`calc(100vh - ${HEADER_HEIGHT}px)`}
+    >
+      <Box maxWidth={500} mx={3}>
+        <Card raised>{props.children}</Card>
+      </Box>
+    </Box>
+  );
+}
+
+FormCard.propTypes = {
+  children: PropTypes.node.isRequired
 };
