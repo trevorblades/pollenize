@@ -1,7 +1,7 @@
 import HeaderBase from './header-base';
 import React from 'react';
-import {Button, Link as MuiLink} from '@material-ui/core';
-import {FaChevronRight} from 'react-icons/fa';
+import {Link as MuiLink} from '@material-ui/core';
+// import {FaChevronRight} from 'react-icons/fa';
 import {Link} from 'gatsby';
 import {compose, mapProps} from 'recompose';
 import {withStyles} from '@material-ui/styles';
@@ -27,10 +27,10 @@ export default function Header() {
       <MenuItem to="/elections">Elections</MenuItem>
       <MenuItem to="/team">Team</MenuItem>
       <MenuItem to="/blog">Blog</MenuItem>
-      <Button component={Link} to="/elections/canada-2019" variant="outlined">
+      {/* <Button component={Link} to="/elections/canada-2019" variant="outlined">
         Canada 2019
         <FaChevronRight style={{marginLeft: 8}} />
-      </Button>
+      </Button> */}
     </HeaderBase>
   );
 }

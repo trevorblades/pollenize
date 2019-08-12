@@ -1,18 +1,26 @@
 import React, {Fragment} from 'react';
-import logo, {ReactComponent as Logo} from '../assets/logo.svg';
+import leaf, {ReactComponent as Leaf} from '../assets/leaf.svg';
 import {Box, Fab, Typography} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {cover, size} from 'polished';
 import {styled, useTheme} from '@material-ui/styles';
 
-const Wrapper = styled('div')(({theme}) => ({
-  backgroundColor: theme.palette.grey[200],
-  overflow: 'hidden',
-  position: 'relative'
+const Mask = styled('div')(({theme}) => ({
+  ...cover(),
+  maskImage: `url(${leaf})`,
+  maskSize: 960,
+  maskRepeat: 'no-repeat',
+  maskPosition: 'center',
+  color: 'white',
+  pointerEvents: 'none',
+  userSelect: 'none',
+  [theme.breakpoints.down('sm')]: {
+    maskSize: 800
+  }
 }));
 
 const paddingX = 8;
-const StyledLogo = styled(Logo)(({theme}) => {
+const StyledLeaf = styled(Leaf)(({theme}) => {
   const wrapperOffset = theme.breakpoints.values.lg / 4;
   const paddingOffset = theme.spacing(paddingX) / 2;
   return {
@@ -32,24 +40,6 @@ const StyledLogo = styled(Logo)(({theme}) => {
   };
 });
 
-const InnerWrapper = styled('div')({
-  position: 'relative'
-});
-
-const Mask = styled('div')(({theme}) => ({
-  ...cover(),
-  maskImage: `url(${logo})`,
-  maskSize: 960,
-  maskRepeat: 'no-repeat',
-  maskPosition: 'center',
-  color: 'white',
-  pointerEvents: 'none',
-  userSelect: 'none',
-  [theme.breakpoints.down('sm')]: {
-    maskSize: 800
-  }
-}));
-
 function Content() {
   return (
     <Fragment>
@@ -66,9 +56,9 @@ function Content() {
 }
 
 export default function Hero() {
-  const {breakpoints, palette} = useTheme();
+  const {breakpoints} = useTheme();
   return (
-    <Wrapper>
+    <Box color="red" bgcolor="grey.200" position="relative" overflow="hidden">
       <Box maxWidth={breakpoints.values.lg} mx="auto" px={paddingX} py={12}>
         <Box
           width={{
@@ -76,23 +66,23 @@ export default function Hero() {
             md: 1 / 2
           }}
         >
-          <StyledLogo fill={palette.text.primary} />
-          <InnerWrapper>
+          <StyledLeaf fill="currentColor" />
+          <Box position="relative">
             <Content />
             <Mask aria-hidden="true">
               <Content />
             </Mask>
             <Fab
+              disabled
               variant="extended"
               component={Link}
               to="/elections/canada-2019"
-              color="secondary"
             >
-              View election guide
+              Coming soon
             </Fab>
-          </InnerWrapper>
+          </Box>
         </Box>
       </Box>
-    </Wrapper>
+    </Box>
   );
 }
