@@ -24,7 +24,7 @@ const StyledLeaf = styled(Leaf)(({theme}) => {
   const wrapperOffset = theme.breakpoints.values.lg / 4;
   const paddingOffset = theme.spacing(paddingX) / 2;
   return {
-    ...size(960),
+    width: 960,
     position: 'absolute',
     left: `calc(50% - ${wrapperOffset - paddingOffset}px)`,
     top: '50%',
