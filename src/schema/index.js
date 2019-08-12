@@ -7,6 +7,7 @@ import {typeDef as Election, resolvers as electionResolvers} from './election';
 import {typeDef as Source, resolvers as sourceResolvers} from './source';
 import {typeDef as Stance, resolvers as stanceResolvers} from './stance';
 import {typeDef as Topic, resolvers as topicResolvers} from './topic';
+import {typeDef as User, resolvers as userResolvers} from './user';
 import {gql, makeExecutableSchema} from 'apollo-server-express';
 
 const Query = gql`
@@ -22,12 +23,13 @@ const Mutation = gql`
 `;
 
 export default makeExecutableSchema({
-  typeDefs: [Query, Mutation, Election, Candidate, Topic, Stance, Source],
+  typeDefs: [Query, Mutation, Election, Candidate, Topic, Stance, Source, User],
   resolvers: merge(
     electionResolvers,
     candidateResolvers,
     topicResolvers,
     stanceResolvers,
-    sourceResolvers
+    sourceResolvers,
+    userResolvers
   )
 });
