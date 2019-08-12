@@ -22,7 +22,7 @@ function TeamMember(props) {
       </Typography>
       {props.twitter && (
         <Box mb={1} display="flex" alignItems="center">
-          <FaTwitter size={16} style={{marginRight: 8}} />
+          <FaTwitter size={16} fill="#1da1f2" style={{marginRight: 8}} />
           <MuiLink
             href={`https://twitter.com/${props.twitter}`}
             target="_blank"
