@@ -13,13 +13,15 @@ import {
 } from '@material-ui/core';
 import {FormCard, FormField} from '../../components/common';
 import {Helmet} from 'react-helmet';
+import {navigate} from 'gatsby';
 import {useMutation} from '@apollo/react-hooks';
+import {useUser} from '../../utils/user';
 
 const SET_PASSWORD = gql`
   mutation SetPassword(
-    $email: String
-    $password: String
-    $confirmPassword: String
+    $email: String!
+    $password: String!
+    $confirmPassword: String!
   ) {
     setPassword(
       email: $email
@@ -30,7 +32,13 @@ const SET_PASSWORD = gql`
 `;
 
 export default function SetPassword() {
-  const [setPassword, {loading, error}] = useMutation(SET_PASSWORD);
+  const {setToken} = useUser();
+  const [setPassword, {loading, error}] = useMutation(SET_PASSWORD, {
+    onCompleted(data) {
+      setToken(data.setPassword);
+      navigate('/');
+    }
+  });
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -66,6 +74,7 @@ export default function SetPassword() {
             <FormField
               autoFocus
               required
+              disabled={loading}
               autoComplete="off"
               label="Email address"
               type="email"
@@ -76,6 +85,7 @@ export default function SetPassword() {
               <Grid item xs={6}>
                 <FormField
                   required
+                  disabled={loading}
                   label="Password"
                   type="password"
                   name="password"
@@ -85,6 +95,7 @@ export default function SetPassword() {
               <Grid item xs={6}>
                 <FormField
                   required
+                  disabled={loading}
                   label="Repeat password"
                   type="password"
                   name="confirmPassword"
