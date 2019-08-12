@@ -31,7 +31,7 @@ const SET_PASSWORD = gql`
   }
 `;
 
-export default function SetPassword() {
+export default function Password() {
   const {setToken} = useUser();
   const [setPassword, {loading, error}] = useMutation(SET_PASSWORD, {
     onCompleted(data) {
@@ -62,7 +62,7 @@ export default function SetPassword() {
       <FormCard>
         <form onSubmit={handleSubmit}>
           <DialogTitle disableTypography>
-            <Typography variant="overline">Your account</Typography>
+            <Typography variant="overline">Finish your account</Typography>
             <Typography variant="h4">Set a password</Typography>
           </DialogTitle>
           <Box py={1} px={3}>
