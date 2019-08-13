@@ -62,7 +62,7 @@ exports.createPages = async ({actions, graphql}) => {
     });
 
     actions.createPage({
-      path: `${path}/edit`,
+      path: `${path}/___edit`,
       component: EditTemplate,
       context
     });
