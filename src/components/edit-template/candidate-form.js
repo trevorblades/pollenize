@@ -86,6 +86,7 @@ export default function CandidateForm(props) {
     const {
       file,
       name,
+      color,
       partyEn,
       partyFr,
       birthDate,
@@ -96,6 +97,7 @@ export default function CandidateForm(props) {
 
     const variables = {
       name: name.value,
+      color: color.value,
       partyEn: partyEn.value,
       partyFr: partyFr.value,
       birthDate: birthDate.value || null,
@@ -166,6 +168,7 @@ export default function CandidateForm(props) {
               Primary color
             </Typography>
             <input
+              name="color"
               type="color"
               disabled={disabled}
               defaultValue={props.candidate.color || '#ffffff'}
