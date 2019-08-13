@@ -142,7 +142,7 @@ StanceForm.propTypes = {
   candidate: PropTypes.object.isRequired,
   topic: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool,
+  error: PropTypes.object,
   mutation: PropTypes.func.isRequired,
   buttonText: PropTypes.string.isRequired
 };
