@@ -28,6 +28,7 @@ const CREATE_STANCE = gql`
 
 export default function CreateStanceForm(props) {
   const [createStance, {loading, error}] = useMutation(CREATE_STANCE, {
+    onCompleted: props.onClose,
     update(cache, {data}) {
       const {election} = cache.readQuery({
         query: GET_ELECTION,
