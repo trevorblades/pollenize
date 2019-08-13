@@ -8,17 +8,10 @@ module.exports = {
   },
   plugins: [
     'gatsby-plugin-top-layout',
+    'gatsby-plugin-material-ui',
     'gatsby-plugin-svgr',
     'gatsby-plugin-lodash',
     'gatsby-plugin-react-helmet',
-    {
-      resolve: 'gatsby-plugin-material-ui',
-      options: {
-        stylesProvider: {
-          injectFirst: true
-        }
-      }
-    },
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {

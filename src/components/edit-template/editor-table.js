@@ -9,15 +9,18 @@ import UpdateStanceForm from './update-stance-form';
 import {Box, CardActionArea, Chip, Typography} from '@material-ui/core';
 import {GET_ELECTION} from '../../utils/queries';
 import {getCandidateTitles} from '../../utils';
+import {makeStyles} from '@material-ui/styles';
 import {useLanguage} from '../../utils/language';
 import {useQuery} from '@apollo/react-hooks';
 
-function HeaderButton({title, children, ...props}) {
+function HeaderButton({title, children, className, ...props}) {
   return (
     <DialogButton
       renderButton={openDialog => (
-        <Box onClick={openDialog} component={CardActionArea} p={2} {...props}>
-          <Typography variant="subtitle1">{title}</Typography>
+        <Box {...props}>
+          <CardActionArea onClick={openDialog} className={className}>
+            <Typography variant="subtitle1">{title}</Typography>
+          </CardActionArea>
         </Box>
       )}
     >
@@ -28,11 +31,23 @@ function HeaderButton({title, children, ...props}) {
 
 HeaderButton.propTypes = {
   title: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
   children: PropTypes.func.isRequired
 };
 
+const useStyles = makeStyles(theme => ({
+  headerButton: {
+    height: '100%',
+    padding: theme.spacing(2)
+  },
+  stanceButton: {
+    padding: theme.spacing(1)
+  }
+}));
+
 export default function EditorTable(props) {
   const {localize} = useLanguage();
+  const {headerButton, stanceButton} = useStyles();
   const {data, loading, error} = useQuery(GET_ELECTION, {
     variables: {
       id: props.id
@@ -56,14 +71,14 @@ export default function EditorTable(props) {
             <DialogButton
               key={stance.id}
               renderButton={openDialog => (
-                <Box onClick={openDialog} component={CardActionArea} p={1}>
+                <CardActionArea onClick={openDialog} className={stanceButton}>
                   <Typography
                     variant="body2"
                     color={stance.sources.length ? 'inherit' : 'textSecondary'}
                   >
                     {localize(stance.textEn, stance.textFr)}
                   </Typography>
-                </Box>
+                </CardActionArea>
               )}
             >
               {closeDialog => (
@@ -106,7 +121,7 @@ export default function EditorTable(props) {
           localize
         );
         return (
-          <HeaderButton title={title} {...boxProps}>
+          <HeaderButton title={title} className={headerButton} {...boxProps}>
             {closeDialog => (
               <CandidateForm
                 title={title}
@@ -120,7 +135,7 @@ export default function EditorTable(props) {
       renderTopic={({topic, boxProps}) => {
         const title = localize(topic.titleEn, topic.titleFr);
         return (
-          <HeaderButton title={title} {...boxProps}>
+          <HeaderButton title={title} className={headerButton} {...boxProps}>
             {closeDialog => (
               <TopicForm title={title} topic={topic} onClose={closeDialog} />
             )}
