@@ -2,10 +2,11 @@ import React from 'react';
 import students from '../assets/images/students.jpg';
 import {Box, Button, Grid, Typography} from '@material-ui/core';
 import {ReactComponent as Civix} from '../assets/civix.svg';
+import {FaHeart} from 'react-icons/fa';
 import {FiX} from 'react-icons/fi';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {SectionWrapper} from './common';
-import {styled} from '@material-ui/styles';
+import {styled, useTheme} from '@material-ui/styles';
 
 const StyledImage = styled('img')(({theme}) => ({
   width: '100%',
@@ -13,6 +14,7 @@ const StyledImage = styled('img')(({theme}) => ({
 }));
 
 export default function Future() {
+  const {palette} = useTheme();
   return (
     <SectionWrapper py={10}>
       <Grid container spacing={7}>
@@ -58,6 +60,14 @@ export default function Future() {
               variant="contained"
               color="primary"
             >
+              <FaHeart
+                size={16}
+                fill={palette.secondary.main}
+                style={{
+                  marginLeft: -4,
+                  marginRight: 12
+                }}
+              />
               Make a donation
             </Button>
             <img
