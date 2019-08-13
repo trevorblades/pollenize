@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Box} from '@material-ui/core';
 import {CellMeasurer, CellMeasurerCache, MultiGrid} from 'react-virtualized';
 import {HEADER_HEIGHT} from './header-base';
 import {makeStyles} from '@material-ui/styles';
-import {useWindowSize} from 'react-use';
+import {useLanguage} from '../utils/language';
+import {usePrevious, useWindowSize} from 'react-use';
 
 const cache = new CellMeasurerCache({
   defaultHeight: 100,
@@ -17,16 +18,26 @@ const useStyles = makeStyles({
   }
 });
 
-export function ElectionTableCell() {}
-
 export default function ElectionTable(props) {
   const {grid} = useStyles();
   const {width, height} = useWindowSize();
+  const {language} = useLanguage();
+
+  const gridRef = useRef(null);
+  const prevElection = usePrevious(props.election);
+  const prevLanguage = usePrevious(language);
+  useEffect(() => {
+    if (props.election !== prevElection || language !== prevLanguage) {
+      cache.clearAll();
+      gridRef.current.forceUpdate();
+    }
+  }, [props.election, prevElection, language, prevLanguage]);
 
   const rowCount = props.election.topics.length + 1;
   const columnCount = props.election.candidates.length + 1;
   return (
     <MultiGrid
+      ref={gridRef}
       classNameTopLeftGrid={grid}
       classNameTopRightGrid={grid}
       classNameBottomLeftGrid={grid}
