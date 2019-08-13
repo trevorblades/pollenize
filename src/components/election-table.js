@@ -29,7 +29,7 @@ export default function ElectionTable(props) {
   useEffect(() => {
     if (props.election !== prevElection || language !== prevLanguage) {
       cache.clearAll();
-      gridRef.current.forceUpdate();
+      gridRef.current.forceUpdate(); // FIXME: this is a hack :)
     }
   }, [props.election, prevElection, language, prevLanguage]);
 
