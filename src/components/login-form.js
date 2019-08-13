@@ -1,47 +1,87 @@
-import Button from '@material-ui/core/Button';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Form from './form';
-import FormField from './form-field';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {logIn} from '../actions/user';
+import React, {useState} from 'react';
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Typography
+} from '@material-ui/core';
+import {FormCard} from './common';
 
-class LoginForm extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    loading: PropTypes.bool.isRequired,
-    onCancel: PropTypes.func.isRequired
-  };
+export default function LoginForm(props) {
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  onSubmit = event =>
-    this.props.dispatch(
-      logIn([event.target.email.value, event.target.password.value])
-    );
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-  render() {
-    return (
-      <Form onSubmit={this.onSubmit}>
-        <DialogTitle>Log in</DialogTitle>
+    setLoading(true);
+
+    try {
+      const {email, password} = event.target;
+      const response = await fetch(`${process.env.GATSBY_API_URL}/auth`, {
+        headers: new Headers({
+          Authorization: `Basic ${btoa(`${email.value}:${password.value}`)}`
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const token = await response.text();
+      props.setToken(token);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  }
+
+  return (
+    <FormCard>
+      <form onSubmit={handleSubmit}>
+        <DialogTitle disableTypography>
+          <Typography variant="overline">Admins only</Typography>
+          <Typography variant="h4">Auth required</Typography>
+        </DialogTitle>
         <DialogContent>
-          <FormField autoFocus label="Email address" name="email" />
-          <FormField label="Password" name="password" type="password" />
+          {error && (
+            <DialogContentText color="error">{error.message}</DialogContentText>
+          )}
+          <TextField
+            fullWidth
+            autoFocus
+            required
+            autoComplete="off"
+            margin="normal"
+            label="Email address"
+            type="email"
+            name="email"
+            variant="outlined"
+          />
+          <TextField
+            fullWidth
+            required
+            margin="normal"
+            label="Password"
+            type="password"
+            name="password"
+            variant="outlined"
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onCancel}>Cancel</Button>
-          <Button disabled={this.props.loading} color="primary" type="submit">
-            Submit
+          <Button disabled={loading} size="large" type="submit">
+            Log in
           </Button>
         </DialogActions>
-      </Form>
-    );
-  }
+      </form>
+    </FormCard>
+  );
 }
 
-const mapStateToProps = state => ({
-  loading: state.user.loading
-});
-
-export default connect(mapStateToProps)(LoginForm);
+LoginForm.propTypes = {
+  setToken: PropTypes.func.isRequired
+};

@@ -1,128 +1,100 @@
-import ButtonBase from '@material-ui/core/ButtonBase';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
-import Helmet from 'react-helmet';
+import Footer from '../components/footer';
+import Header from '../components/header';
+import Layout from '../components/layout';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import Section from '../components/section';
-import Typography from '@material-ui/core/Typography';
-import styled, {css} from 'react-emotion';
-import theme from '../theme';
-import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {load as loadElections} from '../actions/elections';
+import React from 'react';
+import {
+  Box,
+  Card,
+  CardActionArea,
+  Chip,
+  Divider,
+  Grid,
+  Typography
+} from '@material-ui/core';
+import {Helmet} from 'react-helmet';
+import {Link, graphql} from 'gatsby';
+import {SectionWrapper} from '../components/common';
+import {makeStyles} from '@material-ui/styles';
 
-const ElectionButton = styled(ButtonBase)({
-  flexDirection: 'column',
-  width: '100%',
-  padding: theme.spacing.unit * 6,
-  color: theme.palette.grey[50],
-  backgroundColor: theme.palette.grey[900]
-});
-
-const Flag = styled.img({
-  display: 'block',
-  height: theme.spacing.unit * 5,
-  marginBottom: theme.spacing.unit * 2
-});
-
-const height = theme.spacing.unit * 2.5;
-const Status = styled(Typography)({
-  height,
-  padding: `0 ${theme.spacing.unit * 2}px`,
-  borderRadius: height / 2,
-  lineHeight: `${height}px`,
-  backgroundColor: theme.palette.grey[800]
-});
-
-const activeStatusClassName = css({
-  backgroundColor: theme.palette.primary[500]
-});
-
-const title = 'Elections';
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-
-class Elections extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    elections: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-    user: PropTypes.object
-  };
-
-  componentDidMount() {
-    this.load();
+const useStyles = makeStyles(theme => ({
+  card: {
+    backgroundColor: theme.palette.grey[200]
+  },
+  flag: {
+    marginBottom: theme.spacing(2)
   }
+}));
 
-  componentDidUpdate(prevProps) {
-    const hasUser = Boolean(this.props.user);
-    const didHaveUser = Boolean(prevProps.user);
-    if (hasUser !== didHaveUser) {
-      this.load();
-    }
-  }
-
-  load() {
-    this.props.dispatch(loadElections());
-  }
-
-  renderContent() {
-    if (!this.props.elections.length) {
-      if (this.props.loading) {
-        return <CircularProgress />;
-      }
-      return <Typography variant="headline">No elections found</Typography>;
-    }
-
-    return (
-      <Grid container spacing={theme.spacing.unit * 3}>
-        {this.props.elections.map(election => {
-          const active = today.getTime() <= Date.parse(election.ends_at);
-          return (
-            <Grid item key={election.id} xs={12} sm={6} md={4} lg={3}>
-              <ElectionButton
-                component={Link}
-                to={`/elections/${election.slug}`}
-              >
-                <Flag src={election.flag} />
-                <Typography gutterBottom color="inherit" variant="title">
-                  {election.title}
-                </Typography>
-                <Status
-                  color="inherit"
-                  variant="caption"
-                  className={active && activeStatusClassName}
-                >
-                  {active ? 'Active' : 'Concluded'}
-                </Status>
-              </ElectionButton>
-            </Grid>
-          );
-        })}
-      </Grid>
-    );
-  }
-
-  render() {
-    return (
-      <Section centered>
-        <Helmet>
-          <title>Elections</title>
-        </Helmet>
-        <Typography gutterBottom variant="display3">
-          Election guides
+export default function Elections(props) {
+  const {card, flag} = useStyles();
+  return (
+    <Layout>
+      <Helmet>
+        <title>Elections</title>
+      </Helmet>
+      <Header />
+      <SectionWrapper>
+        <Typography gutterBottom variant="h2">
+          Elections
         </Typography>
-        {this.renderContent()}
-      </Section>
-    );
-  }
+        <Grid container spacing={3}>
+          {props.data.pollenize.elections.map(election => {
+            const endsAt = new Date(Number(election.endsAt));
+            const isActive = endsAt > Date.now();
+            return (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={election.id}>
+                <Card className={card} elevation={0}>
+                  <CardActionArea
+                    component={Link}
+                    to={`/elections/${election.slug}`}
+                  >
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      p={4}
+                    >
+                      <img height={32} src={election.flag} className={flag} />
+                      <Typography gutterBottom variant="h5" noWrap>
+                        {election.title}
+                      </Typography>
+                      <Chip
+                        size="small"
+                        label={
+                          isActive ? endsAt.toLocaleDateString() : 'Concluded'
+                        }
+                        variant={isActive ? 'default' : 'outlined'}
+                        color={isActive ? 'primary' : 'default'}
+                      />
+                    </Box>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </SectionWrapper>
+      <Divider />
+      <Footer />
+    </Layout>
+  );
 }
 
-const mapStateToProps = state => ({
-  elections: state.elections.data,
-  loading: state.elections.loading,
-  user: state.user.data
-});
+Elections.propTypes = {
+  data: PropTypes.object.isRequired
+};
 
-export default connect(mapStateToProps)(Elections);
+export const pageQuery = graphql`
+  {
+    pollenize {
+      elections(public: true) {
+        id
+        slug
+        title
+        flag
+        endsAt
+      }
+    }
+  }
+`;

@@ -1,2 +1,4 @@
-dist
+.env
+.cache
+public
 node_modules

@@ -1,68 +1,36 @@
-import AppBar from '@material-ui/core/AppBar';
-import LogoWithWordmark from './logo-with-wordmark';
-import Navigation from './navigation';
-import PropTypes from 'prop-types';
-import React, {Component} from 'react';
-import Toolbar from '@material-ui/core/Toolbar';
-import styled, {css} from 'react-emotion';
-import theme from '../theme';
-import {Link} from 'react-router-dom';
-import {centered} from '../styles';
+import HeaderBase from './header-base';
+import React from 'react';
+import {Link as MuiLink} from '@material-ui/core';
+// import {FaChevronRight} from 'react-icons/fa';
+import {Link} from 'gatsby';
+import {compose, mapProps} from 'recompose';
+import {withStyles} from '@material-ui/styles';
 
-const darkClassName = css({
-  color: theme.palette.grey[50],
-  backgroundColor: theme.palette.grey[900]
-});
-
-export const HEADER_LOGO_SIZE = 30;
-const LogoLink = styled(Link)({
-  display: 'flex',
-  alignItems: 'center',
-  flexShrink: 0
-});
-
-const StyledNavigation = styled(Navigation)({
-  marginRight: theme.spacing.unit
-});
-
-class Header extends Component {
-  static propTypes = {
-    centered: PropTypes.bool,
-    children: PropTypes.node,
-    dark: PropTypes.bool,
-    logoHref: PropTypes.string,
-    simple: PropTypes.bool
-  };
-
-  static defaultProps = {
-    logoHref: '/'
-  };
-
-  renderLogo() {
-    const logo = (
-      <LogoWithWordmark height={HEADER_LOGO_SIZE} simple={this.props.simple} />
-    );
-    if (this.props.logoHref) {
-      return <LogoLink to={this.props.logoHref}>{logo}</LogoLink>;
+const MenuItem = compose(
+  withStyles(theme => ({
+    menuItem: {
+      marginRight: theme.spacing(3)
     }
-    return logo;
-  }
+  })),
+  mapProps(({classes, ...props}) => ({
+    component: Link,
+    className: classes.menuItem,
+    variant: 'body1',
+    color: 'inherit',
+    ...props
+  }))
+)(MuiLink);
 
-  render() {
-    return (
-      <AppBar
-        elevation={1}
-        color="inherit"
-        position="sticky"
-        className={this.props.dark && darkClassName}
-      >
-        <Toolbar className={this.props.centered && centered}>
-          {this.renderLogo()}
-          {this.props.children || <StyledNavigation withActive />}
-        </Toolbar>
-      </AppBar>
-    );
-  }
+export default function Header() {
+  return (
+    <HeaderBase>
+      <MenuItem to="/elections">Elections</MenuItem>
+      <MenuItem to="/team">Team</MenuItem>
+      <MenuItem to="/blog">Blog</MenuItem>
+      {/* <Button component={Link} to="/elections/canada-2019" variant="outlined">
+        Canada 2019
+        <FaChevronRight style={{marginLeft: 8}} />
+      </Button> */}
+    </HeaderBase>
+  );
 }
-
-export default Header;

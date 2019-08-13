@@ -1,11 +1,3 @@
 {
-  "parser": "babel-eslint",
-  "extends": "@trevorblades/eslint-config/react",
-  "globals": {
-    "TITLE": true,
-    "PUBLIC_PATH": true
-  },
-  "env": {
-    "jest": true
-  }
+  "extends": "@trevorblades/eslint-config/react"
 }
