@@ -105,7 +105,7 @@ export default function DrawerContent(props) {
             </ListItem>
           )}
         />
-        <ListItem
+        {/* <ListItem
           button
           component={Link}
           to={`/elections/${props.electionSlug}/table`}
@@ -113,7 +113,7 @@ export default function DrawerContent(props) {
           <ListItemText>
             {localize('View as table', 'Voir comme table')}
           </ListItemText>
-        </ListItem>
+        </ListItem> */}
         {props.onIntroClick && (
           <ListItem button onClick={props.onIntroClick}>
             <ListItemText>
