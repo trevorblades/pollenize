@@ -13,7 +13,6 @@ import {
 import {Helmet} from 'react-helmet';
 import {Link, graphql} from 'gatsby';
 import {SectionWrapper} from '../components/common';
-import {formatDate} from '../utils';
 import {size} from 'polished';
 import {styled} from '@material-ui/styles';
 
@@ -55,7 +54,7 @@ export default function Blog(props) {
                 <Box display="flex" alignItems="center" my={1}>
                   <StyledAvatar src={authorImage.publicURL} />
                   <Typography variant="subtitle1">
-                    {author} &bull; {formatDate(date)}
+                    {author} &bull; {date}
                   </Typography>
                 </Box>
                 <Typography variant="body2">{node.excerpt}</Typography>
@@ -83,9 +82,9 @@ export const pageQuery = graphql`
           slug
         }
         frontmatter {
-          date
           title
           author
+          date(formatString: "MMMM d, YYYY")
           authorImage {
             publicURL
           }
