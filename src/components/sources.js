@@ -3,22 +3,31 @@ import React, {Fragment, useMemo, useState} from 'react';
 import {Box, Link as MuiLink, Typography} from '@material-ui/core';
 import {FooterContent} from './footer';
 import {PageAnchor} from './common';
-import {styled, useTheme} from '@material-ui/styles';
+import {makeStyles, useTheme} from '@material-ui/styles';
 import {uniq} from 'lodash';
+import {withProps} from 'recompose';
 
-const StyledList = styled('ol')(({theme}) => ({
-  marginBottom: theme.spacing(8),
-  columnCount: 3,
-  columnGap: theme.spacing(5),
-  wordBreak: 'break-word',
-  [theme.breakpoints.down('md')]: {
-    marginBottom: theme.spacing(5),
-    columnCount: 2
-  },
-  [theme.breakpoints.down('sm')]: {
-    columnCount: 1
+const useStyles = makeStyles(theme => ({
+  list: {
+    marginBottom: theme.spacing(8),
+    columnCount: 3,
+    columnGap: theme.spacing(5),
+    wordBreak: 'break-word',
+    [theme.breakpoints.down('md')]: {
+      marginBottom: theme.spacing(5),
+      columnCount: 2
+    },
+    [theme.breakpoints.down('sm')]: {
+      columnCount: 1
+    }
   }
 }));
+
+const ListItem = withProps({
+  component: 'li',
+  variant: 'body2',
+  gutterBottom: true
+})(Typography);
 
 export function useSources(stances) {
   const [activeSource, setActiveSource] = useState(null);
@@ -38,6 +47,7 @@ export function useSources(stances) {
 }
 
 export default function Sources(props) {
+  const {list} = useStyles();
   const {breakpoints} = useTheme();
   return (
     <Fragment>
@@ -56,31 +66,48 @@ export default function Sources(props) {
           }}
           color="text.secondary"
         >
-          <Typography gutterBottom variant="h4">
-            Sources
-          </Typography>
-          <StyledList>
-            {props.sources.map((source, index) => (
-              <Fragment key={source}>
-                <PageAnchor name={`source-${index + 1}`} />
-                <Typography
-                  gutterBottom
-                  color={props.activeIndex === index ? 'primary' : 'inherit'}
-                  component="li"
-                  variant="body2"
-                >
-                  <MuiLink
-                    color="inherit"
-                    href={source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {source}
-                  </MuiLink>
-                </Typography>
-              </Fragment>
-            ))}
-          </StyledList>
+          {props.sources.length > 0 && (
+            <Fragment>
+              <Typography gutterBottom variant="h4">
+                Sources
+              </Typography>
+              <ol className={list}>
+                {props.sources.map((source, index) => (
+                  <Fragment key={source}>
+                    <PageAnchor name={`source-${index + 1}`} />
+                    <ListItem
+                      color={
+                        props.activeIndex === index ? 'primary' : 'inherit'
+                      }
+                    >
+                      <MuiLink
+                        color="inherit"
+                        href={source}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {source}
+                      </MuiLink>
+                    </ListItem>
+                  </Fragment>
+                ))}
+              </ol>
+            </Fragment>
+          )}
+          {props.credits.length > 0 && (
+            <Fragment>
+              <Typography gutterBottom variant="h4">
+                Credits
+              </Typography>
+              <ul className={list}>
+                {props.credits.map(credit => (
+                  <ListItem key={credit.id}>
+                    {credit.name}, {credit.role}
+                  </ListItem>
+                ))}
+              </ul>
+            </Fragment>
+          )}
           <FooterContent />
         </Box>
       </Box>
@@ -89,6 +116,7 @@ export default function Sources(props) {
 }
 
 Sources.propTypes = {
+  credits: PropTypes.array.isRequired,
   sources: PropTypes.array.isRequired,
   activeIndex: PropTypes.number
 };

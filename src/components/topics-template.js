@@ -34,7 +34,8 @@ export default function TopicsTemplate(props) {
     candidates,
     introEn,
     introFr,
-    partyFirst
+    partyFirst,
+    credits
   } = props.data.pollenize.election;
 
   const {localize} = useLanguage();
@@ -144,7 +145,7 @@ export default function TopicsTemplate(props) {
           );
         })}
       </PageWrapper>
-      <Sources sources={sources} activeIndex={activeSource} />
+      <Sources sources={sources} credits={credits} activeIndex={activeSource} />
     </Layout>
   );
 }
@@ -186,6 +187,11 @@ export const pageQuery = graphql`
               portrait
             }
           }
+        }
+        credits {
+          id
+          name
+          role
         }
         candidates(active: true) {
           id

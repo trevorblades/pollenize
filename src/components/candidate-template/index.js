@@ -129,7 +129,11 @@ export default function CandidateTemplate(props) {
           />
         ))}
       </PageWrapper>
-      <Sources sources={sources} activeIndex={activeSource} />
+      <Sources
+        sources={sources}
+        credits={election.credits}
+        activeIndex={activeSource}
+      />
     </Layout>
   );
 }
@@ -184,6 +188,11 @@ export const pageQuery = graphql`
             partyEn
             partyFr
             portrait
+          }
+          credits {
+            id
+            name
+            role
           }
         }
       }
