@@ -26,12 +26,7 @@ const server = new ApolloServer({
     try {
       const matches = req.headers.authorization.match(/bearer (\S+)/i);
       const {sub} = jwt.verify(matches[1], process.env.TOKEN_SECRET);
-      const user = await User.findByPk(sub, {
-        where: {
-          active: true
-        }
-      });
-
+      const user = await User.findByPk(sub);
       return {user};
     } catch (error) {
       return {};
