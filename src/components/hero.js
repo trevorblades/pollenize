@@ -48,8 +48,8 @@ function Content() {
         2019 Canadian federal election
       </Typography>
       <Typography paragraph variant="h6">
-        We break down the candidates and their policies so that you can make a
-        confident and informed vote.
+        We break down the candidates and their policies in a clear, organized
+        way so that you can make an informed vote.
       </Typography>
     </Fragment>
   );
