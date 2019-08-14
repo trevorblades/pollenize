@@ -15,6 +15,7 @@ import {Helmet} from 'react-helmet';
 import {Link, graphql} from 'gatsby';
 import {MdChevronLeft} from 'react-icons/md';
 import {SectionWrapper} from './common';
+import { formatDate } from '../utils';
 import {withProps} from 'recompose';
 
 const renderAst = new rehypeReact({
@@ -66,7 +67,7 @@ export default function BlogPostTemplate(props) {
         <Box display="flex" alignItems="center" mb={3}>
           <Avatar src={authorImage.publicURL} style={{marginRight: 16}} />
           <Typography variant="h6">
-            {author} &bull; {new Date(date).toLocaleDateString()}
+            {author} &bull; {formatDate(date)}
           </Typography>
         </Box>
         <Box mb={4}>
