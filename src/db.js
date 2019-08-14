@@ -75,3 +75,11 @@ export const Source = sequelize.define('source', {
 
 Source.belongsTo(Stance);
 Stance.hasMany(Source);
+
+const Credit = sequelize.define('credit', {
+  name: Sequelize.STRING,
+  role: Sequelize.STRING
+});
+
+Credit.belongsTo(Election);
+Election.hasMany(Credit);

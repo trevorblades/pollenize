@@ -3,6 +3,7 @@ import {
   typeDef as Candidate,
   resolvers as candidateResolvers
 } from './candidate';
+import {typeDef as Credit, resolvers as creditResolvers} from './credit';
 import {typeDef as Election, resolvers as electionResolvers} from './election';
 import {typeDef as Source, resolvers as sourceResolvers} from './source';
 import {typeDef as Stance, resolvers as stanceResolvers} from './stance';
@@ -23,13 +24,24 @@ const Mutation = gql`
 `;
 
 export default makeExecutableSchema({
-  typeDefs: [Query, Mutation, Election, Candidate, Topic, Stance, Source, User],
+  typeDefs: [
+    Query,
+    Mutation,
+    Election,
+    Candidate,
+    Topic,
+    Stance,
+    Source,
+    User,
+    Credit
+  ],
   resolvers: merge(
     electionResolvers,
     candidateResolvers,
     topicResolvers,
     stanceResolvers,
     sourceResolvers,
-    userResolvers
+    userResolvers,
+    creditResolvers
   )
 });
