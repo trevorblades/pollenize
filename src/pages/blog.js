@@ -84,7 +84,7 @@ export const pageQuery = graphql`
         frontmatter {
           title
           author
-          date(formatString: "MMMM d, YYYY")
+          date(formatString: "MMMM D, YYYY")
           authorImage {
             publicURL
           }
