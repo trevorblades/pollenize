@@ -116,12 +116,12 @@ export default function Team() {
           <TeamMember
             name="Trevor Blades"
             handle="trevorblades"
-            bio="Trevor is a web developer based in Burnaby, BC who web-develops everything from word games to productivity tools. He enjoys skateboarding and open source software."
+            bio="Trevor is a web developer based in Burnaby, BC who web-develops everything from word games to productivity tools. He enjoys skateboarding and Super Smash Bros. Melee."
           />
           <TeamMember
             name="Miguel Barbosa"
             handle="yeahfilms"
-            bio="Miguel is an award-winning film director, editor and producer. He creates music videos, documentaries and commercials."
+            bio="Miguel is an award-winning film director, editor and producer. He creates music videos, documentaries, and commercials."
           />
           <TeamMember
             name="Marvin Sanchez"
@@ -137,19 +137,19 @@ export default function Team() {
             name="Ben Miller"
             social="instagram"
             handle="mastermill"
-            bio="Ben is founder of WIRTH Hats, a clothing brand that works to break down barriers around mental health. Outside of WIRTH, Ben has led leadership and team development workshops in a variety of countries and companies, including Canada, US, Germany and Denmark."
+            bio="Ben is the founder of WIRTH Hats, a brand that breaks down barriers around mental health. Outside of WIRTH, Ben leads leadership and team development workshops in a variety of countries and companies."
           />
           <TeamMember
             name="Joseph Homsy"
             social="instagram"
             handle="jooomsy"
-            bio="Joe has received two college certificates in digital media, and has since built a career in the field working at advertising agencies and outdoor clothing company, Sitka. Now, Joe is focused on growing his own company, Voyager Three, and producing films and digital campaigns."
+            bio="Joe is a multimedia producer at Voyager 3 who lives in Tofino, BC. Sometimes he hangs ten and builds cribbage boards."
           />
           <TeamMember
             name="Sean Tanner"
             handle="shon"
             social="instagram"
-            bio="Sean was born in Vancouver Canada and studied at Capilano University to become a Graphic Designer and Illustrator. Once out in the real world he spent the next 6 years working at Spring Advertising. He now lives in Melbourne Australia, freelancing, and spending as much time as possible relaxing, traveling and taking photos."
+            bio="Sean is a graphic designer and illustrator who likes to spend as much time as possible relaxing, traveling, and taking photos."
           />
         </Grid>
       </SectionWrapper>
