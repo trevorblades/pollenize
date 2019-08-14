@@ -116,7 +116,7 @@ export default function Team() {
           <TeamMember
             name="Trevor Blades"
             handle="trevorblades"
-            bio="Trevor is a web developer based in Burnaby, BC. He web-develops everything from word games to productivity tools, and enjoys working on open source projects."
+            bio="Trevor is a web developer based in Burnaby, BC who web-develops everything from word games to productivity tools. He enjoys skateboarding and open source software."
           />
           <TeamMember
             name="Miguel Barbosa"
@@ -137,7 +137,7 @@ export default function Team() {
             name="Ben Miller"
             social="instagram"
             handle="mastermill"
-            bio="Ben did his bachelors degree at the University of Victoria in Environmental Sciences and Business, and is now finishing his masters at Copenhagen Business School in the Organizational Innovation and Entrepreneurship Program, where he started the improvisation business training program. Ben has a lot of interests, one of those include riding vast distances on 4 person bikes."
+            bio="Ben is founder of WIRTH Hats, a clothing brand that works to break down barriers around mental health. Outside of WIRTH, Ben has led leadership and team development workshops in a variety of countries and companies, including Canada, US, Germany and Denmark."
           />
           <TeamMember
             name="Joseph Homsy"
