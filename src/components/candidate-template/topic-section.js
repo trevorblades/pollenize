@@ -6,10 +6,18 @@ import {Button, IconButton, Typography} from '@material-ui/core';
 import {FaRegComments, FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
 import {Link} from 'gatsby';
+import {makeStyles} from '@material-ui/styles';
 import {useLanguage} from '../../utils/language';
 import {useToggle} from 'react-use';
 
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: `0 ${theme.spacing(0.5)}px`
+  }
+}));
+
 export default function TopicSection(props) {
+  const {button} = useStyles();
   const {localize} = useLanguage();
   const [expanded, toggleExpanded] = useToggle(false);
   const hash = `#${props.topic.slug}`;
@@ -43,15 +51,17 @@ export default function TopicSection(props) {
           >
             <FiLink />
           </IconButton>
-          <IconButton
+          <Button
             component={Link}
+            className={button}
             to={`/elections/${props.electionSlug}/topics#${props.topic.slug}`}
             color="inherit"
           >
-            <FaRegComments />
-          </IconButton>
+            <FaRegComments size={24} style={{marginRight: 8}} />
+            {localize('Compare', 'Comparer')}
+          </Button>
           {props.stances.length > 1 && (
-            <Button onClick={toggleExpanded} style={{marginLeft: 8}}>
+            <Button className={button} onClick={toggleExpanded}>
               {expanded
                 ? localize('Show less', 'Montre moins')
                 : `${localize('Show more', 'Montre plus')} (${props.stances
