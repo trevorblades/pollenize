@@ -2,12 +2,13 @@ import ElectionMenu from '../election-menu';
 import HeaderBase from '../header-base';
 import Layout from '../layout';
 import PropTypes from 'prop-types';
-import React, {useMemo} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import Sources, {useSources} from '../sources';
 import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
+import clipboard from 'clipboard-polyfill';
 import snarkdown from 'snarkdown';
-import {Avatar, Typography} from '@material-ui/core';
+import {Avatar, Snackbar, Typography} from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
 import {differenceInYears} from 'date-fns';
@@ -45,8 +46,10 @@ export default function CandidateTemplate(props) {
     stances
   } = props.data.pollenize.candidate;
 
+  const queueRef = useRef([]);
   const {palette} = useTheme();
   const {localize} = useLanguage();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const {sources, activeSource, handleSourceClick} = useSources(stances);
   const {stars, toggleStar} = useStars();
@@ -54,6 +57,35 @@ export default function CandidateTemplate(props) {
 
   function handleStarClick(topicId) {
     toggleStar(candidateId, topicId);
+  }
+
+  function processQueue() {
+    if (queueRef.current.length > 0) {
+      setSnackbarOpen(queueRef.current.shift());
+    }
+  }
+
+  // borrowed from mui docs
+  // https://material-ui.com/components/snackbars/#consecutive-snackbars
+  async function handleLinkClick(hash) {
+    const {origin, pathname} = props.location;
+    await clipboard.writeText(origin + pathname + hash);
+
+    queueRef.current.push(true);
+
+    if (snackbarOpen) {
+      // immediately begin dismissing current message
+      // to start showing new one
+      setSnackbarOpen(false);
+    } else {
+      processQueue();
+    }
+  }
+
+  function handleClose(event, reason) {
+    if (reason !== 'clickaway') {
+      setSnackbarOpen(false);
+    }
   }
 
   const [title, subtitle] = getCandidateTitles(
@@ -126,6 +158,7 @@ export default function CandidateTemplate(props) {
             starred={candidateStars.includes(topic.id)}
             onStarClick={() => handleStarClick(topic.id)}
             onSourceClick={handleSourceClick}
+            onLinkClick={handleLinkClick}
           />
         ))}
       </PageWrapper>
@@ -134,12 +167,24 @@ export default function CandidateTemplate(props) {
         credits={election.credits}
         activeIndex={activeSource}
       />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+        open={snackbarOpen}
+        autoHideDuration={2500}
+        onClose={handleClose}
+        onExited={processQueue}
+        message="Link copied to clipboard!"
+      />
     </Layout>
   );
 }
 
 CandidateTemplate.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 export const pageQuery = graphql`

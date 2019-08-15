@@ -12,6 +12,7 @@ import {useToggle} from 'react-use';
 export default function TopicSection(props) {
   const {localize} = useLanguage();
   const [expanded, toggleExpanded] = useToggle(false);
+  const hash = `#${props.topic.slug}`;
   return (
     <TopicWrapper topic={props.topic}>
       {props.stances ? (
@@ -36,7 +37,8 @@ export default function TopicSection(props) {
           </IconButton>
           <IconButton
             component="a"
-            href={`#${props.topic.slug}`}
+            onClick={() => props.onLinkClick(hash)}
+            href={hash}
             color="inherit"
           >
             <FiLink />
@@ -73,6 +75,7 @@ TopicSection.propTypes = {
   topic: PropTypes.object.isRequired,
   electionSlug: PropTypes.string.isRequired,
   onStarClick: PropTypes.func.isRequired,
+  onLinkClick: PropTypes.func.isRequired,
   starred: PropTypes.bool.isRequired,
   sources: PropTypes.array.isRequired,
   onSourceClick: PropTypes.func.isRequired,
