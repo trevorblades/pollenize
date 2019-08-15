@@ -39,7 +39,8 @@ server.applyMiddleware({app});
 sequelize.sync().then(() => {
   app.listen({port: process.env.PORT}, () => {
     console.log(
-      `🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`
+      `🚀 Server ready at http://localhost:${process.env.PORT +
+        server.graphqlPath}`
     );
   });
 });
