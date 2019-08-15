@@ -6,12 +6,7 @@ import {FaHeart} from 'react-icons/fa';
 import {FiX} from 'react-icons/fi';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {SectionWrapper} from './common';
-import {styled, useTheme} from '@material-ui/styles';
-
-const StyledImage = styled('img')(({theme}) => ({
-  width: '100%',
-  marginBottom: theme.spacing(1)
-}));
+import {useTheme} from '@material-ui/styles';
 
 export default function Future() {
   const {palette} = useTheme();
@@ -79,11 +74,14 @@ export default function Future() {
           </form>
         </Grid>
         <Grid item xs={12} sm={10} md={6}>
-          <StyledImage
+          <Box
+            loading="lazy"
+            component="img"
             alt="Students using Pollenize in class to learn about politics"
             src={students}
-            width="100%"
-            style={{display: 'block'}}
+            width={1}
+            display="block"
+            mb={1}
           />
           <Typography
             display="block"

@@ -2,7 +2,19 @@ import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import {Box, Divider, Typography} from '@material-ui/core';
 import {ContentWrapper, PageAnchor} from './common';
+import {size} from 'polished';
+import {styled} from '@material-ui/styles';
 import {useLanguage} from '../utils/language';
+
+const StyledImage = styled('img')({
+  ...size('100%'),
+  objectFit: 'cover',
+  pointerEvents: 'none',
+  userSelect: 'none',
+  position: 'absolute',
+  top: 0,
+  left: 0
+});
 
 export default function TopicWrapper(props) {
   const {localize} = useLanguage();
@@ -19,13 +31,10 @@ export default function TopicWrapper(props) {
           display="flex"
           justifyContent="center"
           bgcolor="grey.200"
-          style={{
-            backgroundImage: `url(${props.topic.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
+          position="relative"
         >
-          <Box bgcolor="background.paper" py={1} px={2}>
+          <StyledImage src={props.topic.image} loading="lazy" />
+          <Box bgcolor="background.paper" py={1} px={2} position="relative">
             <Typography variant="h4">{title}</Typography>
           </Box>
         </Box>
