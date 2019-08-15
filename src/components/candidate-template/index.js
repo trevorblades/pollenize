@@ -169,8 +169,8 @@ export default function CandidateTemplate(props) {
       />
       <Snackbar
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
+          vertical: 'top',
+          horizontal: 'center'
         }}
         open={snackbarOpen}
         autoHideDuration={2500}
