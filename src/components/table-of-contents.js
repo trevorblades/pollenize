@@ -44,9 +44,9 @@ export default function TableOfContents(props) {
       {props.children}
       {props.topics.map((topic, index) => (
         <SidebarLink
-          color={index === props.currentAnchor ? 'primary' : 'inherit'}
           key={topic.id}
           href={`#${topic.slug}`}
+          {...props.getActiveProps(index)}
         >
           {localize(topic.titleEn, topic.titleFr)}
         </SidebarLink>
@@ -58,5 +58,5 @@ export default function TableOfContents(props) {
 TableOfContents.propTypes = {
   children: PropTypes.node,
   topics: PropTypes.array.isRequired,
-  currentAnchor: PropTypes.number.isRequired
+  getActiveProps: PropTypes.func.isRequired
 };

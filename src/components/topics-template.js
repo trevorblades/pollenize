@@ -71,7 +71,12 @@ export default function TopicsTemplate(props) {
       />
       <PageWrapper
         sidebar={
-          <TableOfContents topics={topics} currentAnchor={currentAnchor} />
+          <TableOfContents
+            topics={topics}
+            getActiveProps={index => ({
+              color: index === currentAnchor ? 'primary' : 'inherit'
+            })}
+          />
         }
       >
         {topics.map((topic, index) => {

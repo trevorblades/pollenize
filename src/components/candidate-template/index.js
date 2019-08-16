@@ -125,13 +125,12 @@ export default function CandidateTemplate(props) {
       <PageWrapper
         sidebar={
           <TableOfContents
-            currentAnchor={currentAnchor - 1}
             topics={election.topics}
+            getActiveProps={index => ({
+              style: {color: index === currentAnchor - 1 && color}
+            })}
           >
-            <SidebarLink
-              color={!currentAnchor ? 'primary' : 'inherit'}
-              href="#about"
-            >
+            <SidebarLink href="#about" style={{color: !currentAnchor && color}}>
               {aboutTitle}
             </SidebarLink>
           </TableOfContents>
