@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
+import {useWindowScroll} from 'react-use';
 
 export async function uploadImage(image) {
   const formData = new FormData();
@@ -49,4 +50,26 @@ export function getCandidateTitles(
   }
 
   return [name];
+}
+
+export function useCurrentAnchor(threshold = 20) {
+  const {y} = useWindowScroll();
+  const [anchors, setAnchors] = useState([]);
+
+  useEffect(() => {
+    setAnchors(document.querySelectorAll('a.topic[name]'));
+  }, []);
+
+  return useMemo(() => {
+    let index = -1;
+    for (const anchor of anchors) {
+      if (anchor.offsetTop > y + threshold) {
+        break;
+      }
+
+      index++;
+    }
+
+    return index;
+  }, [anchors, y, threshold]);
 }

@@ -42,8 +42,12 @@ export default function TableOfContents(props) {
         {localize('Table of contents', 'Table des matières')}
       </Typography>
       {props.children}
-      {props.topics.map(topic => (
-        <SidebarLink key={topic.id} href={`#${topic.slug}`}>
+      {props.topics.map((topic, index) => (
+        <SidebarLink
+          color={index === props.currentAnchor ? 'primary' : 'inherit'}
+          key={topic.id}
+          href={`#${topic.slug}`}
+        >
           {localize(topic.titleEn, topic.titleFr)}
         </SidebarLink>
       ))}
@@ -53,5 +57,6 @@ export default function TableOfContents(props) {
 
 TableOfContents.propTypes = {
   children: PropTypes.node,
-  topics: PropTypes.array.isRequired
+  topics: PropTypes.array.isRequired,
+  currentAnchor: PropTypes.number.isRequired
 };

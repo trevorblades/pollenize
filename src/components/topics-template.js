@@ -11,7 +11,7 @@ import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {Link, graphql} from 'gatsby';
 import {PageHeader, PageWrapper} from './common';
-import {getCandidateTitles} from '../utils';
+import {getCandidateTitles, useCurrentAnchor} from '../utils';
 import {styled} from '@material-ui/styles';
 import {triangle} from 'polished';
 import {useLanguage} from '../utils/language';
@@ -39,6 +39,7 @@ export default function TopicsTemplate(props) {
   } = props.data.pollenize.election;
 
   const {localize} = useLanguage();
+  const currentAnchor = useCurrentAnchor();
   const stances = useMemo(() => topics.flatMap(topic => topic.stances), [
     topics
   ]);
@@ -68,7 +69,11 @@ export default function TopicsTemplate(props) {
         )}
         bgcolor="grey.200"
       />
-      <PageWrapper sidebar={<TableOfContents topics={topics} />}>
+      <PageWrapper
+        sidebar={
+          <TableOfContents topics={topics} currentAnchor={currentAnchor} />
+        }
+      >
         {topics.map((topic, index) => {
           const description = localize(
             topic.descriptionEn,

@@ -21,7 +21,7 @@ export default function TopicWrapper(props) {
   const title = localize(props.topic.titleEn, props.topic.titleFr);
   return (
     <Fragment>
-      <PageAnchor name={props.topic.slug} />
+      <PageAnchor className="topic" name={props.topic.slug} />
       {props.topic.image ? (
         <Box
           py={{

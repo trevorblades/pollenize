@@ -12,7 +12,7 @@ import {Avatar, Snackbar, Typography} from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
 import {differenceInYears} from 'date-fns';
-import {getCandidateTitles} from '../../utils';
+import {getCandidateTitles, useCurrentAnchor} from '../../utils';
 import {graphql} from 'gatsby';
 import {groupBy} from 'lodash';
 import {size} from 'polished';
@@ -53,7 +53,7 @@ export default function CandidateTemplate(props) {
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const {sources, activeSource, handleSourceClick} = useSources(stances);
   const {stars, toggleStar} = useStars();
-  const candidateStars = stars[candidateId] || [];
+  const currentAnchor = useCurrentAnchor();
 
   function handleStarClick(topicId) {
     toggleStar(candidateId, topicId);
@@ -97,6 +97,7 @@ export default function CandidateTemplate(props) {
   const bio = localize(bioEn, bioFr);
   const [firstName] = name.split(' ');
   const aboutTitle = `${localize('About', 'À propos de')} ${firstName}`;
+  const candidateStars = stars[candidateId] || [];
 
   return (
     <Layout>
@@ -123,12 +124,20 @@ export default function CandidateTemplate(props) {
       </PageHeader>
       <PageWrapper
         sidebar={
-          <TableOfContents topics={election.topics}>
-            <SidebarLink href="#about">{aboutTitle}</SidebarLink>
+          <TableOfContents
+            currentAnchor={currentAnchor - 1}
+            topics={election.topics}
+          >
+            <SidebarLink
+              color={!currentAnchor ? 'primary' : 'inherit'}
+              href="#about"
+            >
+              {aboutTitle}
+            </SidebarLink>
           </TableOfContents>
         }
       >
-        <PageAnchor name="about" />
+        <PageAnchor className="topic" name="about" />
         <ContentWrapper>
           <Typography gutterBottom variant="h4">
             {aboutTitle}
@@ -150,8 +159,8 @@ export default function CandidateTemplate(props) {
         </ContentWrapper>
         {election.topics.map(topic => (
           <TopicSection
-            key={topic.id}
             topic={topic}
+            key={topic.id}
             electionSlug={election.slug}
             stances={stancesByTopic[topic.id]}
             sources={sources}
