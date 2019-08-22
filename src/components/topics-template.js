@@ -14,7 +14,7 @@ import {Link} from 'gatsby-theme-material-ui';
 import {PageHeader, PageWrapper} from './common';
 import {getCandidateTitles, useCurrentAnchor} from '../utils';
 import {triangle} from 'polished';
-import {useLanguage} from '../utils/language';
+import {useLocalize} from '../utils/language';
 
 const triangleWidth = 24;
 const Triangle = styled(Box)(({theme}) =>
@@ -36,15 +36,15 @@ export default function TopicsTemplate(props) {
     partyFirst,
     credits
   } = props.data.pollenize.election;
+  const {id, lang, languages} = props.pageContext;
 
-  const {localize} = useLanguage();
+  const localize = useLocalize(lang, languages);
   const currentAnchor = useCurrentAnchor();
   const stances = useMemo(() => topics.flatMap(topic => topic.stances), [
     topics
   ]);
 
   const {sources, activeSource, handleSourceClick} = useSources(stances);
-  const {id, lang, languages} = props.pageContext;
   const electionPath = `/${lang}/elections/${slug}`;
 
   return (

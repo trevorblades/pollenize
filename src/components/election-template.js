@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import {CardActionArea} from 'gatsby-theme-material-ui';
 import {Helmet} from 'react-helmet';
+import {LanguageProvider} from '../utils/language';
 import {cover, size} from 'polished';
 import {graphql} from 'gatsby';
 
@@ -59,57 +60,56 @@ export default function ElectionTemplate(props) {
         <html lang={lang} />
         <title>{title}</title>
       </Helmet>
-      <Wrapper>
-        <HeaderBase link="/elections" title={title}>
-          <ElectionMenu
-            title={title}
-            electionId={id}
-            electionSlug={slug}
-            candidates={candidates}
-            partyFirst={partyFirst}
-            intro={intro}
-            active="grid"
-            lang={lang}
-            languages={languages}
-            path={props.path}
-          />
-        </HeaderBase>
-        <StyledGrid container>
-          {candidates.map(candidate => {
-            const [title, subtitle] = partyFirst
-              ? [candidate.party, candidate.name]
-              : [candidate.name, candidate.party];
+      <LanguageProvider lang={lang} languages={languages} path={props.path}>
+        <Wrapper>
+          <HeaderBase link="/elections" title={title}>
+            <ElectionMenu
+              title={title}
+              electionId={id}
+              electionSlug={slug}
+              candidates={candidates}
+              partyFirst={partyFirst}
+              intro={intro}
+              active="grid"
+            />
+          </HeaderBase>
+          <StyledGrid container>
+            {candidates.map(candidate => {
+              const [title, subtitle] = partyFirst
+                ? [candidate.party, candidate.name]
+                : [candidate.name, candidate.party];
 
-            return (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={
-                  12 /
-                  (candidates.length > 3
-                    ? Math.ceil(candidates.length / 2)
-                    : candidates.length)
-                }
-                key={candidate.id}
-              >
-                <CardActionArea
-                  className={button}
-                  to={`${props.path}/${candidate.slug}`}
-                  style={{
-                    backgroundColor: candidate.color,
-                    color: palette.getContrastText(candidate.color)
-                  }}
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={
+                    12 /
+                    (candidates.length > 3
+                      ? Math.ceil(candidates.length / 2)
+                      : candidates.length)
+                  }
+                  key={candidate.id}
                 >
-                  <Avatar className={avatar} src={candidate.portrait} />
-                  <Typography variant="h5">{title}</Typography>
-                  <Typography variant="subtitle1">{subtitle}</Typography>
-                </CardActionArea>
-              </Grid>
-            );
-          })}
-        </StyledGrid>
-      </Wrapper>
+                  <CardActionArea
+                    className={button}
+                    to={`${props.path}/${candidate.slug}`}
+                    style={{
+                      backgroundColor: candidate.color,
+                      color: palette.getContrastText(candidate.color)
+                    }}
+                  >
+                    <Avatar className={avatar} src={candidate.portrait} />
+                    <Typography variant="h5">{title}</Typography>
+                    <Typography variant="subtitle1">{subtitle}</Typography>
+                  </CardActionArea>
+                </Grid>
+              );
+            })}
+          </StyledGrid>
+        </Wrapper>
+      </LanguageProvider>
     </Layout>
   );
 }

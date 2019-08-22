@@ -17,12 +17,12 @@ import {
 } from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
+import {LanguageProvider, useLocalize} from '../../utils/language';
 import {differenceInYears} from 'date-fns';
 import {getCandidateTitles, useCurrentAnchor} from '../../utils';
 import {graphql} from 'gatsby';
 import {groupBy} from 'lodash';
 import {size} from 'polished';
-import {useLanguage} from '../../utils/language';
 import {useStars} from '../../utils/stars';
 
 const StyledAvatar = styled(Avatar)(({theme}) => ({
@@ -48,10 +48,11 @@ export default function CandidateTemplate(props) {
     hometown,
     stances
   } = props.data.pollenize.candidate;
+  const {lang, languages} = props.pageContext;
 
   const queueRef = useRef([]);
   const {palette} = useTheme();
-  const {localize} = useLanguage();
+  const localize = useLocalize(lang, languages);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const {sources, activeSource, handleSourceClick} = useSources(stances);
@@ -98,8 +99,8 @@ export default function CandidateTemplate(props) {
 
   const [firstName] = name.split(' ');
   const aboutTitle = `${localize('About', 'À propos de')} ${firstName}`;
+
   const candidateStars = stars[candidateId] || [];
-  const {lang, languages} = props.pageContext;
   const electionPath = `/${lang}/elections/${election.slug}`;
 
   return (
@@ -108,91 +109,93 @@ export default function CandidateTemplate(props) {
         <html lang={lang} />
         <title>{name}</title>
       </Helmet>
-      <HeaderBase link={electionPath} title={title}>
-        <ElectionMenu
-          title={election.title}
-          electionId={election.id}
-          electionSlug={election.slug}
-          candidates={election.candidates}
-          partyFirst={election.partyFirst}
-          intro={election.intro}
-          lang={lang}
-          languages={languages}
-          path={props.path}
-        />
-      </HeaderBase>
-      <PageHeader
-        title={title}
-        subtitle={subtitle}
-        bgcolor={color}
-        color={palette.getContrastText(color)}
-      >
-        <StyledAvatar src={portrait} />
-      </PageHeader>
-      <PageWrapper
-        sidebar={
-          <TableOfContents
-            topics={election.topics}
-            getActiveProps={index => ({
-              style: {color: index === currentAnchor - 1 && color}
-            })}
-          >
-            <SidebarLink href="#about" style={{color: !currentAnchor && color}}>
-              {aboutTitle}
-            </SidebarLink>
-          </TableOfContents>
-        }
-      >
-        <PageAnchor className="topic" name="about" />
-        <ContentWrapper>
-          <Typography gutterBottom variant="h4">
-            {aboutTitle}
-          </Typography>
-          {birthDate && (
-            <Typography gutterBottom>
-              {differenceInYears(Date.now(), Number(birthDate))}{' '}
-              {localize('years old', 'ans')}
-            </Typography>
-          )}
-          {hometown && (
-            <Typography gutterBottom>
-              {localize('Hometown', 'Ville natale')}: {hometown}
-            </Typography>
-          )}
-          {bio && (
-            <Typography dangerouslySetInnerHTML={{__html: snarkdown(bio)}} />
-          )}
-        </ContentWrapper>
-        {election.topics.map(topic => (
-          <TopicSection
-            topic={topic}
-            key={topic.id}
-            electionPath={electionPath}
-            stances={stancesByTopic[topic.id]}
-            sources={sources}
-            starred={candidateStars.includes(topic.id)}
-            onStarClick={() => handleStarClick(topic.id)}
-            onSourceClick={handleSourceClick}
-            onLinkClick={handleLinkClick}
+      <LanguageProvider lang={lang} languages={languages} path={props.path}>
+        <HeaderBase link={electionPath} title={title}>
+          <ElectionMenu
+            title={election.title}
+            electionId={election.id}
+            electionSlug={election.slug}
+            candidates={election.candidates}
+            partyFirst={election.partyFirst}
+            intro={election.intro}
           />
-        ))}
-      </PageWrapper>
-      <Sources
-        sources={sources}
-        credits={election.credits}
-        activeIndex={activeSource}
-      />
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
-        }}
-        open={snackbarOpen}
-        autoHideDuration={2500}
-        onClose={handleClose}
-        onExited={processQueue}
-        message="Link copied to clipboard!"
-      />
+        </HeaderBase>
+        <PageHeader
+          title={title}
+          subtitle={subtitle}
+          bgcolor={color}
+          color={palette.getContrastText(color)}
+        >
+          <StyledAvatar src={portrait} />
+        </PageHeader>
+        <PageWrapper
+          sidebar={
+            <TableOfContents
+              topics={election.topics}
+              getActiveProps={index => ({
+                style: {color: index === currentAnchor - 1 && color}
+              })}
+            >
+              <SidebarLink
+                href="#about"
+                style={{color: !currentAnchor && color}}
+              >
+                {aboutTitle}
+              </SidebarLink>
+            </TableOfContents>
+          }
+        >
+          <PageAnchor className="topic" name="about" />
+          <ContentWrapper>
+            <Typography gutterBottom variant="h4">
+              {aboutTitle}
+            </Typography>
+            {birthDate && (
+              <Typography gutterBottom>
+                {differenceInYears(Date.now(), Number(birthDate))}{' '}
+                {localize('years old', 'ans')}
+              </Typography>
+            )}
+            {hometown && (
+              <Typography gutterBottom>
+                {localize('Hometown', 'Ville natale')}: {hometown}
+              </Typography>
+            )}
+            {bio && (
+              <Typography dangerouslySetInnerHTML={{__html: snarkdown(bio)}} />
+            )}
+          </ContentWrapper>
+          {election.topics.map(topic => (
+            <TopicSection
+              topic={topic}
+              key={topic.id}
+              electionPath={electionPath}
+              stances={stancesByTopic[topic.id]}
+              sources={sources}
+              starred={candidateStars.includes(topic.id)}
+              onStarClick={() => handleStarClick(topic.id)}
+              onSourceClick={handleSourceClick}
+              onLinkClick={handleLinkClick}
+            />
+          ))}
+        </PageWrapper>
+        <Sources
+          sources={sources}
+          credits={election.credits}
+          activeIndex={activeSource}
+        />
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}
+          open={snackbarOpen}
+          autoHideDuration={2500}
+          onClose={handleClose}
+          onExited={processQueue}
+          message="Link copied to clipboard!"
+        />
+      </LanguageProvider>
     </Layout>
   );
 }

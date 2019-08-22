@@ -1,5 +1,5 @@
 import DrawerContent from './drawer-content';
-import LanguageMenu, {getPathForLanguage} from './language-menu';
+import LanguageMenu from './language-menu';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
 import {
@@ -45,7 +45,7 @@ export default function ElectionMenu(props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [introState, setIntroState] = useLocalStorage('intro', {});
   const [dialogOpen, setDialogOpen] = useState(!introState[props.electionSlug]);
-  const {localize} = useLanguage();
+  const {lang, languages, getPathForLanguage, localize} = useLanguage();
 
   function openDrawer() {
     setDrawerOpen(true);
@@ -70,12 +70,7 @@ export default function ElectionMenu(props) {
     setDialogOpen(false);
   }
 
-  const electionPath = `/${props.lang}/elections/${props.electionSlug}`;
-  const languageMenuProps = {
-    lang: props.lang,
-    languages: props.languages,
-    path: props.path
-  };
+  const electionPath = `/${lang}/elections/${props.electionSlug}`;
 
   return (
     <Fragment>
@@ -105,7 +100,7 @@ export default function ElectionMenu(props) {
         </IconButton>
       </Tooltip>
       <Hidden only="xs" implementation="css">
-        <LanguageMenu {...languageMenuProps} />
+        <LanguageMenu />
       </Hidden>
       <IconButton onClick={openDrawer} color="inherit">
         <FiMenu />
@@ -123,7 +118,6 @@ export default function ElectionMenu(props) {
           title={props.title}
           partyFirst={props.partyFirst}
           onIntroClick={props.intro && openDialog}
-          languageMenuProps={languageMenuProps}
         />
       </Drawer>
       {props.intro && (
@@ -149,12 +143,12 @@ export default function ElectionMenu(props) {
               :
             </Typography>
             <Grid container spacing={2}>
-              {Object.entries(props.languages).map(([code, name]) => (
+              {Object.entries(languages).map(([code, name]) => (
                 <Grid item xs={6} key={code}>
-                  <Box color={code === props.lang ? 'primary.main' : 'inherit'}>
+                  <Box color={code === lang ? 'primary.main' : 'inherit'}>
                     <CardActionArea
                       className={languageButton}
-                      to={getPathForLanguage(props.path, code)}
+                      to={getPathForLanguage(code)}
                     >
                       <Typography variant="h5">{upperFirst(code)}</Typography>
                       <Typography>{name}</Typography>
@@ -182,9 +176,6 @@ ElectionMenu.propTypes = {
   electionSlug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
-  lang: PropTypes.string.isRequired,
-  path: PropTypes.string.isRequired,
-  languages: PropTypes.object.isRequired,
   intro: PropTypes.string,
   active: PropTypes.string
 };

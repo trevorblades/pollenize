@@ -97,7 +97,6 @@ export default function DrawerContent(props) {
           </ListItemText>
         </ListItem>
         <LanguageMenuBase
-          {...props.languageMenuProps}
           renderButton={openMenu => (
             <ListItem button onClick={openMenu}>
               <ListItemText>
@@ -143,6 +142,5 @@ DrawerContent.propTypes = {
   electionPath: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
-  languageMenuProps: PropTypes.object.isRequired,
   onIntroClick: PropTypes.func
 };

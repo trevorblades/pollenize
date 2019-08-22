@@ -4,20 +4,8 @@ import {Box, IconButton, Menu, MenuItem, Tooltip} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {useLanguage} from '../../utils/language';
 
-export function getPathForLanguage(path, lang) {
-  return (
-    '/' +
-    [
-      lang,
-      ...path
-        .split('/')
-        .filter(Boolean)
-        .slice(1)
-    ].join('/')
-  );
-}
-
 export function LanguageMenuBase(props) {
+  const {lang, languages, getPathForLanguage} = useLanguage();
   const [anchorEl, setAnchorEl] = useState(null);
 
   function openMenu(event) {
@@ -32,12 +20,12 @@ export function LanguageMenuBase(props) {
     <Fragment>
       {props.renderButton(openMenu)}
       <Menu onClose={closeMenu} anchorEl={anchorEl} open={Boolean(anchorEl)}>
-        {Object.entries(props.languages).map(([code, name]) => (
+        {Object.entries(languages).map(([code, name]) => (
           <MenuItem
             key={code}
-            selected={props.lang === code}
+            selected={lang === code}
             component={Link}
-            to={getPathForLanguage(props.path, code)}
+            to={getPathForLanguage(code)}
           >
             {name}
           </MenuItem>
@@ -48,17 +36,13 @@ export function LanguageMenuBase(props) {
 }
 
 LanguageMenuBase.propTypes = {
-  lang: PropTypes.string.isRequired,
-  languages: PropTypes.object.isRequired,
-  path: PropTypes.string.isRequired,
   renderButton: PropTypes.func.isRequired
 };
 
-export default function LanguageButton(props) {
-  const {localize} = useLanguage();
+export default function LanguageButton() {
+  const {lang, localize} = useLanguage();
   return (
     <LanguageMenuBase
-      {...props}
       renderButton={openMenu => (
         <Tooltip title={localize('Change language', 'Changer de langue')}>
           <IconButton color="inherit" onClick={openMenu}>
@@ -72,7 +56,7 @@ export default function LanguageButton(props) {
               fontSize={18}
               fontWeight={500}
             >
-              {props.lang.toUpperCase()}
+              {lang.toUpperCase()}
             </Box>
           </IconButton>
         </Tooltip>
@@ -80,7 +64,3 @@ export default function LanguageButton(props) {
     />
   );
 }
-
-LanguageButton.propTypes = {
-  lang: PropTypes.string.isRequired
-};
