@@ -8,13 +8,14 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
-  Typography
+  Typography,
+  makeStyles,
+  styled
 } from '@material-ui/core';
 import {FaStar} from 'react-icons/fa';
 import {LanguageMenuBase} from '../language-menu';
 import {Link} from 'gatsby';
 import {getCandidateTitles} from '../../utils';
-import {makeStyles, styled} from '@material-ui/styles';
 import {useKey, useToggle} from 'react-use';
 import {useLanguage} from '../../utils/language';
 import {useStars} from '../../utils/stars';

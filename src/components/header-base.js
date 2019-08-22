@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {AppBar, Box, Typography} from '@material-ui/core';
+import {AppBar, Box, Typography, styled, useTheme} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {ReactComponent as Logo} from '../assets/logo.svg';
-import {styled, useTheme} from '@material-ui/styles';
 
 const StyledLink = styled(Link)({
   display: 'flex',

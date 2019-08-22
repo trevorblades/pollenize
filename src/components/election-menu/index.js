@@ -15,14 +15,14 @@ import {
   Hidden,
   IconButton,
   Tooltip,
-  Typography
+  Typography,
+  makeStyles
 } from '@material-ui/core';
 import {FaRegComments, FaThLarge} from 'react-icons/fa';
 import {FiInfo, FiMenu} from 'react-icons/fi';
 import {Link} from 'gatsby';
 import {MdCheck} from 'react-icons/md';
 import {languages, useLanguage} from '../../utils/language';
-import {makeStyles} from '@material-ui/styles';
 import {upperFirst} from 'lodash';
 import {useLocalStorage} from 'react-use';
 

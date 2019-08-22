@@ -3,11 +3,18 @@ import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Avatar, CardActionArea, Grid, Typography} from '@material-ui/core';
+import {
+  Avatar,
+  Grid,
+  Typography,
+  makeStyles,
+  styled,
+  useTheme
+} from '@material-ui/core';
+import {CardActionArea} from 'gatsby-theme-material-ui';
 import {Helmet} from 'react-helmet';
-import {Link, graphql} from 'gatsby';
 import {cover, size} from 'polished';
-import {makeStyles, styled, useTheme} from '@material-ui/styles';
+import {graphql} from 'gatsby';
 import {useLanguage} from '../utils/language';
 
 const Wrapper = styled('div')({
@@ -86,7 +93,6 @@ export default function ElectionTemplate(props) {
               >
                 <CardActionArea
                   className={button}
-                  component={Link}
                   to={`/elections/${slug}/${candidate.slug}`}
                   style={{
                     backgroundColor: candidate.color,

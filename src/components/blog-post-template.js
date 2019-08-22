@@ -4,17 +4,12 @@ import Layout from './layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import rehypeReact from 'rehype-react';
-import {
-  Avatar,
-  Box,
-  Divider,
-  Link as MuiLink,
-  Typography
-} from '@material-ui/core';
+import {Avatar, Box, Divider, Typography} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
-import {Link, graphql} from 'gatsby';
+import {Link} from 'gatsby-theme-material-ui';
 import {MdChevronLeft} from 'react-icons/md';
 import {SectionWrapper} from './common';
+import {graphql} from 'gatsby';
 import {withProps} from 'recompose';
 
 const renderAst = new rehypeReact({
@@ -42,12 +37,7 @@ export default function BlogPostTemplate(props) {
       <Header />
       <SectionWrapper>
         <Box display="flex">
-          <MuiLink
-            component={Link}
-            to="/blog"
-            color="inherit"
-            variant="overline"
-          >
+          <Link to="/blog" color="inherit" variant="overline">
             <Box display="flex" alignItems="center">
               <MdChevronLeft
                 size={20}
@@ -58,7 +48,7 @@ export default function BlogPostTemplate(props) {
               />
               All posts
             </Box>
-          </MuiLink>
+          </Link>
         </Box>
         <Typography gutterBottom variant="h2">
           {title}

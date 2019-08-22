@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import {Box, Divider, Typography} from '@material-ui/core';
+import {Box, Divider, Typography, styled} from '@material-ui/core';
 import {ContentWrapper, PageAnchor} from './common';
 import {size} from 'polished';
-import {styled} from '@material-ui/styles';
 import {useLanguage} from '../utils/language';
 
 const StyledImage = styled('img')({

@@ -7,12 +7,12 @@ import Sources, {useSources} from './sources';
 import StanceText from './stance-text';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
-import {Avatar, Box, Link as MuiLink, Typography} from '@material-ui/core';
+import {Avatar, Box, Typography, styled} from '@material-ui/core';
+import {Link as GatsbyLink, graphql} from 'gatsby';
 import {Helmet} from 'react-helmet';
-import {Link, graphql} from 'gatsby';
+import {Link} from 'gatsby-theme-material-ui';
 import {PageHeader, PageWrapper} from './common';
 import {getCandidateTitles, useCurrentAnchor} from '../utils';
-import {styled} from '@material-ui/styles';
 import {triangle} from 'polished';
 import {useLanguage} from '../utils/language';
 
@@ -110,7 +110,7 @@ export default function TopicsTemplate(props) {
                     mt={index || description || !topic.image ? 4 : 0}
                   >
                     <Avatar
-                      component={Link}
+                      component={GatsbyLink}
                       src={stance.candidate.portrait}
                       to={pathToCandidate}
                     />
@@ -138,13 +138,9 @@ export default function TopicsTemplate(props) {
                           />
                         </Typography>
                         <Typography variant="caption" color="textSecondary">
-                          <MuiLink
-                            color="inherit"
-                            component={Link}
-                            to={pathToCandidate}
-                          >
+                          <Link color="inherit" to={pathToCandidate}>
                             {title}
-                          </MuiLink>
+                          </Link>
                         </Typography>
                       </Box>
                     </Box>

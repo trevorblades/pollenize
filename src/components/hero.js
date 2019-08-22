@@ -1,9 +1,8 @@
 import React, {Fragment} from 'react';
 import leaf, {ReactComponent as Leaf} from '../assets/leaf.svg';
-import {Box, Fab, Typography} from '@material-ui/core';
+import {Box, Fab, Typography, styled, useTheme} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {cover, size} from 'polished';
-import {styled, useTheme} from '@material-ui/styles';
 
 const Mask = styled('div')(({theme}) => ({
   ...cover(),
@@ -72,6 +71,7 @@ export default function Hero() {
             <Mask aria-hidden="true">
               <Content />
             </Mask>
+            {/* TODO: use Fab export from theme when https://github.com/hupe1980/gatsby-theme-material-ui/pull/7 gets merged */}
             <Fab
               disabled
               variant="extended"

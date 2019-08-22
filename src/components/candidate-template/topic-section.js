@@ -2,11 +2,10 @@ import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import StanceText from '../stance-text';
 import TopicWrapper from '../topic-wrapper';
-import {Button, IconButton, Typography} from '@material-ui/core';
+import {Button, IconButton, Typography, makeStyles} from '@material-ui/core';
 import {FaRegComments, FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
 import {Link} from 'gatsby';
-import {makeStyles} from '@material-ui/styles';
 import {useLanguage} from '../../utils/language';
 import {useToggle} from 'react-use';
 

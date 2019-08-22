@@ -1,10 +1,9 @@
 import HeaderBase from './header-base';
 import React from 'react';
-import {Link as MuiLink} from '@material-ui/core';
+import {withStyles} from '@material-ui/core';
 // import {FaChevronRight} from 'react-icons/fa';
-import {Link} from 'gatsby';
+import {Link} from 'gatsby-theme-material-ui';
 import {compose, mapProps} from 'recompose';
-import {withStyles} from '@material-ui/styles';
 
 const MenuItem = compose(
   withStyles(theme => ({
@@ -13,13 +12,12 @@ const MenuItem = compose(
     }
   })),
   mapProps(({classes, ...props}) => ({
-    component: Link,
     className: classes.menuItem,
     variant: 'body1',
     color: 'inherit',
     ...props
   }))
-)(MuiLink);
+)(Link);
 
 export default function Header() {
   return (

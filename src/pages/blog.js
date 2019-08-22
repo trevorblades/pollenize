@@ -3,18 +3,12 @@ import Header from '../components/header';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  Avatar,
-  Box,
-  Divider,
-  Link as MuiLink,
-  Typography
-} from '@material-ui/core';
+import {Avatar, Box, Divider, Typography, styled} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
-import {Link, graphql} from 'gatsby';
+import {Link} from 'gatsby-theme-material-ui';
 import {SectionWrapper} from '../components/common';
+import {graphql} from 'gatsby';
 import {size} from 'polished';
-import {styled} from '@material-ui/styles';
 
 const StyledAvatar = styled(Avatar)(({theme}) => ({
   ...size(28),
@@ -43,13 +37,9 @@ export default function Blog(props) {
             return (
               <Box key={node.id} mt={4}>
                 <Typography variant="h5">
-                  <MuiLink
-                    color="inherit"
-                    component={Link}
-                    to={'/blog' + node.fields.slug}
-                  >
+                  <Link color="inherit" to={'/blog' + node.fields.slug}>
                     {title}
-                  </MuiLink>
+                  </Link>
                 </Typography>
                 <Box display="flex" alignItems="center" my={1}>
                   <StyledAvatar src={authorImage.publicURL} />

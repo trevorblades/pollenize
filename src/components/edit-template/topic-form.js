@@ -9,12 +9,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography
+  Typography,
+  styled
 } from '@material-ui/core';
 import {FormField} from '../common';
 import {TOPIC_FRAGMENT} from '../../utils/queries';
 import {size} from 'polished';
-import {styled} from '@material-ui/styles';
 import {uploadImage, useFileHandler} from '../../utils';
 import {useMutation} from '@apollo/react-hooks';
 

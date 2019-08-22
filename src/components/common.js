@@ -1,9 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Card, Grid, TextField, Typography} from '@material-ui/core';
+import {
+  Box,
+  Card,
+  Grid,
+  TextField,
+  Typography,
+  styled,
+  useTheme,
+  withTheme
+} from '@material-ui/core';
 import {HEADER_HEIGHT} from './header-base';
 import {compose, mapProps, withProps} from 'recompose';
-import {styled, useTheme, withTheme} from '@material-ui/styles';
 
 export const PageAnchor = styled('a')({
   display: 'block',

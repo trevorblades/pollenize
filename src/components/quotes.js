@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import clouds from '../assets/images/clouds.jpg';
-import {Box, Grid, Typography} from '@material-ui/core';
+import {Box, Grid, Typography, styled} from '@material-ui/core';
 import {SectionWrapper} from './common';
-import {styled} from '@material-ui/styles';
 
 const Wrapper = styled('div')({
   backgroundColor: '#84d9f8',

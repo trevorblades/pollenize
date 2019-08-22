@@ -4,17 +4,11 @@ import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import team from '../assets/images/team.jpg';
-import {
-  Box,
-  Divider,
-  Grid,
-  Link as MuiLink,
-  Typography
-} from '@material-ui/core';
+import {Box, Divider, Grid, Typography, makeStyles} from '@material-ui/core';
 import {FaInstagram, FaTwitter} from 'react-icons/fa';
 import {Helmet} from 'react-helmet';
+import {Link} from 'gatsby-theme-material-ui';
 import {SectionWrapper} from '../components/common';
-import {makeStyles} from '@material-ui/styles';
 import {size} from 'polished';
 
 const useStyles = makeStyles({
@@ -38,7 +32,7 @@ function TeamMember(props) {
           ) : (
             <FaTwitter fill="#1da1f2" className={social} />
           )}
-          <MuiLink
+          <Link
             href={`https://${props.social}.com/${props.handle}`}
             target="_blank"
             rel="noopener noreferrer"
@@ -46,7 +40,7 @@ function TeamMember(props) {
             variant="subtitle2"
           >
             @{props.handle}
-          </MuiLink>
+          </Link>
         </Box>
       )}
       <Typography>{props.bio}</Typography>

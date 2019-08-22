@@ -8,7 +8,13 @@ import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
 import clipboard from 'clipboard-polyfill';
 import snarkdown from 'snarkdown';
-import {Avatar, Snackbar, Typography} from '@material-ui/core';
+import {
+  Avatar,
+  Snackbar,
+  Typography,
+  styled,
+  useTheme
+} from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
 import {Helmet} from 'react-helmet';
 import {differenceInYears} from 'date-fns';
@@ -16,7 +22,6 @@ import {getCandidateTitles, useCurrentAnchor} from '../../utils';
 import {graphql} from 'gatsby';
 import {groupBy} from 'lodash';
 import {size} from 'polished';
-import {styled, useTheme} from '@material-ui/styles';
 import {useLanguage} from '../../utils/language';
 import {useStars} from '../../utils/stars';
 

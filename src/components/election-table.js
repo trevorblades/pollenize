@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef} from 'react';
-import {Box} from '@material-ui/core';
+import {Box, makeStyles} from '@material-ui/core';
 import {CellMeasurer, CellMeasurerCache, MultiGrid} from 'react-virtualized';
 import {HEADER_HEIGHT} from './header-base';
-import {makeStyles} from '@material-ui/styles';
 import {useLanguage} from '../utils/language';
 import {usePrevious, useWindowSize} from 'react-use';
 

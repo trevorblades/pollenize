@@ -11,12 +11,12 @@ import {
   DialogTitle,
   FormControlLabel,
   Switch,
-  Typography
+  Typography,
+  makeStyles
 } from '@material-ui/core';
 import {CANDIDATE_FRAGMENT} from '../../utils/queries';
 import {FormField} from '../common';
 import {format} from 'date-fns/esm';
-import {makeStyles} from '@material-ui/styles';
 import {size} from 'polished';
 import {uploadImage, useFileHandler} from '../../utils';
 import {useMutation} from '@apollo/react-hooks';

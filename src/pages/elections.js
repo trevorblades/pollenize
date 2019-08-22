@@ -6,16 +6,16 @@ import React from 'react';
 import {
   Box,
   Card,
-  CardActionArea,
   Chip,
   Divider,
   Grid,
-  Typography
+  Typography,
+  makeStyles
 } from '@material-ui/core';
+import {CardActionArea} from 'gatsby-theme-material-ui';
 import {Helmet} from 'react-helmet';
-import {Link, graphql} from 'gatsby';
 import {SectionWrapper} from '../components/common';
-import {makeStyles} from '@material-ui/styles';
+import {graphql} from 'gatsby';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -45,10 +45,7 @@ export default function Elections(props) {
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={election.id}>
                 <Card className={card} elevation={0}>
-                  <CardActionArea
-                    component={Link}
-                    to={`/elections/${election.slug}`}
-                  >
+                  <CardActionArea to={`/elections/${election.slug}`}>
                     <Box
                       display="flex"
                       flexDirection="column"

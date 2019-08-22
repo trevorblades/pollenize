@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, {Fragment, useMemo, useState} from 'react';
-import {Box, Link as MuiLink, Typography} from '@material-ui/core';
+import {Box, Typography, makeStyles, useTheme} from '@material-ui/core';
 import {FooterContent} from './footer';
+import {Link} from 'gatsby-theme-material-ui';
 import {PageAnchor} from './common';
-import {makeStyles, useTheme} from '@material-ui/styles';
 import {uniq} from 'lodash';
 import {withProps} from 'recompose';
 
@@ -80,14 +80,14 @@ export default function Sources(props) {
                         props.activeIndex === index ? 'primary' : 'inherit'
                       }
                     >
-                      <MuiLink
+                      <Link
                         color="inherit"
                         href={source}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         {source}
-                      </MuiLink>
+                      </Link>
                     </ListItem>
                   </Fragment>
                 ))}

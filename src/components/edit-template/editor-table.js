@@ -6,10 +6,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TopicForm from './topic-form';
 import UpdateStanceForm from './update-stance-form';
-import {Box, CardActionArea, Chip, Typography} from '@material-ui/core';
+import {
+  Box,
+  CardActionArea,
+  Chip,
+  Typography,
+  makeStyles
+} from '@material-ui/core';
 import {GET_ELECTION} from '../../utils/queries';
 import {getCandidateTitles} from '../../utils';
-import {makeStyles} from '@material-ui/styles';
 import {useLanguage} from '../../utils/language';
 import {useQuery} from '@apollo/react-hooks';
 

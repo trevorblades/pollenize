@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import {Box, Grid, Link as MuiLink, Typography} from '@material-ui/core';
-import {Link} from 'gatsby';
+import {Box, Grid, Typography} from '@material-ui/core';
+import {Link} from 'gatsby-theme-material-ui';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {SectionWrapper} from './common';
 import {withProps} from 'recompose';
@@ -27,7 +27,7 @@ NavGroup.propTypes = {
 const FooterLink = withProps({
   gutterBottom: true,
   color: 'inherit'
-})(MuiLink);
+})(Link);
 
 export function FooterContent() {
   return (
@@ -45,18 +45,10 @@ export function FooterContent() {
           </Typography>
         </Grid>
         <NavGroup title="Quick links">
-          <FooterLink component={Link} to="/">
-            Home
-          </FooterLink>
-          <FooterLink component={Link} to="/elections">
-            Elections
-          </FooterLink>
-          <FooterLink component={Link} to="/team">
-            Team
-          </FooterLink>
-          <FooterLink component={Link} to="/blog">
-            Blog
-          </FooterLink>
+          <FooterLink to="/">Home</FooterLink>
+          <FooterLink to="/elections">Elections</FooterLink>
+          <FooterLink to="/team">Team</FooterLink>
+          <FooterLink to="/blog">Blog</FooterLink>
         </NavGroup>
         <NavGroup title="Follow us">
           <FooterLink href="https://twitter.com/pollenizeorg">

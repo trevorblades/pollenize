@@ -1,12 +1,11 @@
 import React from 'react';
 import students from '../assets/images/students.jpg';
-import {Box, Button, Grid, Typography} from '@material-ui/core';
+import {Box, Button, Grid, Typography, useTheme} from '@material-ui/core';
 import {ReactComponent as Civix} from '../assets/civix.svg';
 import {FaHeart} from 'react-icons/fa';
 import {FiX} from 'react-icons/fi';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 import {SectionWrapper} from './common';
-import {useTheme} from '@material-ui/styles';
 
 export default function Future() {
   const {palette} = useTheme();

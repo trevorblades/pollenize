@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Link as MuiLink, Typography} from '@material-ui/core';
+import {Box, Typography} from '@material-ui/core';
 import {HEADER_HEIGHT} from './header-base';
+import {Link} from 'gatsby-theme-material-ui';
 import {useLanguage} from '../utils/language';
 
 export function SidebarLink(props) {
   return (
     <Typography paragraph variant="body2">
-      <MuiLink color="inherit" {...props} />
+      <Link color="inherit" {...props} />
     </Typography>
   );
 }
