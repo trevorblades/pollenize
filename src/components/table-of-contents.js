@@ -49,7 +49,7 @@ export default function TableOfContents(props) {
           href={`#${topic.slug}`}
           {...props.getActiveProps(index)}
         >
-          {localize(topic.titleEn, topic.titleFr)}
+          {topic.title}
         </SidebarLink>
       ))}
     </Box>

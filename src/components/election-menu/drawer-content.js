@@ -13,7 +13,7 @@ import {
   styled
 } from '@material-ui/core';
 import {FaStar} from 'react-icons/fa';
-import {LanguageMenuBase} from '../language-menu';
+import {LanguageMenuBase} from './language-menu';
 import {Link} from 'gatsby';
 import {getCandidateTitles} from '../../utils';
 import {useKey, useToggle} from 'react-use';
@@ -65,15 +65,14 @@ export default function DrawerContent(props) {
           const candidateStars = stars[candidate.id] || [];
           const [title, subtitle] = getCandidateTitles(
             candidate,
-            props.partyFirst,
-            localize
+            props.partyFirst
           );
 
           return (
             <ListItem
               button
               component={Link}
-              to={`/elections/${props.electionSlug}/${candidate.slug}`}
+              to={`${props.electionPath}/${candidate.slug}`}
               key={candidate.id}
             >
               <ListItemAvatar>
@@ -98,6 +97,7 @@ export default function DrawerContent(props) {
           </ListItemText>
         </ListItem>
         <LanguageMenuBase
+          {...props.languageMenuProps}
           renderButton={openMenu => (
             <ListItem button onClick={openMenu}>
               <ListItemText>
@@ -106,15 +106,6 @@ export default function DrawerContent(props) {
             </ListItem>
           )}
         />
-        {/* <ListItem
-          button
-          component={Link}
-          to={`/elections/${props.electionSlug}/table`}
-        >
-          <ListItemText>
-            {localize('View as table', 'Voir comme table')}
-          </ListItemText>
-        </ListItem> */}
         {props.onIntroClick && (
           <ListItem button onClick={props.onIntroClick}>
             <ListItemText>
@@ -134,7 +125,7 @@ export default function DrawerContent(props) {
           <ListItem
             button
             component={Link}
-            to={`/elections/${props.electionSlug}/___edit`}
+            to={`${props.electionPath}/___edit`}
           >
             <ListItemText>
               {localize('Edit election', "Modifier l'élection")}
@@ -148,8 +139,9 @@ export default function DrawerContent(props) {
 
 DrawerContent.propTypes = {
   title: PropTypes.string.isRequired,
-  electionSlug: PropTypes.string.isRequired,
+  electionPath: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
+  languageMenuProps: PropTypes.object.isRequired,
   onIntroClick: PropTypes.func
 };

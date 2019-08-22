@@ -15,7 +15,6 @@ import {CardActionArea} from 'gatsby-theme-material-ui';
 import {Helmet} from 'react-helmet';
 import {cover, size} from 'polished';
 import {graphql} from 'gatsby';
-import {useLanguage} from '../utils/language';
 
 const Wrapper = styled('div')({
   ...cover(),
@@ -44,18 +43,20 @@ const useStyles = makeStyles(theme => ({
 export default function ElectionTemplate(props) {
   const {button, avatar} = useStyles();
   const {palette} = useTheme();
-  const {localize} = useLanguage();
+
   const {
     slug,
     title,
-    introEn,
-    introFr,
+    intro,
     partyFirst,
     candidates
   } = props.data.pollenize.election;
+  const {lang, languages} = props.pageContext;
+
   return (
     <Layout>
       <Helmet>
+        <html lang={lang} />
         <title>{title}</title>
       </Helmet>
       <Wrapper>
@@ -65,18 +66,18 @@ export default function ElectionTemplate(props) {
             electionSlug={slug}
             candidates={candidates}
             partyFirst={partyFirst}
-            introEn={introEn}
-            introFr={introFr}
+            intro={intro}
             active="grid"
+            lang={lang}
+            languages={languages}
+            path={props.path}
           />
         </HeaderBase>
         <StyledGrid container>
           {candidates.map(candidate => {
-            const party = localize(candidate.partyEn, candidate.partyFr);
-
             const [title, subtitle] = partyFirst
-              ? [party, candidate.name]
-              : [candidate.name, party];
+              ? [candidate.party, candidate.name]
+              : [candidate.name, candidate.party];
 
             return (
               <Grid
@@ -93,7 +94,7 @@ export default function ElectionTemplate(props) {
               >
                 <CardActionArea
                   className={button}
-                  to={`/elections/${slug}/${candidate.slug}`}
+                  to={`${props.path}/${candidate.slug}`}
                   style={{
                     backgroundColor: candidate.color,
                     color: palette.getContrastText(candidate.color)
@@ -113,26 +114,26 @@ export default function ElectionTemplate(props) {
 }
 
 ElectionTemplate.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  pageContext: PropTypes.object.isRequired,
+  path: PropTypes.string.isRequired
 };
 
 export const pageQuery = graphql`
-  query ElectionQuery($id: ID!) {
+  query ElectionQuery($id: ID!, $lang: String!) {
     pollenize {
       election(id: $id) {
         slug
         title
-        introEn
-        introFr
+        intro(lang: $lang)
         partyFirst
         candidates(active: true) {
           id
           slug
           name
+          party(lang: $lang)
           color
           portrait
-          partyEn
-          partyFr
         }
       }
     }

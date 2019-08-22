@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import {Link} from '@material-ui/core';
-import {useLanguage} from '../utils/language';
 
 export default function StanceText(props) {
-  const {localize} = useLanguage();
   return (
     <Fragment>
-      {localize(props.stance.textEn, props.stance.textFr)}
+      {props.stance.text}
       {props.stance.sources.map(source => {
         const number = props.sources.indexOf(source.url) + 1;
         return (

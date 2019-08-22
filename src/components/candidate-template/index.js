@@ -39,10 +39,8 @@ export default function CandidateTemplate(props) {
   const {
     id: candidateId,
     name,
-    partyEn,
-    partyFr,
-    bioEn,
-    bioFr,
+    party,
+    bio,
     color,
     portrait,
     birthDate,
@@ -94,29 +92,32 @@ export default function CandidateTemplate(props) {
   }
 
   const [title, subtitle] = getCandidateTitles(
-    {name, partyEn, partyFr},
-    election.partyFirst,
-    localize
+    {name, party},
+    election.partyFirst
   );
 
-  const bio = localize(bioEn, bioFr);
   const [firstName] = name.split(' ');
   const aboutTitle = `${localize('About', 'À propos de')} ${firstName}`;
   const candidateStars = stars[candidateId] || [];
+  const {lang, languages} = props.pageContext;
+  const electionPath = `/${lang}/elections/${election.slug}`;
 
   return (
     <Layout>
       <Helmet>
+        <html lang={lang} />
         <title>{name}</title>
       </Helmet>
-      <HeaderBase link={`/elections/${election.slug}`} title={title}>
+      <HeaderBase link={electionPath} title={title}>
         <ElectionMenu
           title={election.title}
           electionSlug={election.slug}
           candidates={election.candidates}
           partyFirst={election.partyFirst}
-          introEn={election.introEn}
-          introFr={election.introFr}
+          intro={election.intro}
+          lang={lang}
+          languages={languages}
+          path={props.path}
         />
       </HeaderBase>
       <PageHeader
@@ -165,7 +166,7 @@ export default function CandidateTemplate(props) {
           <TopicSection
             topic={topic}
             key={topic.id}
-            electionSlug={election.slug}
+            electionPath={electionPath}
             stances={stancesByTopic[topic.id]}
             sources={sources}
             starred={candidateStars.includes(topic.id)}
@@ -197,27 +198,26 @@ export default function CandidateTemplate(props) {
 
 CandidateTemplate.propTypes = {
   data: PropTypes.object.isRequired,
+  path: PropTypes.string.isRequired,
+  pageContext: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired
 };
 
 export const pageQuery = graphql`
-  query CandidateQuery($id: ID!) {
+  query CandidateQuery($id: ID!, $lang: String!) {
     pollenize {
       candidate(id: $id) {
         id
         name
         portrait
-        partyEn
-        partyFr
-        bioEn
-        bioFr
+        party(lang: $lang)
+        bio(lang: $lang)
         color
         birthDate
         hometown
         stances {
           id
-          textEn
-          textFr
+          text(lang: $lang)
           topicId
           sources {
             id
@@ -227,24 +227,20 @@ export const pageQuery = graphql`
         election {
           slug
           title
-          introEn
-          introFr
           partyFirst
+          intro(lang: $lang)
           topics {
             id
             slug
             image
-            titleEn
-            titleFr
-            descriptionEn
-            descriptionFr
+            title(lang: $lang)
+            description(lang: $lang)
           }
           candidates(active: true) {
             id
             name
             slug
-            partyEn
-            partyFr
+            party(lang: $lang)
             portrait
           }
           credits {

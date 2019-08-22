@@ -32,8 +32,7 @@ export default function TopicsTemplate(props) {
     slug,
     topics,
     candidates,
-    introEn,
-    introFr,
+    intro,
     partyFirst,
     credits
   } = props.data.pollenize.election;
@@ -45,20 +44,26 @@ export default function TopicsTemplate(props) {
   ]);
 
   const {sources, activeSource, handleSourceClick} = useSources(stances);
+  const {lang, languages} = props.pageContext;
+  const electionPath = `/${lang}/elections/${slug}`;
+
   return (
     <Layout>
       <Helmet>
+        <html lang={lang} />
         <title>{title}</title>
       </Helmet>
-      <HeaderBase link={`/elections/${slug}`} title={title}>
+      <HeaderBase link={electionPath} title={title}>
         <ElectionMenu
           title={title}
           electionSlug={slug}
           candidates={candidates}
           partyFirst={partyFirst}
-          introEn={introEn}
-          introFr={introFr}
+          intro={intro}
           active="topics"
+          lang={lang}
+          languages={languages}
+          path={props.path}
         />
       </HeaderBase>
       <PageHeader
@@ -79,77 +84,69 @@ export default function TopicsTemplate(props) {
           />
         }
       >
-        {topics.map((topic, index) => {
-          const description = localize(
-            topic.descriptionEn,
-            topic.descriptionFr
-          );
-          return (
-            <TopicWrapper disableDivider={!index} key={topic.id} topic={topic}>
-              {description && <Typography paragraph>{description}</Typography>}
-              {topic.stances.map((stance, index) => {
-                const isOdd = Boolean(index % 2);
-                const pathToCandidate = `/elections/${slug}/${stance.candidate.slug}#${topic.slug}`;
-                const [title] = getCandidateTitles(
-                  stance.candidate,
-                  partyFirst,
-                  localize
-                );
+        {topics.map((topic, index) => (
+          <TopicWrapper disableDivider={!index} key={topic.id} topic={topic}>
+            {topic.description && (
+              <Typography paragraph>{topic.description}</Typography>
+            )}
+            {topic.stances.map((stance, index) => {
+              const isOdd = Boolean(index % 2);
+              const pathToCandidate = `${electionPath}/${stance.candidate.slug}#${topic.slug}`;
+              const [title] = getCandidateTitles(stance.candidate, partyFirst);
 
-                return (
+              return (
+                <Box
+                  key={stance.id}
+                  maxWidth={{
+                    xs: 1,
+                    sm: 0.75
+                  }}
+                  display="flex"
+                  alignItems="flex-end"
+                  flexDirection={isOdd ? 'row-reverse' : 'row'}
+                  ml={isOdd ? 'auto' : 0}
+                  mt={index || topic.description || !topic.image ? 4 : 0}
+                >
+                  <Avatar
+                    component={GatsbyLink}
+                    src={stance.candidate.portrait}
+                    to={pathToCandidate}
+                  />
                   <Box
-                    key={stance.id}
-                    maxWidth={{
-                      xs: 1,
-                      sm: 0.75
+                    bgcolor="grey.200"
+                    borderRadius="borderRadius"
+                    position="relative"
+                    {...{
+                      [isOdd ? 'mr' : 'ml']: 2
                     }}
-                    display="flex"
-                    alignItems="flex-end"
-                    flexDirection={isOdd ? 'row-reverse' : 'row'}
-                    ml={isOdd ? 'auto' : 0}
-                    mt={index || description || !topic.image ? 4 : 0}
                   >
-                    <Avatar
-                      component={GatsbyLink}
-                      src={stance.candidate.portrait}
-                      to={pathToCandidate}
-                    />
-                    <Box
-                      bgcolor="grey.200"
-                      borderRadius="borderRadius"
-                      position="relative"
+                    <Triangle
+                      position="absolute"
+                      bottom={0}
                       {...{
-                        [isOdd ? 'mr' : 'ml']: 2
+                        [isOdd ? 'right' : 'left']: triangleWidth / -2
                       }}
-                    >
-                      <Triangle
-                        position="absolute"
-                        bottom={0}
-                        {...{
-                          [isOdd ? 'right' : 'left']: triangleWidth / -2
-                        }}
-                      />
-                      <Box p={2}>
-                        <Typography gutterBottom>
-                          <StanceText
-                            stance={stance}
-                            sources={sources}
-                            onSourceClick={handleSourceClick}
-                          />
-                        </Typography>
-                        <Typography variant="caption" color="textSecondary">
-                          <Link color="inherit" to={pathToCandidate}>
-                            {title}
-                          </Link>
-                        </Typography>
-                      </Box>
+                    />
+                    <Box p={2}>
+                      <Typography gutterBottom>
+                        <StanceText
+                          stance={stance}
+                          sources={sources}
+                          onSourceClick={handleSourceClick}
+                        />
+                      </Typography>
+                      <Typography variant="caption" color="textSecondary">
+                        <Link color="inherit" to={pathToCandidate}>
+                          {title}
+                        </Link>
+                      </Typography>
                     </Box>
                   </Box>
-                );
-              })}
-            </TopicWrapper>
-          );
-        })}
+                </Box>
+              );
+            })}
+          </TopicWrapper>
+        ))}
       </PageWrapper>
       <Sources sources={sources} credits={credits} activeIndex={activeSource} />
     </Layout>
@@ -157,30 +154,28 @@ export default function TopicsTemplate(props) {
 }
 
 TopicsTemplate.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  path: PropTypes.string.isRequired,
+  pageContext: PropTypes.object.isRequired
 };
 
 export const pageQuery = graphql`
-  query TopicsQuery($id: ID!) {
+  query TopicsQuery($id: ID!, $lang: String!) {
     pollenize {
       election(id: $id) {
         slug
         title
-        introEn
-        introFr
+        intro(lang: $lang)
         partyFirst
         topics {
           id
           slug
-          titleEn
-          titleFr
-          descriptionEn
-          descriptionFr
+          title(lang: $lang)
+          description(lang: $lang)
           image
           stances {
             id
-            textEn
-            textFr
+            text(lang: $lang)
             sources {
               id
               url
@@ -188,8 +183,7 @@ export const pageQuery = graphql`
             candidate {
               slug
               name
-              partyEn
-              partyFr
+              party(lang: $lang)
               portrait
             }
           }
@@ -203,8 +197,7 @@ export const pageQuery = graphql`
           id
           name
           slug
-          partyEn
-          partyFr
+          party(lang: $lang)
           portrait
         }
       }

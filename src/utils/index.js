@@ -39,13 +39,8 @@ export function useFileHandler() {
   return [dataUrl, handleFileChange];
 }
 
-export function getCandidateTitles(
-  {name, partyEn, partyFr},
-  partyFirst,
-  localize
-) {
-  if (partyEn || partyFr) {
-    const party = localize(partyEn, partyFr);
+export function getCandidateTitles({name, party}, partyFirst) {
+  if (party) {
     return partyFirst ? [party, name] : [name, party];
   }
 

@@ -68,7 +68,7 @@ EditTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query EditQuery($id: ID!) {
+  query EditQuery($id: ID!, $lang: String!) {
     pollenize {
       election(id: $id) {
         id
@@ -79,8 +79,7 @@ export const pageQuery = graphql`
           id
           slug
           name
-          partyEn
-          partyFr
+          party(lang: $lang)
           portrait
         }
       }
