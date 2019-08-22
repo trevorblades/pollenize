@@ -1,5 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
 import {Candidate} from '../db';
+import {localize} from '../utils';
 
 export const typeDef = gql`
   extend type Query {
@@ -36,12 +37,14 @@ export const typeDef = gql`
     name: String
     partyEn: String
     partyFr: String
+    party(lang: String!): String
     color: String
     portrait: String
     birthDate: String
     hometown: String
     bioEn: String
     bioFr: String
+    bio(lang: String!): String
     active: Boolean
   }
 `;
@@ -76,6 +79,26 @@ export const resolvers = {
   Stance: {
     candidate(parent) {
       return parent.getCandidate();
+    }
+  },
+  Candidate: {
+    party(parent, args) {
+      return localize(
+        {
+          en: parent.partyEn,
+          fr: parent.partyFr
+        },
+        args.lang
+      );
+    },
+    bio(parent, args) {
+      return localize(
+        {
+          en: parent.bioEn,
+          fr: parent.bioFr
+        },
+        args.lang
+      );
     }
   }
 };

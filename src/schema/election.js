@@ -1,5 +1,6 @@
 import {Election} from '../db';
 import {gql} from 'apollo-server-express';
+import {localize} from '../utils';
 
 export const typeDef = gql`
   extend type Query {
@@ -18,6 +19,7 @@ export const typeDef = gql`
     flag: String
     introEn: String
     introFr: String
+    intro(lang: String!): String
     partyFirst: Boolean
     public: Boolean
     endsAt: String
@@ -39,6 +41,17 @@ export const resolvers = {
   Candidate: {
     election(parent) {
       return parent.getElection();
+    }
+  },
+  Election: {
+    intro(parent, args) {
+      return localize(
+        {
+          en: parent.introEn,
+          fr: parent.introFr
+        },
+        args.lang
+      );
     }
   }
 };

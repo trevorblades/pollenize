@@ -1,5 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
 import {Topic} from '../db';
+import {localize} from '../utils';
 
 export const typeDef = gql`
   extend type Mutation {
@@ -23,8 +24,10 @@ export const typeDef = gql`
     slug: String
     titleEn: String
     titleFr: String
+    title(lang: String!): String
     descriptionEn: String
     descriptionFr: String
+    description(lang: String!): String
     image: String
     order: Int
   }
@@ -50,6 +53,26 @@ export const resolvers = {
       return parent.getTopics({
         order: [['order', 'desc']]
       });
+    }
+  },
+  Topic: {
+    title(parent, args) {
+      return localize(
+        {
+          en: parent.titleEn,
+          fr: parent.titleFr
+        },
+        args.lang
+      );
+    },
+    description(parent, args) {
+      return localize(
+        {
+          en: parent.descriptionEn,
+          fr: parent.descriptionFr
+        },
+        args.lang
+      );
     }
   }
 };

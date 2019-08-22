@@ -1,5 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
 import {Source, Stance, sequelize} from '../db';
+import {localize} from '../utils';
 
 export const typeDef = gql`
   extend type Mutation {
@@ -36,6 +37,7 @@ export const typeDef = gql`
     id: ID
     textEn: String
     textFr: String
+    text(lang: String!): String
     topicId: ID
   }
 `;
@@ -111,6 +113,17 @@ export const resolvers = {
       return parent.getStances({
         order: ['id']
       });
+    }
+  },
+  Stance: {
+    text(parent, args) {
+      return localize(
+        {
+          en: parent.textEn,
+          fr: parent.textFr
+        },
+        args.lang
+      );
     }
   }
 };
