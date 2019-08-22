@@ -45,7 +45,9 @@ export default function LanguageButton() {
     <LanguageMenuBase
       renderButton={openMenu => (
         <Tooltip title={localize('Change language', 'Changer de langue')}>
-          <LanguageButtonBase lang={lang} onClick={openMenu} />
+          <div>
+            <LanguageButtonBase lang={lang} onClick={openMenu} />
+          </div>
         </Tooltip>
       )}
     />
