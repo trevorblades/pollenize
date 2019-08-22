@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
 import {Box, IconButton, Menu, MenuItem, Tooltip} from '@material-ui/core';
 import {Link} from 'gatsby';
-import {useLanguage} from '../../utils/language';
+import {useLanguage} from '../utils/language';
 
 export function LanguageMenuBase(props) {
   const {lang, languages, getPathForLanguage} = useLanguage();
@@ -45,22 +45,33 @@ export default function LanguageButton() {
     <LanguageMenuBase
       renderButton={openMenu => (
         <Tooltip title={localize('Change language', 'Changer de langue')}>
-          <IconButton color="inherit" onClick={openMenu}>
-            <Box
-              width={24}
-              height={24}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              fontFamily="fontFamily"
-              fontSize={18}
-              fontWeight={500}
-            >
-              {lang.toUpperCase()}
-            </Box>
-          </IconButton>
+          <LanguageButtonBase lang={lang} onClick={openMenu} />
         </Tooltip>
       )}
     />
   );
 }
+
+export function LanguageButtonBase(props) {
+  return (
+    <IconButton color="inherit" onClick={props.onClick}>
+      <Box
+        width={24}
+        height={24}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        fontFamily="fontFamily"
+        fontSize={18}
+        fontWeight={500}
+      >
+        {props.lang.toUpperCase()}
+      </Box>
+    </IconButton>
+  );
+}
+
+LanguageButtonBase.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  lang: PropTypes.string.isRequired
+};

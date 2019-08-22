@@ -13,7 +13,7 @@ import {
   styled
 } from '@material-ui/core';
 import {FaStar} from 'react-icons/fa';
-import {LanguageMenuBase} from './language-menu';
+import {LanguageMenuBase} from '../language-menu';
 import {Link} from 'gatsby';
 import {getCandidateTitles} from '../../utils';
 import {useKey, useToggle} from 'react-use';

@@ -1,5 +1,5 @@
 import DrawerContent from './drawer-content';
-import LanguageMenu from './language-menu';
+import LanguageMenu from '../language-menu';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
 import {
