@@ -1,11 +1,11 @@
 const {createFilePath} = require('gatsby-source-filesystem');
 
 const BlogPostTemplate = require.resolve('./src/components/blog-post-template');
-const ElectionTemplate = require.resolve('./src/components/election-template');
-const TopicsTemplate = require.resolve('./src/components/topics-template');
 const CandidateTemplate = require.resolve(
   './src/components/candidate-template'
 );
+const ElectionTemplate = require.resolve('./src/components/election-template');
+const TopicsTemplate = require.resolve('./src/components/topics-template');
 
 exports.onCreateNode = async ({node, actions, getNode}) => {
   if (node.internal.type === 'MarkdownRemark') {
