@@ -125,7 +125,7 @@ export default function DrawerContent(props) {
           <ListItem
             button
             component={Link}
-            to={`${props.electionPath}/___edit`}
+            to={`/___edit?id=${props.electionId}`}
           >
             <ListItemText>
               {localize('Edit election', "Modifier l'élection")}
@@ -139,6 +139,7 @@ export default function DrawerContent(props) {
 
 DrawerContent.propTypes = {
   title: PropTypes.string.isRequired,
+  electionId: PropTypes.string.isRequired,
   electionPath: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,

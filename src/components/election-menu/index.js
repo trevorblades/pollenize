@@ -119,6 +119,7 @@ export default function ElectionMenu(props) {
         <DrawerContent
           candidates={props.candidates}
           electionPath={electionPath}
+          electionId={props.electionId}
           title={props.title}
           partyFirst={props.partyFirst}
           onIntroClick={props.intro && openDialog}
@@ -177,6 +178,7 @@ export default function ElectionMenu(props) {
 
 ElectionMenu.propTypes = {
   title: PropTypes.string.isRequired,
+  electionId: PropTypes.string.isRequired,
   electionSlug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,

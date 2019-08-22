@@ -51,7 +51,7 @@ export default function ElectionTemplate(props) {
     partyFirst,
     candidates
   } = props.data.pollenize.election;
-  const {lang, languages} = props.pageContext;
+  const {id, lang, languages} = props.pageContext;
 
   return (
     <Layout>
@@ -63,6 +63,7 @@ export default function ElectionTemplate(props) {
         <HeaderBase link="/elections" title={title}>
           <ElectionMenu
             title={title}
+            electionId={id}
             electionSlug={slug}
             candidates={candidates}
             partyFirst={partyFirst}

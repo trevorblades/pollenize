@@ -33,6 +33,7 @@
     "lodash": "^4.17.15",
     "polished": "^3.4.1",
     "prop-types": "^15.7.2",
+    "query-string": "^6.8.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",

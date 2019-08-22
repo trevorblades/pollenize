@@ -44,7 +44,7 @@ export default function TopicsTemplate(props) {
   ]);
 
   const {sources, activeSource, handleSourceClick} = useSources(stances);
-  const {lang, languages} = props.pageContext;
+  const {id, lang, languages} = props.pageContext;
   const electionPath = `/${lang}/elections/${slug}`;
 
   return (
@@ -57,6 +57,7 @@ export default function TopicsTemplate(props) {
         <ElectionMenu
           title={title}
           electionSlug={slug}
+          electionId={id}
           candidates={candidates}
           partyFirst={partyFirst}
           intro={intro}
