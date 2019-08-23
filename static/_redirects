@@ -4,3 +4,5 @@
 /quebec /elections/quebec-2018
 /america /elections/america-2016
 /chicago /elections/chicago-2015
+
+/elections/* /en/elections/:splat

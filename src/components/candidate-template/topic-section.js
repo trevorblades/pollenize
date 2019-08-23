@@ -53,7 +53,7 @@ export default function TopicSection(props) {
           <Button
             component={Link}
             className={button}
-            to={`/elections/${props.electionSlug}/topics#${props.topic.slug}`}
+            to={`${props.electionPath}/topics#${props.topic.slug}`}
             color="inherit"
           >
             <FaRegComments size={24} style={{marginRight: 8}} />
@@ -82,7 +82,7 @@ export default function TopicSection(props) {
 
 TopicSection.propTypes = {
   topic: PropTypes.object.isRequired,
-  electionSlug: PropTypes.string.isRequired,
+  electionPath: PropTypes.string.isRequired,
   onStarClick: PropTypes.func.isRequired,
   onLinkClick: PropTypes.func.isRequired,
   starred: PropTypes.bool.isRequired,

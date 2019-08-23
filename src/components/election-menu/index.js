@@ -5,7 +5,6 @@ import React, {Fragment, useState} from 'react';
 import {
   Box,
   Button,
-  CardActionArea,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,12 +17,13 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+import {CardActionArea} from 'gatsby-theme-material-ui';
 import {FaRegComments, FaThLarge} from 'react-icons/fa';
 import {FiInfo, FiMenu} from 'react-icons/fi';
 import {Link} from 'gatsby';
 import {MdCheck} from 'react-icons/md';
-import {languages, useLanguage} from '../../utils/language';
 import {upperFirst} from 'lodash';
+import {useLanguage} from '../../utils/language';
 import {useLocalStorage} from 'react-use';
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +45,7 @@ export default function ElectionMenu(props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [introState, setIntroState] = useLocalStorage('intro', {});
   const [dialogOpen, setDialogOpen] = useState(!introState[props.electionSlug]);
-  const {localize, language, setLanguage} = useLanguage();
+  const {lang, languages, getPathForLanguage, localize} = useLanguage();
 
   function openDrawer() {
     setDrawerOpen(true);
@@ -70,11 +70,11 @@ export default function ElectionMenu(props) {
     setDialogOpen(false);
   }
 
-  const intro = localize(props.introEn, props.introFr);
-  const electionPath = `/elections/${props.electionSlug}`;
+  const electionPath = `/${lang}/elections/${props.electionSlug}`;
+
   return (
     <Fragment>
-      {intro && (
+      {props.intro && (
         <Hidden only="xs" implementation="css">
           <IconButton color="inherit" onClick={openDialog}>
             <FiInfo />
@@ -113,13 +113,14 @@ export default function ElectionMenu(props) {
       >
         <DrawerContent
           candidates={props.candidates}
-          electionSlug={props.electionSlug}
+          electionPath={electionPath}
+          electionId={props.electionId}
           title={props.title}
           partyFirst={props.partyFirst}
-          onIntroClick={intro && openDialog}
+          onIntroClick={props.intro && openDialog}
         />
       </Drawer>
-      {intro && (
+      {props.intro && (
         <Dialog fullWidth open={dialogOpen} onClose={closeDialog}>
           <DialogTitle disableTypography>
             <Typography variant="overline">
@@ -128,7 +129,7 @@ export default function ElectionMenu(props) {
             <Typography variant="h4">Pollenize {props.title}</Typography>
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph>{intro}</Typography>
+            <Typography paragraph>{props.intro}</Typography>
             <Typography
               paragraph
               display="block"
@@ -142,17 +143,15 @@ export default function ElectionMenu(props) {
               :
             </Typography>
             <Grid container spacing={2}>
-              {Object.entries(languages).map(([key, value]) => (
-                <Grid item xs={6} key={key}>
-                  <Box color={key === language ? 'primary.main' : 'inherit'}>
+              {Object.entries(languages).map(([code, name]) => (
+                <Grid item xs={6} key={code}>
+                  <Box color={code === lang ? 'primary.main' : 'inherit'}>
                     <CardActionArea
                       className={languageButton}
-                      onClick={() => {
-                        setLanguage(key);
-                      }}
+                      to={getPathForLanguage(code)}
                     >
-                      <Typography variant="h5">{upperFirst(key)}</Typography>
-                      <Typography>{value}</Typography>
+                      <Typography variant="h5">{upperFirst(code)}</Typography>
+                      <Typography>{name}</Typography>
                     </CardActionArea>
                   </Box>
                 </Grid>
@@ -160,14 +159,8 @@ export default function ElectionMenu(props) {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button size="large" onClick={closeDialog}>
-              <MdCheck
-                size={24}
-                style={{
-                  marginLeft: -8,
-                  marginRight: 8
-                }}
-              />
+            <Button onClick={closeDialog}>
+              <MdCheck size={20} style={{marginRight: 8}} />
               Done
             </Button>
           </DialogActions>
@@ -179,10 +172,10 @@ export default function ElectionMenu(props) {
 
 ElectionMenu.propTypes = {
   title: PropTypes.string.isRequired,
+  electionId: PropTypes.string.isRequired,
   electionSlug: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
-  introEn: PropTypes.string,
-  introFr: PropTypes.string,
+  intro: PropTypes.string,
   active: PropTypes.string
 };

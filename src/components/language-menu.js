@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
-import {IconButton, Menu, MenuItem, Tooltip} from '@material-ui/core';
-import {MdTranslate} from 'react-icons/md';
-import {languages, useLanguage} from '../utils/language';
+import {Box, IconButton, Menu, MenuItem, Tooltip} from '@material-ui/core';
+import {Link} from 'gatsby';
+import {useLanguage} from '../utils/language';
 
 export function LanguageMenuBase(props) {
+  const {lang, languages, getPathForLanguage} = useLanguage();
   const [anchorEl, setAnchorEl] = useState(null);
-  const {language, setLanguage} = useLanguage();
 
   function openMenu(event) {
     setAnchorEl(event.currentTarget);
@@ -23,11 +23,9 @@ export function LanguageMenuBase(props) {
         {Object.entries(languages).map(([code, name]) => (
           <MenuItem
             key={code}
-            selected={language === code}
-            onClick={() => {
-              setLanguage(code);
-              closeMenu();
-            }}
+            selected={lang === code}
+            component={Link}
+            to={getPathForLanguage(code)}
           >
             {name}
           </MenuItem>
@@ -42,16 +40,41 @@ LanguageMenuBase.propTypes = {
 };
 
 export default function LanguageButton() {
-  const {localize} = useLanguage();
+  const {lang, localize} = useLanguage();
   return (
     <LanguageMenuBase
       renderButton={openMenu => (
         <Tooltip title={localize('Change language', 'Changer de langue')}>
-          <IconButton color="inherit" onClick={openMenu}>
-            <MdTranslate />
-          </IconButton>
+          {/* wrap in a div because LanguageButtonBase can't take refs */}
+          <div>
+            <LanguageButtonBase lang={lang} onClick={openMenu} />
+          </div>
         </Tooltip>
       )}
     />
   );
 }
+
+export function LanguageButtonBase(props) {
+  return (
+    <IconButton color="inherit" onClick={props.onClick}>
+      <Box
+        width={24}
+        height={24}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        fontFamily="fontFamily"
+        fontSize={18}
+        fontWeight={500}
+      >
+        {props.lang.toUpperCase()}
+      </Box>
+    </IconButton>
+  );
+}
+
+LanguageButtonBase.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  lang: PropTypes.string.isRequired
+};

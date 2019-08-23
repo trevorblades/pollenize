@@ -65,15 +65,14 @@ export default function DrawerContent(props) {
           const candidateStars = stars[candidate.id] || [];
           const [title, subtitle] = getCandidateTitles(
             candidate,
-            props.partyFirst,
-            localize
+            props.partyFirst
           );
 
           return (
             <ListItem
               button
               component={Link}
-              to={`/elections/${props.electionSlug}/${candidate.slug}`}
+              to={`${props.electionPath}/${candidate.slug}`}
               key={candidate.id}
             >
               <ListItemAvatar>
@@ -106,15 +105,6 @@ export default function DrawerContent(props) {
             </ListItem>
           )}
         />
-        {/* <ListItem
-          button
-          component={Link}
-          to={`/elections/${props.electionSlug}/table`}
-        >
-          <ListItemText>
-            {localize('View as table', 'Voir comme table')}
-          </ListItemText>
-        </ListItem> */}
         {props.onIntroClick && (
           <ListItem button onClick={props.onIntroClick}>
             <ListItemText>
@@ -134,7 +124,7 @@ export default function DrawerContent(props) {
           <ListItem
             button
             component={Link}
-            to={`/elections/${props.electionSlug}/___edit`}
+            to={`/___edit?id=${props.electionId}`}
           >
             <ListItemText>
               {localize('Edit election', "Modifier l'élection")}
@@ -148,7 +138,8 @@ export default function DrawerContent(props) {
 
 DrawerContent.propTypes = {
   title: PropTypes.string.isRequired,
-  electionSlug: PropTypes.string.isRequired,
+  electionId: PropTypes.string.isRequired,
+  electionPath: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   partyFirst: PropTypes.bool.isRequired,
   onIntroClick: PropTypes.func

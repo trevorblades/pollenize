@@ -10,11 +10,11 @@ import TopicWrapper from './topic-wrapper';
 import {Avatar, Box, Typography, styled} from '@material-ui/core';
 import {Link as GatsbyLink, graphql} from 'gatsby';
 import {Helmet} from 'react-helmet';
+import {LanguageProvider, useLocalize} from '../utils/language';
 import {Link} from 'gatsby-theme-material-ui';
 import {PageHeader, PageWrapper} from './common';
 import {getCandidateTitles, useCurrentAnchor} from '../utils';
 import {triangle} from 'polished';
-import {useLanguage} from '../utils/language';
 
 const triangleWidth = 24;
 const Triangle = styled(Box)(({theme}) =>
@@ -32,68 +32,71 @@ export default function TopicsTemplate(props) {
     slug,
     topics,
     candidates,
-    introEn,
-    introFr,
+    intro,
     partyFirst,
     credits
   } = props.data.pollenize.election;
+  const {id, lang, languages} = props.pageContext;
 
-  const {localize} = useLanguage();
+  const localize = useLocalize(lang, languages);
   const currentAnchor = useCurrentAnchor();
   const stances = useMemo(() => topics.flatMap(topic => topic.stances), [
     topics
   ]);
 
   const {sources, activeSource, handleSourceClick} = useSources(stances);
+  const electionPath = `/${lang}/elections/${slug}`;
+
   return (
     <Layout>
       <Helmet>
+        <html lang={lang} />
         <title>{title}</title>
       </Helmet>
-      <HeaderBase link={`/elections/${slug}`} title={title}>
-        <ElectionMenu
-          title={title}
-          electionSlug={slug}
-          candidates={candidates}
-          partyFirst={partyFirst}
-          introEn={introEn}
-          introFr={introFr}
-          active="topics"
-        />
-      </HeaderBase>
-      <PageHeader
-        title={localize('Topic explorer', 'Explorateur de sujets')}
-        subtitle={localize(
-          "View candidates' main stances organized by topic",
-          'Voir les positions principales des candidats organisées par sujet'
-        )}
-        bgcolor="grey.200"
-      />
-      <PageWrapper
-        sidebar={
-          <TableOfContents
-            topics={topics}
-            getActiveProps={index => ({
-              color: index === currentAnchor ? 'primary' : 'inherit'
-            })}
+      <LanguageProvider lang={lang} languages={languages} path={props.path}>
+        <HeaderBase link={electionPath} title={title}>
+          <ElectionMenu
+            title={title}
+            electionSlug={slug}
+            electionId={id}
+            candidates={candidates}
+            partyFirst={partyFirst}
+            intro={intro}
+            active="topics"
+            lang={lang}
+            languages={languages}
+            path={props.path}
           />
-        }
-      >
-        {topics.map((topic, index) => {
-          const description = localize(
-            topic.descriptionEn,
-            topic.descriptionFr
-          );
-          return (
+        </HeaderBase>
+        <PageHeader
+          title={localize('Topic explorer', 'Explorateur de sujets')}
+          subtitle={localize(
+            "View candidates' main stances organized by topic",
+            'Voir les positions principales des candidats organisées par sujet'
+          )}
+          bgcolor="grey.200"
+        />
+        <PageWrapper
+          sidebar={
+            <TableOfContents
+              topics={topics}
+              getActiveProps={index => ({
+                color: index === currentAnchor ? 'primary' : 'inherit'
+              })}
+            />
+          }
+        >
+          {topics.map((topic, index) => (
             <TopicWrapper disableDivider={!index} key={topic.id} topic={topic}>
-              {description && <Typography paragraph>{description}</Typography>}
+              {topic.description && (
+                <Typography paragraph>{topic.description}</Typography>
+              )}
               {topic.stances.map((stance, index) => {
                 const isOdd = Boolean(index % 2);
-                const pathToCandidate = `/elections/${slug}/${stance.candidate.slug}#${topic.slug}`;
+                const pathToCandidate = `${electionPath}/${stance.candidate.slug}#${topic.slug}`;
                 const [title] = getCandidateTitles(
                   stance.candidate,
-                  partyFirst,
-                  localize
+                  partyFirst
                 );
 
                 return (
@@ -107,7 +110,7 @@ export default function TopicsTemplate(props) {
                     alignItems="flex-end"
                     flexDirection={isOdd ? 'row-reverse' : 'row'}
                     ml={isOdd ? 'auto' : 0}
-                    mt={index || description || !topic.image ? 4 : 0}
+                    mt={index || topic.description || !topic.image ? 4 : 0}
                   >
                     <Avatar
                       component={GatsbyLink}
@@ -148,39 +151,41 @@ export default function TopicsTemplate(props) {
                 );
               })}
             </TopicWrapper>
-          );
-        })}
-      </PageWrapper>
-      <Sources sources={sources} credits={credits} activeIndex={activeSource} />
+          ))}
+        </PageWrapper>
+        <Sources
+          sources={sources}
+          credits={credits}
+          activeIndex={activeSource}
+        />
+      </LanguageProvider>
     </Layout>
   );
 }
 
 TopicsTemplate.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  path: PropTypes.string.isRequired,
+  pageContext: PropTypes.object.isRequired
 };
 
 export const pageQuery = graphql`
-  query TopicsQuery($id: ID!) {
+  query TopicsQuery($id: ID!, $lang: String!) {
     pollenize {
       election(id: $id) {
         slug
         title
-        introEn
-        introFr
+        intro(lang: $lang)
         partyFirst
         topics {
           id
           slug
-          titleEn
-          titleFr
-          descriptionEn
-          descriptionFr
+          title(lang: $lang)
+          description(lang: $lang)
           image
           stances {
             id
-            textEn
-            textFr
+            text(lang: $lang)
             sources {
               id
               url
@@ -188,8 +193,7 @@ export const pageQuery = graphql`
             candidate {
               slug
               name
-              partyEn
-              partyFr
+              party(lang: $lang)
               portrait
             }
           }
@@ -203,8 +207,7 @@ export const pageQuery = graphql`
           id
           name
           slug
-          partyEn
-          partyFr
+          party(lang: $lang)
           portrait
         }
       }

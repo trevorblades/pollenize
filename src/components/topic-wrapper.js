@@ -3,7 +3,6 @@ import React, {Fragment} from 'react';
 import {Box, Divider, Typography, styled} from '@material-ui/core';
 import {ContentWrapper, PageAnchor} from './common';
 import {size} from 'polished';
-import {useLanguage} from '../utils/language';
 
 const StyledImage = styled('img')({
   ...size('100%'),
@@ -16,8 +15,6 @@ const StyledImage = styled('img')({
 });
 
 export default function TopicWrapper(props) {
-  const {localize} = useLanguage();
-  const title = localize(props.topic.titleEn, props.topic.titleFr);
   return (
     <Fragment>
       <PageAnchor className="topic" name={props.topic.slug} />
@@ -34,7 +31,7 @@ export default function TopicWrapper(props) {
         >
           <StyledImage src={props.topic.image} loading="lazy" />
           <Box bgcolor="background.paper" py={1} px={2} position="relative">
-            <Typography variant="h4">{title}</Typography>
+            <Typography variant="h4">{props.topic.title}</Typography>
           </Box>
         </Box>
       ) : (
@@ -43,7 +40,7 @@ export default function TopicWrapper(props) {
       <ContentWrapper>
         {!props.topic.image && (
           <Typography gutterBottom variant="h4">
-            {title}
+            {props.topic.title}
           </Typography>
         )}
         {props.children}

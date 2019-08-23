@@ -4,9 +4,7 @@ const BlogPostTemplate = require.resolve('./src/components/blog-post-template');
 const CandidateTemplate = require.resolve(
   './src/components/candidate-template'
 );
-const EditTemplate = require.resolve('./src/components/edit-template');
 const ElectionTemplate = require.resolve('./src/components/election-template');
-const TableTemplate = require.resolve('./src/components/table-template');
 const TopicsTemplate = require.resolve('./src/components/topics-template');
 
 exports.onCreateNode = async ({node, actions, getNode}) => {
@@ -20,6 +18,11 @@ exports.onCreateNode = async ({node, actions, getNode}) => {
       })
     });
   }
+};
+
+const languages = {
+  en: 'English',
+  fr: 'Français'
 };
 
 exports.createPages = async ({actions, graphql}) => {
@@ -40,40 +43,31 @@ exports.createPages = async ({actions, graphql}) => {
 
   const {elections} = electionResults.data.pollenize;
   for (const {id, slug, candidates} of elections) {
-    const path = `/elections/${slug}`;
-    const context = {id};
+    for (const lang in languages) {
+      const context = {id, lang, languages};
+      const path = `/${lang}/elections/${slug}`;
 
-    actions.createPage({
-      path,
-      component: ElectionTemplate,
-      context
-    });
-
-    actions.createPage({
-      path: `${path}/topics`,
-      component: TopicsTemplate,
-      context
-    });
-
-    actions.createPage({
-      path: `${path}/table`,
-      component: TableTemplate,
-      context
-    });
-
-    actions.createPage({
-      path: `${path}/___edit`,
-      component: EditTemplate,
-      context
-    });
-
-    for (const {id, slug} of candidates) {
       actions.createPage({
-        path: `${path}/${slug}`,
-        component: CandidateTemplate,
-        context: {
-          id
-        }
+        path,
+        component: ElectionTemplate,
+        context
+      });
+
+      for (const {id, slug} of candidates) {
+        actions.createPage({
+          path: `${path}/${slug}`,
+          component: CandidateTemplate,
+          context: {
+            ...context,
+            id
+          }
+        });
+      }
+
+      actions.createPage({
+        path: `${path}/topics`,
+        component: TopicsTemplate,
+        context
       });
     }
   }
