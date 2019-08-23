@@ -71,7 +71,7 @@ export default function Hero() {
             <Mask aria-hidden="true">
               <Content />
             </Mask>
-            <Fab variant="extended" to="/en/elections/canada-2019">
+            <Fab disabled variant="extended">
               Coming soon
             </Fab>
           </Box>
