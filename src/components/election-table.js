@@ -47,8 +47,12 @@ export default function ElectionTable(props) {
         const candidate = props.election.candidates[columnIndex - 1];
         const boxProps = {
           borderColor: 'divider',
-          borderBottom: rowIndex < rowCount - 1 ? 1 : 0,
-          borderRight: columnIndex < columnCount - 1 ? 1 : 0,
+          border: 1,
+          borderTop: 0,
+          borderLeft: 0,
+          borderBottom: rowIndex < rowCount - 1 ? null : 0,
+          borderRight: columnIndex < columnCount - 1 ? null : 0,
+          // FIXME: refactor after https://github.com/mui-org/material-ui/issues/16995 is resolved
           style
         };
 

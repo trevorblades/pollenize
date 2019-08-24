@@ -7,6 +7,7 @@ module.exports = {
       'Pollenize is an apolitical non-profit providing voters with accurate and easy-to-understand information about elections.'
   },
   plugins: [
+    'gatsby-theme-apollo',
     'gatsby-plugin-top-layout',
     'gatsby-plugin-material-ui',
     'gatsby-plugin-svgr',
