@@ -111,6 +111,7 @@ export default function StanceForm(props) {
             autoComplete="off"
             disabled={props.loading}
             placeholder={`Add ${sources.length ? 'another' : 'a'} source`}
+            helperText="Enter a URL and press the return key (&crarr;) to add it"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
