@@ -1,4 +1,7 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+const {webFontsConfig} = require('@trevorblades/mui-theme');
+
+dotenv.config();
 
 module.exports = {
   siteMetadata: {
@@ -8,11 +11,13 @@ module.exports = {
   },
   plugins: [
     'gatsby-theme-apollo',
-    'gatsby-plugin-top-layout',
-    'gatsby-plugin-material-ui',
     'gatsby-plugin-svgr',
     'gatsby-plugin-lodash',
     'gatsby-plugin-react-helmet',
+    {
+      resolve: 'gatsby-theme-material-ui',
+      options: {webFontsConfig}
+    },
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
