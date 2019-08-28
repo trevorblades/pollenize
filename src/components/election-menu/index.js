@@ -13,6 +13,7 @@ import {
   Grid,
   Hidden,
   IconButton,
+  NoSsr,
   Tooltip,
   Typography,
   makeStyles
@@ -116,16 +117,18 @@ export default function ElectionMenu(props) {
       <IconButton onClick={openDrawer} color="inherit">
         <Box display="flex" position="relative">
           <FiMenu />
-          {totalStarCount > 0 && (
-            <Box
-              size={16}
-              component={FaStar}
-              color="secondary.main"
-              position="absolute"
-              top={-5}
-              right={-5}
-            />
-          )}
+          <NoSsr>
+            {totalStarCount > 0 && (
+              <Box
+                size={16}
+                component={FaStar}
+                color="secondary.main"
+                position="absolute"
+                top={-5}
+                right={-5}
+              />
+            )}
+          </NoSsr>
         </Box>
       </IconButton>
       <Drawer

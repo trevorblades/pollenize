@@ -6,18 +6,18 @@ import {
   Grid,
   TextField,
   Typography,
-  styled,
   useTheme,
   withTheme
 } from '@material-ui/core';
 import {HEADER_HEIGHT} from './header-base';
 import {compose, mapProps, withProps} from 'recompose';
 
-export const PageAnchor = styled('a')({
+export const PageAnchor = withProps({
+  component: 'a',
   display: 'block',
   height: HEADER_HEIGHT,
-  marginTop: -HEADER_HEIGHT
-});
+  mt: `${-HEADER_HEIGHT}px`
+})(Box);
 
 export const FormField = withProps({
   fullWidth: true,
