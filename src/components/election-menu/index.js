@@ -1,7 +1,7 @@
 import DrawerContent from './drawer-content';
 import LanguageMenu from '../language-menu';
 import PropTypes from 'prop-types';
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useMemo, useState} from 'react';
 import {
   Box,
   Button,
@@ -18,13 +18,14 @@ import {
   makeStyles
 } from '@material-ui/core';
 import {CardActionArea} from 'gatsby-theme-material-ui';
-import {FaRegComments, FaThLarge} from 'react-icons/fa';
+import {FaRegComments, FaStar, FaThLarge} from 'react-icons/fa';
 import {FiInfo, FiMenu} from 'react-icons/fi';
 import {Link} from 'gatsby';
 import {MdCheck} from 'react-icons/md';
 import {upperFirst} from 'lodash';
 import {useLanguage} from '../../utils/language';
 import {useLocalStorage} from 'react-use';
+import {useStars} from '../../utils/stars';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -46,6 +47,16 @@ export default function ElectionMenu(props) {
   const [introState, setIntroState] = useLocalStorage('intro', {});
   const [dialogOpen, setDialogOpen] = useState(!introState[props.electionSlug]);
   const {lang, languages, getPathForLanguage, localize} = useLanguage();
+  const {stars, resetStars} = useStars();
+
+  const totalStarCount = useMemo(
+    () =>
+      props.candidates.reduce((acc, candidate) => {
+        const candidateStars = stars[candidate.id] || [];
+        return acc + candidateStars.length;
+      }, 0),
+    [props.candidates, stars]
+  );
 
   function openDrawer() {
     setDrawerOpen(true);
@@ -103,7 +114,19 @@ export default function ElectionMenu(props) {
         <LanguageMenu />
       </Hidden>
       <IconButton onClick={openDrawer} color="inherit">
-        <FiMenu />
+        <Box display="flex" position="relative">
+          <FiMenu />
+          {totalStarCount > 0 && (
+            <Box
+              size={16}
+              component={FaStar}
+              color="secondary.main"
+              position="absolute"
+              top={-5}
+              right={-5}
+            />
+          )}
+        </Box>
       </IconButton>
       <Drawer
         classes={{paper}}
@@ -118,6 +141,9 @@ export default function ElectionMenu(props) {
           title={props.title}
           partyFirst={props.partyFirst}
           onIntroClick={props.intro && openDialog}
+          totalStarCount={totalStarCount}
+          stars={stars}
+          resetStars={resetStars}
         />
       </Drawer>
       {props.intro && (

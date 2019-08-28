@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {Fragment, useMemo} from 'react';
+import React, {Fragment} from 'react';
 import {
   Avatar,
   List,
@@ -18,7 +18,6 @@ import {Link} from 'gatsby';
 import {getCandidateTitles} from '../../utils';
 import {useKey, useToggle} from 'react-use';
 import {useLanguage} from '../../utils/language';
-import {useStars} from '../../utils/stars';
 
 const StyledList = styled(List)({
   backgroundColor: 'inherit'
@@ -38,23 +37,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function DrawerContent(props) {
   const {localize} = useLanguage();
-  const {stars, resetStars} = useStars();
   const {secondaryAction, starIcon} = useStyles();
   const [adminShown, toggleAdminShown] = useToggle(false);
-
-  const totalStarCount = useMemo(
-    () =>
-      props.candidates.reduce((acc, candidate) => {
-        const candidateStars = stars[candidate.id] || [];
-        return acc + candidateStars.length;
-      }, 0),
-    [props.candidates, stars]
-  );
 
   useKey('A', toggleAdminShown);
 
   function handleResetClick() {
-    resetStars(props.candidates);
+    props.resetStars(props.candidates);
   }
 
   return (
@@ -62,7 +51,7 @@ export default function DrawerContent(props) {
       <StyledList>
         <ListSubheader>{props.title}</ListSubheader>
         {props.candidates.map(candidate => {
-          const candidateStars = stars[candidate.id] || [];
+          const candidateStars = props.stars[candidate.id] || [];
           const [title, subtitle] = getCandidateTitles(
             candidate,
             props.partyFirst
@@ -91,7 +80,11 @@ export default function DrawerContent(props) {
         <ListSubheader>
           {localize('More options', "Plus d'options")}
         </ListSubheader>
-        <ListItem button disabled={!totalStarCount} onClick={handleResetClick}>
+        <ListItem
+          button
+          disabled={!props.totalStarCount}
+          onClick={handleResetClick}
+        >
           <ListItemText>
             {localize('Reset stars', 'Réinitialiser les étoiles')}
           </ListItemText>
@@ -141,6 +134,9 @@ DrawerContent.propTypes = {
   electionId: PropTypes.string.isRequired,
   electionPath: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
+  totalStarCount: PropTypes.number.isRequired,
+  stars: PropTypes.object.isRequired,
+  resetStars: PropTypes.func.isRequired,
   partyFirst: PropTypes.bool.isRequired,
   onIntroClick: PropTypes.func
 };
