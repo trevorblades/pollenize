@@ -5,29 +5,22 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Avatar,
+  Box,
   Grid,
   Typography,
   makeStyles,
-  styled,
   useTheme
 } from '@material-ui/core';
 import {CardActionArea} from 'gatsby-theme-material-ui';
 import {Helmet} from 'react-helmet';
 import {LanguageProvider} from '../utils/language';
-import {cover, size} from 'polished';
 import {graphql} from 'gatsby';
-
-const Wrapper = styled('div')({
-  ...cover(),
-  display: 'flex',
-  flexDirection: 'column'
-});
-
-const StyledGrid = styled(Grid)({
-  flexGrow: 1
-});
+import {size} from 'polished';
 
 const useStyles = makeStyles(theme => ({
+  grid: {
+    flexGrow: 1
+  },
   button: {
     display: 'flex',
     flexDirection: 'column',
@@ -42,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ElectionTemplate(props) {
-  const {button, avatar} = useStyles();
+  const {button, avatar, grid} = useStyles();
   const {palette} = useTheme();
 
   const {
@@ -61,7 +54,16 @@ export default function ElectionTemplate(props) {
         <title>{title}</title>
       </Helmet>
       <LanguageProvider lang={lang} languages={languages} path={props.path}>
-        <Wrapper>
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          bottom={0}
+          right={0}
+          display="flex"
+          flexDirection="column"
+          bgcolor="grey.900"
+        >
           <HeaderBase link="/elections" title={title}>
             <ElectionMenu
               title={title}
@@ -73,7 +75,7 @@ export default function ElectionTemplate(props) {
               active="grid"
             />
           </HeaderBase>
-          <StyledGrid container>
+          <Grid container className={grid}>
             {candidates.map(candidate => {
               const [title, subtitle] = partyFirst
                 ? [candidate.party, candidate.name]
@@ -107,8 +109,8 @@ export default function ElectionTemplate(props) {
                 </Grid>
               );
             })}
-          </StyledGrid>
-        </Wrapper>
+          </Grid>
+        </Box>
       </LanguageProvider>
     </Layout>
   );
