@@ -11,7 +11,7 @@ import {useToggle} from 'react-use';
 
 const useStyles = makeStyles(theme => ({
   button: {
-    margin: `0 ${theme.spacing(0.5)}px`
+    margin: theme.spacing(0, 0.5)
   }
 }));
 
