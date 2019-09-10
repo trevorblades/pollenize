@@ -1,8 +1,15 @@
 import React, {Fragment} from 'react';
 import leaf, {ReactComponent as Leaf} from '../assets/leaf.svg';
+import pattern from '../assets/pattern.svg';
 import {Box, Typography, styled, useTheme} from '@material-ui/core';
 import {Fab} from 'gatsby-theme-material-ui';
 import {cover, size} from 'polished';
+
+const Wrapper = styled(Box)({
+  backgroundImage: `url(${pattern})`,
+  backgroundPosition: 'center',
+  backgroundSize: '700px'
+});
 
 const Mask = styled('div')(({theme}) => ({
   ...cover(),
@@ -57,7 +64,12 @@ function Content() {
 export default function Hero() {
   const {breakpoints} = useTheme();
   return (
-    <Box color="red" bgcolor="grey.200" position="relative" overflow="hidden">
+    <Wrapper
+      color="red"
+      bgcolor="grey.200"
+      position="relative"
+      overflow="hidden"
+    >
       <Box maxWidth={breakpoints.values.lg} mx="auto" px={paddingX} py={12}>
         <Box
           width={{
@@ -77,6 +89,6 @@ export default function Hero() {
           </Box>
         </Box>
       </Box>
-    </Box>
+    </Wrapper>
   );
 }
