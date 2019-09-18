@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import leaf, {ReactComponent as Leaf} from '../assets/leaf.svg';
 import pattern from '../assets/pattern.svg';
 import {Box, Typography, styled, useTheme} from '@material-ui/core';
+import {FaChevronRight} from 'react-icons/fa';
 import {Fab} from 'gatsby-theme-material-ui';
 import {cover, size} from 'polished';
 
@@ -83,8 +84,9 @@ export default function Hero() {
             <Mask aria-hidden="true">
               <Content />
             </Mask>
-            <Fab disabled variant="extended">
-              Coming soon
+            <Fab variant="extended" to="/en/elections/canada-2019">
+              View election guide
+              <Box component={FaChevronRight} ml={1} mr={0.5} size={16} />
             </Fab>
           </Box>
         </Box>
