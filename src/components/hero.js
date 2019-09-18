@@ -95,7 +95,11 @@ export default function Hero() {
             <Mask aria-hidden="true">
               <Content />
             </Mask>
-            <Fab variant="extended" to="/en/elections/canada-2019">
+            <Fab
+              color="primary"
+              variant="extended"
+              to="/en/elections/canada-2019"
+            >
               View election guide
               <Box component={FaChevronRight} ml={1} mr={0.5} size={16} />
             </Fab>

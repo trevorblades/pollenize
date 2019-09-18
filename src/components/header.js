@@ -29,11 +29,7 @@ export default function Header() {
         <MenuItem to="/team">Team</MenuItem>
         <MenuItem to="/blog">Blog</MenuItem>
       </Hidden>
-      <Button
-        color="secondary"
-        to="/en/elections/canada-2019"
-        variant="outlined"
-      >
+      <Button color="primary" to="/en/elections/canada-2019" variant="outlined">
         Canada 2019
         <FaChevronRight style={{marginLeft: 8}} />
       </Button>
