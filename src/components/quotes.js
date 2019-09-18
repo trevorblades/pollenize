@@ -14,7 +14,7 @@ const Wrapper = styled('div')({
 function Quote(props) {
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Box component="blockquote" m={0} mt={4} textAlign="center">
+      <Box component="blockquote" m={0} textAlign="center">
         <Typography paragraph>&ldquo;{props.children}&rdquo;</Typography>
         <Typography component="cite" variant="subtitle2">
           &mdash;{props.cite}
@@ -39,10 +39,10 @@ export default function Quotes() {
           md: 10
         }}
       >
-        <Typography align="center" variant="h4">
+        <Typography gutterBottom align="center" variant="h4">
           We&apos;re creating a buzz 🐝
         </Typography>
-        <Grid container spacing={8} alignItems="center" justify="center">
+        <Grid container spacing={5} alignItems="center" justify="center">
           <Quote cite="Matt Galloway, CBC">
             You&apos;d be forgiven if you can&apos;t remember where each
             [candidate] stands on the big issues. Pollenize is a site that is

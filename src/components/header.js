@@ -1,8 +1,8 @@
 import HeaderBase from './header-base';
 import React from 'react';
-import {withStyles} from '@material-ui/core';
-// import {FaChevronRight} from 'react-icons/fa';
-import {Link} from 'gatsby-theme-material-ui';
+import {Button, Link} from 'gatsby-theme-material-ui';
+import {FaChevronRight} from 'react-icons/fa';
+import {Hidden, withStyles} from '@material-ui/core';
 import {compose, mapProps} from 'recompose';
 
 const MenuItem = compose(
@@ -22,13 +22,21 @@ const MenuItem = compose(
 export default function Header() {
   return (
     <HeaderBase>
-      <MenuItem to="/elections">Elections</MenuItem>
-      <MenuItem to="/team">Team</MenuItem>
-      <MenuItem to="/blog">Blog</MenuItem>
-      {/* <Button component={Link} to="/elections/canada-2019" variant="outlined">
+      <Hidden xsDown implementation="css">
+        <MenuItem to="/elections">Elections</MenuItem>
+      </Hidden>
+      <Hidden smDown implementation="css">
+        <MenuItem to="/team">Team</MenuItem>
+        <MenuItem to="/blog">Blog</MenuItem>
+      </Hidden>
+      <Button
+        color="secondary"
+        to="/en/elections/canada-2019"
+        variant="outlined"
+      >
         Canada 2019
         <FaChevronRight style={{marginLeft: 8}} />
-      </Button> */}
+      </Button>
     </HeaderBase>
   );
 }
