@@ -32,7 +32,13 @@ Quote.propTypes = {
 export default function Quotes() {
   return (
     <Wrapper>
-      <SectionWrapper py={10}>
+      <SectionWrapper
+        py={{
+          xs: 6,
+          sm: 8,
+          md: 10
+        }}
+      >
         <Typography align="center" variant="h4">
           We&apos;re creating a buzz 🐝
         </Typography>

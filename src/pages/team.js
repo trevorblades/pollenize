@@ -73,7 +73,13 @@ export default function Team() {
             'linear-gradient(to top right, seashell, transparent)'
         }}
       >
-        <SectionWrapper py={10}>
+        <SectionWrapper
+          py={{
+            xs: 6,
+            sm: 8,
+            md: 10
+          }}
+        >
           <Typography gutterBottom variant="h2">
             Our team
           </Typography>

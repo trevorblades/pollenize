@@ -10,7 +10,13 @@ import {SectionWrapper} from './common';
 export default function Future() {
   const {palette} = useTheme();
   return (
-    <SectionWrapper py={10}>
+    <SectionWrapper
+      py={{
+        xs: 6,
+        sm: 8,
+        md: 10
+      }}
+    >
       <Grid container spacing={7}>
         <Grid item xs={12} md={6}>
           <Typography gutterBottom variant="h4">

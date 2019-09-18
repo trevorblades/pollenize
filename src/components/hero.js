@@ -1,9 +1,10 @@
 import React, {Fragment} from 'react';
 import leaf, {ReactComponent as Leaf} from '../assets/leaf.svg';
 import pattern from '../assets/pattern.svg';
-import {Box, Typography, styled, useTheme} from '@material-ui/core';
+import {Box, Typography, styled} from '@material-ui/core';
 import {FaChevronRight} from 'react-icons/fa';
 import {Fab} from 'gatsby-theme-material-ui';
+import {SectionWrapper} from './common';
 import {cover, size} from 'polished';
 
 const Wrapper = styled(Box)({
@@ -12,26 +13,13 @@ const Wrapper = styled(Box)({
   backgroundSize: '700px'
 });
 
-const Mask = styled('div')(({theme}) => ({
-  ...cover(),
-  maskImage: `url(${leaf})`,
-  maskSize: 960,
-  maskRepeat: 'no-repeat',
-  maskPosition: 'center',
-  color: 'white',
-  pointerEvents: 'none',
-  userSelect: 'none',
-  [theme.breakpoints.down('sm')]: {
-    maskSize: 800
-  }
-}));
-
-const paddingX = 8;
+const leafSize = 960;
+const leafSizeSmall = 800;
 const StyledLeaf = styled(Leaf)(({theme}) => {
   const wrapperOffset = theme.breakpoints.values.lg / 4;
-  const paddingOffset = theme.spacing(paddingX) / 2;
+  const paddingOffset = theme.spacing(8) / 2;
   return {
-    width: 960,
+    ...size(leafSize),
     position: 'absolute',
     left: `calc(50% - ${wrapperOffset - paddingOffset}px)`,
     top: '50%',
@@ -41,11 +29,29 @@ const StyledLeaf = styled(Leaf)(({theme}) => {
       left: `calc(25% + ${paddingOffset}px)`
     },
     [theme.breakpoints.down('sm')]: {
-      ...size(800),
+      ...size(leafSizeSmall),
       left: '50%'
     }
   };
 });
+
+function getMaskSize(size) {
+  return `${size}px ${size}px`;
+}
+
+const Mask = styled('div')(({theme}) => ({
+  ...cover(),
+  maskImage: `url(${leaf})`,
+  maskSize: getMaskSize(leafSize),
+  maskRepeat: 'no-repeat',
+  maskPosition: 'center',
+  color: 'white',
+  pointerEvents: 'none',
+  userSelect: 'none',
+  [theme.breakpoints.down('sm')]: {
+    maskSize: getMaskSize(leafSizeSmall)
+  }
+}));
 
 function Content() {
   return (
@@ -63,7 +69,6 @@ function Content() {
 }
 
 export default function Hero() {
-  const {breakpoints} = useTheme();
   return (
     <Wrapper
       color="red"
@@ -71,7 +76,13 @@ export default function Hero() {
       position="relative"
       overflow="hidden"
     >
-      <Box maxWidth={breakpoints.values.lg} mx="auto" px={paddingX} py={12}>
+      <SectionWrapper
+        py={{
+          xs: 8,
+          sm: 10,
+          md: 12
+        }}
+      >
         <Box
           width={{
             sm: 1,
@@ -90,7 +101,7 @@ export default function Hero() {
             </Fab>
           </Box>
         </Box>
-      </Box>
+      </SectionWrapper>
     </Wrapper>
   );
 }

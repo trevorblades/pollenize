@@ -29,7 +29,11 @@ export const SectionWrapper = compose(
   mapProps(({theme, ...props}) => ({
     maxWidth: theme.breakpoints.values.lg,
     mx: 'auto',
-    p: 8,
+    p: {
+      xs: 4,
+      sm: 6,
+      md: 8
+    },
     ...props
   }))
 )(Box);

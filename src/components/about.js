@@ -5,7 +5,11 @@ import {Typography} from '@material-ui/core';
 export default function About() {
   return (
     <SectionWrapper
-      py={10}
+      py={{
+        xs: 6,
+        sm: 8,
+        md: 10
+      }}
       textAlign="center"
       maxWidth={{
         xs: 1,
