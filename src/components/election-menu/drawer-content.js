@@ -117,7 +117,7 @@ export default function DrawerContent(props) {
           <ListItem
             button
             component={Link}
-            to={`/___edit?id=${props.electionId}`}
+            to={`/_/edit?id=${props.electionId}`}
           >
             <ListItemText>
               {localize('Edit election', "Modifier l'élection")}
