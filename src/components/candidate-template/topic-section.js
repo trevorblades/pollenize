@@ -15,6 +15,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const MIN_STANCES = 2;
+
 export default function TopicSection(props) {
   const {button} = useStyles();
   const {localize} = useLanguage();
@@ -24,15 +26,17 @@ export default function TopicSection(props) {
     <TopicWrapper topic={props.topic}>
       {props.stances ? (
         <Fragment>
-          {props.stances.slice(0, expanded ? undefined : 1).map(stance => (
-            <Typography key={stance.id} paragraph>
-              <StanceText
-                stance={stance}
-                sources={props.sources}
-                onSourceClick={props.onSourceClick}
-              />
-            </Typography>
-          ))}
+          {props.stances
+            .slice(0, expanded ? undefined : MIN_STANCES)
+            .map(stance => (
+              <Typography key={stance.id} paragraph>
+                <StanceText
+                  stance={stance}
+                  sources={props.sources}
+                  onSourceClick={props.onSourceClick}
+                />
+              </Typography>
+            ))}
           <IconButton
             onClick={props.onStarClick}
             color="inherit"
@@ -50,6 +54,14 @@ export default function TopicSection(props) {
           >
             <FiLink />
           </IconButton>
+          {props.stances.length > MIN_STANCES && (
+            <Button className={button} onClick={toggleExpanded}>
+              {expanded
+                ? localize('Show less', 'Montre moins')
+                : `${localize('Show more', 'Montre plus')} (${props.stances
+                    .length - MIN_STANCES})`}
+            </Button>
+          )}
           <Button
             component={Link}
             className={button}
@@ -59,14 +71,6 @@ export default function TopicSection(props) {
             <FaRegComments size={24} style={{marginRight: 8}} />
             {localize('Compare', 'Comparer')}
           </Button>
-          {props.stances.length > 1 && (
-            <Button className={button} onClick={toggleExpanded}>
-              {expanded
-                ? localize('Show less', 'Montre moins')
-                : `${localize('Show more', 'Montre plus')} (${props.stances
-                    .length - 1})`}
-            </Button>
-          )}
         </Fragment>
       ) : (
         <Typography paragraph>
