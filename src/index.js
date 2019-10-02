@@ -36,27 +36,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({app});
 
-// async function migrateStances() {
-//   const stances = await Stance.findAll();
-//   for (const stance of stances) {
-//     const messageEn = await Message.create({
-//       text: stance.textEn
-//     });
-
-//     await messageEn.setLanguage(1);
-
-//     const messageFr = await Message.create({
-//       text: stance.textFr
-//     });
-
-//     await messageFr.setLanguage(2);
-
-//     await stance.setMessages([messageEn, messageFr]);
-//   }
-// }
-
 sequelize.sync().then(() => {
-  // migrateStances();
   app.listen({port: process.env.PORT}, () => {
     console.log(
       `🚀 Server ready at http://localhost:${process.env.PORT +

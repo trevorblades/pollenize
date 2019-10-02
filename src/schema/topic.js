@@ -1,6 +1,5 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Topic} from '../db';
-import {localize} from '../utils';
+import {Language, Topic} from '../db';
 
 export const typeDef = gql`
   extend type Mutation {
@@ -22,11 +21,7 @@ export const typeDef = gql`
   type Topic {
     id: ID
     slug: String
-    titleEn: String
-    titleFr: String
     title(lang: String!): String
-    descriptionEn: String
-    descriptionFr: String
     description(lang: String!): String
     image: String
     order: Int
@@ -56,23 +51,35 @@ export const resolvers = {
     }
   },
   Topic: {
-    title(parent, args) {
-      return localize(
-        {
-          en: parent.titleEn,
-          fr: parent.titleFr
-        },
-        args.lang
-      );
+    async title(parent, args) {
+      const language = await Language.findOne({
+        where: {
+          code: args.lang
+        }
+      });
+
+      const [title] = await parent.getTitles({
+        where: {
+          languageId: language.id
+        }
+      });
+
+      return title ? title.text : null;
     },
-    description(parent, args) {
-      return localize(
-        {
-          en: parent.descriptionEn,
-          fr: parent.descriptionFr
-        },
-        args.lang
-      );
+    async description(parent, args) {
+      const language = await Language.findOne({
+        where: {
+          code: args.lang
+        }
+      });
+
+      const [description] = await parent.getDescriptions({
+        where: {
+          languageId: language.id
+        }
+      });
+
+      return description ? description.text : null;
     }
   }
 };

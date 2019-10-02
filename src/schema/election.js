@@ -1,6 +1,5 @@
-import {Election} from '../db';
+import {Election, Language} from '../db';
 import {gql} from 'apollo-server-express';
-import {localize} from '../utils';
 
 export const typeDef = gql`
   extend type Query {
@@ -17,8 +16,6 @@ export const typeDef = gql`
     slug: String
     title: String
     flag: String
-    introEn: String
-    introFr: String
     intro(lang: String!): String
     partyFirst: Boolean
     public: Boolean
@@ -44,14 +41,20 @@ export const resolvers = {
     }
   },
   Election: {
-    intro(parent, args) {
-      return localize(
-        {
-          en: parent.introEn,
-          fr: parent.introFr
-        },
-        args.lang
-      );
+    async intro(parent, args) {
+      const language = await Language.findOne({
+        where: {
+          code: args.lang
+        }
+      });
+
+      const [intro] = await parent.getIntros({
+        where: {
+          languageId: language.id
+        }
+      });
+
+      return intro ? intro.text : null;
     }
   }
 };
