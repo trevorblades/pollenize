@@ -172,7 +172,7 @@ export default function ElectionMenu(props) {
               :
             </Typography>
             <Grid container spacing={2}>
-              {Object.entries(languages).map(([code, name]) => (
+              {languages.map(({code, name}) => (
                 <Grid item xs={6} key={code}>
                   <Box color={code === lang ? 'primary.main' : 'inherit'}>
                     <CardActionArea

@@ -20,15 +20,14 @@ exports.onCreateNode = async ({node, actions, getNode}) => {
   }
 };
 
-const languages = {
-  en: 'English',
-  fr: 'Français'
-};
-
 exports.createPages = async ({actions, graphql}) => {
   const electionResults = await graphql(`
     {
       pollenize {
+        languages {
+          code
+          name
+        }
         elections {
           id
           slug
@@ -41,11 +40,15 @@ exports.createPages = async ({actions, graphql}) => {
     }
   `);
 
-  const {elections} = electionResults.data.pollenize;
+  const {languages, elections} = electionResults.data.pollenize;
   for (const {id, slug, candidates} of elections) {
-    for (const lang in languages) {
-      const context = {id, lang, languages};
-      const path = `/${lang}/elections/${slug}`;
+    for (const {code} of languages) {
+      const path = `/${code}/elections/${slug}`;
+      const context = {
+        id,
+        lang: code,
+        languages
+      };
 
       actions.createPage({
         path,

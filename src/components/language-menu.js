@@ -20,7 +20,7 @@ export function LanguageMenuBase(props) {
     <Fragment>
       {props.renderButton(openMenu)}
       <Menu onClose={closeMenu} anchorEl={anchorEl} open={Boolean(anchorEl)}>
-        {Object.entries(languages).map(([code, name]) => (
+        {languages.map(({code, name}) => (
           <MenuItem
             key={code}
             selected={lang === code}
