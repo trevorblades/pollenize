@@ -1,7 +1,7 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Source, Stance, sequelize} from '../db';
-import {localize} from '../utils';
+import {Language, Source, Stance, sequelize} from '../db';
 
+// TODO: update mutations for multiple langs
 export const typeDef = gql`
   extend type Mutation {
     createStance(
@@ -35,8 +35,6 @@ export const typeDef = gql`
 
   type Stance {
     id: ID
-    textEn: String
-    textFr: String
     text(lang: String!): String
     topicId: ID
   }
@@ -116,14 +114,21 @@ export const resolvers = {
     }
   },
   Stance: {
-    text(parent, args) {
-      return localize(
-        {
-          en: parent.textEn,
-          fr: parent.textFr
-        },
-        args.lang
-      );
+    async text(parent, args) {
+      // TODO: expect a languageId arg instead of searching for one
+      const language = await Language.findOne({
+        where: {
+          code: args.lang
+        }
+      });
+
+      const [message] = await parent.getMessages({
+        where: {
+          languageId: language.id
+        }
+      });
+
+      return message ? message.text : null;
     }
   }
 };

@@ -3,6 +3,18 @@ import jwt from 'jsonwebtoken';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL);
 
+export const Language = sequelize.define('language', {
+  code: Sequelize.STRING,
+  name: Sequelize.STRING
+});
+
+export const Message = sequelize.define('message', {
+  text: Sequelize.TEXT
+});
+
+Message.belongsTo(Language);
+Language.hasMany(Message);
+
 export const Election = sequelize.define('election', {
   slug: Sequelize.STRING,
   title: Sequelize.STRING,
@@ -58,10 +70,11 @@ export const Topic = sequelize.define('topic', {
 Topic.belongsTo(Election);
 Election.hasMany(Topic);
 
-export const Stance = sequelize.define('stance', {
-  textEn: Sequelize.TEXT,
-  textFr: Sequelize.TEXT
-});
+export const Stance = sequelize.define('stance');
+
+const StanceMessage = sequelize.define('stanceMessage');
+Stance.belongsToMany(Message, {through: StanceMessage});
+Message.belongsToMany(Stance, {through: StanceMessage});
 
 Stance.belongsTo(Candidate);
 Candidate.hasMany(Stance);

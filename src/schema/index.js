@@ -5,6 +5,7 @@ import {
 } from './candidate';
 import {typeDef as Credit, resolvers as creditResolvers} from './credit';
 import {typeDef as Election, resolvers as electionResolvers} from './election';
+import {typeDef as Language, resolvers as languageResolvers} from './language';
 import {typeDef as Source, resolvers as sourceResolvers} from './source';
 import {typeDef as Stance, resolvers as stanceResolvers} from './stance';
 import {typeDef as Topic, resolvers as topicResolvers} from './topic';
@@ -33,7 +34,8 @@ export default makeExecutableSchema({
     Stance,
     Source,
     User,
-    Credit
+    Credit,
+    Language
   ],
   resolvers: merge(
     electionResolvers,
@@ -42,6 +44,7 @@ export default makeExecutableSchema({
     stanceResolvers,
     sourceResolvers,
     userResolvers,
-    creditResolvers
+    creditResolvers,
+    languageResolvers
   )
 });
