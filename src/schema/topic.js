@@ -1,5 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
 import {Topic} from '../db';
+import {getMessageResolver} from '../utils';
 
 export const typeDef = gql`
   extend type Mutation {
@@ -51,23 +52,7 @@ export const resolvers = {
     }
   },
   Topic: {
-    async title(parent, {languageId}) {
-      const [title] = await parent.getTitles({
-        where: {
-          languageId
-        }
-      });
-
-      return title ? title.text : null;
-    },
-    async description(parent, {languageId}) {
-      const [description] = await parent.getDescriptions({
-        where: {
-          languageId
-        }
-      });
-
-      return description ? description.text : null;
-    }
+    title: getMessageResolver('getTitles'),
+    description: getMessageResolver('getDescriptions')
   }
 };

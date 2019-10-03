@@ -1,5 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
 import {Candidate} from '../db';
+import {getMessageResolver} from '../utils';
 
 export const typeDef = gql`
   extend type Query {
@@ -77,23 +78,7 @@ export const resolvers = {
     }
   },
   Candidate: {
-    async party(parent, {languageId}) {
-      const [party] = await parent.getParties({
-        where: {
-          languageId
-        }
-      });
-
-      return party ? party.text : null;
-    },
-    async bio(parent, {languageId}) {
-      const [bio] = await parent.getBios({
-        where: {
-          languageId
-        }
-      });
-
-      return bio ? bio.text : null;
-    }
+    party: getMessageResolver('getParties'),
+    bio: getMessageResolver('getBios')
   }
 };

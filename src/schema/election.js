@@ -1,4 +1,5 @@
 import {Election} from '../db';
+import {getMessageResolver} from '../utils';
 import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`
@@ -41,14 +42,6 @@ export const resolvers = {
     }
   },
   Election: {
-    async intro(parent, {languageId}) {
-      const [intro] = await parent.getIntros({
-        where: {
-          languageId
-        }
-      });
-
-      return intro ? intro.text : null;
-    }
+    intro: getMessageResolver('getIntros')
   }
 };

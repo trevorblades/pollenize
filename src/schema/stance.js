@@ -1,5 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
 import {Source, Stance, sequelize} from '../db';
+import {getMessageResolver} from '../utils';
 
 // TODO: update mutations for multiple langs
 export const typeDef = gql`
@@ -114,14 +115,6 @@ export const resolvers = {
     }
   },
   Stance: {
-    async text(parent, {languageId}) {
-      const [message] = await parent.getMessages({
-        where: {
-          languageId
-        }
-      });
-
-      return message ? message.text : null;
-    }
+    text: getMessageResolver()
   }
 };
