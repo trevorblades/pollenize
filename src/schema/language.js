@@ -7,6 +7,7 @@ export const typeDef = gql`
   }
 
   type Language {
+    id: ID
     code: String
     name: String
   }

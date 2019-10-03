@@ -1,4 +1,4 @@
-import {Election, Language} from '../db';
+import {Election} from '../db';
 import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`
@@ -16,7 +16,7 @@ export const typeDef = gql`
     slug: String
     title: String
     flag: String
-    intro(lang: String!): String
+    intro(languageId: ID!): String
     partyFirst: Boolean
     public: Boolean
     endsAt: String
@@ -41,16 +41,10 @@ export const resolvers = {
     }
   },
   Election: {
-    async intro(parent, args) {
-      const language = await Language.findOne({
-        where: {
-          code: args.lang
-        }
-      });
-
+    async intro(parent, {languageId}) {
       const [intro] = await parent.getIntros({
         where: {
-          languageId: language.id
+          languageId
         }
       });
 

@@ -1,5 +1,5 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Candidate, Language} from '../db';
+import {Candidate} from '../db';
 
 export const typeDef = gql`
   extend type Query {
@@ -34,12 +34,12 @@ export const typeDef = gql`
     id: ID
     slug: String
     name: String
-    party(lang: String!): String
+    party(languageId: ID!): String
     color: String
     portrait: String
     birthDate: String
     hometown: String
-    bio(lang: String!): String
+    bio(languageId: ID!): String
     active: Boolean
   }
 `;
@@ -77,31 +77,19 @@ export const resolvers = {
     }
   },
   Candidate: {
-    async party(parent, args) {
-      const language = await Language.findOne({
-        where: {
-          code: args.lang
-        }
-      });
-
+    async party(parent, {languageId}) {
       const [party] = await parent.getParties({
         where: {
-          languageId: language.id
+          languageId
         }
       });
 
       return party ? party.text : null;
     },
-    async bio(parent, args) {
-      const language = await Language.findOne({
-        where: {
-          code: args.lang
-        }
-      });
-
+    async bio(parent, {languageId}) {
       const [bio] = await parent.getBios({
         where: {
-          languageId: language.id
+          languageId
         }
       });
 
