@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function DrawerContent(props) {
-  const {localize} = useLanguage();
+  const {localize, languages} = useLanguage();
   const {secondaryAction, starIcon} = useStyles();
   const [adminShown, toggleAdminShown] = useToggle(false);
 
@@ -85,13 +85,15 @@ export default function DrawerContent(props) {
         >
           <ListItemText>{localize('Reset stars')}</ListItemText>
         </ListItem>
-        <LanguageMenuBase
-          renderButton={openMenu => (
-            <ListItem button onClick={openMenu}>
-              <ListItemText>{localize('Language: English')}</ListItemText>
-            </ListItem>
-          )}
-        />
+        {languages.length > 1 && (
+          <LanguageMenuBase
+            renderButton={openMenu => (
+              <ListItem button onClick={openMenu}>
+                <ListItemText>{localize('Language: English')}</ListItemText>
+              </ListItem>
+            )}
+          />
+        )}
         {props.onIntroClick && (
           <ListItem button onClick={props.onIntroClick}>
             <ListItemText>{localize('Open intro dialog')}</ListItemText>

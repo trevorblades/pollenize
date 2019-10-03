@@ -24,14 +24,14 @@ exports.createPages = async ({actions, graphql}) => {
   const electionResults = await graphql(`
     {
       pollenize {
-        languages {
-          id
-          code
-          name
-        }
         elections {
           id
           slug
+          languages {
+            id
+            code
+            name
+          }
           candidates(active: true) {
             id
             slug
@@ -41,8 +41,8 @@ exports.createPages = async ({actions, graphql}) => {
     }
   `);
 
-  const {languages, elections} = electionResults.data.pollenize;
-  for (const {id, slug, candidates} of elections) {
+  const {elections} = electionResults.data.pollenize;
+  for (const {id, slug, candidates, languages} of elections) {
     for (const language of languages) {
       const path = `/${language.code}/elections/${slug}`;
       const context = {

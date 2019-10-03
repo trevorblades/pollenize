@@ -111,9 +111,11 @@ export default function ElectionMenu(props) {
           <FaRegComments />
         </IconButton>
       </Tooltip>
-      <Hidden only="xs" implementation="css">
-        <LanguageMenu />
-      </Hidden>
+      {languages.length > 1 && (
+        <Hidden only="xs" implementation="css">
+          <LanguageMenu />
+        </Hidden>
+      )}
       <IconButton onClick={openDrawer} color="inherit">
         <Box display="flex" position="relative">
           <FiMenu />
