@@ -1,23 +1,26 @@
 import gql from 'graphql-tag';
 
-const SOURCE_FRAGMENT = gql`
-  fragment SourceFragment on Source {
+const MESSAGE_FRAGMENT = gql`
+  fragment MessageFragment on Message {
     id
-    url
+    text
+    languageId
   }
 `;
 
 export const STANCE_FRAGMENT = gql`
   fragment StanceFragment on Stance {
     id
-    textEn
-    textFr
     topicId
+    messages {
+      ...MessageFragment
+    }
     sources {
-      ...SourceFragment
+      id
+      url
     }
   }
-  ${SOURCE_FRAGMENT}
+  ${MESSAGE_FRAGMENT}
 `;
 
 export const CANDIDATE_FRAGMENT = gql`
@@ -26,52 +29,56 @@ export const CANDIDATE_FRAGMENT = gql`
     name
     color
     portrait
-    partyEn
-    partyFr
+    parties {
+      ...MessageFragment
+    }
     hometown
     birthDate
-    bioEn
-    bioFr
+    bios {
+      ...MessageFragment
+    }
     active
     stances {
       ...StanceFragment
     }
   }
   ${STANCE_FRAGMENT}
+  ${MESSAGE_FRAGMENT}
 `;
 
 export const TOPIC_FRAGMENT = gql`
   fragment TopicFragment on Topic {
     id
-    titleEn
-    titleFr
-    descriptionEn
-    descriptionFr
+    titles {
+      ...MessageFragment
+    }
+    descriptions {
+      ...MessageFragment
+    }
     image
     order
   }
-`;
-
-const ELECTION_FRAGMENT = gql`
-  fragment ElectionFragment on Election {
-    id
-    partyFirst
-    candidates {
-      ...CandidateFragment
-    }
-    topics {
-      ...TopicFragment
-    }
-  }
-  ${CANDIDATE_FRAGMENT}
-  ${TOPIC_FRAGMENT}
+  ${MESSAGE_FRAGMENT}
 `;
 
 export const GET_ELECTION = gql`
   query GetElection($id: ID!) {
     election(id: $id) {
-      ...ElectionFragment
+      id
+      partyFirst
+      languages {
+        id
+        code
+        name
+      }
+      candidates {
+        ...CandidateFragment
+      }
+      topics {
+        ...TopicFragment
+      }
     }
   }
-  ${ELECTION_FRAGMENT}
+  ${CANDIDATE_FRAGMENT}
+  ${TOPIC_FRAGMENT}
 `;

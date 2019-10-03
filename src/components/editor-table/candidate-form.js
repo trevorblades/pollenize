@@ -1,3 +1,4 @@
+import LanguageFields from './language-fields';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import gql from 'graphql-tag';
@@ -196,17 +197,12 @@ export default function CandidateForm(props) {
           disabled={disabled}
           defaultValue={props.candidate.name}
         />
-        <FormField
-          label="Party (EN)"
-          name="partyEn"
+        <LanguageFields
           disabled={disabled}
-          defaultValue={props.candidate.partyEn}
-        />
-        <FormField
-          label="Parti (FR)"
-          name="partyFr"
-          disabled={disabled}
-          defaultValue={props.candidate.partyFr}
+          languages={props.languages}
+          messages={props.candidate.parties}
+          label="Party"
+          name="party"
         />
         <FormField
           label="Birth date"
@@ -227,19 +223,13 @@ export default function CandidateForm(props) {
           disabled={disabled}
           defaultValue={props.candidate.hometown}
         />
-        <FormField
+        <LanguageFields
           multiline
-          label="Bio (EN)"
-          name="bioEn"
           disabled={disabled}
-          defaultValue={props.candidate.bioEn}
-        />
-        <FormField
-          multiline
-          label="La biographie (FR)"
-          name="bioFr"
-          disabled={disabled}
-          defaultValue={props.candidate.bioFr}
+          languages={props.languages}
+          messages={props.candidate.bios}
+          label="Bio"
+          name="bio"
         />
       </DialogContent>
       <DialogActions>
@@ -255,5 +245,6 @@ export default function CandidateForm(props) {
 CandidateForm.propTypes = {
   title: PropTypes.string.isRequired,
   candidate: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  languages: PropTypes.array.isRequired
 };

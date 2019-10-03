@@ -48,12 +48,7 @@ export function LanguageProvider(props) {
 
 LanguageProvider.propTypes = {
   lang: PropTypes.string.isRequired,
-  languages: PropTypes.array,
-  path: PropTypes.string,
+  languages: PropTypes.array.isRequired,
+  path: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired
-};
-
-LanguageProvider.defaultProps = {
-  languages: [],
-  path: ''
 };

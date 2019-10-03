@@ -1,7 +1,7 @@
 import CandidateForm from './candidate-form';
 import CreateStanceForm from './create-stance-form';
 import DialogButton from './dialog-button';
-import ElectionTable from '../election-table';
+import ElectionTable from './election-table';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TopicForm from './topic-form';
@@ -15,7 +15,6 @@ import {
 } from '@material-ui/core';
 import {GET_ELECTION} from '../../utils/queries';
 import {getCandidateTitles} from '../../utils';
-import {useLanguage} from '../../utils/language';
 import {useQuery} from '@apollo/react-hooks';
 
 function HeaderButton({title, children, className, ...props}) {
@@ -51,7 +50,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function EditorTable(props) {
-  const {localize} = useLanguage();
   const {headerButton, stanceButton} = useStyles();
   const {data, loading, error} = useQuery(GET_ELECTION, {
     variables: {
@@ -81,15 +79,14 @@ export default function EditorTable(props) {
                     variant="body2"
                     color={stance.sources.length ? 'inherit' : 'textSecondary'}
                   >
-                    {/* TODO: localize this */}
-                    {stance.textEn}
+                    {stance.messages[0].text}
                   </Typography>
                 </CardActionArea>
               )}
             >
               {closeDialog => (
                 <UpdateStanceForm
-                  electionId={data.election.id}
+                  election={data.election}
                   stance={stance}
                   candidate={candidate}
                   topic={topic}
@@ -101,16 +98,12 @@ export default function EditorTable(props) {
           <Box my={1}>
             <DialogButton
               renderButton={openDialog => (
-                <Chip
-                  onClick={openDialog}
-                  label={localize('Add stance')}
-                  size="small"
-                />
+                <Chip onClick={openDialog} label="Add stance" size="small" />
               )}
             >
               {closeDialog => (
                 <CreateStanceForm
-                  electionId={data.election.id}
+                  election={data.election}
                   candidate={candidate}
                   topic={topic}
                   onClose={closeDialog}
@@ -121,10 +114,10 @@ export default function EditorTable(props) {
         </Box>
       )}
       renderCandidate={({candidate, boxProps}) => {
+        const {name, parties} = candidate;
         const [title] = getCandidateTitles(
-          candidate,
-          data.election.partyFirst,
-          localize
+          {name, party: parties[0].text},
+          data.election.partyFirst
         );
         return (
           <HeaderButton title={title} className={headerButton} {...boxProps}>
@@ -133,18 +126,23 @@ export default function EditorTable(props) {
                 title={title}
                 candidate={candidate}
                 onClose={closeDialog}
+                languages={data.election.languages}
               />
             )}
           </HeaderButton>
         );
       }}
       renderTopic={({topic, boxProps}) => {
-        // TODO: localize this
-        const title = topic.titleEn;
+        const [{text}] = topic.titles;
         return (
-          <HeaderButton title={title} className={headerButton} {...boxProps}>
+          <HeaderButton title={text} className={headerButton} {...boxProps}>
             {closeDialog => (
-              <TopicForm title={title} topic={topic} onClose={closeDialog} />
+              <TopicForm
+                title={text}
+                topic={topic}
+                onClose={closeDialog}
+                languages={data.election.languages}
+              />
             )}
           </HeaderButton>
         );

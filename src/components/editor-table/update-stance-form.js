@@ -44,6 +44,7 @@ export default function UpdateStanceForm(props) {
       mutation={updateStance}
       loading={loading}
       error={error}
+      languages={props.election.languages}
     >
       <DeleteButton
         noun="stance"
@@ -54,7 +55,7 @@ export default function UpdateStanceForm(props) {
             const {election} = cache.readQuery({
               query: GET_ELECTION,
               variables: {
-                id: props.electionId
+                id: props.election.id
               }
             });
 
@@ -84,7 +85,7 @@ export default function UpdateStanceForm(props) {
 }
 
 UpdateStanceForm.propTypes = {
-  electionId: PropTypes.string.isRequired,
+  election: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   stance: PropTypes.object.isRequired,
   candidate: PropTypes.object.isRequired,

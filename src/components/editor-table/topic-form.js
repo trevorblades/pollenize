@@ -1,3 +1,4 @@
+import LanguageFields from './language-fields';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import gql from 'graphql-tag';
@@ -146,31 +147,20 @@ export default function TopicForm(props) {
             />
           </CardActionArea>
         </Box>
-        <FormField
-          label="Title (EN)"
-          name="titleEn"
+        <LanguageFields
           disabled={disabled}
-          defaultValue={props.topic.titleEn}
+          languages={props.languages}
+          messages={props.topic.titles}
+          label="Title"
+          name="title"
         />
-        <FormField
-          label="Titre (FR)"
-          name="titleFr"
-          disabled={disabled}
-          defaultValue={props.topic.titleFr}
-        />
-        <FormField
+        <LanguageFields
           multiline
-          label="Description (EN)"
-          name="descriptionEn"
           disabled={disabled}
-          defaultValue={props.topic.descriptionEn}
-        />
-        <FormField
-          multiline
-          label="Description (FR)"
-          name="descriptionFr"
-          disabled={disabled}
-          defaultValue={props.topic.descriptionFr}
+          languages={props.languages}
+          messages={props.topic.descriptions}
+          label="Description"
+          name="description"
         />
         <FormField
           label="Order"
@@ -194,5 +184,6 @@ export default function TopicForm(props) {
 TopicForm.propTypes = {
   title: PropTypes.string.isRequired,
   topic: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  languages: PropTypes.array.isRequired
 };
