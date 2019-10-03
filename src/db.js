@@ -29,6 +29,11 @@ Election.belongsToMany(Message, {
   as: 'Intros'
 });
 
+Election.belongsToMany(Language, {
+  through: 'electionLanguages',
+  as: 'Languages'
+});
+
 export const Candidate = sequelize.define('candidate', {
   slug: Sequelize.STRING,
   name: Sequelize.STRING,
