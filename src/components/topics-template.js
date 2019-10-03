@@ -69,10 +69,9 @@ export default function TopicsTemplate(props) {
           />
         </HeaderBase>
         <PageHeader
-          title={localize('Topic explorer', 'Explorateur de sujets')}
+          title={localize('Topic explorer')}
           subtitle={localize(
-            "View candidates' main stances organized by topic",
-            'Voir les positions principales des candidats organisées par sujet'
+            "View candidates' main stances organized by topic"
           )}
           bgcolor="grey.200"
         />

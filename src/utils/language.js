@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {createContext, useContext} from 'react';
+import messages from './messages';
 
 const LanguageContext = createContext();
 
@@ -7,22 +8,25 @@ export function useLanguage() {
   return useContext(LanguageContext);
 }
 
-export function useLocalize(lang, languages) {
-  return function localize(en, fr) {
-    const localized = lang === 'en' ? en || fr : fr || en;
-    const language = languages.find(({code}) => code === lang);
-    return localized && localized.replace(/{lang}/, language.name);
+export function useLocalize(lang) {
+  return function localize(key) {
+    try {
+      return lang === 'en' ? key : messages[key][lang];
+    } catch (error) {
+      console.error(`Missing message key: ${key}`);
+      return key;
+    }
   };
 }
 
 export function LanguageProvider(props) {
-  const localize = useLocalize(props.lang, props.languages);
+  const localize = useLocalize(props.lang);
   return (
     <LanguageContext.Provider
       value={{
+        localize,
         lang: props.lang,
         languages: props.languages,
-        localize,
         getPathForLanguage(lang) {
           return (
             '/' +
@@ -44,12 +48,12 @@ export function LanguageProvider(props) {
 
 LanguageProvider.propTypes = {
   lang: PropTypes.string.isRequired,
-  languages: PropTypes.object,
+  languages: PropTypes.array,
   path: PropTypes.string,
   children: PropTypes.node.isRequired
 };
 
 LanguageProvider.defaultProps = {
-  languages: {},
+  languages: [],
   path: ''
 };

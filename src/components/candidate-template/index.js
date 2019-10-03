@@ -52,7 +52,7 @@ export default function CandidateTemplate(props) {
 
   const queueRef = useRef([]);
   const {palette} = useTheme();
-  const localize = useLocalize(lang, languages);
+  const localize = useLocalize(lang);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const {sources, activeSource, handleSourceClick} = useSources(stances);
@@ -98,7 +98,7 @@ export default function CandidateTemplate(props) {
   );
 
   const [firstName] = name.split(' ');
-  const aboutTitle = `${localize('About', 'À propos de')} ${firstName}`;
+  const aboutTitle = `${localize('About')} ${firstName}`;
 
   const candidateStars = stars[candidateId] || [];
   const electionPath = `/${lang}/elections/${election.slug}`;
@@ -153,12 +153,12 @@ export default function CandidateTemplate(props) {
             {birthDate && (
               <Typography gutterBottom>
                 {differenceInYears(Date.now(), Number(birthDate))}{' '}
-                {localize('years old', 'ans')}
+                {localize('years old')}
               </Typography>
             )}
             {hometown && (
               <Typography gutterBottom>
-                {localize('Hometown', 'Ville natale')}: {hometown}
+                {localize('Hometown')}: {hometown}
               </Typography>
             )}
             {bio && (

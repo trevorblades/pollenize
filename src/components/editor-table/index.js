@@ -81,7 +81,8 @@ export default function EditorTable(props) {
                     variant="body2"
                     color={stance.sources.length ? 'inherit' : 'textSecondary'}
                   >
-                    {localize(stance.textEn, stance.textFr)}
+                    {/* TODO: localize this */}
+                    {stance.textEn}
                   </Typography>
                 </CardActionArea>
               )}
@@ -102,7 +103,7 @@ export default function EditorTable(props) {
               renderButton={openDialog => (
                 <Chip
                   onClick={openDialog}
-                  label={localize('Add stance', 'Ajouter la position')}
+                  label={localize('Add stance')}
                   size="small"
                 />
               )}
@@ -138,7 +139,8 @@ export default function EditorTable(props) {
         );
       }}
       renderTopic={({topic, boxProps}) => {
-        const title = localize(topic.titleEn, topic.titleFr);
+        // TODO: localize this
+        const title = topic.titleEn;
         return (
           <HeaderButton title={title} className={headerButton} {...boxProps}>
             {closeDialog => (

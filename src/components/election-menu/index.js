@@ -93,7 +93,7 @@ export default function ElectionMenu(props) {
           </IconButton>
         </Hidden>
       )}
-      <Tooltip title={localize('Candidate grid', 'Grille de candidats')}>
+      <Tooltip title={localize('Candidate grid')}>
         <IconButton
           component={Link}
           to={electionPath}
@@ -102,7 +102,7 @@ export default function ElectionMenu(props) {
           <FaThLarge style={{margin: 2}} size={20} />
         </IconButton>
       </Tooltip>
-      <Tooltip title={localize('Topic explorer', 'Explorateur de sujets')}>
+      <Tooltip title={localize('Topic explorer')}>
         <IconButton
           component={Link}
           to={`${electionPath}/topics`}
@@ -152,9 +152,7 @@ export default function ElectionMenu(props) {
       {props.intro && (
         <Dialog fullWidth open={dialogOpen} onClose={closeDialog}>
           <DialogTitle disableTypography>
-            <Typography variant="overline">
-              {localize('Welcome to', 'Bienvenue à')}
-            </Typography>
+            <Typography variant="overline">{localize('Welcome to')}</Typography>
             <Typography variant="h4">Pollenize {props.title}</Typography>
           </DialogTitle>
           <DialogContent>
@@ -165,11 +163,7 @@ export default function ElectionMenu(props) {
               color="textSecondary"
               variant="body2"
             >
-              {localize(
-                'Select your preferred language',
-                'Sélectionnez votre langue préférée'
-              )}
-              :
+              {localize('Select your preferred language')}:
             </Typography>
             <Grid container spacing={2}>
               {languages.map(({code, name}) => (

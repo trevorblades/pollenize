@@ -44,7 +44,7 @@ export default function LanguageButton() {
   return (
     <LanguageMenuBase
       renderButton={openMenu => (
-        <Tooltip title={localize('Change language', 'Changer de langue')}>
+        <Tooltip title={localize('Change language')}>
           {/* wrap in a div because LanguageButtonBase can't take refs */}
           <div>
             <LanguageButtonBase lang={lang} onClick={openMenu} />
