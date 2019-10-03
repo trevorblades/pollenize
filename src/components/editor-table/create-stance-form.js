@@ -9,15 +9,13 @@ const CREATE_STANCE = gql`
   mutation CreateStance(
     $topicId: ID!
     $candidateId: ID!
-    $textEn: String
-    $textFr: String
-    $sources: [SourceInput]
+    $messages: [MessageInput]!
+    $sources: [SourceInput]!
   ) {
     createStance(
       topicId: $topicId
       candidateId: $candidateId
-      textEn: $textEn
-      textFr: $textFr
+      messages: $messages
       sources: $sources
     ) {
       ...StanceFragment

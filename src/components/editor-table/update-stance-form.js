@@ -9,11 +9,10 @@ import {useMutation} from '@apollo/react-hooks';
 const UPDATE_STANCE = gql`
   mutation UpdateStance(
     $id: ID!
-    $textEn: String
-    $textFr: String
-    $sources: [SourceInput]
+    $messages: [MessageInput]!
+    $sources: [SourceInput]!
   ) {
-    updateStance(id: $id, textEn: $textEn, textFr: $textFr, sources: $sources) {
+    updateStance(id: $id, messages: $messages, sources: $sources) {
       ...StanceFragment
     }
   }

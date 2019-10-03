@@ -25,11 +25,12 @@ export default function StanceForm(props) {
   const [sources, setSources] = useState(props.stance.sources);
 
   function submitForm() {
-    const {textEn, textFr} = formRef.current;
     props.mutation({
       variables: {
-        textEn: textEn.value,
-        textFr: textFr.value,
+        messages: Array.from(formRef.current['message[]']).map(node => ({
+          text: node.value,
+          languageId: Number(node.getAttribute('data-language'))
+        })),
         sources: sources.map(source => ({
           id: source.new ? undefined : source.id,
           url: source.url
@@ -76,7 +77,7 @@ export default function StanceForm(props) {
             languages={props.languages}
             messages={props.stance.messages}
             label="Text"
-            name="text"
+            name="message"
           />
           <Typography variant="h6" style={{marginTop: 16}}>
             Sources

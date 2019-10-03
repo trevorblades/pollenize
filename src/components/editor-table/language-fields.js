@@ -22,6 +22,7 @@ export default function LanguageFields({
             label={`${label} (${language.code.toUpperCase()})`}
             name={`${name}[]`}
             defaultValue={message && message.text}
+            inputProps={{'data-language': language.id}}
             {...props}
           />
         );
