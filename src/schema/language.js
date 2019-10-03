@@ -2,6 +2,7 @@ import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`
   extend type Election {
+    language: Language
     languages: [Language]
   }
 
@@ -14,6 +15,9 @@ export const typeDef = gql`
 
 export const resolvers = {
   Election: {
+    language(parent) {
+      return parent.getLanguage();
+    },
     languages(parent) {
       return parent.getLanguages();
     }

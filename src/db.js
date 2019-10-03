@@ -24,6 +24,8 @@ export const Election = sequelize.define('election', {
   endsAt: Sequelize.DATE
 });
 
+Election.belongsTo(Language);
+
 Election.belongsToMany(Message, {
   through: 'electionIntros',
   as: 'Intros'
