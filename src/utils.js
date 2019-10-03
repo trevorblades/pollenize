@@ -11,3 +11,20 @@ export function getMessageResolver(methodName = 'getMessages') {
     return message ? message.text : null;
   };
 }
+
+export async function bulkCreateUpdate(items, model) {
+  const oldItems = await Promise.all(
+    items
+      .filter(item => item.id)
+      .map(async ({id, ...args}) => {
+        const instance = await model.findByPk(id);
+        return instance.update(args);
+      })
+  );
+
+  const newItems = await model.bulkCreate(items.filter(item => !item.id), {
+    returning: true
+  });
+
+  return [...oldItems, ...newItems];
+}

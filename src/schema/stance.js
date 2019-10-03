@@ -1,6 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Source, Stance, sequelize} from '../db';
-import {getMessageResolver} from '../utils';
+import {Message, Source, Stance, sequelize} from '../db';
+import {bulkCreateUpdate, getMessageResolver} from '../utils';
 
 // TODO: update mutations for multiple langs
 export const typeDef = gql`
@@ -8,17 +8,21 @@ export const typeDef = gql`
     createStance(
       topicId: ID!
       candidateId: ID!
-      textEn: String
-      textFr: String
-      sources: [SourceInput]
+      messages: [MessageInput]!
+      sources: [SourceInput]!
     ): Stance
     updateStance(
       id: ID!
-      textEn: String
-      textFr: String
-      sources: [SourceInput]
+      messages: [MessageInput]!
+      sources: [SourceInput]!
     ): Stance
     deleteStance(id: ID!): ID
+  }
+
+  input MessageInput {
+    id: ID
+    text: String!
+    languageId: ID!
   }
 
   input SourceInput {
@@ -49,35 +53,26 @@ export const resolvers = {
       }
 
       return Stance.create(args, {
-        include: [Source]
+        include: [Source, Message]
       });
     },
-    async updateStance(parent, {id, sources, ...args}, {user}) {
+    async updateStance(parent, args, {user}) {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
       }
 
-      const stance = await Stance.findByPk(id);
+      const stance = await Stance.findByPk(args.id);
       if (!stance) {
         throw new UserInputError('Stance not found');
       }
 
-      const oldSources = await Promise.all(
-        sources
-          .filter(source => source.id)
-          .map(async ({id, url}) => {
-            const source = await Source.findByPk(id);
-            return source.update({url});
-          })
-      );
+      const messages = await bulkCreateUpdate(args.messages, Message);
+      await stance.setMessages(messages);
 
-      const newSources = await Source.bulkCreate(
-        sources.filter(source => !source.id),
-        {returning: true}
-      );
+      const sources = await bulkCreateUpdate(args.sources, Source);
+      await stance.setSources(sources);
 
-      await stance.setSources([...oldSources, ...newSources]);
-      return stance.update(args);
+      return stance;
     },
     async deleteStance(parent, args, {user}) {
       if (!user) {
