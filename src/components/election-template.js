@@ -123,18 +123,18 @@ ElectionTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query ElectionQuery($id: ID!, $lang: String!) {
+  query ElectionQuery($id: ID!, $languageId: ID!) {
     pollenize {
       election(id: $id) {
         slug
         title
-        intro(lang: $lang)
+        intro(languageId: $languageId)
         partyFirst
         candidates(active: true) {
           id
           slug
           name
-          party(lang: $lang)
+          party(languageId: $languageId)
           color
           portrait
         }

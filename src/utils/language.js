@@ -10,7 +10,8 @@ export function useLanguage() {
 export function useLocalize(lang, languages) {
   return function localize(en, fr) {
     const localized = lang === 'en' ? en || fr : fr || en;
-    return localized && localized.replace(/{lang}/, languages[lang]);
+    const language = languages.find(({code}) => code === lang);
+    return localized && localized.replace(/{lang}/, language.name);
   };
 }
 

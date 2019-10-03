@@ -170,22 +170,22 @@ TopicsTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query TopicsQuery($id: ID!, $lang: String!) {
+  query TopicsQuery($id: ID!, $languageId: ID!) {
     pollenize {
       election(id: $id) {
         slug
         title
-        intro(lang: $lang)
+        intro(languageId: $languageId)
         partyFirst
         topics {
           id
           slug
-          title(lang: $lang)
-          description(lang: $lang)
+          title(languageId: $languageId)
+          description(languageId: $languageId)
           image
           stances {
             id
-            text(lang: $lang)
+            text(languageId: $languageId)
             sources {
               id
               url
@@ -193,7 +193,7 @@ export const pageQuery = graphql`
             candidate {
               slug
               name
-              party(lang: $lang)
+              party(languageId: $languageId)
               portrait
             }
           }
@@ -207,7 +207,7 @@ export const pageQuery = graphql`
           id
           name
           slug
-          party(lang: $lang)
+          party(languageId: $languageId)
           portrait
         }
       }
