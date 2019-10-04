@@ -15,6 +15,12 @@ export const typeDef = gql`
     bios: [Message]
   }
 
+  input MessageInput {
+    id: ID
+    text: String!
+    languageId: ID!
+  }
+
   type Message {
     id: ID
     text: String

@@ -19,17 +19,6 @@ export const typeDef = gql`
     deleteStance(id: ID!): ID
   }
 
-  input MessageInput {
-    id: ID
-    text: String!
-    languageId: ID!
-  }
-
-  input SourceInput {
-    id: ID
-    url: String!
-  }
-
   extend type Topic {
     stances: [Stance]
   }
