@@ -57,9 +57,9 @@ export default function TopicSection(props) {
           {props.stances.length > MIN_STANCES && (
             <Button className={button} onClick={toggleExpanded}>
               {expanded
-                ? localize('Show less', 'Montre moins')
-                : `${localize('Show more', 'Montre plus')} (${props.stances
-                    .length - MIN_STANCES})`}
+                ? localize('Show less')
+                : `${localize('Show more')} (${props.stances.length -
+                    MIN_STANCES})`}
             </Button>
           )}
           <Button
@@ -69,15 +69,12 @@ export default function TopicSection(props) {
             color="inherit"
           >
             <FaRegComments size={24} style={{marginRight: 8}} />
-            {localize('Compare', 'Comparer')}
+            {localize('Compare')}
           </Button>
         </Fragment>
       ) : (
         <Typography paragraph>
-          {localize(
-            'No official stance has been taken on this topic.',
-            "Aucune position officielle n'a été prise sur ce sujet."
-          )}
+          {localize('No official stance has been taken on this topic.')}
         </Typography>
       )}
     </TopicWrapper>

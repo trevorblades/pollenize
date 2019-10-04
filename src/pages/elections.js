@@ -45,7 +45,9 @@ export default function Elections(props) {
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={election.id}>
                 <Card className={card} elevation={0}>
-                  <CardActionArea to={`/en/elections/${election.slug}`}>
+                  <CardActionArea
+                    to={`/${election.language.code}/elections/${election.slug}`}
+                  >
                     <Box
                       display="flex"
                       flexDirection="column"
@@ -91,6 +93,9 @@ export const pageQuery = graphql`
         title
         flag
         endsAt
+        language {
+          code
+        }
       }
     }
   }

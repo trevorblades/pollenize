@@ -69,10 +69,9 @@ export default function TopicsTemplate(props) {
           />
         </HeaderBase>
         <PageHeader
-          title={localize('Topic explorer', 'Explorateur de sujets')}
+          title={localize('Topic explorer')}
           subtitle={localize(
-            "View candidates' main stances organized by topic",
-            'Voir les positions principales des candidats organisées par sujet'
+            "View candidates' main stances organized by topic"
           )}
           bgcolor="grey.200"
         />
@@ -170,22 +169,22 @@ TopicsTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query TopicsQuery($id: ID!, $lang: String!) {
+  query TopicsQuery($id: ID!, $languageId: ID!) {
     pollenize {
       election(id: $id) {
         slug
         title
-        intro(lang: $lang)
+        intro(languageId: $languageId)
         partyFirst
         topics {
           id
           slug
-          title(lang: $lang)
-          description(lang: $lang)
+          title(languageId: $languageId)
+          description(languageId: $languageId)
           image
           stances {
             id
-            text(lang: $lang)
+            text(languageId: $languageId)
             sources {
               id
               url
@@ -193,7 +192,7 @@ export const pageQuery = graphql`
             candidate {
               slug
               name
-              party(lang: $lang)
+              party(languageId: $languageId)
               portrait
             }
           }
@@ -207,7 +206,7 @@ export const pageQuery = graphql`
           id
           name
           slug
-          party(lang: $lang)
+          party(languageId: $languageId)
           portrait
         }
       }

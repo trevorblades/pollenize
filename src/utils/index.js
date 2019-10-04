@@ -68,3 +68,13 @@ export function useCurrentAnchor(threshold = 20) {
     return index;
   }, [anchors, y, threshold]);
 }
+
+export function getMessageInputs(nodes) {
+  return Array.from(nodes)
+    .filter(node => node.value)
+    .map(node => ({
+      text: node.value,
+      id: node.getAttribute('data-id'),
+      languageId: node.getAttribute('data-languageid')
+    }));
+}

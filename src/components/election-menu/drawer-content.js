@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function DrawerContent(props) {
-  const {localize} = useLanguage();
+  const {localize, languages} = useLanguage();
   const {secondaryAction, starIcon} = useStyles();
   const [adminShown, toggleAdminShown] = useToggle(false);
 
@@ -77,51 +77,38 @@ export default function DrawerContent(props) {
         })}
       </StyledList>
       <StyledList>
-        <ListSubheader>
-          {localize('More options', "Plus d'options")}
-        </ListSubheader>
+        <ListSubheader>{localize('More options')}</ListSubheader>
         <ListItem
           button
           disabled={!props.totalStarCount}
           onClick={handleResetClick}
         >
-          <ListItemText>
-            {localize('Reset stars', 'Réinitialiser les étoiles')}
-          </ListItemText>
+          <ListItemText>{localize('Reset stars')}</ListItemText>
         </ListItem>
-        <LanguageMenuBase
-          renderButton={openMenu => (
-            <ListItem button onClick={openMenu}>
-              <ListItemText>
-                {localize('Language: {lang}', 'Langue: {lang}')}
-              </ListItemText>
-            </ListItem>
-          )}
-        />
+        {languages.length > 1 && (
+          <LanguageMenuBase
+            renderButton={openMenu => (
+              <ListItem button onClick={openMenu}>
+                <ListItemText>{localize('Language: English')}</ListItemText>
+              </ListItem>
+            )}
+          />
+        )}
         {props.onIntroClick && (
           <ListItem button onClick={props.onIntroClick}>
-            <ListItemText>
-              {localize(
-                'Open intro dialog',
-                "Ouvrir le dialogue d'introduction"
-              )}
-            </ListItemText>
+            <ListItemText>{localize('Open intro dialog')}</ListItemText>
           </ListItem>
         )}
       </StyledList>
       {adminShown && (
         <List>
-          <ListSubheader>
-            {localize('Admin options', "options d'administration")}
-          </ListSubheader>
+          <ListSubheader>{localize('Admin options')}</ListSubheader>
           <ListItem
             button
             component={Link}
             to={`/_/edit?id=${props.electionId}`}
           >
-            <ListItemText>
-              {localize('Edit election', "Modifier l'élection")}
-            </ListItemText>
+            <ListItemText>{localize('Edit election')}</ListItemText>
           </ListItem>
         </List>
       )}

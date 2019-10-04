@@ -1,3 +1,4 @@
+import LanguageFields from './language-fields';
 import PropTypes from 'prop-types';
 import React, {Fragment, useRef, useState} from 'react';
 import {
@@ -10,8 +11,8 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import {FormField} from '../common';
 import {MdClose, MdKeyboardReturn} from 'react-icons/md';
+import {getMessageInputs} from '../../utils';
 import {withProps} from 'recompose';
 
 const SourceField = withProps({
@@ -21,15 +22,13 @@ const SourceField = withProps({
 })(TextField);
 
 export default function StanceForm(props) {
-  const form = useRef(null);
+  const formRef = useRef(null);
   const [sources, setSources] = useState(props.stance.sources);
 
   function submitForm() {
-    const {textEn, textFr} = form.current;
     props.mutation({
       variables: {
-        textEn: textEn.value,
-        textFr: textFr.value,
+        messages: getMessageInputs(formRef.current['message[]']),
         sources: sources.map(source => ({
           id: source.new ? undefined : source.id,
           url: source.url
@@ -61,28 +60,24 @@ export default function StanceForm(props) {
     <Fragment>
       <DialogTitle disableTypography>
         <Typography variant="overline">{props.title}</Typography>
-        <Typography variant="h4">{`${props.candidate.name}/${props.topic.titleEn}`}</Typography>
+        <Typography variant="h4">
+          {`${props.candidate.name}/${props.topic.titles[0].text}`}
+        </Typography>
       </DialogTitle>
       <DialogContent>
-        <form ref={form}>
+        <form ref={formRef}>
           {props.error && (
             <Typography gutterBottom color="error">
               {props.error.message}
             </Typography>
           )}
-          <FormField
+          <LanguageFields
             multiline
-            label="Text (EN)"
-            name="textEn"
-            defaultValue={props.stance.textEn}
             disabled={props.loading}
-          />
-          <FormField
-            multiline
-            label="Texte (FR)"
-            name="textFr"
-            defaultValue={props.stance.textFr}
-            disabled={props.loading}
+            languages={props.languages}
+            messages={props.stance.messages}
+            label="Text"
+            name="message"
           />
           <Typography variant="h6" style={{marginTop: 16}}>
             Sources
@@ -145,5 +140,6 @@ StanceForm.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.object,
   mutation: PropTypes.func.isRequired,
-  buttonText: PropTypes.string.isRequired
+  buttonText: PropTypes.string.isRequired,
+  languages: PropTypes.array.isRequired
 };

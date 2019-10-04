@@ -52,7 +52,7 @@ export default function CandidateTemplate(props) {
 
   const queueRef = useRef([]);
   const {palette} = useTheme();
-  const localize = useLocalize(lang, languages);
+  const localize = useLocalize(lang);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const {sources, activeSource, handleSourceClick} = useSources(stances);
@@ -98,7 +98,7 @@ export default function CandidateTemplate(props) {
   );
 
   const [firstName] = name.split(' ');
-  const aboutTitle = `${localize('About', 'À propos de')} ${firstName}`;
+  const aboutTitle = `${localize('About')} ${firstName}`;
 
   const candidateStars = stars[candidateId] || [];
   const electionPath = `/${lang}/elections/${election.slug}`;
@@ -153,12 +153,12 @@ export default function CandidateTemplate(props) {
             {birthDate && (
               <Typography gutterBottom>
                 {differenceInYears(Date.now(), Number(birthDate))}{' '}
-                {localize('years old', 'ans')}
+                {localize('years old')}
               </Typography>
             )}
             {hometown && (
               <Typography gutterBottom>
-                {localize('Hometown', 'Ville natale')}: {hometown}
+                {localize('Hometown')}: {hometown}
               </Typography>
             )}
             {bio && (
@@ -208,20 +208,20 @@ CandidateTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query CandidateQuery($id: ID!, $lang: String!) {
+  query CandidateQuery($id: ID!, $languageId: ID!) {
     pollenize {
       candidate(id: $id) {
         id
         name
         portrait
-        party(lang: $lang)
-        bio(lang: $lang)
+        party(languageId: $languageId)
+        bio(languageId: $languageId)
         color
         birthDate
         hometown
         stances {
           id
-          text(lang: $lang)
+          text(languageId: $languageId)
           topicId
           sources {
             id
@@ -233,19 +233,19 @@ export const pageQuery = graphql`
           slug
           title
           partyFirst
-          intro(lang: $lang)
+          intro(languageId: $languageId)
           topics {
             id
             slug
             image
-            title(lang: $lang)
-            description(lang: $lang)
+            title(languageId: $languageId)
+            description(languageId: $languageId)
           }
           candidates(active: true) {
             id
             name
             slug
-            party(lang: $lang)
+            party(languageId: $languageId)
             portrait
           }
           credits {

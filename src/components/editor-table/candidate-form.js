@@ -1,3 +1,4 @@
+import LanguageFields from './language-fields';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import gql from 'graphql-tag';
@@ -17,8 +18,8 @@ import {
 import {CANDIDATE_FRAGMENT} from '../../utils/queries';
 import {FormField} from '../common';
 import {format} from 'date-fns/esm';
+import {getMessageInputs, uploadImage, useFileHandler} from '../../utils';
 import {size} from 'polished';
-import {uploadImage, useFileHandler} from '../../utils';
 import {useMutation} from '@apollo/react-hooks';
 
 const useStyles = makeStyles({
@@ -36,28 +37,24 @@ const useStyles = makeStyles({
 const UPDATE_CANDIDATE = gql`
   mutation UpdateCandidate(
     $id: ID!
-    $name: String
-    $partyEn: String
-    $partyFr: String
-    $color: String
+    $name: String!
+    $parties: [MessageInput]!
+    $color: String!
     $portrait: String
-    $birthDate: String
-    $hometown: String
-    $bioEn: String
-    $bioFr: String
-    $active: Boolean
+    $birthDate: String!
+    $hometown: String!
+    $bios: [MessageInput]!
+    $active: Boolean!
   ) {
     updateCandidate(
       id: $id
       name: $name
-      partyEn: $partyEn
-      partyFr: $partyFr
+      parties: $parties
       color: $color
       portrait: $portrait
       birthDate: $birthDate
       hometown: $hometown
-      bioEn: $bioEn
-      bioFr: $bioFr
+      bios: $bios
       active: $active
     ) {
       ...CandidateFragment
@@ -83,35 +80,23 @@ export default function CandidateForm(props) {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const {
-      file,
-      name,
-      color,
-      partyEn,
-      partyFr,
-      birthDate,
-      hometown,
-      bioEn,
-      bioFr
-    } = event.target;
-
+    const {name, color, birthDate, hometown} = event.target;
     const variables = {
       name: name.value,
       color: color.value,
-      partyEn: partyEn.value,
-      partyFr: partyFr.value,
+      parties: getMessageInputs(event.target['party[]']),
       birthDate: birthDate.value || null,
       hometown: hometown.value,
-      bioEn: bioEn.value,
-      bioFr: bioFr.value,
+      bios: getMessageInputs(event.target['bio[]']),
       active
     };
 
-    if (file.files.length) {
+    const [file] = event.target.file.files;
+    if (file) {
       setUploading(true);
 
       try {
-        variables.portrait = await uploadImage(file.files[0]);
+        variables.portrait = await uploadImage(file);
       } catch (error) {
         setUploadError(error);
         setUploading(false);
@@ -196,17 +181,12 @@ export default function CandidateForm(props) {
           disabled={disabled}
           defaultValue={props.candidate.name}
         />
-        <FormField
-          label="Party (EN)"
-          name="partyEn"
+        <LanguageFields
           disabled={disabled}
-          defaultValue={props.candidate.partyEn}
-        />
-        <FormField
-          label="Parti (FR)"
-          name="partyFr"
-          disabled={disabled}
-          defaultValue={props.candidate.partyFr}
+          languages={props.languages}
+          messages={props.candidate.parties}
+          label="Party"
+          name="party"
         />
         <FormField
           label="Birth date"
@@ -227,19 +207,13 @@ export default function CandidateForm(props) {
           disabled={disabled}
           defaultValue={props.candidate.hometown}
         />
-        <FormField
+        <LanguageFields
           multiline
-          label="Bio (EN)"
-          name="bioEn"
           disabled={disabled}
-          defaultValue={props.candidate.bioEn}
-        />
-        <FormField
-          multiline
-          label="La biographie (FR)"
-          name="bioFr"
-          disabled={disabled}
-          defaultValue={props.candidate.bioFr}
+          languages={props.languages}
+          messages={props.candidate.bios}
+          label="Bio"
+          name="bio"
         />
       </DialogContent>
       <DialogActions>
@@ -255,5 +229,6 @@ export default function CandidateForm(props) {
 CandidateForm.propTypes = {
   title: PropTypes.string.isRequired,
   candidate: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  languages: PropTypes.array.isRequired
 };

@@ -9,15 +9,13 @@ const CREATE_STANCE = gql`
   mutation CreateStance(
     $topicId: ID!
     $candidateId: ID!
-    $textEn: String
-    $textFr: String
-    $sources: [SourceInput]
+    $messages: [MessageInput]!
+    $sources: [SourceInput]!
   ) {
     createStance(
       topicId: $topicId
       candidateId: $candidateId
-      textEn: $textEn
-      textFr: $textFr
+      messages: $messages
       sources: $sources
     ) {
       ...StanceFragment
@@ -33,7 +31,7 @@ export default function CreateStanceForm(props) {
       const {election} = cache.readQuery({
         query: GET_ELECTION,
         variables: {
-          id: props.electionId
+          id: props.election.id
         }
       });
 
@@ -64,13 +62,17 @@ export default function CreateStanceForm(props) {
     <StanceForm
       title="Creating stance"
       buttonText="Create stance"
-      stance={{sources: []}}
+      stance={{
+        messages: [],
+        sources: []
+      }}
       candidate={props.candidate}
       topic={props.topic}
       onClose={props.onClose}
       mutation={createStance}
       loading={loading}
       error={error}
+      languages={props.election.languages}
     />
   );
 }
@@ -79,5 +81,5 @@ CreateStanceForm.propTypes = {
   onClose: PropTypes.func.isRequired,
   candidate: PropTypes.object.isRequired,
   topic: PropTypes.object.isRequired,
-  electionId: PropTypes.string.isRequired
+  election: PropTypes.object.isRequired
 };

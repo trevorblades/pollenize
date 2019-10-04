@@ -40,7 +40,7 @@ export default function TableOfContents(props) {
       }}
     >
       <Typography paragraph variant="overline" noWrap>
-        {localize('Table of contents', 'Table des matières')}
+        {localize('Table of contents')}
       </Typography>
       {props.children}
       {props.topics.map((topic, index) => (

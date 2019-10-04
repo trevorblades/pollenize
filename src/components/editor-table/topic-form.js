@@ -1,3 +1,4 @@
+import LanguageFields from './language-fields';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import gql from 'graphql-tag';
@@ -14,8 +15,8 @@ import {
 } from '@material-ui/core';
 import {FormField} from '../common';
 import {TOPIC_FRAGMENT} from '../../utils/queries';
+import {getMessageInputs, uploadImage, useFileHandler} from '../../utils';
 import {size} from 'polished';
-import {uploadImage, useFileHandler} from '../../utils';
 import {useMutation} from '@apollo/react-hooks';
 
 const StyledImage = styled('img')({
@@ -29,19 +30,15 @@ const StyledImage = styled('img')({
 const UPDATE_TOPIC = gql`
   mutation UpdateTopic(
     $id: ID!
-    $titleEn: String
-    $titleFr: String
-    $descriptionEn: String
-    $descriptionFr: String
+    $titles: [MessageInput]!
+    $descriptions: [MessageInput]!
     $image: String
-    $order: Int
+    $order: Int!
   ) {
     updateTopic(
       id: $id
-      titleEn: $titleEn
-      titleFr: $titleFr
-      descriptionEn: $descriptionEn
-      descriptionFr: $descriptionFr
+      titles: $titles
+      descriptions: $descriptions
       image: $image
       order: $order
     ) {
@@ -65,28 +62,18 @@ export default function TopicForm(props) {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const {
-      file,
-      titleEn,
-      titleFr,
-      descriptionEn,
-      descriptionFr,
-      order
-    } = event.target;
-
     const variables = {
-      titleEn: titleEn.value,
-      titleFr: titleFr.value,
-      descriptionEn: descriptionEn.value,
-      descriptionFr: descriptionFr.value,
-      order: Number(order.value)
+      titles: getMessageInputs(event.target['title[]']),
+      descriptions: getMessageInputs(event.target['description[]']),
+      order: Number(event.target.order.value)
     };
 
-    if (file.files.length) {
+    const [file] = event.target.file.files;
+    if (file) {
       setUploading(true);
 
       try {
-        variables.image = await uploadImage(file.files[0]);
+        variables.image = await uploadImage(file);
       } catch (error) {
         setUploadError(error);
         setUploading(false);
@@ -146,31 +133,20 @@ export default function TopicForm(props) {
             />
           </CardActionArea>
         </Box>
-        <FormField
-          label="Title (EN)"
-          name="titleEn"
+        <LanguageFields
           disabled={disabled}
-          defaultValue={props.topic.titleEn}
+          languages={props.languages}
+          messages={props.topic.titles}
+          label="Title"
+          name="title"
         />
-        <FormField
-          label="Titre (FR)"
-          name="titleFr"
-          disabled={disabled}
-          defaultValue={props.topic.titleFr}
-        />
-        <FormField
+        <LanguageFields
           multiline
-          label="Description (EN)"
-          name="descriptionEn"
           disabled={disabled}
-          defaultValue={props.topic.descriptionEn}
-        />
-        <FormField
-          multiline
-          label="Description (FR)"
-          name="descriptionFr"
-          disabled={disabled}
-          defaultValue={props.topic.descriptionFr}
+          languages={props.languages}
+          messages={props.topic.descriptions}
+          label="Description"
+          name="description"
         />
         <FormField
           label="Order"
@@ -194,5 +170,6 @@ export default function TopicForm(props) {
 TopicForm.propTypes = {
   title: PropTypes.string.isRequired,
   topic: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  languages: PropTypes.array.isRequired
 };

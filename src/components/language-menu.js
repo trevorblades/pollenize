@@ -20,7 +20,7 @@ export function LanguageMenuBase(props) {
     <Fragment>
       {props.renderButton(openMenu)}
       <Menu onClose={closeMenu} anchorEl={anchorEl} open={Boolean(anchorEl)}>
-        {Object.entries(languages).map(([code, name]) => (
+        {languages.map(({code, name}) => (
           <MenuItem
             key={code}
             selected={lang === code}
@@ -44,7 +44,7 @@ export default function LanguageButton() {
   return (
     <LanguageMenuBase
       renderButton={openMenu => (
-        <Tooltip title={localize('Change language', 'Changer de langue')}>
+        <Tooltip title={localize('Change language')}>
           {/* wrap in a div because LanguageButtonBase can't take refs */}
           <div>
             <LanguageButtonBase lang={lang} onClick={openMenu} />
