@@ -5,6 +5,11 @@ export const typeDef = gql`
     sources: [Source]
   }
 
+  input SourceInput {
+    id: ID
+    url: String!
+  }
+
   type Source {
     id: ID
     url: String

@@ -1,17 +1,15 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Topic} from '../db';
-import {localize} from '../utils';
+import {Message, Topic} from '../db';
+import {bulkCreateUpdate, getMessageResolver} from '../utils';
 
 export const typeDef = gql`
   extend type Mutation {
     updateTopic(
       id: ID!
-      titleEn: String
-      titleFr: String
-      descriptionEn: String
-      descriptionFr: String
+      titles: [MessageInput]!
+      descriptions: [MessageInput]!
       image: String
-      order: Int
+      order: Int!
     ): Topic
   }
 
@@ -22,12 +20,8 @@ export const typeDef = gql`
   type Topic {
     id: ID
     slug: String
-    titleEn: String
-    titleFr: String
-    title(lang: String!): String
-    descriptionEn: String
-    descriptionFr: String
-    description(lang: String!): String
+    title(languageId: ID!): String
+    description(languageId: ID!): String
     image: String
     order: Int
   }
@@ -35,7 +29,7 @@ export const typeDef = gql`
 
 export const resolvers = {
   Mutation: {
-    async updateTopic(parent, {id, ...args}, {user}) {
+    async updateTopic(parent, {id, titles, descriptions, ...args}, {user}) {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
       }
@@ -44,6 +38,12 @@ export const resolvers = {
       if (!topic) {
         throw new UserInputError('Topic not found');
       }
+
+      const newTitles = await bulkCreateUpdate(titles, Message);
+      await topic.setTitles(newTitles);
+
+      const newDescriptions = await bulkCreateUpdate(descriptions, Message);
+      await topic.setDescriptions(newDescriptions);
 
       return topic.update(args);
     }
@@ -56,23 +56,7 @@ export const resolvers = {
     }
   },
   Topic: {
-    title(parent, args) {
-      return localize(
-        {
-          en: parent.titleEn,
-          fr: parent.titleFr
-        },
-        args.lang
-      );
-    },
-    description(parent, args) {
-      return localize(
-        {
-          en: parent.descriptionEn,
-          fr: parent.descriptionFr
-        },
-        args.lang
-      );
-    }
+    title: getMessageResolver('getTitles'),
+    description: getMessageResolver('getDescriptions')
   }
 };

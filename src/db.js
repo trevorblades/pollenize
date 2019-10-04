@@ -3,29 +3,57 @@ import jwt from 'jsonwebtoken';
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL);
 
+export const Language = sequelize.define('language', {
+  code: Sequelize.STRING,
+  name: Sequelize.STRING
+});
+
+export const Message = sequelize.define('message', {
+  text: Sequelize.TEXT
+});
+
+Message.belongsTo(Language);
+Language.hasMany(Message);
+
 export const Election = sequelize.define('election', {
   slug: Sequelize.STRING,
   title: Sequelize.STRING,
   flag: Sequelize.STRING,
-  introEn: Sequelize.TEXT,
-  introFr: Sequelize.TEXT,
   partyFirst: Sequelize.BOOLEAN,
   public: Sequelize.BOOLEAN,
   endsAt: Sequelize.DATE
 });
 
+Election.belongsTo(Language);
+
+Election.belongsToMany(Message, {
+  through: 'electionIntros',
+  as: 'Intros'
+});
+
+Election.belongsToMany(Language, {
+  through: 'electionLanguages',
+  as: 'Languages'
+});
+
 export const Candidate = sequelize.define('candidate', {
   slug: Sequelize.STRING,
   name: Sequelize.STRING,
-  partyEn: Sequelize.STRING,
-  partyFr: Sequelize.STRING,
-  bioEn: Sequelize.TEXT,
-  bioFr: Sequelize.TEXT,
   birthDate: Sequelize.DATE,
   hometown: Sequelize.STRING,
   portrait: Sequelize.STRING,
   color: Sequelize.STRING,
   active: Sequelize.BOOLEAN
+});
+
+Candidate.belongsToMany(Message, {
+  through: 'candidateParties',
+  as: 'Parties'
+});
+
+Candidate.belongsToMany(Message, {
+  through: 'candidateBios',
+  as: 'Bios'
 });
 
 Candidate.belongsTo(Election);
@@ -47,21 +75,26 @@ User.prototype.toJWT = function(expiresIn = '7 days') {
 
 export const Topic = sequelize.define('topic', {
   slug: Sequelize.STRING,
-  titleEn: Sequelize.STRING,
-  titleFr: Sequelize.STRING,
-  descriptionEn: Sequelize.TEXT,
-  descriptionFr: Sequelize.TEXT,
   image: Sequelize.STRING,
   order: Sequelize.INTEGER
+});
+
+Topic.belongsToMany(Message, {
+  through: 'topicTitles',
+  as: 'Titles'
+});
+
+Topic.belongsToMany(Message, {
+  through: 'topicDescriptions',
+  as: 'Descriptions'
 });
 
 Topic.belongsTo(Election);
 Election.hasMany(Topic);
 
-export const Stance = sequelize.define('stance', {
-  textEn: Sequelize.TEXT,
-  textFr: Sequelize.TEXT
-});
+export const Stance = sequelize.define('stance');
+
+Stance.belongsToMany(Message, {through: 'stanceMessages'});
 
 Stance.belongsTo(Candidate);
 Candidate.hasMany(Stance);

@@ -1,6 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Candidate} from '../db';
-import {localize} from '../utils';
+import {Candidate, Message} from '../db';
+import {bulkCreateUpdate, getMessageResolver} from '../utils';
 
 export const typeDef = gql`
   extend type Query {
@@ -10,16 +10,14 @@ export const typeDef = gql`
   extend type Mutation {
     updateCandidate(
       id: ID!
-      name: String
-      partyEn: String
-      partyFr: String
-      color: String
+      name: String!
+      parties: [MessageInput]!
+      color: String!
       portrait: String
-      birthDate: String
-      hometown: String
-      bioEn: String
-      bioFr: String
-      active: Boolean
+      birthDate: String!
+      hometown: String!
+      bios: [MessageInput]!
+      active: Boolean!
     ): Candidate
   }
 
@@ -35,16 +33,12 @@ export const typeDef = gql`
     id: ID
     slug: String
     name: String
-    partyEn: String
-    partyFr: String
-    party(lang: String!): String
+    party(languageId: ID!): String
     color: String
     portrait: String
     birthDate: String
     hometown: String
-    bioEn: String
-    bioFr: String
-    bio(lang: String!): String
+    bio(languageId: ID!): String
     active: Boolean
   }
 `;
@@ -56,7 +50,7 @@ export const resolvers = {
     }
   },
   Mutation: {
-    async updateCandidate(parent, {id, ...args}, {user}) {
+    async updateCandidate(parent, {id, parties, bios, ...args}, {user}) {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
       }
@@ -65,6 +59,12 @@ export const resolvers = {
       if (!candidate) {
         throw new UserInputError('Candidate not found');
       }
+
+      const newParties = await bulkCreateUpdate(parties, Message);
+      await candidate.setParties(newParties);
+
+      const newBios = await bulkCreateUpdate(bios, Message);
+      await candidate.setBios(newBios);
 
       return candidate.update(args);
     }
@@ -82,23 +82,7 @@ export const resolvers = {
     }
   },
   Candidate: {
-    party(parent, args) {
-      return localize(
-        {
-          en: parent.partyEn,
-          fr: parent.partyFr
-        },
-        args.lang
-      );
-    },
-    bio(parent, args) {
-      return localize(
-        {
-          en: parent.bioEn,
-          fr: parent.bioFr
-        },
-        args.lang
-      );
-    }
+    party: getMessageResolver('getParties'),
+    bio: getMessageResolver('getBios')
   }
 };

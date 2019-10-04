@@ -1,28 +1,22 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Source, Stance, sequelize} from '../db';
-import {localize} from '../utils';
+import {Message, Source, Stance, sequelize} from '../db';
+import {bulkCreateUpdate, getMessageResolver} from '../utils';
 
+// TODO: update mutations for multiple langs
 export const typeDef = gql`
   extend type Mutation {
     createStance(
       topicId: ID!
       candidateId: ID!
-      textEn: String
-      textFr: String
-      sources: [SourceInput]
+      messages: [MessageInput]!
+      sources: [SourceInput]!
     ): Stance
     updateStance(
       id: ID!
-      textEn: String
-      textFr: String
-      sources: [SourceInput]
+      messages: [MessageInput]!
+      sources: [SourceInput]!
     ): Stance
     deleteStance(id: ID!): ID
-  }
-
-  input SourceInput {
-    id: ID
-    url: String!
   }
 
   extend type Topic {
@@ -35,9 +29,7 @@ export const typeDef = gql`
 
   type Stance {
     id: ID
-    textEn: String
-    textFr: String
-    text(lang: String!): String
+    text(languageId: ID!): String
     topicId: ID
   }
 `;
@@ -50,35 +42,26 @@ export const resolvers = {
       }
 
       return Stance.create(args, {
-        include: [Source]
+        include: [Source, Message]
       });
     },
-    async updateStance(parent, {id, sources, ...args}, {user}) {
+    async updateStance(parent, args, {user}) {
       if (!user) {
         throw new AuthenticationError('Unauthorized');
       }
 
-      const stance = await Stance.findByPk(id);
+      const stance = await Stance.findByPk(args.id);
       if (!stance) {
         throw new UserInputError('Stance not found');
       }
 
-      const oldSources = await Promise.all(
-        sources
-          .filter(source => source.id)
-          .map(async ({id, url}) => {
-            const source = await Source.findByPk(id);
-            return source.update({url});
-          })
-      );
+      const messages = await bulkCreateUpdate(args.messages, Message);
+      await stance.setMessages(messages);
 
-      const newSources = await Source.bulkCreate(
-        sources.filter(source => !source.id),
-        {returning: true}
-      );
+      const sources = await bulkCreateUpdate(args.sources, Source);
+      await stance.setSources(sources);
 
-      await stance.setSources([...oldSources, ...newSources]);
-      return stance.update(args);
+      return stance;
     },
     async deleteStance(parent, args, {user}) {
       if (!user) {
@@ -116,14 +99,6 @@ export const resolvers = {
     }
   },
   Stance: {
-    text(parent, args) {
-      return localize(
-        {
-          en: parent.textEn,
-          fr: parent.textFr
-        },
-        args.lang
-      );
-    }
+    text: getMessageResolver()
   }
 };

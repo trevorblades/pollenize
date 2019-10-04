@@ -1,6 +1,6 @@
 import {Election} from '../db';
+import {getMessageResolver} from '../utils';
 import {gql} from 'apollo-server-express';
-import {localize} from '../utils';
 
 export const typeDef = gql`
   extend type Query {
@@ -17,9 +17,7 @@ export const typeDef = gql`
     slug: String
     title: String
     flag: String
-    introEn: String
-    introFr: String
-    intro(lang: String!): String
+    intro(languageId: ID!): String
     partyFirst: Boolean
     public: Boolean
     endsAt: String
@@ -44,14 +42,6 @@ export const resolvers = {
     }
   },
   Election: {
-    intro(parent, args) {
-      return localize(
-        {
-          en: parent.introEn,
-          fr: parent.introFr
-        },
-        args.lang
-      );
-    }
+    intro: getMessageResolver('getIntros')
   }
 };
