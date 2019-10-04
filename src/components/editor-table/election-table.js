@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Box, makeStyles} from '@material-ui/core';
 import {CellMeasurer, CellMeasurerCache, MultiGrid} from 'react-virtualized';
 import {HEADER_HEIGHT} from '../header-base';
-import {useWindowSize} from 'react-use';
+import {usePrevious, useWindowSize} from 'react-use';
 
 const cache = new CellMeasurerCache({
   defaultHeight: 100,
@@ -20,10 +20,20 @@ export default function ElectionTable(props) {
   const {grid} = useStyles();
   const {width, height} = useWindowSize();
 
+  const gridRef = useRef(null);
+  const prevElection = usePrevious(props.election);
+  useEffect(() => {
+    if (props.election !== prevElection) {
+      cache.clearAll();
+      gridRef.current.forceUpdate(); // FIXME: this is a hack :)
+    }
+  }, [props.election, prevElection]);
+
   const rowCount = props.election.topics.length + 1;
   const columnCount = props.election.candidates.length + 1;
   return (
     <MultiGrid
+      ref={gridRef}
       classNameTopLeftGrid={grid}
       classNameTopRightGrid={grid}
       classNameBottomLeftGrid={grid}

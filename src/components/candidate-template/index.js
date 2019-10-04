@@ -113,7 +113,6 @@ export default function CandidateTemplate(props) {
         <HeaderBase link={electionPath} title={title}>
           <ElectionMenu
             title={election.title}
-            electionId={election.id}
             electionSlug={election.slug}
             candidates={election.candidates}
             partyFirst={election.partyFirst}

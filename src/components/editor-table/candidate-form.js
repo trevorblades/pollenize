@@ -41,7 +41,7 @@ const UPDATE_CANDIDATE = gql`
     $parties: [MessageInput]!
     $color: String!
     $portrait: String
-    $birthDate: String!
+    $birthDate: String
     $hometown: String!
     $bios: [MessageInput]!
     $active: Boolean!

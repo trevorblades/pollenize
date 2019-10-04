@@ -36,7 +36,7 @@ export default function TopicsTemplate(props) {
     partyFirst,
     credits
   } = props.data.pollenize.election;
-  const {id, lang, languages} = props.pageContext;
+  const {lang, languages} = props.pageContext;
 
   const localize = useLocalize(lang, languages);
   const currentAnchor = useCurrentAnchor();
@@ -58,7 +58,6 @@ export default function TopicsTemplate(props) {
           <ElectionMenu
             title={title}
             electionSlug={slug}
-            electionId={id}
             candidates={candidates}
             partyFirst={partyFirst}
             intro={intro}

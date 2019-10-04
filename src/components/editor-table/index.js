@@ -116,7 +116,7 @@ export default function EditorTable(props) {
       renderCandidate={({candidate, boxProps}) => {
         const {name, parties} = candidate;
         const [title] = getCandidateTitles(
-          {name, party: parties[0].text},
+          {name, party: parties.length ? parties[0].text : null},
           data.election.partyFirst
         );
         return (
@@ -133,12 +133,12 @@ export default function EditorTable(props) {
         );
       }}
       renderTopic={({topic, boxProps}) => {
-        const [{text}] = topic.titles;
+        const title = topic.titles.length ? topic.titles[0].text : topic.slug;
         return (
-          <HeaderButton title={text} className={headerButton} {...boxProps}>
+          <HeaderButton title={title} className={headerButton} {...boxProps}>
             {closeDialog => (
               <TopicForm
-                title={text}
+                title={title}
                 topic={topic}
                 onClose={closeDialog}
                 languages={data.election.languages}

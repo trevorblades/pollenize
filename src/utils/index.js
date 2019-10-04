@@ -70,11 +70,19 @@ export function useCurrentAnchor(threshold = 20) {
 }
 
 export function getMessageInputs(nodes) {
-  return Array.from(nodes)
+  return Array.from(typeof nodes.length !== 'undefined' ? nodes : [nodes])
     .filter(node => node.value)
-    .map(node => ({
-      text: node.value,
-      id: node.getAttribute('data-id'),
-      languageId: node.getAttribute('data-languageid')
-    }));
+    .map(node => {
+      const message = {
+        text: node.value,
+        languageId: node.getAttribute('data-languageid')
+      };
+
+      return node.hasAttribute('data-id')
+        ? {
+            ...message,
+            id: node.getAttribute('data-id')
+          }
+        : message;
+    });
 }

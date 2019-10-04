@@ -16,7 +16,6 @@ import {FaStar} from 'react-icons/fa';
 import {LanguageMenuBase} from '../language-menu';
 import {Link} from 'gatsby';
 import {getCandidateTitles} from '../../utils';
-import {useKey, useToggle} from 'react-use';
 import {useLanguage} from '../../utils/language';
 
 const StyledList = styled(List)({
@@ -38,9 +37,6 @@ const useStyles = makeStyles(theme => ({
 export default function DrawerContent(props) {
   const {localize, languages} = useLanguage();
   const {secondaryAction, starIcon} = useStyles();
-  const [adminShown, toggleAdminShown] = useToggle(false);
-
-  useKey('A', toggleAdminShown);
 
   function handleResetClick() {
     props.resetStars(props.candidates);
@@ -100,25 +96,12 @@ export default function DrawerContent(props) {
           </ListItem>
         )}
       </StyledList>
-      {adminShown && (
-        <List>
-          <ListSubheader>{localize('Admin options')}</ListSubheader>
-          <ListItem
-            button
-            component={Link}
-            to={`/_/edit?id=${props.electionId}`}
-          >
-            <ListItemText>{localize('Edit election')}</ListItemText>
-          </ListItem>
-        </List>
-      )}
     </Fragment>
   );
 }
 
 DrawerContent.propTypes = {
   title: PropTypes.string.isRequired,
-  electionId: PropTypes.string.isRequired,
   electionPath: PropTypes.string.isRequired,
   candidates: PropTypes.array.isRequired,
   totalStarCount: PropTypes.number.isRequired,

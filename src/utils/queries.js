@@ -49,6 +49,7 @@ export const CANDIDATE_FRAGMENT = gql`
 export const TOPIC_FRAGMENT = gql`
   fragment TopicFragment on Topic {
     id
+    slug
     titles {
       ...MessageFragment
     }

@@ -17,9 +17,6 @@ export default {
   Compare: {
     fr: 'Comparer'
   },
-  'Add stance': {
-    fr: 'Ajouter la position'
-  },
   'More options': {
     fr: "Plus d'options"
   },
@@ -31,12 +28,6 @@ export default {
   },
   'Open intro dialog': {
     fr: "Ouvrir le dialogue d'introduction"
-  },
-  'Admin options': {
-    fr: "Options d'administration"
-  },
-  'Edit election': {
-    fr: "Modifier l'élection"
   },
   'Candidate grid': {
     fr: 'Grille de candidats'
