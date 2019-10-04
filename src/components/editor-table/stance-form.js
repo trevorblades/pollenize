@@ -12,6 +12,7 @@ import {
   Typography
 } from '@material-ui/core';
 import {MdClose, MdKeyboardReturn} from 'react-icons/md';
+import {getMessageInputs} from '../../utils';
 import {withProps} from 'recompose';
 
 const SourceField = withProps({
@@ -27,10 +28,7 @@ export default function StanceForm(props) {
   function submitForm() {
     props.mutation({
       variables: {
-        messages: Array.from(formRef.current['message[]']).map(node => ({
-          text: node.value,
-          languageId: Number(node.getAttribute('data-language'))
-        })),
+        messages: getMessageInputs(formRef.current['message[]']),
         sources: sources.map(source => ({
           id: source.new ? undefined : source.id,
           url: source.url
@@ -62,7 +60,9 @@ export default function StanceForm(props) {
     <Fragment>
       <DialogTitle disableTypography>
         <Typography variant="overline">{props.title}</Typography>
-        <Typography variant="h4">{`${props.candidate.name}/${props.topic.titleEn}`}</Typography>
+        <Typography variant="h4">
+          {`${props.candidate.name}/${props.topic.titles[0].text}`}
+        </Typography>
       </DialogTitle>
       <DialogContent>
         <form ref={formRef}>

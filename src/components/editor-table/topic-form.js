@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core';
 import {FormField} from '../common';
 import {TOPIC_FRAGMENT} from '../../utils/queries';
+import {getMessageInputs, uploadImage, useFileHandler} from '../../utils';
 import {size} from 'polished';
-import {uploadImage, useFileHandler} from '../../utils';
 import {useMutation} from '@apollo/react-hooks';
 
 const StyledImage = styled('img')({
@@ -30,19 +30,15 @@ const StyledImage = styled('img')({
 const UPDATE_TOPIC = gql`
   mutation UpdateTopic(
     $id: ID!
-    $titleEn: String
-    $titleFr: String
-    $descriptionEn: String
-    $descriptionFr: String
+    $titles: [MessageInput]!
+    $descriptions: [MessageInput]!
     $image: String
-    $order: Int
+    $order: Int!
   ) {
     updateTopic(
       id: $id
-      titleEn: $titleEn
-      titleFr: $titleFr
-      descriptionEn: $descriptionEn
-      descriptionFr: $descriptionFr
+      titles: $titles
+      descriptions: $descriptions
       image: $image
       order: $order
     ) {
@@ -66,28 +62,18 @@ export default function TopicForm(props) {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const {
-      file,
-      titleEn,
-      titleFr,
-      descriptionEn,
-      descriptionFr,
-      order
-    } = event.target;
-
     const variables = {
-      titleEn: titleEn.value,
-      titleFr: titleFr.value,
-      descriptionEn: descriptionEn.value,
-      descriptionFr: descriptionFr.value,
-      order: Number(order.value)
+      titles: getMessageInputs(event.target['title[]']),
+      descriptions: getMessageInputs(event.target['description[]']),
+      order: Number(event.target.order.value)
     };
 
-    if (file.files.length) {
+    const [file] = event.target.file.files;
+    if (file) {
       setUploading(true);
 
       try {
-        variables.image = await uploadImage(file.files[0]);
+        variables.image = await uploadImage(file);
       } catch (error) {
         setUploadError(error);
         setUploading(false);
