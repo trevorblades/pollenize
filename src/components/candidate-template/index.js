@@ -2,7 +2,7 @@ import ElectionMenu from '../election-menu';
 import HeaderBase from '../header-base';
 import Layout from '../layout';
 import PropTypes from 'prop-types';
-import React, {useMemo, useRef, useState} from 'react';
+import React, {Fragment, useMemo, useRef, useState} from 'react';
 import Sources, {useSources} from '../sources';
 import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
@@ -99,6 +99,7 @@ export default function CandidateTemplate(props) {
 
   const [firstName] = name.split(' ');
   const aboutTitle = `${localize('About')} ${firstName}`;
+  const aboutShown = Boolean(birthDate || hometown || bio);
 
   const candidateStars = stars[candidateId] || [];
   const electionPath = `/${lang}/elections/${election.slug}`;
@@ -132,38 +133,48 @@ export default function CandidateTemplate(props) {
             <TableOfContents
               topics={election.topics}
               getActiveProps={index => ({
-                style: {color: index === currentAnchor - 1 && color}
+                style: {
+                  color: index === currentAnchor - aboutShown && color
+                }
               })}
             >
-              <SidebarLink
-                href="#about"
-                style={{color: !currentAnchor && color}}
-              >
-                {aboutTitle}
-              </SidebarLink>
+              {aboutShown && (
+                <SidebarLink
+                  href="#about"
+                  style={{color: !currentAnchor && color}}
+                >
+                  {aboutTitle}
+                </SidebarLink>
+              )}
             </TableOfContents>
           }
         >
-          <PageAnchor className="topic" name="about" />
-          <ContentWrapper>
-            <Typography gutterBottom variant="h4">
-              {aboutTitle}
-            </Typography>
-            {birthDate && (
-              <Typography gutterBottom>
-                {differenceInYears(Date.now(), Number(birthDate))}{' '}
-                {localize('years old')}
-              </Typography>
-            )}
-            {hometown && (
-              <Typography gutterBottom>
-                {localize('Hometown')}: {hometown}
-              </Typography>
-            )}
-            {bio && (
-              <Typography dangerouslySetInnerHTML={{__html: snarkdown(bio)}} />
-            )}
-          </ContentWrapper>
+          {aboutShown && (
+            <Fragment>
+              <PageAnchor className="topic" name="about" />
+              <ContentWrapper>
+                <Typography gutterBottom variant="h4">
+                  {aboutTitle}
+                </Typography>
+                {birthDate && (
+                  <Typography gutterBottom>
+                    {differenceInYears(Date.now(), Number(birthDate))}{' '}
+                    {localize('years old')}
+                  </Typography>
+                )}
+                {hometown && (
+                  <Typography gutterBottom>
+                    {localize('Hometown')}: {hometown}
+                  </Typography>
+                )}
+                {bio && (
+                  <Typography
+                    dangerouslySetInnerHTML={{__html: snarkdown(bio)}}
+                  />
+                )}
+              </ContentWrapper>
+            </Fragment>
+          )}
           {election.topics.map(topic => (
             <TopicSection
               topic={topic}
