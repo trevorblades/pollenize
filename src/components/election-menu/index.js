@@ -69,6 +69,9 @@ export default function ElectionMenu(props) {
 
   function openDialog() {
     setDialogOpen(true);
+    if (drawerOpen) {
+      closeDrawer();
+    }
   }
 
   function closeDialog() {
@@ -87,11 +90,48 @@ export default function ElectionMenu(props) {
   return (
     <Fragment>
       {props.intro && (
-        <Hidden only="xs" implementation="css">
-          <IconButton color="inherit" onClick={openDialog}>
-            <FiInfo />
-          </IconButton>
-        </Hidden>
+        <Fragment>
+          <Hidden only="xs" implementation="css">
+            <IconButton color="inherit" onClick={openDialog}>
+              <FiInfo />
+            </IconButton>
+          </Hidden>
+          <Dialog fullWidth open={dialogOpen} onClose={closeDialog}>
+            <DialogTitle disableTypography>
+              <Typography variant="overline">
+                {localize('Welcome to')}
+              </Typography>
+              <Typography variant="h4">Pollenize {props.title}</Typography>
+            </DialogTitle>
+            <Box p={3} pt={1}>
+              <Typography paragraph>{props.intro}</Typography>
+              <Typography
+                paragraph
+                display="block"
+                color="textSecondary"
+                variant="body2"
+              >
+                {localize('Select your preferred language')}:
+              </Typography>
+              <Grid container spacing={2}>
+                {languages.map(({code, name}) => (
+                  <Grid item xs={6} key={code}>
+                    <Box color={code === lang ? 'primary.main' : 'inherit'}>
+                      <CardActionArea
+                        className={languageButton}
+                        to={getPathForLanguage(code)}
+                        onClick={closeDialog}
+                      >
+                        <Typography variant="h5">{upperFirst(code)}</Typography>
+                        <Typography>{name}</Typography>
+                      </CardActionArea>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          </Dialog>
+        </Fragment>
       )}
       <Tooltip title={localize('Candidate grid')}>
         <IconButton
@@ -150,46 +190,6 @@ export default function ElectionMenu(props) {
           resetStars={resetStars}
         />
       </Drawer>
-      {props.intro && (
-        <Dialog fullWidth open={dialogOpen} onClose={closeDialog}>
-          <DialogTitle disableTypography>
-            <Typography variant="overline">{localize('Welcome to')}</Typography>
-            <Typography variant="h4">Pollenize {props.title}</Typography>
-          </DialogTitle>
-          <DialogContent>
-            <Typography paragraph>{props.intro}</Typography>
-            <Typography
-              paragraph
-              display="block"
-              color="textSecondary"
-              variant="body2"
-            >
-              {localize('Select your preferred language')}:
-            </Typography>
-            <Grid container spacing={2}>
-              {languages.map(({code, name}) => (
-                <Grid item xs={6} key={code}>
-                  <Box color={code === lang ? 'primary.main' : 'inherit'}>
-                    <CardActionArea
-                      className={languageButton}
-                      to={getPathForLanguage(code)}
-                    >
-                      <Typography variant="h5">{upperFirst(code)}</Typography>
-                      <Typography>{name}</Typography>
-                    </CardActionArea>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeDialog}>
-              <MdCheck size={20} style={{marginRight: 8}} />
-              Done
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
     </Fragment>
   );
 }
