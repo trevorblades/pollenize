@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import React, {Fragment, useMemo, useState} from 'react';
 import {
   Box,
-  Button,
   Dialog,
-  DialogActions,
-  DialogContent,
   DialogTitle,
   Drawer,
   Grid,
@@ -22,7 +19,6 @@ import {CardActionArea} from 'gatsby-theme-material-ui';
 import {FaRegComments, FaStar, FaThLarge} from 'react-icons/fa';
 import {FiInfo, FiMenu} from 'react-icons/fi';
 import {Link} from 'gatsby';
-import {MdCheck} from 'react-icons/md';
 import {upperFirst} from 'lodash';
 import {useLanguage} from '../../utils/language';
 import {useLocalStorage} from 'react-use';
