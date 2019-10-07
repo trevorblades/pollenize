@@ -1,8 +1,9 @@
-/canada /elections/canada-2019
-/ottawa /elections/ottawa-2018
-/toronto /elections/toronto-2018
-/quebec /elections/quebec-2018
-/america /elections/america-2016
-/chicago /elections/chicago-2015
+/canada      /elections/canada-2019
+/polska      /pl/elections/polska-2019
+/ottawa      /elections/ottawa-2018
+/toronto     /elections/toronto-2018
+/quebec      /fr/elections/quebec-2018
+/america     /elections/america-2016
+/chicago     /elections/chicago-2015
 
 /elections/* /en/elections/:splat
