@@ -21,7 +21,7 @@ export default {
   },
   Compare: {
     fr: 'Comparer',
-    pl: 'Porównać'
+    pl: 'Porównaj'
   },
   'More options': {
     fr: "Plus d'options",
