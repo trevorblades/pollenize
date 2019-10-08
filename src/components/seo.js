@@ -8,7 +8,11 @@ export default function SEO(props) {
     <Helmet>
       <html lang={props.lang} />
       <title>{props.title}</title>
+      <meta name="og:title" content={props.title} />
       <meta name="og:image" content={imageUrl} />
+      <meta name="twitter:site" content="@pollenizeorg" />
+      <meta name="twitter:title" content={props.title} />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:image" content={imageUrl} />
     </Helmet>
   );
