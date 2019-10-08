@@ -25,6 +25,7 @@ module.exports = {
       }
     },
     {
+      // FIXME: this breaks when there is no cache... investigate!!
       resolve: 'gatsby-plugin-favicon',
       options: {
         logo: './src/assets/logo.svg'
