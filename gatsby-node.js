@@ -1,4 +1,5 @@
 const {createFilePath} = require('gatsby-source-filesystem');
+const {createPrinterNode} = require('gatsby-plugin-printer');
 
 const BlogPostTemplate = require.resolve('./src/components/blog-post-template');
 const CandidateTemplate = require.resolve(
@@ -6,6 +7,7 @@ const CandidateTemplate = require.resolve(
 );
 const ElectionTemplate = require.resolve('./src/components/election-template');
 const TopicsTemplate = require.resolve('./src/components/topics-template');
+const PrinterTemplate = require.resolve('./src/components/printer-template');
 
 exports.onCreateNode = async ({node, actions, getNode}) => {
   if (node.internal.type === 'MarkdownRemark') {
@@ -27,6 +29,7 @@ exports.createPages = async ({actions, graphql}) => {
         elections {
           id
           slug
+          title
           languages {
             id
             code
@@ -42,7 +45,17 @@ exports.createPages = async ({actions, graphql}) => {
   `);
 
   const {elections} = electionResults.data.pollenize;
-  for (const {id, slug, candidates, languages} of elections) {
+  for (const {id, slug, title, candidates, languages} of elections) {
+    createPrinterNode({
+      id: `${id} >>> Printer`,
+      fileName: slug,
+      outputDir: 'social',
+      data: {
+        title
+      },
+      component: PrinterTemplate
+    });
+
     for (const language of languages) {
       const path = `/${language.code}/elections/${slug}`;
       const context = {

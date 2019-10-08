@@ -3,13 +3,13 @@ import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
 import React, {useMemo} from 'react';
+import SEO from './seo';
 import Sources, {useSources} from './sources';
 import StanceText from './stance-text';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
 import {Avatar, Box, Typography, styled} from '@material-ui/core';
 import {Link as GatsbyLink, graphql} from 'gatsby';
-import {Helmet} from 'react-helmet';
 import {LanguageProvider, useLocalize} from '../utils/language';
 import {Link} from 'gatsby-theme-material-ui';
 import {PageHeader, PageWrapper} from './common';
@@ -49,10 +49,7 @@ export default function TopicsTemplate(props) {
 
   return (
     <Layout>
-      <Helmet>
-        <html lang={lang} />
-        <title>{title}</title>
-      </Helmet>
+      <SEO lang={lang} title={title} slug={slug} />
       <LanguageProvider lang={lang} languages={languages} path={props.path}>
         <HeaderBase link={electionPath} title={title}>
           <ElectionMenu

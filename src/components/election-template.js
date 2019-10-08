@@ -3,6 +3,7 @@ import HeaderBase from './header-base';
 import Layout from './layout';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SEO from './seo';
 import {
   Avatar,
   Box,
@@ -12,7 +13,6 @@ import {
   useTheme
 } from '@material-ui/core';
 import {CardActionArea} from 'gatsby-theme-material-ui';
-import {Helmet} from 'react-helmet';
 import {LanguageProvider} from '../utils/language';
 import {graphql} from 'gatsby';
 import {size} from 'polished';
@@ -49,10 +49,7 @@ export default function ElectionTemplate(props) {
 
   return (
     <Layout>
-      <Helmet>
-        <html lang={lang} />
-        <title>{title}</title>
-      </Helmet>
+      <SEO title={title} lang={lang} slug={slug} />
       <LanguageProvider lang={lang} languages={languages} path={props.path}>
         <Box
           position="absolute"
