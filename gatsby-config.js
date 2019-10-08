@@ -24,12 +24,12 @@ module.exports = {
         trackingId: 'UA-53329033-1'
       }
     },
-    // {
-    //   resolve: 'gatsby-plugin-favicon',
-    //   options: {
-    //     logo: './src/assets/logo.svg'
-    //   }
-    // },
+    {
+      resolve: 'gatsby-plugin-favicon',
+      options: {
+        logo: './src/assets/logo.svg'
+      }
+    },
     {
       resolve: 'gatsby-source-graphql',
       options: {
