@@ -22,7 +22,7 @@ export default function PrinterTemplate(props) {
         backgroundColor: 'black',
         color: 'white',
         padding: 120,
-        fontFamily: "'Helvetica Neue', sans-serif",
+        fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
         fontWeight: 'bold'
       }}
     >
