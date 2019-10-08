@@ -3,6 +3,7 @@ import HeaderBase from '../header-base';
 import Layout from '../layout';
 import PropTypes from 'prop-types';
 import React, {Fragment, useMemo, useRef, useState} from 'react';
+import SEO from '../seo';
 import Sources, {useSources} from '../sources';
 import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
@@ -16,7 +17,6 @@ import {
   useTheme
 } from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
-import {Helmet} from 'react-helmet';
 import {LanguageProvider, useLocalize} from '../../utils/language';
 import {differenceInYears} from 'date-fns';
 import {getCandidateTitles, useCurrentAnchor} from '../../utils';
@@ -106,10 +106,7 @@ export default function CandidateTemplate(props) {
 
   return (
     <Layout>
-      <Helmet>
-        <html lang={lang} />
-        <title>{name}</title>
-      </Helmet>
+      <SEO title={title} lang={lang} slug={election.slug} />
       <LanguageProvider lang={lang} languages={languages} path={props.path}>
         <HeaderBase link={electionPath} title={title}>
           <ElectionMenu
