@@ -20,14 +20,14 @@ export default function PrinterTemplate(props) {
         justifyContent: 'space-between',
         width: 1200,
         height: 628,
-        padding: 120,
+        padding: 100,
         backgroundColor: 'black',
         color: 'white',
         fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
         fontWeight: 'bold'
       }}
     >
-      <div style={{fontSize: 150}}>{props.title}</div>
+      <div style={{fontSize: 125}}>{props.title}</div>
       <div
         style={{
           display: 'flex',
