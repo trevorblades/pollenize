@@ -45,11 +45,11 @@ export default function ElectionTemplate(props) {
     partyFirst,
     candidates
   } = props.data.pollenize.election;
-  const {lang, languages} = props.pageContext;
+  const {lang, languages, fileName} = props.pageContext;
 
   return (
     <Layout>
-      <SEO title={title} lang={lang} slug={slug} />
+      <SEO title={title} lang={lang} fileName={fileName} />
       <LanguageProvider lang={lang} languages={languages} path={props.path}>
         <Box
           position="absolute"
@@ -76,7 +76,6 @@ export default function ElectionTemplate(props) {
               const [title, subtitle] = partyFirst
                 ? [candidate.party, candidate.name]
                 : [candidate.name, candidate.party];
-
               return (
                 <Grid
                   item

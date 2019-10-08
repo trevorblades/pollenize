@@ -36,7 +36,7 @@ export default function TopicsTemplate(props) {
     partyFirst,
     credits
   } = props.data.pollenize.election;
-  const {lang, languages} = props.pageContext;
+  const {lang, languages, fileName} = props.pageContext;
 
   const localize = useLocalize(lang, languages);
   const currentAnchor = useCurrentAnchor();
@@ -49,7 +49,7 @@ export default function TopicsTemplate(props) {
 
   return (
     <Layout>
-      <SEO lang={lang} title={title} slug={slug} />
+      <SEO lang={lang} title={title} fileName={fileName} />
       <LanguageProvider lang={lang} languages={languages} path={props.path}>
         <HeaderBase link={electionPath} title={title}>
           <ElectionMenu

@@ -23,8 +23,11 @@ exports.onCreateNode = async ({node, actions, getNode}) => {
 };
 
 exports.createPages = async ({actions, graphql}) => {
-  const electionResults = await graphql(`
+  const {data} = await graphql(`
     {
+      site {
+        buildTime(formatString: "X")
+      }
       pollenize {
         elections {
           id
@@ -44,11 +47,12 @@ exports.createPages = async ({actions, graphql}) => {
     }
   `);
 
-  const {elections} = electionResults.data.pollenize;
+  const {elections} = data.pollenize;
   for (const {id, slug, title, candidates, languages} of elections) {
+    const fileName = slug + data.site.buildTime;
     createPrinterNode({
       id: `${id} >>> Printer`,
-      fileName: slug,
+      fileName,
       outputDir: 'social',
       data: {
         title
@@ -60,6 +64,7 @@ exports.createPages = async ({actions, graphql}) => {
       const path = `/${language.code}/elections/${slug}`;
       const context = {
         id,
+        fileName,
         lang: language.code,
         languageId: language.id,
         languages
