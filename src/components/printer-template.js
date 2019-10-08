@@ -13,15 +13,16 @@ export default function PrinterTemplate(props) {
   return (
     <div
       style={{
+        boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'space-between',
         width: 1200,
-        height: 675,
+        height: 628,
+        padding: 120,
         backgroundColor: 'black',
         color: 'white',
-        padding: 120,
         fontFamily: "'Helvetica Neue', Helvetica, sans-serif",
         fontWeight: 'bold'
       }}
