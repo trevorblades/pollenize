@@ -24,13 +24,13 @@ module.exports = {
         trackingId: 'UA-53329033-1'
       }
     },
-    {
-      // FIXME: this breaks when there is no cache... investigate!!
-      resolve: 'gatsby-plugin-favicon',
-      options: {
-        logo: './src/assets/logo.svg'
-      }
-    },
+    // {
+    //   // FIXME: this breaks when there is no cache... investigate!!
+    //   resolve: 'gatsby-plugin-favicon',
+    //   options: {
+    //     logo: './src/assets/logo.svg'
+    //   }
+    // },
     {
       resolve: 'gatsby-source-graphql',
       options: {
