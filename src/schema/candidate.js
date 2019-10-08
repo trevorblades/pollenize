@@ -10,11 +10,11 @@ export const typeDef = gql`
   extend type Mutation {
     updateCandidate(
       id: ID!
-      name: String!
+      name: String
       parties: [MessageInput]!
       color: String!
       portrait: String
-      birthDate: String!
+      birthDate: String
       hometown: String!
       bios: [MessageInput]!
       active: Boolean!
