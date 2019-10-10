@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {AppBar, Box, Typography, styled, useTheme} from '@material-ui/core';
+import {AppBar, Box, styled, useTheme} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {ReactComponent as Logo} from '../assets/logo.svg';
 
@@ -8,6 +8,7 @@ const StyledLink = styled(Link)({
   display: 'flex',
   alignItems: 'center',
   color: 'inherit',
+  fontSize: 34,
   textDecoration: 'none',
   overflow: 'hidden'
 });
@@ -37,16 +38,16 @@ export default function HeaderBase(props) {
         mx="auto"
       >
         <StyledLink to={props.link}>
-          <StyledLogo height={34} fill={palette.text.primary} />
-          <Typography
-            noWrap
-            variant="h5"
-            style={{
-              marginLeft: 14
-            }}
+          <StyledLogo height="1em" fill={palette.text.primary} />
+          <Box
+            ml="calc(1em / 3)"
+            fontSize="75%"
+            fontFamily="h5.fontFamily"
+            fontWeight="h5.fontWeight"
+            style={{whiteSpace: 'nowrap'}}
           >
             {props.title}
-          </Typography>
+          </Box>
         </StyledLink>
         <Box display="flex" alignItems="center" flexShrink={0}>
           {props.children}
