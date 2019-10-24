@@ -1,5 +1,5 @@
 import React from 'react';
-import students from '../assets/images/students.jpg';
+import students from '../assets/images/students2.jpg';
 import {Box, Button, Grid, Typography, useTheme} from '@material-ui/core';
 import {ReactComponent as Civix} from '../assets/civix.svg';
 import {FaHeart} from 'react-icons/fa';
