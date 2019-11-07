@@ -101,7 +101,7 @@ export default function Hero() {
               to="/en/elections/canada-2019"
             >
               View election guide
-              <Box component={FaChevronRight} ml={1} mr={0.5} size={16} />
+              <Box component={FaChevronRight} ml={1} mr={-0.5} size={16} />
             </Fab>
           </Box>
         </Box>
