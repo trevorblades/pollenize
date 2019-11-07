@@ -8,7 +8,7 @@ const StyledLink = styled(Link)({
   display: 'flex',
   alignItems: 'center',
   color: 'inherit',
-  fontSize: 34,
+  fontSize: 36,
   textDecoration: 'none',
   overflow: 'hidden'
 });
