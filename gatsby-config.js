@@ -25,10 +25,9 @@ module.exports = {
       }
     },
     {
-      // FIXME: this breaks when there is no cache... investigate!!
-      resolve: 'gatsby-plugin-favicon',
+      resolve: 'gatsby-plugin-manifest',
       options: {
-        logo: './src/assets/logo.svg'
+        icon: `${__dirname}/src/assets/logo.svg`
       }
     },
     {

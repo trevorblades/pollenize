@@ -1,26 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {AppBar, Box, styled, useTheme} from '@material-ui/core';
+import {AppBar, Box, useTheme} from '@material-ui/core';
 import {Link} from 'gatsby';
 import {ReactComponent as Logo} from '../assets/logo.svg';
-
-const StyledLink = styled(Link)({
-  display: 'flex',
-  alignItems: 'center',
-  color: 'inherit',
-  fontSize: 36,
-  textDecoration: 'none',
-  overflow: 'hidden'
-});
-
-const StyledLogo = styled(Logo)({
-  flexShrink: 0
-});
+import {LogoTitleProps} from '@trevorblades/mui-theme';
 
 export const HEADER_HEIGHT = 64;
 
 export default function HeaderBase(props) {
-  const {breakpoints, spacing, palette} = useTheme();
+  const {breakpoints, spacing} = useTheme();
   const paddingX = 3;
   return (
     <AppBar elevation={0} color="inherit" position="sticky">
@@ -37,18 +25,28 @@ export default function HeaderBase(props) {
         maxWidth={breakpoints.values.lg - (64 - spacing(paddingX)) * 2}
         mx="auto"
       >
-        <StyledLink to={props.link}>
-          <StyledLogo height="1em" fill={palette.text.primary} />
+        <Box
+          {...LogoTitleProps.root}
+          color="inherit"
+          component={Link}
+          to={props.link}
+          style={{
+            textDecoration: 'none',
+            overflow: 'hidden'
+          }}
+        >
+          <Box {...LogoTitleProps.logo} fill="currentColor" component={Logo} />
           <Box
-            ml="calc(1em / 3)"
-            fontSize="75%"
-            fontFamily="h5.fontFamily"
-            fontWeight="h5.fontWeight"
-            style={{whiteSpace: 'nowrap'}}
+            {...LogoTitleProps.title}
+            style={{
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'inherit'
+            }}
           >
             {props.title}
           </Box>
-        </StyledLink>
+        </Box>
         <Box display="flex" alignItems="center" flexShrink={0}>
           {props.children}
         </Box>
