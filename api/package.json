@@ -1,6 +1,9 @@
 {
   "engines": {
-    "node": "11"
+    "node": "12"
+  },
+  "eslintConfig": {
+    "extends": "@trevorblades"
   },
   "scripts": {
     "pretest": "eslint src/*",
