@@ -63,7 +63,7 @@ export function FooterContent() {
         </NavGroup>
         <NavGroup title="Other">
           <FooterLink href="mailto:info@pollenize.org">Contact us</FooterLink>
-          <FooterLink href="https://github.com/pollenize">
+          <FooterLink href="https://github.com/trevorblades/pollenize">
             Source code
           </FooterLink>
         </NavGroup>
