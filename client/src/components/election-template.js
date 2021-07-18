@@ -38,18 +38,13 @@ export default function ElectionTemplate(props) {
   const {button, avatar, grid} = useStyles();
   const {palette} = useTheme();
 
-  const {
-    slug,
-    title,
-    intro,
-    partyFirst,
-    candidates
-  } = props.data.pollenize.election;
-  const {lang, languages, fileName} = props.pageContext;
+  const {slug, title, intro, partyFirst, candidates} =
+    props.data.pollenize.election;
+  const {lang, languages} = props.pageContext;
 
   return (
     <Layout>
-      <SEO title={title} lang={lang} fileName={fileName} />
+      <SEO title={title} lang={lang} />
       <LanguageProvider lang={lang} languages={languages} path={props.path}>
         <Box
           position="absolute"

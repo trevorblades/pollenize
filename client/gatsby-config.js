@@ -45,7 +45,6 @@ module.exports = {
         name: 'posts'
       }
     },
-    'gatsby-transformer-remark',
-    'gatsby-plugin-printer'
+    'gatsby-transformer-remark'
   ]
 };

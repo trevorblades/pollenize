@@ -48,7 +48,7 @@ export default function CandidateTemplate(props) {
     hometown,
     stances
   } = props.data.pollenize.candidate;
-  const {lang, languages, fileName} = props.pageContext;
+  const {lang, languages} = props.pageContext;
 
   const queueRef = useRef([]);
   const {palette} = useTheme();
@@ -106,7 +106,7 @@ export default function CandidateTemplate(props) {
 
   return (
     <Layout>
-      <SEO title={title} lang={lang} fileName={fileName} />
+      <SEO title={title} lang={lang} />
       <LanguageProvider lang={lang} languages={languages} path={props.path}>
         <HeaderBase link={electionPath} title={title}>
           <ElectionMenu

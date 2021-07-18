@@ -3,8 +3,8 @@ import React from 'react';
 import {Helmet} from 'react-helmet';
 import {graphql, useStaticQuery} from 'gatsby';
 
-export default function SEO(props) {
-  const data = useStaticQuery(graphql`
+export default function SEO({title, description, lang}) {
+  const {site} = useStaticQuery(graphql`
     {
       site {
         siteMetadata {
@@ -14,27 +14,27 @@ export default function SEO(props) {
     }
   `);
 
-  const imageUrl = `https://pollenize.org/social/${props.fileName}.png`;
   return (
     <Helmet>
-      <html lang={props.lang} />
-      <title>{props.title}</title>
-      <meta name="og:title" content={props.title} />
-      <meta name="og:image" content={imageUrl} />
-      <meta name="twitter:site" content="@pollenizeorg" />
-      <meta name="twitter:title" content={props.title} />
+      <html lang={lang} />
+      <title>{title}</title>
+      <meta property="og:title" content={title} />
       <meta
-        name="twitter:description"
-        content={data.site.siteMetadata.description}
+        property="og:description"
+        content={description || site.siteMetadata.description}
       />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content={imageUrl} />
+      <meta
+        property="og:image"
+        content="https://pbs.twimg.com/profile_images/1014798953366220800/K5AktL6i_400x400.jpg"
+      />
+      <meta name="twitter:site" content="@pollenizeorg" />
+      <meta name="twitter:card" content="summary" />
     </Helmet>
   );
 }
 
 SEO.propTypes = {
   title: PropTypes.string.isRequired,
-  fileName: PropTypes.string.isRequired,
+  description: PropTypes.string,
   lang: PropTypes.string.isRequired
 };
