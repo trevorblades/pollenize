@@ -3,7 +3,7 @@ import React from 'react';
 import StanceForm from './stance-form';
 import gql from 'graphql-tag';
 import {GET_ELECTION, STANCE_FRAGMENT} from '../../utils/queries';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client';
 
 const CREATE_STANCE = gql`
   mutation CreateStance(

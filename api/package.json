@@ -26,7 +26,7 @@
     "graphql": "^14.4.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
-    "pg": "^7.11.0",
-    "sequelize": "^5.19.2"
+    "pg": "^8.6.0",
+    "sequelize": "^5.22.4"
   }
 }

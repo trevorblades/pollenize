@@ -17,7 +17,7 @@ import {FormField} from '../common';
 import {TOPIC_FRAGMENT} from '../../utils/queries';
 import {getMessageInputs, uploadImage, useFileHandler} from '../../utils';
 import {size} from 'polished';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client';
 
 const StyledImage = styled('img')({
   ...size('100%'),

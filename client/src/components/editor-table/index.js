@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import {GET_ELECTION} from '../../utils/queries';
 import {getCandidateTitles} from '../../utils';
-import {useQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/client';
 
 function HeaderButton({title, children, className, ...props}) {
   return (

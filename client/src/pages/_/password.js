@@ -14,7 +14,7 @@ import {
 import {FormCard, FormField} from '../../components/common';
 import {Helmet} from 'react-helmet';
 import {navigate} from 'gatsby';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client';
 import {useUser} from '../../utils/user';
 
 const SET_PASSWORD = gql`

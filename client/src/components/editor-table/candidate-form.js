@@ -20,7 +20,7 @@ import {FormField} from '../common';
 import {format} from 'date-fns/esm';
 import {getMessageInputs, uploadImage, useFileHandler} from '../../utils';
 import {size} from 'polished';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client';
 
 const useStyles = makeStyles({
   avatarRoot: {

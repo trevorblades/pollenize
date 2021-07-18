@@ -36,11 +36,12 @@ const server = new ApolloServer({
 
 server.applyMiddleware({app});
 
-sequelize.sync().then(() => {
+(async () => {
+  await sequelize.sync();
   app.listen({port: process.env.PORT}, () => {
     console.log(
-      `🚀 Server ready at http://localhost:${process.env.PORT +
+      `🐝 Server ready at http://localhost:${process.env.PORT +
         server.graphqlPath}`
     );
   });
-});
+})();
