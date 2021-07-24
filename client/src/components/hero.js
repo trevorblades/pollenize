@@ -58,7 +58,7 @@ function Content() {
     <Fragment>
       <Typography variant="overline">Your guide to the</Typography>
       <Typography gutterBottom variant="h2">
-        2019 Canadian federal election
+        2021 Canadian federal election
       </Typography>
       <Typography paragraph variant="h6">
         We break down the candidates and their policies in a clear, organized
@@ -98,7 +98,7 @@ export default function Hero() {
             <Fab
               color="primary"
               variant="extended"
-              to="/en/elections/canada-2019"
+              to="/en/elections/canada-2021"
             >
               View election guide
               <Box component={FaChevronRight} ml={1} mr={-0.5} size={16} />
