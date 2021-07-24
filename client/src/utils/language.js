@@ -30,13 +30,7 @@ export function LanguageProvider(props) {
         getPathForLanguage(lang) {
           return (
             '/' +
-            [
-              lang,
-              ...props.path
-                .split('/')
-                .filter(Boolean)
-                .slice(1)
-            ].join('/')
+            [lang, ...props.path.split('/').filter(Boolean).slice(1)].join('/')
           );
         }
       }}

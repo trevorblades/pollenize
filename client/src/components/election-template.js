@@ -13,7 +13,8 @@ import {
   useTheme
 } from '@material-ui/core';
 import {CardActionArea} from 'gatsby-theme-material-ui';
-import {LanguageProvider} from '../utils/language';
+import {FaRegComments} from 'react-icons/fa';
+import {LanguageProvider, useLanguage} from '../utils/language';
 import {graphql} from 'gatsby';
 import {size} from 'polished';
 
@@ -34,6 +35,21 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+function TopicExplorer() {
+  const {localize} = useLanguage();
+  return (
+    <>
+      <Box component={FaRegComments} size={32} mb={2} />
+      <Typography gutterBottom variant="h5">
+        {localize('Topic explorer')}
+      </Typography>
+      <Typography>
+        {localize("View candidates' main stances organized by topic")}
+      </Typography>
+    </>
+  );
+}
+
 export default function ElectionTemplate(props) {
   const {button, avatar, grid} = useStyles();
   const {palette} = useTheme();
@@ -41,6 +57,12 @@ export default function ElectionTemplate(props) {
   const {slug, title, intro, partyFirst, candidates} =
     props.data.pollenize.election;
   const {lang, languages} = props.pageContext;
+
+  const numCandidates = candidates.length;
+  const gridItemProps = {
+    sm: 6,
+    md: 12 / (numCandidates > 3 ? Math.ceil(numCandidates / 2) : numCandidates)
+  };
 
   return (
     <Layout>
@@ -72,18 +94,7 @@ export default function ElectionTemplate(props) {
                 ? [candidate.party, candidate.name]
                 : [candidate.name, candidate.party];
               return (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={
-                    12 /
-                    (candidates.length > 3
-                      ? Math.ceil(candidates.length / 2)
-                      : candidates.length)
-                  }
-                  key={candidate.id}
-                >
+                <Grid item xs={12} {...gridItemProps} key={candidate.id}>
                   <CardActionArea
                     className={button}
                     to={`${props.path}/${candidate.slug}`}
@@ -99,6 +110,17 @@ export default function ElectionTemplate(props) {
                 </Grid>
               );
             })}
+            {numCandidates > 3 && numCandidates % 2 > 0 && (
+              <Grid item {...gridItemProps}>
+                <CardActionArea
+                  className={button}
+                  to={`${props.path}/topics`}
+                  style={{color: 'white'}}
+                >
+                  <TopicExplorer />
+                </CardActionArea>
+              </Grid>
+            )}
           </Grid>
         </Box>
       </LanguageProvider>
