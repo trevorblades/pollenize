@@ -39,12 +39,12 @@
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-icons": "^3.7.0",
+    "react-markdown": "^6.0.2",
     "react-use": "^10.3.0",
     "react-virtualized": "^9.21.1",
     "recompose": "^0.30.0",
     "rehype-react": "^4.0.1",
-    "shuffle-seed": "^1.1.6",
-    "snarkdown": "^1.2.2"
+    "shuffle-seed": "^1.1.6"
   },
   "devDependencies": {
     "@trevorblades/eslint-config": "^7.0.1",

@@ -1,5 +1,10 @@
-import {ApolloClient, HttpLink, ApolloLink, InMemoryCache} from '@apollo/client';
 import fetch from 'isomorphic-fetch';
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache
+} from '@apollo/client';
 
 const httpLink = new HttpLink({
   uri: process.env.GATSBY_API_URL + '/graphql',

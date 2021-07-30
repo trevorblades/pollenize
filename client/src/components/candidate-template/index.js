@@ -1,6 +1,7 @@
 import ElectionMenu from '../election-menu';
 import HeaderBase from '../header-base';
 import Layout from '../layout';
+import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import React, {Fragment, useMemo, useRef, useState} from 'react';
 import SEO from '../seo';
@@ -8,7 +9,6 @@ import Sources, {useSources} from '../sources';
 import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
 import clipboard from 'clipboard-polyfill';
-import snarkdown from 'snarkdown';
 import {
   Avatar,
   Snackbar,
@@ -164,11 +164,7 @@ export default function CandidateTemplate(props) {
                     {localize('Hometown')}: {hometown}
                   </Typography>
                 )}
-                {bio && (
-                  <Typography
-                    dangerouslySetInnerHTML={{__html: snarkdown(bio)}}
-                  />
-                )}
+                {bio && <Markdown components={{p: Typography}}>{bio}</Markdown>}
               </ContentWrapper>
             </Fragment>
           )}
