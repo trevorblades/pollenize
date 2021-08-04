@@ -1,7 +1,7 @@
 import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import React, {Fragment, useState} from 'react';
-import {Box, Link, Popover, Typography, makeStyles} from '@material-ui/core';
+import {Box, Link, Popover, makeStyles} from '@material-ui/core';
 import {FaQuestionCircle} from 'react-icons/fa';
 import {size} from 'polished';
 
