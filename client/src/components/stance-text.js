@@ -1,6 +1,6 @@
 import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React, {createContext, useContext, useState} from 'react';
 import {Box, Link, Popover, makeStyles} from '@material-ui/core';
 import {FaQuestionCircle} from 'react-icons/fa';
 import {size} from 'polished';
@@ -17,9 +17,19 @@ const useStyles = makeStyles({
   icon: size('0.75em')
 });
 
-function VocabPopover({word}) {
+function VocabPopover({word, ...props}) {
+  const keywords = useContext(KeywordContext);
   const {link, icon} = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const keyword = keywords.find(
+    keyword => keyword.word.toLowerCase() === word.toLowerCase()
+  );
+
+  if (!keyword) {
+    return <a {...props} />;
+  }
+
   return (
     <>
       <Link
@@ -44,9 +54,7 @@ function VocabPopover({word}) {
         }}
       >
         <Box p={2} maxWidth={300}>
-          <strong>noun.</strong> a procedure intended to establish the quality,
-          performance, or reliability of something, especially before it is
-          taken into widespread use.
+          {keyword.definition}
         </Box>
       </Popover>
     </>
@@ -61,7 +69,7 @@ function CustomAnchor(props) {
   return props.href ? (
     <a {...props} />
   ) : (
-    <VocabPopover word={props.children[0]} />
+    <VocabPopover word={props.children[0]} {...props} />
   );
 }
 
@@ -74,10 +82,18 @@ const components = {
   a: CustomAnchor
 };
 
+export const KeywordContext = createContext();
+
 export default function StanceText(props) {
   return (
     <>
-      <Markdown components={components}>{props.stance.text}</Markdown>
+      <Markdown
+        disallowedElements={['p']}
+        unwrapDisallowed
+        components={components}
+      >
+        {props.stance.text}
+      </Markdown>
       {props.stance.sources.map(source => {
         const number = props.sources.indexOf(source.url) + 1;
         return (

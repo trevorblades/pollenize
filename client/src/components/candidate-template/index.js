@@ -17,13 +17,14 @@ import {
   useTheme
 } from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
+import {KeywordContext} from '../stance-text';
 import {LanguageProvider, useLocalize} from '../../utils/language';
+import {StarsProvider} from '../../utils/stars';
 import {differenceInYears} from 'date-fns';
 import {getCandidateTitles, useCurrentAnchor} from '../../utils';
 import {graphql} from 'gatsby';
 import {groupBy} from 'lodash';
 import {size} from 'polished';
-import {useStars} from '../../utils/stars';
 
 const StyledAvatar = styled(Avatar)(({theme}) => ({
   ...size(160),
@@ -56,12 +57,7 @@ export default function CandidateTemplate(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const {sources, activeSource, handleSourceClick} = useSources(stances);
-  const {stars, toggleStar} = useStars();
   const currentAnchor = useCurrentAnchor();
-
-  function handleStarClick(topicId) {
-    toggleStar(candidateId, topicId);
-  }
 
   function processQueue() {
     if (queueRef.current.length > 0) {
@@ -100,105 +96,108 @@ export default function CandidateTemplate(props) {
   const [firstName] = name.split(' ');
   const aboutTitle = `${localize('About')} ${firstName}`;
   const aboutShown = Boolean(birthDate || hometown || bio);
-
-  const candidateStars = stars[candidateId] || [];
   const electionPath = `/${lang}/elections/${election.slug}`;
 
   return (
     <Layout>
       <SEO title={title} lang={lang} />
-      <LanguageProvider lang={lang} languages={languages} path={props.path}>
-        <HeaderBase link={electionPath} title={title}>
-          <ElectionMenu
-            title={election.title}
-            electionSlug={election.slug}
-            candidates={election.candidates}
-            partyFirst={election.partyFirst}
-            intro={election.intro}
-          />
-        </HeaderBase>
-        <PageHeader
-          title={title}
-          subtitle={subtitle}
-          bgcolor={color}
-          color={palette.getContrastText(color)}
-        >
-          <StyledAvatar src={portrait} />
-        </PageHeader>
-        <PageWrapper
-          sidebar={
-            <TableOfContents
-              topics={election.topics}
-              getActiveProps={index => ({
-                style: {
-                  color: index === currentAnchor - aboutShown && color
-                }
-              })}
+      <StarsProvider>
+        <LanguageProvider lang={lang} languages={languages} path={props.path}>
+          <KeywordContext.Provider value={election.keywords}>
+            <HeaderBase link={electionPath} title={title}>
+              <ElectionMenu
+                title={election.title}
+                electionSlug={election.slug}
+                candidates={election.candidates}
+                partyFirst={election.partyFirst}
+                intro={election.intro}
+              />
+            </HeaderBase>
+            <PageHeader
+              title={title}
+              subtitle={subtitle}
+              bgcolor={color}
+              color={palette.getContrastText(color)}
+            >
+              <StyledAvatar src={portrait} />
+            </PageHeader>
+            <PageWrapper
+              sidebar={
+                <TableOfContents
+                  topics={election.topics}
+                  getActiveProps={index => ({
+                    style: {
+                      color: index === currentAnchor - aboutShown && color
+                    }
+                  })}
+                >
+                  {aboutShown && (
+                    <SidebarLink
+                      href="#about"
+                      style={{color: !currentAnchor && color}}
+                    >
+                      {aboutTitle}
+                    </SidebarLink>
+                  )}
+                </TableOfContents>
+              }
             >
               {aboutShown && (
-                <SidebarLink
-                  href="#about"
-                  style={{color: !currentAnchor && color}}
-                >
-                  {aboutTitle}
-                </SidebarLink>
+                <Fragment>
+                  <PageAnchor className="topic" name="about" />
+                  <ContentWrapper>
+                    <Typography gutterBottom variant="h4">
+                      {aboutTitle}
+                    </Typography>
+                    {birthDate && (
+                      <Typography gutterBottom>
+                        {differenceInYears(Date.now(), Number(birthDate))}{' '}
+                        {localize('years old')}
+                      </Typography>
+                    )}
+                    {hometown && (
+                      <Typography gutterBottom>
+                        {localize('Hometown')}: {hometown}
+                      </Typography>
+                    )}
+                    {bio && (
+                      <Markdown components={{p: Typography}}>{bio}</Markdown>
+                    )}
+                  </ContentWrapper>
+                </Fragment>
               )}
-            </TableOfContents>
-          }
-        >
-          {aboutShown && (
-            <Fragment>
-              <PageAnchor className="topic" name="about" />
-              <ContentWrapper>
-                <Typography gutterBottom variant="h4">
-                  {aboutTitle}
-                </Typography>
-                {birthDate && (
-                  <Typography gutterBottom>
-                    {differenceInYears(Date.now(), Number(birthDate))}{' '}
-                    {localize('years old')}
-                  </Typography>
-                )}
-                {hometown && (
-                  <Typography gutterBottom>
-                    {localize('Hometown')}: {hometown}
-                  </Typography>
-                )}
-                {bio && <Markdown components={{p: Typography}}>{bio}</Markdown>}
-              </ContentWrapper>
-            </Fragment>
-          )}
-          {election.topics.map(topic => (
-            <TopicSection
-              topic={topic}
-              key={topic.id}
-              electionPath={electionPath}
-              stances={stancesByTopic[topic.id]}
+              {election.topics.map(topic => (
+                <TopicSection
+                  topic={topic}
+                  key={topic.id}
+                  electionPath={electionPath}
+                  stances={stancesByTopic[topic.id]}
+                  sources={sources}
+                  candidateId={candidateId}
+                  onSourceClick={handleSourceClick}
+                  onLinkClick={handleLinkClick}
+                />
+              ))}
+            </PageWrapper>
+            <Sources
               sources={sources}
-              starred={candidateStars.includes(topic.id)}
-              onStarClick={() => handleStarClick(topic.id)}
-              onSourceClick={handleSourceClick}
-              onLinkClick={handleLinkClick}
+              credits={election.credits}
+              activeIndex={activeSource}
             />
-          ))}
-        </PageWrapper>
-        <Sources
-          sources={sources}
-          credits={election.credits}
-          activeIndex={activeSource}
-        />
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}
-          open={snackbarOpen}
-          autoHideDuration={2500}
-          onClose={handleClose}
-          onExited={processQueue}
-          message="Link copied to clipboard!"
-        />
-      </LanguageProvider>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center'
+              }}
+              open={snackbarOpen}
+              autoHideDuration={2500}
+              onClose={handleClose}
+              onExited={processQueue}
+              message="Link copied to clipboard!"
+            />
+          </KeywordContext.Provider>
+        </LanguageProvider>
+      </StarsProvider>
     </Layout>
   );
 }

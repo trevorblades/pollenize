@@ -5,14 +5,23 @@ import Layout from '../../components/layout';
 import LoginForm from '../../components/login-form';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
+import decode from 'jwt-decode';
 import {Button, NoSsr} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
 import {parse} from 'query-string';
-import {useUser} from '../../utils/user';
+import {useLocalStorage} from 'react-use';
 
 export default function Edit(props) {
-  const {user, setToken} = useUser();
+  const [token, setToken] = useLocalStorage('token', null, true);
 
+  let user;
+  if (token) {
+    try {
+      user = decode(token);
+    } catch (error) {
+      // let errors pass
+    }
+  }
   function logOut() {
     setToken('');
   }

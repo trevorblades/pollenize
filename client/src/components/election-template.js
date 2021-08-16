@@ -15,6 +15,7 @@ import {
 import {CardActionArea} from 'gatsby-theme-material-ui';
 import {FaRegComments} from 'react-icons/fa';
 import {LanguageProvider, useLanguage} from '../utils/language';
+import {StarsProvider} from '../utils/stars';
 import {graphql} from 'gatsby';
 import {size} from 'polished';
 
@@ -67,63 +68,65 @@ export default function ElectionTemplate(props) {
   return (
     <Layout>
       <SEO title={title} lang={lang} />
-      <LanguageProvider lang={lang} languages={languages} path={props.path}>
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          bottom={0}
-          right={0}
-          display="flex"
-          flexDirection="column"
-          bgcolor="grey.900"
-        >
-          <HeaderBase link="/elections" title={title}>
-            <ElectionMenu
-              title={title}
-              electionSlug={slug}
-              candidates={candidates}
-              partyFirst={partyFirst}
-              intro={intro}
-              active="grid"
-            />
-          </HeaderBase>
-          <Grid container className={grid}>
-            {candidates.map(candidate => {
-              const [title, subtitle] = partyFirst
-                ? [candidate.party, candidate.name]
-                : [candidate.name, candidate.party];
-              return (
-                <Grid item xs={12} {...gridItemProps} key={candidate.id}>
+      <StarsProvider>
+        <LanguageProvider lang={lang} languages={languages} path={props.path}>
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            bottom={0}
+            right={0}
+            display="flex"
+            flexDirection="column"
+            bgcolor="grey.900"
+          >
+            <HeaderBase link="/elections" title={title}>
+              <ElectionMenu
+                title={title}
+                electionSlug={slug}
+                candidates={candidates}
+                partyFirst={partyFirst}
+                intro={intro}
+                active="grid"
+              />
+            </HeaderBase>
+            <Grid container className={grid}>
+              {candidates.map(candidate => {
+                const [title, subtitle] = partyFirst
+                  ? [candidate.party, candidate.name]
+                  : [candidate.name, candidate.party];
+                return (
+                  <Grid item xs={12} {...gridItemProps} key={candidate.id}>
+                    <CardActionArea
+                      className={button}
+                      to={`${props.path}/${candidate.slug}`}
+                      style={{
+                        backgroundColor: candidate.color,
+                        color: palette.getContrastText(candidate.color)
+                      }}
+                    >
+                      <Avatar className={avatar} src={candidate.portrait} />
+                      <Typography variant="h5">{title}</Typography>
+                      <Typography variant="subtitle1">{subtitle}</Typography>
+                    </CardActionArea>
+                  </Grid>
+                );
+              })}
+              {numCandidates > 3 && numCandidates % 2 > 0 && (
+                <Grid item {...gridItemProps}>
                   <CardActionArea
                     className={button}
-                    to={`${props.path}/${candidate.slug}`}
-                    style={{
-                      backgroundColor: candidate.color,
-                      color: palette.getContrastText(candidate.color)
-                    }}
+                    to={`${props.path}/topics`}
+                    style={{color: 'white'}}
                   >
-                    <Avatar className={avatar} src={candidate.portrait} />
-                    <Typography variant="h5">{title}</Typography>
-                    <Typography variant="subtitle1">{subtitle}</Typography>
+                    <TopicExplorer />
                   </CardActionArea>
                 </Grid>
-              );
-            })}
-            {numCandidates > 3 && numCandidates % 2 > 0 && (
-              <Grid item {...gridItemProps}>
-                <CardActionArea
-                  className={button}
-                  to={`${props.path}/topics`}
-                  style={{color: 'white'}}
-                >
-                  <TopicExplorer />
-                </CardActionArea>
-              </Grid>
-            )}
-          </Grid>
-        </Box>
-      </LanguageProvider>
+              )}
+            </Grid>
+          </Box>
+        </LanguageProvider>
+      </StarsProvider>
     </Layout>
   );
 }
