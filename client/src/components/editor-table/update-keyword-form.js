@@ -5,7 +5,9 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogContentText
+  DialogContentText,
+  DialogTitle,
+  Typography
 } from '@material-ui/core';
 import {KEYWORD_FRAGMENT} from '../../utils/queries';
 import {getMessageInputs} from '../../utils';
@@ -42,6 +44,9 @@ export default function UpdateKeywordForm({onClose, keyword, languages}) {
 
   return (
     <form onSubmit={handleSubmit}>
+      <DialogTitle disableTypography>
+        <Typography variant="overline">Editing keyword</Typography>
+      </DialogTitle>
       <DialogContent>
         {error && (
           <DialogContentText color="error">{error.message}</DialogContentText>

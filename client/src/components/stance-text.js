@@ -1,6 +1,6 @@
 import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
-import React, {Fragment, useState} from 'react';
+import React, {useState} from 'react';
 import {Box, Link, Popover, makeStyles} from '@material-ui/core';
 import {FaQuestionCircle} from 'react-icons/fa';
 import {size} from 'polished';
@@ -76,7 +76,7 @@ const components = {
 
 export default function StanceText(props) {
   return (
-    <Fragment>
+    <>
       <Markdown components={components}>{props.stance.text}</Markdown>
       {props.stance.sources.map(source => {
         const number = props.sources.indexOf(source.url) + 1;
@@ -94,7 +94,7 @@ export default function StanceText(props) {
           </sup>
         );
       })}
-    </Fragment>
+    </>
   );
 }
 

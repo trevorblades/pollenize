@@ -15,41 +15,37 @@ import {
 
 export default function KeywordsDialog({election, onClose}) {
   const [keyword, setKeyword] = useState(null);
-  return (
+  return keyword ? (
+    <UpdateKeywordForm
+      onClose={() => setKeyword(null)}
+      languages={election.languages}
+      keyword={keyword}
+    />
+  ) : (
     <>
       <DialogTitle disableTypography>
-        <Typography variant="overline">Editing keywords</Typography>
+        <Typography variant="overline">All keywords</Typography>
       </DialogTitle>
-      {keyword ? (
-        <UpdateKeywordForm
-          onClose={() => setKeyword(null)}
-          languages={election.languages}
-          keyword={keyword}
+      <DialogContent>
+        <CreateKeywordForm
+          election={election}
+          onCompleted={data => setKeyword(data.createKeyword)}
         />
-      ) : (
-        <>
-          <DialogContent>
-            <CreateKeywordForm
-              election={election}
-              onCompleted={data => setKeyword(data.createKeyword)}
-            />
-            <List>
-              {election.keywords.map(keyword => (
-                <ListItem
-                  button
-                  onClick={() => setKeyword(keyword)}
-                  key={keyword.id}
-                >
-                  <ListItemText primary={keyword.words[0].text} />
-                </ListItem>
-              ))}
-            </List>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onClose}>Done</Button>
-          </DialogActions>
-        </>
-      )}
+        <List>
+          {election.keywords.map(keyword => (
+            <ListItem
+              button
+              onClick={() => setKeyword(keyword)}
+              key={keyword.id}
+            >
+              <ListItemText primary={keyword.words[0].text} />
+            </ListItem>
+          ))}
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Done</Button>
+      </DialogActions>
     </>
   );
 }

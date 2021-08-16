@@ -256,6 +256,11 @@ export const pageQuery = graphql`
             name
             role
           }
+          keywords {
+            id
+            word(languageId: $languageId)
+            definition(languageId: $languageId)
+          }
         }
       }
     }

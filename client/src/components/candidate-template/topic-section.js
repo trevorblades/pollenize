@@ -58,8 +58,9 @@ export default function TopicSection(props) {
             <Button className={button} onClick={toggleExpanded}>
               {expanded
                 ? localize('Show less')
-                : `${localize('Show more')} (${props.stances.length -
-                    MIN_STANCES})`}
+                : `${localize('Show more')} (${
+                    props.stances.length - MIN_STANCES
+                  })`}
             </Button>
           )}
           <Button
