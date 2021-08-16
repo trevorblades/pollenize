@@ -3,7 +3,8 @@ import {
   typeDef as Candidate,
   resolvers as candidateResolvers
 } from './candidate';
-import {typeDef as Credit, resolvers as creditResolvers} from './credit';
+import { typeDef as Keyword, resolvers as keywordResolvers } from './keyword';
+import { typeDef as Credit, resolvers as creditResolvers } from './credit';
 import {typeDef as Election, resolvers as electionResolvers} from './election';
 import {typeDef as Language, resolvers as languageResolvers} from './language';
 import {typeDef as Message, resolvers as messageResolvers} from './message';
@@ -37,7 +38,8 @@ export default makeExecutableSchema({
     User,
     Credit,
     Language,
-    Message
+    Message,
+    Keyword
   ],
   resolvers: merge(
     electionResolvers,
@@ -48,6 +50,7 @@ export default makeExecutableSchema({
     userResolvers,
     creditResolvers,
     languageResolvers,
-    messageResolvers
+    messageResolvers,
+    keywordResolvers,
   )
 });

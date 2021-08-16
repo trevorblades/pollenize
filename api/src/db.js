@@ -65,7 +65,7 @@ export const User = sequelize.define('user', {
   password: Sequelize.STRING
 });
 
-User.prototype.toJWT = function(expiresIn = '7 days') {
+User.prototype.toJWT = function (expiresIn = '7 days') {
   const {id, email, name} = this.get();
   return jwt.sign({email, name}, process.env.TOKEN_SECRET, {
     expiresIn,
@@ -116,3 +116,18 @@ const Credit = sequelize.define('credit', {
 
 Credit.belongsTo(Election);
 Election.hasMany(Credit);
+
+export const Keyword = sequelize.define('keyword');
+
+Keyword.belongsTo(Election);
+Election.hasMany(Keyword);
+
+Keyword.belongsToMany(Message, {
+  through: 'keywordWords',
+  as: 'words'
+});
+
+Keyword.belongsToMany(Message, {
+  through: 'keywordDefinitions',
+  as: 'definitions'
+});

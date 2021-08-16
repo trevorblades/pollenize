@@ -62,6 +62,19 @@ export const TOPIC_FRAGMENT = gql`
   ${MESSAGE_FRAGMENT}
 `;
 
+export const KEYWORD_FRAGMENT = gql`
+  fragment KeywordFragment on Keyword {
+    id
+    words {
+      ...MessageFragment
+    }
+    definitions {
+      ...MessageFragment
+    }
+  }
+  ${MESSAGE_FRAGMENT}
+`;
+
 export const GET_ELECTION = gql`
   query GetElection($id: ID!) {
     election(id: $id) {
@@ -78,8 +91,12 @@ export const GET_ELECTION = gql`
       topics {
         ...TopicFragment
       }
+      keywords {
+        ...KeywordFragment
+      }
     }
   }
   ${CANDIDATE_FRAGMENT}
   ${TOPIC_FRAGMENT}
+  ${KEYWORD_FRAGMENT}
 `;
