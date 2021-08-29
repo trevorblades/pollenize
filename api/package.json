@@ -9,7 +9,7 @@
   "scripts": {
     "pretest": "eslint src/*",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "start": "nodemon -r dotenv/config index.js"
+    "dev": "nodemon -r dotenv/config index.js"
   },
   "devDependencies": {
     "@trevorblades/eslint-config": "^7.2.4",
