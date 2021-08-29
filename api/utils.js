@@ -1,4 +1,4 @@
-import {sequelize} from './db';
+import {sequelize} from './db.js';
 
 export function getMessageResolver(methodName = 'getMessages') {
   return async (parent, {languageId}) => {
@@ -22,9 +22,12 @@ export async function bulkCreateUpdate(items, model) {
       })
   );
 
-  const newItems = await model.bulkCreate(items.filter(item => !item.id), {
-    returning: true
-  });
+  const newItems = await model.bulkCreate(
+    items.filter(item => !item.id),
+    {
+      returning: true
+    }
+  );
 
   return [...oldItems, ...newItems];
 }

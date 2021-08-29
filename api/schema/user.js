@@ -1,7 +1,9 @@
+import Sequelize from 'sequelize';
 import bcrypt from 'bcryptjs';
-import {Op} from 'sequelize';
-import {User} from '../db';
+import {User} from '../db.js';
 import {UserInputError, gql} from 'apollo-server-express';
+
+const {Op} = Sequelize;
 
 export const typeDef = gql`
   extend type Mutation {

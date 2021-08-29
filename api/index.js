@@ -1,10 +1,10 @@
 import cors from 'cors';
 import express from 'express';
-import handleAuth from './auth';
+import handleAuth from './auth.js';
 import jwt from 'jsonwebtoken';
-import schema from './schema';
+import schema from './schema/index.js';
 import {ApolloServer} from 'apollo-server-express';
-import {User, sequelize} from './db';
+import {User, sequelize} from './db.js';
 
 const app = express();
 
@@ -40,8 +40,9 @@ server.applyMiddleware({app});
   await sequelize.sync();
   app.listen({port: process.env.PORT}, () => {
     console.log(
-      `🐝 Server ready at http://localhost:${process.env.PORT +
-        server.graphqlPath}`
+      `🐝 Server ready at http://localhost:${
+        process.env.PORT + server.graphqlPath
+      }`
     );
   });
 })();
