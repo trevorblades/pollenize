@@ -52,7 +52,6 @@ export default function UpdateKeywordForm({onClose, keyword, languages}) {
           <DialogContentText color="error">{error.message}</DialogContentText>
         )}
         <LanguageFields
-          multiline
           disabled={loading}
           languages={languages}
           messages={keyword.words}
