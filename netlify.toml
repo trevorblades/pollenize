@@ -7,3 +7,5 @@
   GATSBY_IMGBB_API_KEY = "91fbd7e9abbbbe934cc6b701b3eb8a7b"
 [context.dev.environment]
   GATSBY_API_URL = "http://localhost:3000"
+[dev]
+  autoLaunch = false
