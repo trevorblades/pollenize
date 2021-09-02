@@ -48,7 +48,7 @@ export default function Hero() {
             md: 1 / 2
           }}
         >
-          <StyledLeaf fill="#ffd8d1" />
+          <StyledLeaf />
           <Box position="relative">
             <Typography variant="overline" style={{color: '#ff3a1a'}}>
               Your guide to the
