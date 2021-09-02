@@ -54,7 +54,7 @@ export default function Hero() {
               Your guide to the
             </Typography>
             <Typography gutterBottom variant="h2">
-              2021 Canadian federal election
+              2021 Canadian Federal Election
             </Typography>
             <Typography paragraph variant="h6">
               We break down the candidates and their policies in a clear,
