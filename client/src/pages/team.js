@@ -124,6 +124,12 @@ export default function Team() {
             bio="Miguel is an award-winning film director, editor and producer. He creates music videos, documentaries, and commercials."
           />
           <TeamMember
+            name="Joseph Homsy"
+            social="instagram"
+            handle="jooomsy"
+            bio="Joe is a multimedia producer at Voyager 3 who lives in Tofino, BC. Sometimes he hangs ten and builds cribbage boards."
+          />
+          <TeamMember
             name="Marvin Sanchez"
             handle="marvinsanchez"
             bio="As a designer at Prodigy, Marvin is currently on a mission to help kids around the world love math. Marvin is better than you at video games and can play any Blink-182 song on his trusty air guitar."
@@ -138,12 +144,6 @@ export default function Team() {
             social="instagram"
             handle="mastermill"
             bio="Ben is the founder of WIRTH Hats, a brand that breaks down barriers around mental health. Outside of WIRTH, Ben leads leadership and team development workshops in a variety of countries and companies."
-          />
-          <TeamMember
-            name="Joseph Homsy"
-            social="instagram"
-            handle="jooomsy"
-            bio="Joe is a multimedia producer at Voyager 3 who lives in Tofino, BC. Sometimes he hangs ten and builds cribbage boards."
           />
           <TeamMember
             name="Sean Tanner"
