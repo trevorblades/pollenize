@@ -24,10 +24,6 @@ export default function TopicSection(props) {
   const [expanded, toggleExpanded] = useToggle(false);
   const {stars, toggleStar} = useStars();
 
-  function handleStarClick(topicId) {
-    toggleStar(props.candidateId, topicId);
-  }
-
   const candidateStars = stars[props.candidateId] || [];
 
   const hash = `#${props.topic.slug}`;
@@ -47,7 +43,7 @@ export default function TopicSection(props) {
               </Typography>
             ))}
           <IconButton
-            onClick={handleStarClick}
+            onClick={() => toggleStar(props.candidateId, props.topic.id)}
             color="inherit"
             style={{
               marginLeft: -8
