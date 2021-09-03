@@ -9,9 +9,10 @@ export function useLanguage() {
 }
 
 export function useLocalize(lang) {
-  return function localize(key) {
+  return function localize(key, replacement) {
     try {
-      return lang === 'en' ? key : messages[key][lang];
+      const message = messages[key][lang] || key;
+      return replacement ? message.replace('%s', replacement) : message;
     } catch (error) {
       console.error(`Missing message key: ${key}`);
       return key;

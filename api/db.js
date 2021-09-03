@@ -43,7 +43,8 @@ export const Candidate = sequelize.define('candidate', {
   hometown: Sequelize.STRING,
   portrait: Sequelize.STRING,
   color: Sequelize.STRING,
-  active: Sequelize.BOOLEAN
+  active: Sequelize.BOOLEAN,
+  incomplete: Sequelize.BOOLEAN
 });
 
 Candidate.belongsToMany(Message, {

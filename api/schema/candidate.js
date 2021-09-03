@@ -40,6 +40,7 @@ export const typeDef = gql`
     hometown: String
     bio(languageId: ID!): String
     active: Boolean
+    incomplete: Boolean
   }
 `;
 

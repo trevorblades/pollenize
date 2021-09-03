@@ -1,5 +1,5 @@
 import ElectionMenu from '../election-menu';
-import HeaderBase from '../header-base';
+import HeaderBase, {HEADER_HEIGHT} from '../header-base';
 import Layout from '../layout';
 import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
@@ -11,12 +11,14 @@ import TopicSection from './topic-section';
 import clipboard from 'clipboard-polyfill';
 import {
   Avatar,
+  Box,
   Snackbar,
   Typography,
   styled,
   useTheme
 } from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
+import {FaExclamation} from 'react-icons/fa';
 import {KeywordContext} from '../stance-text';
 import {LanguageProvider, useLocalize} from '../../utils/language';
 import {StarsProvider} from '../../utils/stars';
@@ -47,7 +49,8 @@ export default function CandidateTemplate(props) {
     birthDate,
     election,
     hometown,
-    stances
+    stances,
+    incomplete
   } = props.data.pollenize.candidate;
   const {lang, languages} = props.pageContext;
 
@@ -166,6 +169,25 @@ export default function CandidateTemplate(props) {
                   </ContentWrapper>
                 </Fragment>
               )}
+              {incomplete && (
+                <Box
+                  display="flex"
+                  alignItems="flex-start"
+                  bgcolor="lemonchiffon"
+                  p={2}
+                  position="sticky"
+                  top={HEADER_HEIGHT}
+                  zIndex="1"
+                >
+                  <Box
+                    component={FaExclamation}
+                    flexShrink="0"
+                    fontSize={20}
+                    mr={1}
+                  />
+                  <div>{localize('eyebrow', title)}</div>
+                </Box>
+              )}
               {election.topics.map(topic => (
                 <TopicSection
                   topic={topic}
@@ -221,6 +243,7 @@ export const pageQuery = graphql`
         color
         birthDate
         hometown
+        incomplete
         stances {
           id
           text(languageId: $languageId)
