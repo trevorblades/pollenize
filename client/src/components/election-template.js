@@ -38,9 +38,12 @@ const useStyles = makeStyles(theme => ({
 
 function TopicExplorer() {
   const {localize} = useLanguage();
+  const {avatar} = useStyles();
   return (
     <>
-      <Box component={FaRegComments} size={32} mb={2} />
+      <Box className={avatar} bgcolor="grey.300" borderRadius="50%">
+        <Box component={FaRegComments} size={32} my={4} />
+      </Box>
       <Typography gutterBottom variant="h5">
         {localize('Topic explorer')}
       </Typography>
@@ -78,7 +81,7 @@ export default function ElectionTemplate(props) {
             right={0}
             display="flex"
             flexDirection="column"
-            bgcolor="grey.900"
+            bgcolor="grey.200"
           >
             <HeaderBase link="/elections" title={title}>
               <ElectionMenu
@@ -117,7 +120,6 @@ export default function ElectionTemplate(props) {
                   <CardActionArea
                     className={button}
                     to={`${props.path}/topics`}
-                    style={{color: 'white'}}
                   >
                     <TopicExplorer />
                   </CardActionArea>
