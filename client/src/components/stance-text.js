@@ -1,7 +1,7 @@
 import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
-import React, {createContext, useContext, useState} from 'react';
-import {Box, Link, Popover, makeStyles} from '@material-ui/core';
+import React, {createContext, useContext, useMemo, useState} from 'react';
+import {Box, Link, Popover, Typography, makeStyles} from '@material-ui/core';
 import {FaQuestionCircle} from 'react-icons/fa';
 import {size} from 'polished';
 
@@ -17,17 +17,28 @@ const useStyles = makeStyles({
   icon: size('0.75em')
 });
 
-function VocabPopover({word, ...props}) {
+function VocabPopover({word}) {
   const keywords = useContext(KeywordContext);
   const {link, icon} = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const keyword = keywords.find(
-    keyword => keyword.word.toLowerCase() === word.toLowerCase()
-  );
+  const keyword = useMemo(() => {
+    const keyword = keywords.find(
+      keyword => keyword.word.toLowerCase() === word.toLowerCase()
+    );
+
+    if (!keyword?.definition) {
+      keyword
+        ? console.warn('keyword has no definition:', word)
+        : console.error('keyword not found:', word);
+      return null;
+    }
+
+    return keyword;
+  }, [keywords, word]);
 
   if (!keyword) {
-    return <a {...props} />;
+    return word;
   }
 
   return (
@@ -54,6 +65,9 @@ function VocabPopover({word, ...props}) {
         }}
       >
         <Box p={2} maxWidth={300}>
+          <Typography variant="subtitle2" gutterBottom>
+            {keyword.word}
+          </Typography>
           {keyword.definition}
         </Box>
       </Popover>
