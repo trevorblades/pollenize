@@ -18,7 +18,8 @@ import {typeDef as Source, resolvers as sourceResolvers} from './source.js';
 import {typeDef as Stance, resolvers as stanceResolvers} from './stance.js';
 import {typeDef as Topic, resolvers as topicResolvers} from './topic.js';
 import {typeDef as User, resolvers as userResolvers} from './user.js';
-import {gql, makeExecutableSchema} from 'apollo-server-express';
+import {gql} from 'apollo-server-express';
+import {makeExecutableSchema} from '@graphql-tools/schema';
 
 const Query = gql`
   type Query {

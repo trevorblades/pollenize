@@ -1,12 +1,15 @@
 import cors from 'cors';
 import express from 'express';
 import handleAuth from './auth.js';
+import http from 'http';
 import jwt from 'jsonwebtoken';
 import schema from './schema/index.js';
 import {ApolloServer} from 'apollo-server-express';
+import {ApolloServerPluginDrainHttpServer} from 'apollo-server-core';
 import {User, sequelize} from './db.js';
 
 const app = express();
+const httpServer = http.createServer(app);
 
 app.use(
   cors({
@@ -22,6 +25,7 @@ app.get('/auth', handleAuth);
 const server = new ApolloServer({
   schema,
   introspection: true,
+  plugins: [ApolloServerPluginDrainHttpServer({httpServer})],
   async context({req}) {
     try {
       const matches = req.headers.authorization.match(/bearer (\S+)/i);
@@ -34,15 +38,16 @@ const server = new ApolloServer({
   }
 });
 
-server.applyMiddleware({app});
-
 (async () => {
   await sequelize.sync();
-  app.listen({port: process.env.PORT}, () => {
-    console.log(
-      `🐝 Server ready at http://localhost:${
-        process.env.PORT + server.graphqlPath
-      }`
-    );
-  });
+  await server.start();
+  server.applyMiddleware({app});
+  await new Promise(resolve =>
+    httpServer.listen({port: process.env.PORT}, resolve)
+  );
+  console.log(
+    `🐝 Server ready at http://localhost:${
+      process.env.PORT + server.graphqlPath
+    }`
+  );
 })();
