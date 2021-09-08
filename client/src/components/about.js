@@ -29,7 +29,7 @@ export default function About() {
         People talk about how important it is to vote, but the information
         necessary to make a confident decision is often sparse, unclear, and
         riddled with political rhetoric and jargon. Pollenize cuts through the
-        noise and bring you the most clear, to-the-point information about
+        noise and brings you the most clear, to-the-point information about
         topics that really matter.
       </Typography>
     </SectionWrapper>
