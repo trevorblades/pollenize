@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React, {useMemo} from 'react';
 import SEO from './seo';
 import Sources, {useSources} from './sources';
-import StanceText from './stance-text';
+import StanceText, {KeywordContext} from './stance-text';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
 import {Avatar, Box, Typography, styled} from '@material-ui/core';
@@ -13,7 +13,9 @@ import {Link as GatsbyLink, graphql} from 'gatsby';
 import {LanguageProvider, useLocalize} from '../utils/language';
 import {Link} from 'gatsby-theme-material-ui';
 import {PageHeader, PageWrapper} from './common';
+import {StarsProvider} from '../utils/stars';
 import {getCandidateTitles, useCurrentAnchor} from '../utils';
+import {shuffle} from 'shuffle-seed';
 import {triangle} from 'polished';
 
 const triangleWidth = 24;
@@ -34,126 +36,145 @@ export default function TopicsTemplate(props) {
     candidates,
     intro,
     partyFirst,
-    credits
+    credits,
+    keywords
   } = props.data.pollenize.election;
-  const {lang, languages, fileName} = props.pageContext;
+  const {lang, languages} = props.pageContext;
 
   const localize = useLocalize(lang, languages);
   const currentAnchor = useCurrentAnchor();
-  const stances = useMemo(() => topics.flatMap(topic => topic.stances), [
-    topics
-  ]);
+  const stances = useMemo(
+    () => topics.flatMap(topic => topic.stances),
+    [topics]
+  );
 
   const {sources, activeSource, handleSourceClick} = useSources(stances);
   const electionPath = `/${lang}/elections/${slug}`;
 
   return (
     <Layout>
-      <SEO lang={lang} title={title} fileName={fileName} />
-      <LanguageProvider lang={lang} languages={languages} path={props.path}>
-        <HeaderBase link={electionPath} title={title}>
-          <ElectionMenu
-            title={title}
-            electionSlug={slug}
-            candidates={candidates}
-            partyFirst={partyFirst}
-            intro={intro}
-            active="topics"
-            lang={lang}
-            languages={languages}
-            path={props.path}
-          />
-        </HeaderBase>
-        <PageHeader
-          title={localize('Topic explorer')}
-          subtitle={localize(
-            "View candidates' main stances organized by topic"
-          )}
-          bgcolor="grey.200"
-        />
-        <PageWrapper
-          sidebar={
-            <TableOfContents
-              topics={topics}
-              getActiveProps={index => ({
-                color: index === currentAnchor ? 'primary' : 'inherit'
-              })}
-            />
-          }
-        >
-          {topics.map((topic, index) => (
-            <TopicWrapper disableDivider={!index} key={topic.id} topic={topic}>
-              {topic.description && (
-                <Typography paragraph>{topic.description}</Typography>
+      <SEO lang={lang} title={title} />
+      <StarsProvider>
+        <LanguageProvider lang={lang} languages={languages} path={props.path}>
+          <KeywordContext.Provider value={keywords}>
+            <HeaderBase link={electionPath} title={title}>
+              <ElectionMenu
+                title={title}
+                electionSlug={slug}
+                candidates={candidates}
+                partyFirst={partyFirst}
+                intro={intro}
+                active="topics"
+                lang={lang}
+                languages={languages}
+                path={props.path}
+              />
+            </HeaderBase>
+            <PageHeader
+              title={localize('Topic explorer')}
+              subtitle={localize(
+                "View candidates' main stances organized by topic"
               )}
-              {topic.stances.map((stance, index) => {
-                const isOdd = Boolean(index % 2);
-                const pathToCandidate = `${electionPath}/${stance.candidate.slug}#${topic.slug}`;
-                const [title] = getCandidateTitles(
-                  stance.candidate,
-                  partyFirst
-                );
-
+              bgcolor="grey.200"
+            />
+            <PageWrapper
+              sidebar={
+                <TableOfContents
+                  topics={topics}
+                  getActiveProps={index => ({
+                    color: index === currentAnchor ? 'primary' : 'inherit'
+                  })}
+                />
+              }
+            >
+              {topics.map((topic, index) => {
+                const stances = shuffle(topic.stances, topic.id);
                 return (
-                  <Box
-                    key={stance.id}
-                    maxWidth={{
-                      xs: 1,
-                      sm: 0.75
-                    }}
-                    display="flex"
-                    alignItems="flex-end"
-                    flexDirection={isOdd ? 'row-reverse' : 'row'}
-                    ml={isOdd ? 'auto' : 0}
-                    mt={index || topic.description || !topic.image ? 4 : 0}
+                  <TopicWrapper
+                    disableDivider={!index}
+                    key={topic.id}
+                    topic={topic}
                   >
-                    <Avatar
-                      component={GatsbyLink}
-                      src={stance.candidate.portrait}
-                      to={pathToCandidate}
-                    />
-                    <Box
-                      bgcolor="grey.200"
-                      borderRadius="borderRadius"
-                      position="relative"
-                      {...{
-                        [isOdd ? 'mr' : 'ml']: 2
-                      }}
-                    >
-                      <Triangle
-                        position="absolute"
-                        bottom={0}
-                        {...{
-                          [isOdd ? 'right' : 'left']: triangleWidth / -2
-                        }}
-                      />
-                      <Box p={2}>
-                        <Typography gutterBottom>
-                          <StanceText
-                            stance={stance}
-                            sources={sources}
-                            onSourceClick={handleSourceClick}
+                    {topic.description && (
+                      <Typography paragraph>{topic.description}</Typography>
+                    )}
+                    {stances.map((stance, index) => {
+                      const isOdd = Boolean(index % 2);
+                      const pathToCandidate = `${electionPath}/${stance.candidate.slug}#${topic.slug}`;
+                      const [title] = getCandidateTitles(
+                        stance.candidate,
+                        partyFirst
+                      );
+
+                      return (
+                        <Box
+                          key={stance.id}
+                          maxWidth={{
+                            xs: 1,
+                            sm: 0.75
+                          }}
+                          display="flex"
+                          alignItems="flex-end"
+                          flexDirection={isOdd ? 'row-reverse' : 'row'}
+                          ml={isOdd ? 'auto' : 0}
+                          mt={
+                            index || topic.description || !topic.image ? 4 : 0
+                          }
+                        >
+                          <Avatar
+                            component={GatsbyLink}
+                            src={stance.candidate.portrait}
+                            to={pathToCandidate}
                           />
-                        </Typography>
-                        <Typography variant="caption" color="textSecondary">
-                          <Link color="inherit" to={pathToCandidate}>
-                            {title}
-                          </Link>
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
+                          <Box
+                            bgcolor="grey.200"
+                            borderRadius="borderRadius"
+                            position="relative"
+                            {...{
+                              [isOdd ? 'mr' : 'ml']: 2
+                            }}
+                          >
+                            <Triangle
+                              position="absolute"
+                              bottom={0}
+                              {...{
+                                [isOdd ? 'right' : 'left']: triangleWidth / -2
+                              }}
+                            />
+                            <Box p={2}>
+                              <Typography gutterBottom>
+                                <StanceText
+                                  stance={stance}
+                                  sources={sources}
+                                  onSourceClick={handleSourceClick}
+                                />
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                color="textSecondary"
+                              >
+                                <Link color="inherit" to={pathToCandidate}>
+                                  {title}
+                                  {/* {localize('all', title)} */}
+                                </Link>
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      );
+                    })}
+                  </TopicWrapper>
                 );
               })}
-            </TopicWrapper>
-          ))}
-        </PageWrapper>
-        <Sources
-          sources={sources}
-          credits={credits}
-          activeIndex={activeSource}
-        />
-      </LanguageProvider>
+            </PageWrapper>
+            <Sources
+              sources={sources}
+              credits={credits}
+              activeIndex={activeSource}
+            />
+          </KeywordContext.Provider>
+        </LanguageProvider>
+      </StarsProvider>
     </Layout>
   );
 }
@@ -204,6 +225,11 @@ export const pageQuery = graphql`
           slug
           party(languageId: $languageId)
           portrait
+        }
+        keywords {
+          id
+          word(languageId: $languageId)
+          definition(languageId: $languageId)
         }
       }
     }

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {Box, Button, Typography} from '@material-ui/core';
-import {useMutation} from '@apollo/react-hooks';
+import {useMutation} from '@apollo/client';
 
 export default function DeleteButton(props) {
   const [confirmShown, setConfirmShown] = useState(false);

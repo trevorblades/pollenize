@@ -1,8 +1,10 @@
+import HeaderButton from './header-button';
+import KeywordsDialog from './keywords-dialog';
 import PropTypes from 'prop-types';
 import React, {useEffect, useRef} from 'react';
-import {Box, makeStyles} from '@material-ui/core';
 import {CellMeasurer, CellMeasurerCache, MultiGrid} from 'react-virtualized';
 import {HEADER_HEIGHT} from '../header-base';
+import {makeStyles} from '@material-ui/core';
 import {usePrevious, useWindowSize} from 'react-use';
 
 const cache = new CellMeasurerCache({
@@ -79,7 +81,14 @@ export default function ElectionTable(props) {
             ) : topic ? (
               props.renderTopic(options)
             ) : (
-              <Box {...boxProps} />
+              <HeaderButton title="Keywords" {...boxProps}>
+                {closeDialog => (
+                  <KeywordsDialog
+                    election={props.election}
+                    onClose={closeDialog}
+                  />
+                )}
+              </HeaderButton>
             )}
           </CellMeasurer>
         );

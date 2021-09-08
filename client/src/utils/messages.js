@@ -70,5 +70,13 @@ export default {
   'Select your preferred language': {
     fr: 'Sélectionnez votre langue préférée',
     pl: 'Wybierz preferowany język'
+  },
+  eyebrow: {
+    en: 'The %s has yet to release a full election platform. In the meantime, we’ve compiled recent promises from their news releases and announcements. Some of these promises may be updated or removed as the election progresses.',
+    fr: 'Le %s n’a pas encore publié sa plateforme électorale complète. En attendant, nous avons dressé une liste de ses récentes promesses, tirées de communiqués et d’annonces. Certaines de ces promesses pourraient être mises à jour ou supprimées au fil de la campagne électorale.'
+  },
+  all: {
+    en: 'Read more %s stances',
+    fr: 'Lire plus de positions par %s'
   }
 };

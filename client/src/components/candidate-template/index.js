@@ -1,6 +1,7 @@
 import ElectionMenu from '../election-menu';
-import HeaderBase from '../header-base';
+import HeaderBase, {HEADER_HEIGHT} from '../header-base';
 import Layout from '../layout';
+import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import React, {Fragment, useMemo, useRef, useState} from 'react';
 import SEO from '../seo';
@@ -8,22 +9,24 @@ import Sources, {useSources} from '../sources';
 import TableOfContents, {SidebarLink} from '../table-of-contents';
 import TopicSection from './topic-section';
 import clipboard from 'clipboard-polyfill';
-import snarkdown from 'snarkdown';
 import {
   Avatar,
+  Box,
   Snackbar,
   Typography,
   styled,
   useTheme
 } from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
+import {FaExclamation} from 'react-icons/fa';
+import {KeywordContext} from '../stance-text';
 import {LanguageProvider, useLocalize} from '../../utils/language';
+import {StarsProvider} from '../../utils/stars';
 import {differenceInYears} from 'date-fns';
 import {getCandidateTitles, useCurrentAnchor} from '../../utils';
 import {graphql} from 'gatsby';
 import {groupBy} from 'lodash';
 import {size} from 'polished';
-import {useStars} from '../../utils/stars';
 
 const StyledAvatar = styled(Avatar)(({theme}) => ({
   ...size(160),
@@ -46,9 +49,10 @@ export default function CandidateTemplate(props) {
     birthDate,
     election,
     hometown,
-    stances
+    stances,
+    incomplete
   } = props.data.pollenize.candidate;
-  const {lang, languages, fileName} = props.pageContext;
+  const {lang, languages} = props.pageContext;
 
   const queueRef = useRef([]);
   const {palette} = useTheme();
@@ -56,12 +60,7 @@ export default function CandidateTemplate(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const stancesByTopic = useMemo(() => groupBy(stances, 'topicId'), [stances]);
   const {sources, activeSource, handleSourceClick} = useSources(stances);
-  const {stars, toggleStar} = useStars();
   const currentAnchor = useCurrentAnchor();
-
-  function handleStarClick(topicId) {
-    toggleStar(candidateId, topicId);
-  }
 
   function processQueue() {
     if (queueRef.current.length > 0) {
@@ -100,109 +99,127 @@ export default function CandidateTemplate(props) {
   const [firstName] = name.split(' ');
   const aboutTitle = `${localize('About')} ${firstName}`;
   const aboutShown = Boolean(birthDate || hometown || bio);
-
-  const candidateStars = stars[candidateId] || [];
   const electionPath = `/${lang}/elections/${election.slug}`;
 
   return (
     <Layout>
-      <SEO title={title} lang={lang} fileName={fileName} />
-      <LanguageProvider lang={lang} languages={languages} path={props.path}>
-        <HeaderBase link={electionPath} title={title}>
-          <ElectionMenu
-            title={election.title}
-            electionSlug={election.slug}
-            candidates={election.candidates}
-            partyFirst={election.partyFirst}
-            intro={election.intro}
-          />
-        </HeaderBase>
-        <PageHeader
-          title={title}
-          subtitle={subtitle}
-          bgcolor={color}
-          color={palette.getContrastText(color)}
-        >
-          <StyledAvatar src={portrait} />
-        </PageHeader>
-        <PageWrapper
-          sidebar={
-            <TableOfContents
-              topics={election.topics}
-              getActiveProps={index => ({
-                style: {
-                  color: index === currentAnchor - aboutShown && color
-                }
-              })}
+      <SEO title={title} lang={lang} />
+      <StarsProvider>
+        <LanguageProvider lang={lang} languages={languages} path={props.path}>
+          <KeywordContext.Provider value={election.keywords}>
+            <HeaderBase link={electionPath} title={title}>
+              <ElectionMenu
+                title={election.title}
+                electionSlug={election.slug}
+                candidates={election.candidates}
+                partyFirst={election.partyFirst}
+                intro={election.intro}
+              />
+            </HeaderBase>
+            <PageHeader
+              title={title}
+              subtitle={subtitle}
+              bgcolor={color}
+              color={palette.getContrastText(color)}
+            >
+              <StyledAvatar src={portrait} />
+            </PageHeader>
+            <PageWrapper
+              sidebar={
+                <TableOfContents
+                  topics={election.topics}
+                  getActiveProps={index => ({
+                    style: {
+                      color: index === currentAnchor - aboutShown && color
+                    }
+                  })}
+                >
+                  {aboutShown && (
+                    <SidebarLink
+                      href="#about"
+                      style={{color: !currentAnchor && color}}
+                    >
+                      {aboutTitle}
+                    </SidebarLink>
+                  )}
+                </TableOfContents>
+              }
             >
               {aboutShown && (
-                <SidebarLink
-                  href="#about"
-                  style={{color: !currentAnchor && color}}
-                >
-                  {aboutTitle}
-                </SidebarLink>
+                <Fragment>
+                  <PageAnchor className="topic" name="about" />
+                  <ContentWrapper>
+                    <Typography gutterBottom variant="h4">
+                      {aboutTitle}
+                    </Typography>
+                    {birthDate && (
+                      <Typography gutterBottom>
+                        {differenceInYears(Date.now(), Number(birthDate))}{' '}
+                        {localize('years old')}
+                      </Typography>
+                    )}
+                    {hometown && (
+                      <Typography gutterBottom>
+                        {localize('Hometown')}: {hometown}
+                      </Typography>
+                    )}
+                    {bio && (
+                      <Markdown components={{p: Typography}}>{bio}</Markdown>
+                    )}
+                  </ContentWrapper>
+                </Fragment>
               )}
-            </TableOfContents>
-          }
-        >
-          {aboutShown && (
-            <Fragment>
-              <PageAnchor className="topic" name="about" />
-              <ContentWrapper>
-                <Typography gutterBottom variant="h4">
-                  {aboutTitle}
-                </Typography>
-                {birthDate && (
-                  <Typography gutterBottom>
-                    {differenceInYears(Date.now(), Number(birthDate))}{' '}
-                    {localize('years old')}
-                  </Typography>
-                )}
-                {hometown && (
-                  <Typography gutterBottom>
-                    {localize('Hometown')}: {hometown}
-                  </Typography>
-                )}
-                {bio && (
-                  <Typography
-                    dangerouslySetInnerHTML={{__html: snarkdown(bio)}}
+              {incomplete && (
+                <Box
+                  display="flex"
+                  alignItems="flex-start"
+                  bgcolor="lemonchiffon"
+                  p={2}
+                  position="sticky"
+                  top={HEADER_HEIGHT}
+                  zIndex="1"
+                >
+                  <Box
+                    component={FaExclamation}
+                    flexShrink="0"
+                    fontSize={20}
+                    mr={1}
                   />
-                )}
-              </ContentWrapper>
-            </Fragment>
-          )}
-          {election.topics.map(topic => (
-            <TopicSection
-              topic={topic}
-              key={topic.id}
-              electionPath={electionPath}
-              stances={stancesByTopic[topic.id]}
+                  <div>{localize('eyebrow', title)}</div>
+                </Box>
+              )}
+              {election.topics.map(topic => (
+                <TopicSection
+                  topic={topic}
+                  key={topic.id}
+                  electionPath={electionPath}
+                  stances={stancesByTopic[topic.id]}
+                  sources={sources}
+                  candidateId={candidateId}
+                  onSourceClick={handleSourceClick}
+                  onLinkClick={handleLinkClick}
+                />
+              ))}
+            </PageWrapper>
+            <Sources
               sources={sources}
-              starred={candidateStars.includes(topic.id)}
-              onStarClick={() => handleStarClick(topic.id)}
-              onSourceClick={handleSourceClick}
-              onLinkClick={handleLinkClick}
+              credits={election.credits}
+              activeIndex={activeSource}
             />
-          ))}
-        </PageWrapper>
-        <Sources
-          sources={sources}
-          credits={election.credits}
-          activeIndex={activeSource}
-        />
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}
-          open={snackbarOpen}
-          autoHideDuration={2500}
-          onClose={handleClose}
-          onExited={processQueue}
-          message="Link copied to clipboard!"
-        />
-      </LanguageProvider>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center'
+              }}
+              open={snackbarOpen}
+              autoHideDuration={2500}
+              onClose={handleClose}
+              onExited={processQueue}
+              message="Link copied to clipboard!"
+            />
+          </KeywordContext.Provider>
+        </LanguageProvider>
+      </StarsProvider>
     </Layout>
   );
 }
@@ -226,6 +243,7 @@ export const pageQuery = graphql`
         color
         birthDate
         hometown
+        incomplete
         stances {
           id
           text(languageId: $languageId)
@@ -259,6 +277,11 @@ export const pageQuery = graphql`
             id
             name
             role
+          }
+          keywords {
+            id
+            word(languageId: $languageId)
+            definition(languageId: $languageId)
           }
         }
       }

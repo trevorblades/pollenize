@@ -1,5 +1,5 @@
 import {gql} from 'apollo-server-express';
-import {sequelize} from '../db';
+import {sequelize} from '../db.js';
 
 export const typeDef = gql`
   extend type Election {

@@ -1,7 +1,4 @@
-const dotenv = require('dotenv');
 const {webFontsConfig} = require('@trevorblades/mui-theme');
-
-dotenv.config();
 
 module.exports = {
   siteMetadata: {
@@ -45,7 +42,6 @@ module.exports = {
         name: 'posts'
       }
     },
-    'gatsby-transformer-remark',
-    'gatsby-plugin-printer'
+    'gatsby-transformer-remark'
   ]
 };

@@ -17,7 +17,6 @@ export default function LanguageFields({
         );
         return (
           <FormField
-            multiline
             key={language.id}
             label={`${label} (${language.code.toUpperCase()})`}
             name={`${name}[]`}

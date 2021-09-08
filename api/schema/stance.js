@@ -1,6 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Message, Source, Stance, sequelize} from '../db';
-import {bulkCreateUpdate, getMessageResolver} from '../utils';
+import {Message, Source, Stance, sequelize} from '../db.js';
+import {bulkCreateUpdate, getMessageResolver} from '../utils.js';
 
 // TODO: update mutations for multiple langs
 export const typeDef = gql`

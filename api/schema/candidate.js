@@ -1,6 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Candidate, Message} from '../db';
-import {bulkCreateUpdate, getMessageResolver} from '../utils';
+import {Candidate, Message} from '../db.js';
+import {bulkCreateUpdate, getMessageResolver} from '../utils.js';
 
 export const typeDef = gql`
   extend type Query {
@@ -40,6 +40,7 @@ export const typeDef = gql`
     hometown: String
     bio(languageId: ID!): String
     active: Boolean
+    incomplete: Boolean
   }
 `;
 

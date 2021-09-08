@@ -15,6 +15,11 @@ export const typeDef = gql`
     bios: [Message]
   }
 
+  extend type Keyword {
+    words: [Message]
+    definitions: [Message]
+  }
+
   input MessageInput {
     id: ID
     text: String!
@@ -49,5 +54,9 @@ export const resolvers = {
     bios(parent) {
       return parent.getBios();
     }
+  },
+  Keyword: {
+    words: keyword => keyword.getWords(),
+    definitions: keyword => keyword.getDefinitions()
   }
 };

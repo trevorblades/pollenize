@@ -2,6 +2,7 @@ import CandidateForm from './candidate-form';
 import CreateStanceForm from './create-stance-form';
 import DialogButton from './dialog-button';
 import ElectionTable from './election-table';
+import HeaderButton from './header-button';
 import PropTypes from 'prop-types';
 import React from 'react';
 import TopicForm from './topic-form';
@@ -15,42 +16,16 @@ import {
 } from '@material-ui/core';
 import {GET_ELECTION} from '../../utils/queries';
 import {getCandidateTitles} from '../../utils';
-import {useQuery} from '@apollo/react-hooks';
-
-function HeaderButton({title, children, className, ...props}) {
-  return (
-    <DialogButton
-      renderButton={openDialog => (
-        <Box {...props}>
-          <CardActionArea onClick={openDialog} className={className}>
-            <Typography variant="subtitle1">{title}</Typography>
-          </CardActionArea>
-        </Box>
-      )}
-    >
-      {children}
-    </DialogButton>
-  );
-}
-
-HeaderButton.propTypes = {
-  title: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
-  children: PropTypes.func.isRequired
-};
+import {useQuery} from '@apollo/client';
 
 const useStyles = makeStyles(theme => ({
-  headerButton: {
-    height: '100%',
-    padding: theme.spacing(2)
-  },
   stanceButton: {
     padding: theme.spacing(1)
   }
 }));
 
 export default function EditorTable(props) {
-  const {headerButton, stanceButton} = useStyles();
+  const {stanceButton} = useStyles();
   const {data, loading, error} = useQuery(GET_ELECTION, {
     variables: {
       id: props.id
@@ -120,7 +95,7 @@ export default function EditorTable(props) {
           data.election.partyFirst
         );
         return (
-          <HeaderButton title={title} className={headerButton} {...boxProps}>
+          <HeaderButton title={title} {...boxProps}>
             {closeDialog => (
               <CandidateForm
                 title={title}
@@ -135,7 +110,7 @@ export default function EditorTable(props) {
       renderTopic={({topic, boxProps}) => {
         const title = topic.titles.length ? topic.titles[0].text : topic.slug;
         return (
-          <HeaderButton title={title} className={headerButton} {...boxProps}>
+          <HeaderButton title={title} {...boxProps}>
             {closeDialog => (
               <TopicForm
                 title={title}

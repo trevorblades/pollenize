@@ -1,5 +1,5 @@
-import {Election} from '../db';
-import {getMessageResolver} from '../utils';
+import {Election} from '../db.js';
+import {getMessageResolver} from '../utils.js';
 import {gql} from 'apollo-server-express';
 
 export const typeDef = gql`

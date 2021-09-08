@@ -1,11 +1,10 @@
-import React, {Fragment} from 'react';
-import leaf, {ReactComponent as Leaf} from '../assets/leaf.svg';
+import React from 'react';
 import pattern from '../assets/pattern.svg';
 import {Box, Typography, styled} from '@material-ui/core';
-import {FaChevronRight} from 'react-icons/fa';
 import {Fab} from 'gatsby-theme-material-ui';
+import {ReactComponent as Leaf} from '../assets/leaf.svg';
 import {SectionWrapper} from './common';
-import {cover, size} from 'polished';
+import {size} from 'polished';
 
 const Wrapper = styled(Box)({
   backgroundImage: `url(${pattern})`,
@@ -13,13 +12,11 @@ const Wrapper = styled(Box)({
   backgroundSize: '700px'
 });
 
-const leafSize = 960;
-const leafSizeSmall = 800;
 const StyledLeaf = styled(Leaf)(({theme}) => {
   const wrapperOffset = theme.breakpoints.values.lg / 4;
   const paddingOffset = theme.spacing(8) / 2;
   return {
-    ...size(leafSize),
+    ...size(960),
     position: 'absolute',
     left: `calc(50% - ${wrapperOffset - paddingOffset}px)`,
     top: '50%',
@@ -29,53 +26,15 @@ const StyledLeaf = styled(Leaf)(({theme}) => {
       left: `calc(25% + ${paddingOffset}px)`
     },
     [theme.breakpoints.down('sm')]: {
-      ...size(leafSizeSmall),
+      ...size(800),
       left: '50%'
     }
   };
 });
 
-function getMaskSize(size) {
-  return `${size}px ${size}px`;
-}
-
-const Mask = styled('div')(({theme}) => ({
-  ...cover(),
-  maskImage: `url(${leaf})`,
-  maskSize: getMaskSize(leafSize),
-  maskRepeat: 'no-repeat',
-  maskPosition: 'center',
-  color: 'white',
-  pointerEvents: 'none',
-  userSelect: 'none',
-  [theme.breakpoints.down('sm')]: {
-    maskSize: getMaskSize(leafSizeSmall)
-  }
-}));
-
-function Content() {
-  return (
-    <Fragment>
-      <Typography variant="overline">Your guide to the</Typography>
-      <Typography gutterBottom variant="h2">
-        2019 Canadian federal election
-      </Typography>
-      <Typography paragraph variant="h6">
-        We break down the candidates and their policies in a clear, organized
-        way so that you can make an informed vote.
-      </Typography>
-    </Fragment>
-  );
-}
-
 export default function Hero() {
   return (
-    <Wrapper
-      color="red"
-      bgcolor="grey.200"
-      position="relative"
-      overflow="hidden"
-    >
+    <Wrapper position="relative" overflow="hidden">
       <SectionWrapper
         py={{
           xs: 8,
@@ -89,19 +48,24 @@ export default function Hero() {
             md: 1 / 2
           }}
         >
-          <StyledLeaf fill="currentColor" />
+          <StyledLeaf />
           <Box position="relative">
-            <Content />
-            <Mask aria-hidden="true">
-              <Content />
-            </Mask>
+            <Typography variant="overline" style={{color: '#ff3a1a'}}>
+              Your guide to the
+            </Typography>
+            <Typography gutterBottom variant="h2">
+              2021 Canadian Federal Election
+            </Typography>
+            <Typography paragraph variant="h6">
+              We break down the candidates and their policies in a clear,
+              organized way so that you can make an informed vote.
+            </Typography>
             <Fab
               color="primary"
               variant="extended"
-              to="/en/elections/canada-2019"
+              to="/en/elections/canada-2021"
             >
-              View election guide
-              <Box component={FaChevronRight} ml={1} mr={-0.5} size={16} />
+              View election guide 🇨🇦
             </Fab>
           </Box>
         </Box>

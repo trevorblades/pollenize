@@ -7,6 +7,7 @@ import {FaRegComments, FaRegStar, FaStar} from 'react-icons/fa';
 import {FiLink} from 'react-icons/fi';
 import {Link} from 'gatsby';
 import {useLanguage} from '../../utils/language';
+import {useStars} from '../../utils/stars';
 import {useToggle} from 'react-use';
 
 const useStyles = makeStyles(theme => ({
@@ -21,6 +22,10 @@ export default function TopicSection(props) {
   const {button} = useStyles();
   const {localize} = useLanguage();
   const [expanded, toggleExpanded] = useToggle(false);
+  const {stars, toggleStar} = useStars();
+
+  const candidateStars = stars[props.candidateId] || [];
+
   const hash = `#${props.topic.slug}`;
   return (
     <TopicWrapper topic={props.topic}>
@@ -38,13 +43,17 @@ export default function TopicSection(props) {
               </Typography>
             ))}
           <IconButton
-            onClick={props.onStarClick}
+            onClick={() => toggleStar(props.candidateId, props.topic.id)}
             color="inherit"
             style={{
               marginLeft: -8
             }}
           >
-            {props.starred ? <FaStar /> : <FaRegStar />}
+            {candidateStars.includes(props.topic.id) ? (
+              <FaStar />
+            ) : (
+              <FaRegStar />
+            )}
           </IconButton>
           <IconButton
             component="a"
@@ -58,8 +67,9 @@ export default function TopicSection(props) {
             <Button className={button} onClick={toggleExpanded}>
               {expanded
                 ? localize('Show less')
-                : `${localize('Show more')} (${props.stances.length -
-                    MIN_STANCES})`}
+                : `${localize('Show more')} (${
+                    props.stances.length - MIN_STANCES
+                  })`}
             </Button>
           )}
           <Button
@@ -84,9 +94,8 @@ export default function TopicSection(props) {
 TopicSection.propTypes = {
   topic: PropTypes.object.isRequired,
   electionPath: PropTypes.string.isRequired,
-  onStarClick: PropTypes.func.isRequired,
+  candidateId: PropTypes.string.isRequired,
   onLinkClick: PropTypes.func.isRequired,
-  starred: PropTypes.bool.isRequired,
   sources: PropTypes.array.isRequired,
   onSourceClick: PropTypes.func.isRequired,
   stances: PropTypes.array

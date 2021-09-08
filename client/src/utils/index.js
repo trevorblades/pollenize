@@ -2,24 +2,23 @@ import {useEffect, useMemo, useState} from 'react';
 import {useWindowScroll} from 'react-use';
 
 export async function uploadImage(image) {
-  const formData = new FormData();
-  formData.append('image', image);
+  const body = new FormData();
+  body.append('image', image);
 
-  // upload the new profile image to imgur and then save only the URL
-  const response = await fetch('https://api.imgur.com/3/image', {
-    method: 'POST',
-    headers: {
-      Authorization: `Client-ID ${process.env.GATSBY_IMGUR_CLIENT_ID}`
-    },
-    body: formData
-  });
+  const response = await fetch(
+    `https://api.imgbb.com/1/upload?key=${process.env.GATSBY_IMGBB_API_KEY}`,
+    {
+      body,
+      method: 'post'
+    }
+  );
 
   if (!response.ok) {
     throw new Error(response.statusText);
   }
 
   const {data} = await response.json();
-  return data.link;
+  return data.url;
 }
 
 export function useFileHandler() {

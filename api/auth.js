@@ -1,7 +1,9 @@
+import Sequelize from 'sequelize';
 import basicAuth from 'basic-auth';
 import bcrypt from 'bcryptjs';
-import {Op} from 'sequelize';
-import {User} from './db';
+import {User} from './db.js';
+
+const {Op} = Sequelize;
 
 export default async function handleAuth(req, res) {
   const {name, pass} = basicAuth(req);

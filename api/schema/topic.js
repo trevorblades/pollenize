@@ -1,6 +1,6 @@
 import {AuthenticationError, UserInputError, gql} from 'apollo-server-express';
-import {Message, Topic} from '../db';
-import {bulkCreateUpdate, getMessageResolver} from '../utils';
+import {Message, Topic} from '../db.js';
+import {bulkCreateUpdate, getMessageResolver} from '../utils.js';
 
 export const typeDef = gql`
   extend type Mutation {
