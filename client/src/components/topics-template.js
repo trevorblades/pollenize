@@ -155,6 +155,7 @@ export default function TopicsTemplate(props) {
                               >
                                 <Link color="inherit" to={pathToCandidate}>
                                   {title}
+                                  {/* {localize('all', title)} */}
                                 </Link>
                               </Typography>
                             </Box>
