@@ -7,3 +7,5 @@
 /chicago     /elections/chicago-2015
 
 /elections/* /en/elections/:splat
+
+/fr/elections/canada /fr/elections/canada-2021
