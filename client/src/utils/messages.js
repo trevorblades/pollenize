@@ -71,9 +71,13 @@ export default {
     fr: 'Sélectionnez votre langue préférée',
     pl: 'Wybierz preferowany język'
   },
+  review: {
+    en: 'This party platform is still under review. Some of these promises may be updated as the election progresses.',
+    fr: 'La plateforme de ce parti est actuellement en cours de révision. Certaines de ces promesses pourraient être rectifiées au cours de la campagne électorale.'
+  },
   eyebrow: {
-    en: 'The %s has yet to release a full election platform. In the meantime, we’ve compiled recent promises from their news releases and announcements. Some of these promises may be updated or removed as the election progresses.',
-    fr: 'Le %s n’a pas encore publié sa plateforme électorale complète. En attendant, nous avons dressé une liste de ses récentes promesses, tirées de communiqués et d’annonces. Certaines de ces promesses pourraient être mises à jour ou supprimées au fil de la campagne électorale.'
+    en: '%s platform coming soon. In the meantime, we’ve compiled recent promises from their news releases and announcements. Some of these promises may be updated or removed as the election progresses.',
+    fr: 'La plateforme du %s sera disponible sous peu. D’ici à ce qu’elle soit rendue accessible au grand public, nous vous présentons une compilation des plus récentes promesses tirées de leurs communiqués de presse et annonces publiques.'
   },
   all: {
     en: 'Read more %s stances',

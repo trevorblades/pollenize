@@ -169,7 +169,7 @@ export default function CandidateTemplate(props) {
                   </ContentWrapper>
                 </Fragment>
               )}
-              {incomplete && (
+              {(incomplete || election.id === '10') && (
                 <Box
                   display="flex"
                   alignItems="flex-start"
@@ -185,7 +185,11 @@ export default function CandidateTemplate(props) {
                     fontSize={20}
                     mr={1}
                   />
-                  <div>{localize('eyebrow', title)}</div>
+                  <div>
+                    {incomplete
+                      ? localize('eyebrow', title)
+                      : localize('review')}
+                  </div>
                 </Box>
               )}
               {election.topics.map(topic => (
