@@ -164,7 +164,9 @@ export default function CandidateTemplate(props) {
                       </Typography>
                     )}
                     {bio && (
-                      <Markdown components={{p: Typography}}>{bio}</Markdown>
+                      <Markdown renderers={{paragraph: Typography}}>
+                        {bio}
+                      </Markdown>
                     )}
                   </ContentWrapper>
                 </Fragment>

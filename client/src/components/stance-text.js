@@ -1,3 +1,4 @@
+import Highlighter from 'react-highlight-words';
 import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import React, {createContext, useContext, useMemo, useState} from 'react';
@@ -17,28 +18,26 @@ const useStyles = makeStyles({
   icon: size('0.75em')
 });
 
-function VocabPopover({word}) {
+function VocabPopover({children}) {
   const keywords = useContext(KeywordContext);
   const {link, icon} = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const keyword = useMemo(() => {
     const keyword = keywords.find(
-      keyword => keyword.word.toLowerCase() === word.toLowerCase()
+      keyword => keyword.word.toLowerCase() === children.toLowerCase()
     );
 
-    if (!keyword?.definition) {
-      keyword
-        ? console.warn('keyword has no definition:', word)
-        : console.error('keyword not found:', word);
+    if (!keyword.definition) {
+      console.warn('keyword has no definition:', children);
       return null;
     }
 
     return keyword;
-  }, [keywords, word]);
+  }, [keywords, children]);
 
   if (!keyword) {
-    return word;
+    return children;
   }
 
   return (
@@ -48,7 +47,7 @@ function VocabPopover({word}) {
         component="button"
         onClick={event => setAnchorEl(event.currentTarget)}
       >
-        {word}
+        {children}
         <FaQuestionCircle className={icon} />
       </Link>
       <Popover
@@ -68,7 +67,7 @@ function VocabPopover({word}) {
           <Typography variant="subtitle2" gutterBottom>
             {keyword.word}
           </Typography>
-          {keyword.definition}
+          <Markdown>{keyword.definition}</Markdown>
         </Box>
       </Popover>
     </>
@@ -76,47 +75,49 @@ function VocabPopover({word}) {
 }
 
 VocabPopover.propTypes = {
-  word: PropTypes.string.isRequired
+  children: PropTypes.string.isRequired
 };
 
-function CustomAnchor(props) {
-  return props.href ? (
-    <a {...props} />
-  ) : (
-    <VocabPopover word={props.children[0]} {...props} />
+function HighlightedText({value}) {
+  const keywords = useContext(KeywordContext);
+  const words = useMemo(
+    () => keywords.map(keyword => keyword.word),
+    [keywords]
+  );
+  return (
+    <Highlighter
+      searchWords={words}
+      textToHighlight={value}
+      highlightTag={VocabPopover}
+    />
   );
 }
 
-CustomAnchor.propTypes = {
-  children: PropTypes.node.isRequired,
-  href: PropTypes.string
-};
-
-const components = {
-  a: CustomAnchor
+HighlightedText.propTypes = {
+  value: PropTypes.string.isRequired
 };
 
 export const KeywordContext = createContext();
 
-export default function StanceText(props) {
+export default function StanceText({stance, sources, onSourceClick}) {
   return (
     <>
       <Markdown
-        disallowedElements={['p']}
+        renderers={{text: HighlightedText}}
+        disallowedTypes={['paragraph', 'link']}
         unwrapDisallowed
-        components={components}
       >
-        {props.stance.text}
+        {stance.text}
       </Markdown>
-      {props.stance.sources.map(source => {
-        const number = props.sources.indexOf(source.url) + 1;
+      {stance.sources.map(source => {
+        const number = sources.indexOf(source.url) + 1;
         return (
           <sup key={source.id}>
             [
             <Link
               color="inherit"
               href={`#source-${number}`}
-              onClick={props.onSourceClick}
+              onClick={onSourceClick}
             >
               {number}
             </Link>
