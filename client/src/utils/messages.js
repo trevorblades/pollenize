@@ -80,7 +80,7 @@ export default {
     fr: 'La plateforme du %s sera disponible sous peu. D’ici à ce qu’elle soit rendue accessible au grand public, nous vous présentons une compilation des plus récentes promesses tirées de leurs communiqués de presse et annonces publiques.'
   },
   all: {
-    en: 'Read more %s stances',
-    fr: 'Lire plus de positions par %s'
+    en: 'Read all %s stances',
+    fr: 'Lire tout de positions par %s'
   }
 };

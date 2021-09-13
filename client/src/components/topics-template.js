@@ -9,6 +9,7 @@ import StanceText, {KeywordContext} from './stance-text';
 import TableOfContents from './table-of-contents';
 import TopicWrapper from './topic-wrapper';
 import {Avatar, Box, Typography, styled} from '@material-ui/core';
+import {FaArrowRight} from 'react-icons/fa';
 import {Link as GatsbyLink, graphql} from 'gatsby';
 import {LanguageProvider, useLocalize} from '../utils/language';
 import {Link} from 'gatsby-theme-material-ui';
@@ -154,8 +155,10 @@ export default function TopicsTemplate(props) {
                                 color="textSecondary"
                               >
                                 <Link color="inherit" to={pathToCandidate}>
-                                  {title}
-                                  {/* {localize('all', title)} */}
+                                  <Box display="flex" alignItems="center">
+                                    {localize('all', title)}
+                                    <Box component={FaArrowRight} ml={1 / 2} />
+                                  </Box>
                                 </Link>
                               </Typography>
                             </Box>
