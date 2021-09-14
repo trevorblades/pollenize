@@ -83,9 +83,7 @@ export default function TopicSection(props) {
           </Button>
         </Fragment>
       ) : (
-        <Typography paragraph>
-          {localize('No official stance has been taken on this topic.')}
-        </Typography>
+        <Typography paragraph>{localize('empty')}</Typography>
       )}
     </TopicWrapper>
   );

@@ -63,7 +63,8 @@ export default {
     fr: 'Voir les positions principales des candidats organisées par sujet',
     pl: 'Zobacz główne stanowiska kandydatów uporządkowane według tematów'
   },
-  "No specific policy has been suggested in the party's current platform.": {
+  empty: {
+    en: "No specific policy has been suggested in the party's current platform.",
     fr: "Aucune position officielle n'a été prise sur ce sujet.",
     pl: 'Nie przyjęto oficjalnego stanowiska w tej sprawie.'
   },
