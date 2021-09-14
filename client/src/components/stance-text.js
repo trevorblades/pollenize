@@ -89,6 +89,29 @@ function HighlightedText({value}) {
       searchWords={words}
       textToHighlight={value}
       highlightTag={VocabPopover}
+      findChunks={({searchWords, textToHighlight}) =>
+        searchWords.reduce((chunks, searchWord) => {
+          const regex = new RegExp('\\b' + searchWord + '\\b', 'gi');
+
+          let match;
+          while ((match = regex.exec(textToHighlight))) {
+            const start = match.index;
+            const end = regex.lastIndex;
+            // We do not return zero-length matches
+            if (end > start) {
+              chunks.push({start, end});
+            }
+
+            // Prevent browsers like Firefox from getting stuck in an infinite loop
+            // See http://www.regexguru.com/2008/04/watch-out-for-zero-length-matches/
+            if (match.index === regex.lastIndex) {
+              regex.lastIndex++;
+            }
+          }
+
+          return chunks;
+        }, [])
+      }
     />
   );
 }

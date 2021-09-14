@@ -4,12 +4,11 @@ import React, {useState} from 'react';
 import UpdateKeywordForm from './update-keyword-form';
 import {
   Button,
+  CardActionArea,
   DialogActions,
   DialogContent,
   DialogTitle,
-  List,
-  ListItem,
-  ListItemText,
+  Grid,
   Typography
 } from '@material-ui/core';
 
@@ -31,17 +30,16 @@ export default function KeywordsDialog({election, onClose}) {
           election={election}
           onCompleted={data => setKeyword(data.createKeyword)}
         />
-        <List>
+        <Grid container spacing={2}>
           {election.keywords.map(keyword => (
-            <ListItem
-              button
-              onClick={() => setKeyword(keyword)}
-              key={keyword.id}
-            >
-              <ListItemText primary={keyword.words[0].text} />
-            </ListItem>
+            <Grid item key={keyword.id} xs={4}>
+              <CardActionArea onClick={() => setKeyword(keyword)}>
+                <Typography>{keyword.words[0].text}</Typography>
+                {!keyword.definitions.length && <span>⚠️</span>}
+              </CardActionArea>
+            </Grid>
           ))}
-        </List>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Done</Button>
