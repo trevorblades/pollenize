@@ -63,7 +63,18 @@ function VocabPopover({children}) {
           horizontal: 'center'
         }}
       >
-        <Box p={2} maxWidth={300}>
+        <Box
+          p={2}
+          maxWidth={300}
+          css={{
+            '& p': {
+              margin: 0,
+              '&:not(:last-child)': {
+                marginBottom: 12
+              }
+            }
+          }}
+        >
           <Typography variant="subtitle2" gutterBottom>
             {keyword.word}
           </Typography>
