@@ -1,5 +1,5 @@
 import ElectionMenu from '../election-menu';
-import HeaderBase, {HEADER_HEIGHT} from '../header-base';
+import HeaderBase from '../header-base';
 import Layout from '../layout';
 import Markdown from 'react-markdown';
 import PropTypes from 'prop-types';
@@ -11,14 +11,12 @@ import TopicSection from './topic-section';
 import clipboard from 'clipboard-polyfill';
 import {
   Avatar,
-  Box,
   Snackbar,
   Typography,
   styled,
   useTheme
 } from '@material-ui/core';
 import {ContentWrapper, PageAnchor, PageHeader, PageWrapper} from '../common';
-import {FaExclamation} from 'react-icons/fa';
 import {KeywordContext} from '../stance-text';
 import {LanguageProvider, useLocalize} from '../../utils/language';
 import {StarsProvider} from '../../utils/stars';
@@ -49,8 +47,7 @@ export default function CandidateTemplate(props) {
     birthDate,
     election,
     hometown,
-    stances,
-    incomplete
+    stances
   } = props.data.pollenize.candidate;
   const {lang, languages} = props.pageContext;
 
@@ -171,7 +168,7 @@ export default function CandidateTemplate(props) {
                   </ContentWrapper>
                 </Fragment>
               )}
-              {(incomplete || election.id === '10') && (
+              {/* {election.id === '10' && (
                 <Box
                   display="flex"
                   alignItems="flex-start"
@@ -188,12 +185,12 @@ export default function CandidateTemplate(props) {
                     mr={1}
                   />
                   <div>
-                    {incomplete
+                    {candidateId === '90'
                       ? localize('eyebrow', title)
                       : localize('review')}
                   </div>
                 </Box>
-              )}
+              )} */}
               {election.topics.map(topic => (
                 <TopicSection
                   topic={topic}
@@ -249,7 +246,6 @@ export const pageQuery = graphql`
         color
         birthDate
         hometown
-        incomplete
         stances {
           id
           text(languageId: $languageId)
