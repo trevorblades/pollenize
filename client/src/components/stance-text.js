@@ -28,8 +28,11 @@ function VocabPopover({children}) {
       keyword => keyword.word.toLowerCase() === children.toLowerCase()
     );
 
-    if (!keyword.definition) {
-      console.warn('keyword has no definition:', children);
+    if (!keyword?.definition) {
+      console.warn(
+        keyword ? 'keyword has no definition:' : 'keyword not found:',
+        children
+      );
       return null;
     }
 
