@@ -56,7 +56,7 @@ export const resolvers = {
     }
   },
   Keyword: {
-    words: keyword => keyword.getWords(),
+    words: keyword => keyword.getWords({order: ['id']}),
     definitions: keyword => keyword.getDefinitions()
   }
 };

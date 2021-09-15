@@ -104,7 +104,7 @@ function HighlightedText({value}) {
       textToHighlight={value}
       highlightTag={VocabPopover}
       findChunks={({searchWords, textToHighlight}) =>
-        searchWords.reduce((chunks, searchWord) => {
+        searchWords.filter(Boolean).reduce((chunks, searchWord) => {
           const sanitized = searchWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const endBoundary = /\W$/.test(searchWord) ? '\\B' : '\\b';
           const regex = new RegExp('\\b' + sanitized + endBoundary, 'gi');

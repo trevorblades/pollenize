@@ -32,7 +32,7 @@ export default function KeywordsDialog({election, onClose}) {
         />
         <Grid container spacing={2}>
           {election.keywords.map(keyword => (
-            <Grid item key={keyword.id} xs={4}>
+            <Grid item key={keyword.id} xs={4} data-id={keyword.id}>
               <CardActionArea onClick={() => setKeyword(keyword)}>
                 <Typography>{keyword.words[0].text}</Typography>
                 {!keyword.definitions.length && <span>⚠️</span>}
