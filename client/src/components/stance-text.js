@@ -69,7 +69,7 @@ function VocabPopover({children}) {
         <Box
           p={2}
           maxWidth={300}
-          css={{
+          sx={{
             '& p': {
               margin: 0,
               '&:not(:last-child)': {
@@ -105,7 +105,9 @@ function HighlightedText({value}) {
       highlightTag={VocabPopover}
       findChunks={({searchWords, textToHighlight}) =>
         searchWords.reduce((chunks, searchWord) => {
-          const regex = new RegExp('\\b' + searchWord + '\\b', 'gi');
+          const sanitized = searchWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const endBoundary = /\W$/.test(searchWord) ? '\\B' : '\\b';
+          const regex = new RegExp('\\b' + sanitized + endBoundary, 'gi');
 
           let match;
           while ((match = regex.exec(textToHighlight))) {
