@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@graphql-tools/schema": "^8.2.0",
-    "apollo-server-core": "^3.3.0",
+    "apollo-server-core": "^3.10.1",
     "apollo-server-express": "^3.3.0",
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
