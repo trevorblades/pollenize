@@ -1,6 +1,6 @@
 {
   "engines": {
-    "node": "14"
+    "node": "18"
   },
   "type": "module",
   "eslintConfig": {
@@ -9,9 +9,11 @@
   "scripts": {
     "pretest": "eslint src/*",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "start": "nodemon -r dotenv/config index.js"
+    "start": "nodemon -r dotenv/config index.js",
+    "pgsync": "railway run pgsync --schema-first --defer-constraints"
   },
   "devDependencies": {
+    "@railway/cli": "^2.0.13",
     "@trevorblades/eslint-config": "^7.2.4",
     "dotenv": "^8.0.0",
     "eslint": "^7.32.0",
