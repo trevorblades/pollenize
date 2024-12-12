@@ -17,7 +17,7 @@
     "clipboard-polyfill": "^2.8.6",
     "date-fns": "^2.22.1",
     "dotenv": "^8.0.0",
-    "gatsby": "^2.32.13",
+    "gatsby": "^4.24.3",
     "gatsby-plugin-google-analytics": "^2.1.4",
     "gatsby-plugin-lodash": "^3.1.2",
     "gatsby-plugin-manifest": "^2.2.27",
