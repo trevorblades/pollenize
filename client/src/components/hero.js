@@ -1,5 +1,5 @@
 import React from 'react';
-import pattern from '../assets/pattern.svg';
+import flow from '../assets/flow.svg';
 import {Box, Typography, styled} from '@material-ui/core';
 import {Fab} from 'gatsby-theme-material-ui';
 import {ReactComponent as Leaf} from '../assets/leaf.svg';
@@ -7,9 +7,13 @@ import {SectionWrapper} from './common';
 import {size} from 'polished';
 
 const Wrapper = styled(Box)({
-  backgroundImage: `url(${pattern})`,
-  backgroundPosition: 'center',
-  backgroundSize: '700px'
+  backgroundImage: `url(${flow})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
+});
+
+const WhiteBgText = styled('span')({
+  backgroundColor: 'white'
 });
 
 const StyledLeaf = styled(Leaf)(({theme}) => {
@@ -48,22 +52,29 @@ export default function Hero() {
             md: 1 / 2
           }}
         >
-          <StyledLeaf />
+          {/* <StyledLeaf /> */}
           <Box position="relative">
-            <Typography variant="overline" style={{color: '#ff3a1a'}}>
-              Your guide to the
+            <Typography
+              variant="overline"
+              style={{
+                color: '#FF0000'
+              }}
+            >
+              <WhiteBgText>Your guide to the</WhiteBgText>
             </Typography>
             <Typography gutterBottom variant="h2">
-              2021 Canadian Federal Election
+              <WhiteBgText>2025 Canadian Federal Election</WhiteBgText>
             </Typography>
             <Typography paragraph variant="h6">
-              We break down the candidates and their policies in a clear,
-              organized way so that you can make an informed vote.
+              <WhiteBgText style={{paddingBlock: '0.2em'}}>
+                We break down the candidates and their policies in a clear,
+                organized way so that you can make an informed vote.
+              </WhiteBgText>
             </Typography>
             <Fab
               color="primary"
               variant="extended"
-              to="/en/elections/canada-2021"
+              to="/en/elections/canada-2025"
             >
               View election guide 🇨🇦
             </Fab>

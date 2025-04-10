@@ -29,8 +29,8 @@ export default function Header() {
         <MenuItem to="/team">Team</MenuItem>
         <MenuItem to="/blog">Blog</MenuItem>
       </Hidden>
-      <Button color="primary" to="/en/elections/canada-2021" variant="outlined">
-        Canada 2021
+      <Button color="primary" to="/en/elections/canada-2025" variant="outlined">
+        Canada 2025
         <FaChevronRight style={{marginLeft: 8}} />
       </Button>
     </HeaderBase>
