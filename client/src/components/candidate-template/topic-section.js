@@ -64,7 +64,11 @@ export default function TopicSection(props) {
             <FiLink />
           </IconButton>
           {props.stances.length > MIN_STANCES && (
-            <Button className={button} onClick={toggleExpanded}>
+            <Button
+              variant={expanded ? 'text' : 'outlined'}
+              className={button}
+              onClick={toggleExpanded}
+            >
               {expanded
                 ? localize('Show less')
                 : `${localize('Show more')} (${
